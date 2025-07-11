@@ -67,7 +67,7 @@ resources:
     - repository: pagopaCommons
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v18
+      ref: refs/tags/v19
       endpoint: 'io-azure-devops-github-ro'
     - repository: selfcareCommon
       type: github
