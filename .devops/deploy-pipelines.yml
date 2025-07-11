@@ -69,7 +69,7 @@ resources:
       name: pagopa/azure-pipeline-templates
       ref: refs/tags/v19
       # Cannot use variables here!
-      endpoint: 'azure-devops-github-ro'
+      endpoint: 'io-azure-devops-github-ro'
 
 pool:
   vmImage: '$(vmImageNameDefault)'
