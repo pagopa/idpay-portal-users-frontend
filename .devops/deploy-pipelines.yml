@@ -64,6 +64,11 @@ variables:
 
 resources:
   repositories:
+    - repository: pagopaCommons
+      type: github
+      name: pagopa/azure-pipeline-templates
+      ref: refs/tags/v18
+      endpoint: 'io-azure-devops-github-ro'
     - repository: selfcareCommon
       type: github
       name: pagopa/selfcare-common-frontend
@@ -80,21 +85,8 @@ stages:
       - job: job_build
         displayName: Build
         steps:
-          - template: local-templates/node-job-setup.yaml
-
-          - template: local-templates/setup-env.yaml
-            parameters:
-              api_host: '$(api_host)'
-              api_timeout: '$(api_timeout)'
-              env: '$(environment)'
-              cdn_logos: '$(cdn_logos)'
-              assistance_link: '$(assistance_link)'
-              checkout_host: '$(checkout_host)'
-              login_url: '$(login_url)'
-              checkout_platform_url: '$(checkout_platform_url)'
-              deploy_path: '$(DEPLOY_PATH)'
-              version: '$(Build.SourceBranchName):$(Build.SourceVersion)'
-              show_notices: '$(show_notices)'
+          - template: .devops/azure-templates/setup-yarn-cache.yml@selfcareCommon
+          - template: templates/node-job-setup/template.yaml@pagopaCommons
 
           - script: |
               yarn build
