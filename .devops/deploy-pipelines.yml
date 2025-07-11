@@ -204,11 +204,11 @@ stages:
               REACT_APP_ONE_TRUST_TOS_JSON_URL: $(react_app_one_trust_tos_json_url)
 
           - bash: |
-              printf "$EXECUTION_ID\n$(git name-rev --name-only FETCH_HEAD) $(git rev-parse HEAD)" > $(System.DefaultWorkingDirectory)/build/build.info
+              printf "$EXECUTION_ID\n$(git name-rev --name-only FETCH_HEAD) $(git rev-parse HEAD)" > $(System.DefaultWorkingDirectory)/dist/build.info
             env:
               EXECUTION_ID: '$(Build.BuildNumber) - $(Build.DefinitionName)($(Build.BuildId))'
             displayName: 'Build info'
-          - publish: $(System.DefaultWorkingDirectory)/build
+          - publish: $(System.DefaultWorkingDirectory)/dist
             artifact: Bundle
 
   # Deploy bundle
