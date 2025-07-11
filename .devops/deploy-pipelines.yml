@@ -67,8 +67,12 @@ resources:
     - repository: pagopaCommons
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v19
-      # Cannot use variables here!
+      ref: refs/tags/v18
+      endpoint: 'io-azure-devops-github-ro'
+    - repository: selfcareCommon
+      type: github
+      name: pagopa/selfcare-common-frontend
+      ref: refs/heads/main
       endpoint: 'io-azure-devops-github-ro'
 
 pool:
