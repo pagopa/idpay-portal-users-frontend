@@ -1,66 +1,123 @@
 # Azure DevOps pipeline to release a new version and deploy to production.
 
-trigger:
-  branches:
-    include:
-      - develop
-      - uat
-      - main
-  paths:
-    include:
-      - src/*
-
-pr: none
-
 variables:
-  NODE_VERSION: '22.11.0'
-  npm_config_cache: $(Pipeline.Workspace)/.npm
+  NODE_VERSION: '20.18.1'
+  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
+  # Execute agents (jobs) on latest Ubuntu version.
   vmImageNameDefault: 'ubuntu-latest'
-  cdn_logos: 'https://assets.cdn.io.italia.it/logos/organizations'
-  assistance_link: 'https://pagopa.gov.it'
 
-  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/uat') }}:
+  basePath: portale-utenti
+
+  # global variables
+  react_app_pagopa_help_email: '$(REACT_APP_ASSISTANCE_EMAIL)'
+
+  ${{ if or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release-uat'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix')) }}:
     environment: 'UAT'
-    azure_subscription: '$(UAT_AZURE_SUBSCRIPTION)'
+    azure_subscription: $(UAT_AZURE_SUBSCRIPTION)
     cdn_endpoint: '$(UAT_CDN_ENDPOINT)'
     cdn_profile: '$(UAT_CDN_PROFILE)'
-    resource_group: '$(UAT_STORAGE_ACCOUNT_RG)'
-    storage_account: '$(UAT_STORAGE_ACCOUNT_NAME)'
-    login_url: '$(UAT_APIM_PREFIX_DOMAIN)/arc/v1/login/oneidentity'
-    api_host: '$(UAT_APIM_PREFIX_DOMAIN)/arc/v1'
-    api_timeout: '10000'
-    checkout_host: '$(UAT_CHECKOUT_PREFIX_DOMAIN)'
-    checkout_platform_url: '$(UAT_CHECKOUT_PLATFORM_URL)'
-    show_notices: '1'
+    resource_group: '$(UAT_RESOURCE_GROUP)'
+    storage_account: '$(UAT_STORAGE_ACCOUNT)'
+
+    react_app_url_cdn: '$(UAT_REACT_APP_URL_CDN)'
+
+    react_app_url_fe_pre_login: '$(UAT_REACT_APP_URL_FE_PRE_LOGIN)'
+    react_app_url_fe_auth: '$(UAT_REACT_APP_URL_FE_LOGIN)'
+    react_app_url_fe_landing: '$(UAT_REACT_APP_URL_FE_LANDING)'
+    react_app_url_fe_assistance: '$(UAT_REACT_APP_URL_FE_ASSISTANCE_PORTAL)'
+
+    react_app_url_storage: '$(UAT_REACT_APP_URL_STORAGE)'
+
+    # react_app_one_trust_base_url: '$(UAT_REACT_APP_URL_CDN)/ot'
+    # react_app_analytics_enabled: '$(UAT_ANALYTICS_ENABLED)'
+    # react_app_analytics_mocked: '$(UAT_ANALYTICS_MOCKED)'
+    # react_app_mixpanel_token: '$(UAT_MIXPANEL_TOKEN)'
+    # react_app_onetrust_domain_id: '$(UAT_ONETRUST_DOMAIN_ID)'
+
+    react_app_one_trust_otnotice_cdn_url: $(UAT_REACT_APP_ONE_TRUST_OTNOTICE_CDN_URL)
+    react_app_one_trust_otnotice_cdn_settings: $(UAT_REACT_APP_ONE_TRUST_OTNOTICE_CDN_SETTINGS)
+    react_app_one_trust_privacy_policy_id: $(UAT_REACT_APP_ONE_TRUST_PRIVACY_POLICY_ID)
+    react_app_one_trust_privacy_policy_json_url: $(UAT_REACT_APP_ONE_TRUST_PRIVACY_POLICY_JSON_URL)
+    react_app_one_trust_tos_id: $(UAT_REACT_APP_ONE_TRUST_TOS_ID)
+    react_app_one_trust_tos_json_url: $(UAT_REACT_APP_ONE_TRUST_TOS_JSON_URL)
+    react_app_url_api_register:  $(UAT_REACT_APP_URL_API_REGISTER)
 
   ${{ elseif eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
     environment: 'PROD'
-    azure_subscription: '$(PROD_AZURE_SUBSCRIPTION)'
+    azure_subscription: $(PROD_AZURE_SUBSCRIPTION)
     cdn_endpoint: '$(PROD_CDN_ENDPOINT)'
     cdn_profile: '$(PROD_CDN_PROFILE)'
-    resource_group: '$(PROD_STORAGE_ACCOUNT_RG)'
-    storage_account: '$(PROD_STORAGE_ACCOUNT_NAME)'
-    login_url: '$(PROD_APIM_PREFIX_DOMAIN)/arc/v1/login/oneidentity'
-    api_host: '$(PROD_APIM_PREFIX_DOMAIN)/arc/v1'
-    api_timeout: '10000'
-    checkout_host: '$(PROD_CHECKOUT_PREFIX_DOMAIN)'
-    checkout_platform_url: '$(PROD_CHECKOUT_PLATFORM_URL)'
-    show_notices: '1'
+    resource_group: '$(PROD_RESOURCE_GROUP)'
+    storage_account: '$(PROD_STORAGE_ACCOUNT)'
+
+    react_app_url_cdn: '$(PROD_REACT_APP_URL_CDN)'
+
+    react_app_url_fe_pre_login: '$(PROD_REACT_APP_URL_FE_PRE_LOGIN)'
+    react_app_url_fe_auth: '$(PROD_REACT_APP_URL_FE_LOGIN)'
+    react_app_url_fe_landing: '$(PROD_REACT_APP_URL_FE_LANDING)'
+    react_app_url_fe_assistance: '$(PROD_REACT_APP_URL_FE_ASSISTANCE_PORTAL)'
+
+    react_app_url_storage: '$(PROD_REACT_APP_URL_STORAGE)'
+
+    # react_app_one_trust_base_url: '$(PROD_REACT_APP_URL_CDN)/ot'
+    # react_app_analytics_enabled: '$(PROD_ANALYTICS_ENABLED)'
+    # react_app_analytics_mocked: '$(PROD_ANALYTICS_MOCKED)'
+    # react_app_mixpanel_token: '$(PROD_MIXPANEL_TOKEN)'
+    # react_app_onetrust_domain_id: '$(PROD_ONETRUST_DOMAIN_ID)'
+
+    react_app_one_trust_otnotice_cdn_url: $(PROD_REACT_APP_ONE_TRUST_OTNOTICE_CDN_URL)
+    react_app_one_trust_otnotice_cdn_settings: $(PROD_REACT_APP_ONE_TRUST_OTNOTICE_CDN_SETTINGS)
+    react_app_one_trust_privacy_policy_id: $(PROD_REACT_APP_ONE_TRUST_PRIVACY_POLICY_ID)
+    react_app_one_trust_privacy_policy_json_url: $(PROD_REACT_APP_ONE_TRUST_PRIVACY_POLICY_JSON_URL)
+    react_app_one_trust_tos_id: $(PROD_REACT_APP_ONE_TRUST_TOS_ID)
+    react_app_one_trust_tos_json_url: $(PROD_REACT_APP_ONE_TRUST_TOS_JSON_URL)
+    react_app_url_api_register:  $(PROD_REACT_APP_URL_API_REGISTER)
 
   # every branch different from past will be considered as DEV
+  #  ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/release-dev') }}:
   ${{ else }}:
     environment: 'DEV'
-    azure_subscription: '$(DEV_AZURE_SUBSCRIPTION)'
+    azure_subscription: $(DEV_AZURE_SUBSCRIPTION)
     cdn_endpoint: '$(DEV_CDN_ENDPOINT)'
     cdn_profile: '$(DEV_CDN_PROFILE)'
-    resource_group: '$(DEV_STORAGE_ACCOUNT_RG)'
-    storage_account: '$(DEV_STORAGE_ACCOUNT_NAME)'
-    login_url: '$(DEV_APIM_PREFIX_DOMAIN)/arc/v1/login/oneidentity'
-    api_host: '$(DEV_APIM_PREFIX_DOMAIN)/arc/v1'
-    api_timeout: '0'
-    checkout_host: '$(DEV_CHECKOUT_PREFIX_DOMAIN)'
-    checkout_platform_url: '$(DEV_CHECKOUT_PLATFORM_URL)'
-    show_notices: '1'
+    resource_group: '$(DEV_RESOURCE_GROUP)'
+    storage_account: '$(DEV_STORAGE_ACCOUNT)'
+
+    react_app_url_cdn: '$(DEV_REACT_APP_URL_CDN)'
+
+    react_app_url_storage: '$(DEV_REACT_APP_URL_STORAGE)'
+
+    react_app_url_fe_pre_login: '$(DEV_REACT_APP_URL_FE_PRE_LOGIN)'
+    react_app_url_fe_auth: '$(DEV_REACT_APP_URL_FE_LOGIN)'
+    react_app_url_fe_landing: '$(DEV_REACT_APP_URL_FE_LANDING)'
+    react_app_url_fe_assistance: '$(DEV_REACT_APP_URL_FE_ASSISTANCE_PORTAL)'
+    REACT_APP_URL_API_ASSET_REGISTER_PORTAL: ''
+
+    # react_app_one_trust_base_url: '$(DEV_REACT_APP_URL_CDN)/ot/test'
+    # react_app_analytics_enabled: '$(DEV_ANALYTICS_ENABLED)'
+    # react_app_analytics_mocked: '$(DEV_ANALYTICS_MOCKED)'
+    # react_app_mixpanel_token: '$(DEV_MIXPANEL_TOKEN)'
+    # react_app_onetrust_domain_id: '$(DEV_ONETRUST_DOMAIN_ID)'
+
+    react_app_one_trust_otnotice_cdn_url: $(DEV_REACT_APP_ONE_TRUST_OTNOTICE_CDN_URL)
+    react_app_one_trust_otnotice_cdn_settings: $(DEV_REACT_APP_ONE_TRUST_OTNOTICE_CDN_SETTINGS)
+    react_app_one_trust_privacy_policy_id: $(DEV_REACT_APP_ONE_TRUST_PRIVACY_POLICY_ID)
+    react_app_one_trust_privacy_policy_json_url: $(DEV_REACT_APP_ONE_TRUST_PRIVACY_POLICY_JSON_URL)
+    react_app_one_trust_tos_id: $(DEV_REACT_APP_ONE_TRUST_TOS_ID)
+    react_app_one_trust_tos_json_url: $(DEV_REACT_APP_ONE_TRUST_TOS_JSON_URL)
+    react_app_url_api_register: $(DEV_REACT_APP_URL_API_REGISTER)
+
+
+# Automatically triggered on PR
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema%2Cparameter-schema#pr-trigger
+trigger:
+  branches:
+    include:
+      - main
+      - release-*
+      - develop
+
+pr: none
 
 resources:
   repositories:
@@ -79,48 +136,103 @@ pool:
   vmImage: '$(vmImageNameDefault)'
 
 stages:
-  - stage: prepare_artifact
-    displayName: 'Build ${{ variables.environment }} apps'
+  # Create a relase
+  # Activated when ONE OF these are met:
+  # - is on branch $(DEFAULT_BRANCH)
+  # - is a tag in the form v{version}-RELEASE
+  #  - stage: Release
+  #    condition: or(
+  #      startsWith(variables['Build.SourceBranch'], 'refs/heads/release-uat')
+  #      , startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix')
+  #      , eq(variables['Build.SourceBranch'], 'refs/heads/main')
+  #      )
+  #    pool:
+  #      vmImage: 'ubuntu-latest'
+  #    jobs:
+  #      - job: make_release
+  #        condition: eq(variables['Build.SourceBranch'], format('refs/heads/{0}', variables.DEFAULT_BRANCH))
+  #        steps:
+  #          - template: templates/node-job-setup/template.yaml@pagopaCommons
+  #            parameters:
+  #              persistCredentials: true
+  #          - template: templates/node-github-release/template.yaml@pagopaCommons
+  #            parameters:
+  #              release_branch: '$(DEFAULT_BRANCH)'
+  #              semver: '${{ parameters.RELEASE_SEMVER }}'
+  #              gitEmail: '$(GIT_EMAIL)'
+  #              gitUsername: '$(GIT_USERNAME)'
+  #              gitHubConnection: '$(GITHUB_CONNECTION)'
+
+  #      - job: skip_release
+  #        condition: ne(variables['Build.SourceBranch'], format('refs/heads/{0}', variables.DEFAULT_BRANCH))
+  #        steps:
+  #          - script: |
+  #              echo "We assume this reference to be a valid release: $(Build.SourceBranch). Therefore, there is no need to bundle a new release."
+  #            displayName: 'Skip release bundle'
+
+  # Prepare Artifact with application bundle
+  - stage: Prepare_artifact
+    condition: or(eq(variables['environment'], 'DEV'), succeeded())
     jobs:
-      - job: job_build
-        displayName: Build
+      - job: 'make_build'
         steps:
           - template: .devops/azure-templates/setup-yarn-cache.yml@selfcareCommon
           - template: templates/node-job-setup/template.yaml@pagopaCommons
-
-          - script: |
+            parameters:
+              nodeVersion: $(NODE_VERSION)
+          - bash: |
+              yarn generate
               yarn build
-            displayName: 'yarn build'
+            displayName: 'Build files'
+            env:
+              INLINE_RUNTIME_CHUNK: 'false'
+              REACT_APP_ENV: '$(environment)'
+              REACT_APP_URL_FE_PRE_LOGIN: '$(react_app_url_fe_pre_login)'
+              REACT_APP_URL_FE_LOGIN: '$(react_app_url_fe_auth)/login'
+              REACT_APP_URL_FE_LOGOUT: '$(react_app_url_fe_auth)/logout'
+              REACT_APP_URL_FE_LANDING: '$(react_app_url_fe_landing)'
+              REACT_APP_URL_FE_ASSISTANCE_PORTAL: '$(react_app_url_fe_assistance)'
+              REACT_APP_URL_INSTITUTION_LOGO_PREFIX: '$(react_app_url_storage)/institutions/'
 
-          - publish: dist
+              REACT_APP_URL_API_ROLE_PERMISSION: '$(react_app_url_api_role_permission)'
+
+              REACT_APP_ONE_TRUST_OTNOTICE_CDN_URL: $(react_app_one_trust_otnotice_cdn_url)
+              REACT_APP_ONE_TRUST_OTNOTICE_CDN_SETTINGS: $(react_app_one_trust_otnotice_cdn_settings)
+              REACT_APP_ONE_TRUST_PRIVACY_POLICY_ID: $(react_app_one_trust_privacy_policy_id)
+              REACT_APP_ONE_TRUST_PRIVACY_POLICY_JSON_URL: $(react_app_one_trust_privacy_policy_json_url)
+              REACT_APP_ONE_TRUST_TOS_ID: $(react_app_one_trust_tos_id)
+              REACT_APP_ONE_TRUST_TOS_JSON_URL: $(react_app_one_trust_tos_json_url)
+
+          - bash: |
+              printf "$EXECUTION_ID\n$(git name-rev --name-only FETCH_HEAD) $(git rev-parse HEAD)" > $(System.DefaultWorkingDirectory)/build/build.info
+            env:
+              EXECUTION_ID: '$(Build.BuildNumber) - $(Build.DefinitionName)($(Build.BuildId))'
+            displayName: 'Build info'
+          - publish: $(System.DefaultWorkingDirectory)/build
             artifact: Bundle
 
   # Deploy bundle
-  - stage: stage_deploy
-    displayName: 'Deploy to ${{ variables.environment }} storage'
-    condition: succeeded()
+  - stage: 'Deploy_to_${{ variables.environment }}'
+    condition: or(eq(variables['environment'], 'DEV'), succeeded())
     jobs:
-      - job: job_deploy
-        displayName: 'Deploy'
+      - job: 'Deploy_to_${{ variables.environment }}'
         steps:
           - checkout: none
 
           - download: current
             artifact: Bundle
 
-          - task: AzureCLI@2
-            displayName: 'Sync storage'
+          - task: AzureCLI@1
+            displayName: 'Sync checkout storage'
             inputs:
               azureSubscription: '$(AZURE_SUBSCRIPTION)'
-              scriptType: 'bash'
               scriptLocation: inlineScript
               inlineScript: |
-                az storage blob sync --container '$web' --account-name $(storage_account) --source "$(Pipeline.Workspace)/Bundle"
-
+                az storage blob sync --container '$(blob_container_name)' --account-name $(storage_account) -s "$(Pipeline.Workspace)/Bundle" --destination '$(basePath)/'
           - task: AzureCLI@1
             displayName: 'Purge CDN endpoint'
             inputs:
               azureSubscription: '$(AZURE_SUBSCRIPTION)'
               scriptLocation: inlineScript
               inlineScript: |
-                az cdn endpoint purge -g $(resource_group) -n $(cdn_endpoint) --profile-name $(cdn_profile) --content-paths "/*"
+                az cdn endpoint purge -g $(resource_group) -n $(cdn_endpoint) --profile-name $(cdn_profile) --content-paths "/$(basePath)" "/$(basePath)/*" "/"
