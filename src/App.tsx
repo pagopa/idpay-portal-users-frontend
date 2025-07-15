@@ -1,26 +1,26 @@
 import './App.css';
-import { useEffect } from 'react';
-import { useAuth } from 'react-oidc-context';
+// import { useEffect } from 'react';
+// import { useAuth } from 'react-oidc-context';
 
-// components
 import Layout from './components/Layout/Layout';
 
 function App() {
-  const auth = useAuth();
+  // TODO 
+  // const = useAuth();
 
-  useEffect(() => {
-    if (!auth.isLoading && !auth.isAuthenticated) {
-      auth.signinRedirect();
-    }
-  }, [auth.isLoading, auth.isAuthenticated])
+  // useEffect(() => {
+  //   if (!auth.isLoading && !auth.isAuthenticated) {
+  //     auth.signinRedirect();
+  //   }
+  // }, [auth.isLoading, auth.isAuthenticated])
 
-  if (auth.isLoading) {
-    return <div>Caricamento sessione...</div>;
-  }
+  // if (auth.isLoading) {
+  //   return <div>Caricamento sessione...</div>;
+  // }
 
-  if (!auth.isAuthenticated) {
-    return <div>Reindirizzamento al login...</div>;
-  }
+  // if (!auth.isAuthenticated) {
+  //   return <div>Reindirizzamento al login...</div>;
+  // }
 
   return <Layout />;
 }
