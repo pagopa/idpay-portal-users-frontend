@@ -18,7 +18,6 @@ jobs:
         run: yarn generate
       - name: Test and coverage
         run: yarn test:coverage
-      - uses: davelosert/vitest-coverage-report-action@7727b0282e61c3cffa400550cf2ae57c2b16167d # v2
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@ffc3010689be73b8e5ae0c57ce35968afd7909e8 # v5.0.0
         env:
