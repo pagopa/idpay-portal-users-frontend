@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { Footer } from '@pagopa/selfcare-common-frontend/lib';
 
 import Header from '../Header/Header';
@@ -15,6 +15,7 @@ const Layout = () => {
                           "body"
                           "footer"`}
       minHeight="100vh"
+      overflow="hidden"
     >
       <Box gridArea="header">
         <Header
@@ -22,9 +23,17 @@ const Layout = () => {
           onExit={()=>{}}
         />
       </Box>
-      
-      <Box gridArea="footer">
-        <Footer onExit={() =>{}} loggedUser={false} />
+      <Box
+        gridArea="body"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        overflow="hidden"
+      >
+        <Typography>Portale Utenti</Typography>
+      </Box>
+      <Box gridArea="footer" overflow="hidden">
+        <Footer onExit={() =>{}} loggedUser={true} />
       </Box>
     </Box>
   );
