@@ -1,0 +1,219 @@
+import { Box, Card, CardContent, Container, FormControl, FormControlLabel, Button, IconButton, Radio, RadioGroup, Switch, Tooltip, Typography } from '@mui/material';
+import { ButtonNaked } from '@pagopa/mui-italia';
+import { ArrowBack, Info } from '@mui/icons-material'
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+const VerifyRequirements: React.FC = () => {
+    const { t } = useTranslation();
+    const [iseeValue, setIseeValue] = useState('');
+
+    return (
+        <Box
+            sx={{
+                overflowX: 'clip',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                py: 4,
+            }}
+        >
+            <Container sx={{width: "100%", px: "20%"}}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 3,
+                    }}
+                >
+                    <Box>
+                        <ButtonNaked color="text"
+                            onFocusVisible={() => { }}
+                            size="medium"
+                            startIcon={<ArrowBack sx={{ color: "#0073E6", }} />}
+                            sx={{ color: "#0073E6", }}
+                        >
+                            {t('verifyRequirements.exit')}
+                        </ButtonNaked>
+                        <Typography sx={{ fontWeight: "700", fontSize: "32px", mt: 2 }}>
+                            {t('verifyRequirements.title')}
+                        </Typography>
+                        <Typography sx={{ fontWeight: "400", fontSize: "16px", mt: 1 }}>
+                            {t('verifyRequirements.description')}
+                        </Typography>
+                    </Box>
+
+                    <Box>
+                        <Card sx={{borderRadius: "4px"}}>
+                            <CardContent>
+                                <Typography
+                                    sx={{ fontWeight: 700, fontSize: '24px' }}
+                                    component="h2"
+                                >
+                                    {t('verifyRequirements.family.title')}
+                                </Typography>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        mt: 2,
+                                    }}
+                                >
+                                    <Box>
+                                        <Typography sx={{ fontSize: '14px', fontWeight: 400, }}>
+                                            {t('verifyRequirements.family.description1')}
+                                        </Typography>
+                                        <Typography sx={{ fontSize: '14px', fontWeight: 400 }}>
+                                            {t('verifyRequirements.family.description2')}
+                                        </Typography>
+                                    </Box>
+                                    <Tooltip
+                                        title={
+                                            <Typography fontSize={10} color={"#FFFFFF"}>
+                                                {t('verifyRequirements.tooltip')}
+                                            </Typography>
+                                        }
+                                        placement="bottom"
+                                        arrow
+                                    >
+                                        <IconButton size="small" sx={{ mt: '2px', color: "#455B71" }}>
+                                            <Info fontSize="small" />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Box>
+                            </CardContent>
+                        </Card>
+                    </Box>
+
+                    <Box>
+                        <Card sx={{borderRadius: "4px"}}>
+                            <CardContent>
+                                <Typography
+                                    sx={{ fontWeight: 700, fontSize: '24px' }}
+                                    component="h2"
+                                >
+                                    {t('verifyRequirements.selfDeclaration.title')}
+                                </Typography>
+                                <Typography sx={{ fontSize: '14px', fontWeight: 400, my: 2,}}>
+                                    {t('verifyRequirements.selfDeclaration.description')}
+                                </Typography>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        mt: 2,
+                                    }}
+                                >
+                                    <Card sx={{borderColor: "#E3E7EB", borderWidth: "1px", borderStyle: "solid", width: "100%"}}>
+                                        <CardContent>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    justifyContent: 'space-between',
+                                                    alignItems: 'center',
+                                                }}
+                                            >
+                                                <Typography sx={{fontWeight: "600", fontSize: "14px", color: "#5C6F82"}}>
+                                                    {t('verifyRequirements.selfDeclaration.switchLabel')}
+                                                </Typography>
+                                                <Switch sx={{color: "#0073E6", ml: 2}} />
+                                            </Box>
+                                        </CardContent>
+                                    </Card>
+                                </Box>
+                            </CardContent>
+                        </Card>
+                    </Box>
+
+                    <Box>
+                        <Card sx={{borderRadius: "4px"}}>
+                            <CardContent>
+                                <Typography
+                                    sx={{ fontWeight: 700, fontSize: '24px' }}
+                                    component="h2"
+                                >
+                                    {t('verifyRequirements.isee.title')}
+                                </Typography>
+                                <Typography sx={{ fontSize: '14px', fontWeight: 400, my: 2,}}>
+                                    {t('verifyRequirements.isee.description')}
+                                </Typography>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        mt: 2,
+                                    }}
+                                >
+                                    <Card sx={{ borderColor: "#E3E7EB", borderWidth: "1px", borderStyle: "solid", width: "100%" }}>
+                                        <CardContent>
+                                            <FormControl component="fieldset" fullWidth>
+                                                <RadioGroup
+                                                    value={iseeValue}
+                                                    onChange={(e) => setIseeValue(e.target.value)}
+                                                >
+                                                    <FormControlLabel
+                                                        sx={{pb: 2}}
+                                                        value="under25k"
+                                                        control={<Radio />}
+                                                        label={
+                                                            <Box>
+                                                                <Typography fontWeight={500}>
+                                                                    {t('verifyRequirements.isee.option.<25000')}
+                                                                </Typography>
+                                                                <Typography fontSize={14} color="text.secondary">
+                                                                    {t('verifyRequirements.isee.hint.<25000')}
+                                                                </Typography>
+                                                            </Box>
+                                                        }
+                                                    />
+                                                    <FormControlLabel
+                                                        sx={{pb: 2}}
+                                                        value="over25k"
+                                                        control={<Radio />}
+                                                        label={
+                                                            <Box>
+                                                                <Typography fontWeight={500}>
+                                                                    {t('verifyRequirements.isee.option.>=25000')}
+                                                                </Typography>
+                                                                <Typography fontSize={14} color="text.secondary">
+                                                                    {t('verifyRequirements.isee.hint.>=25000')}
+                                                                </Typography>
+                                                            </Box>
+                                                        }
+                                                    />
+                                                    <FormControlLabel
+                                                        value="no"
+                                                        control={<Radio />}
+                                                        label={
+                                                            <Box>
+                                                                <Typography fontWeight={500}>
+                                                                    {t('verifyRequirements.isee.option.none')}
+                                                                </Typography>
+                                                                <Typography fontSize={14} color="text.secondary">
+                                                                    {t('verifyRequirements.isee.hint.none')}
+                                                                </Typography>
+                                                            </Box>
+                                                        }
+                                                    />
+                                                </RadioGroup>
+                                            </FormControl>
+                                        </CardContent>
+                                    </Card>
+                                </Box>
+                            </CardContent>
+                        </Card>
+                    </Box>
+
+                    <Box sx={{display: "flex", justifyContent: "space-between"}}>
+                        <Button variant="outlined" size='medium' startIcon={<ArrowBack sx={{ color: "#0073E6", }} />}>{t('verifyRequirements.back')}</Button>
+                        <Button variant="contained" size='medium'>{t('verifyRequirements.submit')}</Button>
+                    </Box>
+                </Box>
+            </Container>
+        </Box>
+    );
+};
+
+export default VerifyRequirements;
