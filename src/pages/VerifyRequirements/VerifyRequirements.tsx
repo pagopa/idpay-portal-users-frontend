@@ -2,8 +2,10 @@ import { Box, Card, CardContent, Container, FormControl, FormControlLabel, Butto
 import { ButtonNaked } from '@pagopa/mui-italia';
 import { ArrowBack, Info } from '@mui/icons-material'
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const VerifyRequirements: React.FC = () => {
+    const { t } = useTranslation();
     const [iseeValue, setIseeValue] = useState('');
 
     return (
@@ -30,13 +32,13 @@ const VerifyRequirements: React.FC = () => {
                             startIcon={<ArrowBack sx={{ color: "#0073E6", }} />}
                             sx={{ color: "#0073E6", }}
                         >
-                            Esci
+                            {t('verifyRequirements.exit')}
                         </ButtonNaked>
                         <Typography sx={{ fontWeight: "700", fontSize: "32px", mt: 2 }}>
-                            Verifica dei requisiti
+                            {t('verifyRequirements.title')}
                         </Typography>
                         <Typography sx={{ fontWeight: "400", fontSize: "16px", mt: 1 }}>
-                            Compila i campi e invia la tua richiesta. Se rispetta i requisiti, riceverai il buono sconto da scaricare e mostrare nei punti vendita abilitati.
+                            {t('verifyRequirements.description')}
                         </Typography>
                     </Box>
 
@@ -47,7 +49,7 @@ const VerifyRequirements: React.FC = () => {
                                     sx={{ fontWeight: 700, fontSize: '24px' }}
                                     component="h2"
                                 >
-                                    Nucleo familiare
+                                    {t('verifyRequirements.family.title')}
                                 </Typography>
                                 <Box
                                     sx={{
@@ -59,21 +61,16 @@ const VerifyRequirements: React.FC = () => {
                                 >
                                     <Box>
                                         <Typography sx={{ fontSize: '14px', fontWeight: 400, }}>
-                                            Per accedere all’iniziativa {`{{Bonus Elettrodomestici}}`},
-                                            verificheremo con alcuni enti se hai il requisito relativo al tuo
-                                            nucleo familiare.
+                                            {t('verifyRequirements.family.description1')}
                                         </Typography>
                                         <Typography sx={{ fontSize: '14px', fontWeight: 400 }}>
-                                            Questo passaggio è richiesto dal Ministero dell’Interno.
+                                            {t('verifyRequirements.family.description2')}
                                         </Typography>
                                     </Box>
                                     <Tooltip
                                         title={
                                             <Typography fontSize={10} color={"#FFFFFF"}>
-                                                Comunichiamo direttamente con l’ente che detiene
-                                                l’informazione necessaria a effettuare il controllo, in
-                                                questo caso {`{{provider}}`}. In questo modo non devi
-                                                produrre alcuna autocertificazione.
+                                                {t('verifyRequirements.tooltip')}
                                             </Typography>
                                         }
                                         placement="bottom"
@@ -95,10 +92,10 @@ const VerifyRequirements: React.FC = () => {
                                     sx={{ fontWeight: 700, fontSize: '24px' }}
                                     component="h2"
                                 >
-                                    Autodichiarazione
+                                    {t('verifyRequirements.selfDeclaration.title')}
                                 </Typography>
                                 <Typography sx={{ fontSize: '14px', fontWeight: 400, my: 2,}}>
-                                    L’autodichiarazione è resa ai sensi del D.P.R. 28 dicembre 2000, n. 445.
+                                    {t('verifyRequirements.selfDeclaration.description')}
                                 </Typography>
                                 <Box
                                     sx={{
@@ -118,7 +115,7 @@ const VerifyRequirements: React.FC = () => {
                                                 }}
                                             >
                                                 <Typography sx={{fontWeight: "600", fontSize: "14px", color: "#5C6F82"}}>
-                                                    Dichiaro che userò il bonus per l'acquisto di un elettrodomestico di classe energetica superiore destinato a sostituire un altro della stessa tipologia
+                                                    {t('verifyRequirements.selfDeclaration.switchLabel')}
                                                 </Typography>
                                                 <Switch sx={{color: "#0073E6", ml: 2}} />
                                             </Box>
@@ -136,10 +133,10 @@ const VerifyRequirements: React.FC = () => {
                                     sx={{ fontWeight: 700, fontSize: '24px' }}
                                     component="h2"
                                 >
-                                    Dichiarazione ISEE 2025
+                                    {t('verifyRequirements.isee.title')}
                                 </Typography>
                                 <Typography sx={{ fontSize: '14px', fontWeight: 400, my: 2,}}>
-                                    Se sei in possesso di un ISEE 2025 inferiore a 25.000€, verrà effettuata una verifica con INPS
+                                    {t('verifyRequirements.isee.description')}
                                 </Typography>
                                 <Box
                                     sx={{
@@ -163,10 +160,10 @@ const VerifyRequirements: React.FC = () => {
                                                         label={
                                                             <Box>
                                                                 <Typography fontWeight={500}>
-                                                                    Ho un ISEE inferiore a 25.000€
+                                                                    {t('verifyRequirements.isee.option.<25000')}
                                                                 </Typography>
                                                                 <Typography fontSize={14} color="text.secondary">
-                                                                    Hai diritto fino a €200
+                                                                    {t('verifyRequirements.isee.hint.<25000')}
                                                                 </Typography>
                                                             </Box>
                                                         }
@@ -178,10 +175,10 @@ const VerifyRequirements: React.FC = () => {
                                                         label={
                                                             <Box>
                                                                 <Typography fontWeight={500}>
-                                                                    Ho un ISEE uguale o superiore a 25.000€
+                                                                    {t('verifyRequirements.isee.option.>=25000')}
                                                                 </Typography>
                                                                 <Typography fontSize={14} color="text.secondary">
-                                                                    Hai diritto fino a €100
+                                                                    {t('verifyRequirements.isee.hint.>=25000')}
                                                                 </Typography>
                                                             </Box>
                                                         }
@@ -192,10 +189,10 @@ const VerifyRequirements: React.FC = () => {
                                                         label={
                                                             <Box>
                                                                 <Typography fontWeight={500}>
-                                                                    Non ho un ISEE
+                                                                    {t('verifyRequirements.isee.option.none')}
                                                                 </Typography>
                                                                 <Typography fontSize={14} color="text.secondary">
-                                                                    Hai diritto fino a €100
+                                                                    {t('verifyRequirements.isee.hint.none')}
                                                                 </Typography>
                                                             </Box>
                                                         }
@@ -210,8 +207,8 @@ const VerifyRequirements: React.FC = () => {
                     </Box>
 
                     <Box sx={{display: "flex", justifyContent: "space-between"}}>
-                        <Button variant="outlined" size='medium' startIcon={<ArrowBack sx={{ color: "#0073E6", }} />}>Indietro</Button>
-                        <Button variant="contained" size='medium'>Invia Richiesta</Button>
+                        <Button variant="outlined" size='medium' startIcon={<ArrowBack sx={{ color: "#0073E6", }} />}>{t('verifyRequirements.back')}</Button>
+                        <Button variant="contained" size='medium'>{t('verifyRequirements.submit')}</Button>
                     </Box>
                 </Box>
             </Container>
