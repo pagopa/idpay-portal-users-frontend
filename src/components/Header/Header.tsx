@@ -1,30 +1,44 @@
-import { Header as CommonHeader } from '@pagopa/selfcare-common-frontend/lib';
+import {
+  HeaderAccount,
+  HeaderProduct,
+  type ProductEntity,
+  type RootLinkType
+} from '@pagopa/mui-italia';
 
-type Props = {
-  withSecondHeader: boolean;
-  onExit: (exitAction: () => void) => void;
-//   loggedUser?: User;
+export type HeaderProps = {
+  onAssistanceClick?: () => void;
 };
 
-const Header = ({ withSecondHeader }: /* , parties */ Props) => {
+export const Header = (props: HeaderProps) => {
+  const { onAssistanceClick = () => null } = props;
+
+  const product: ProductEntity = {
+    id: '0',
+    title: 'Bonus Elettrodomestici',
+    productUrl: '',
+    linkType: 'internal'
+  };
+
+  const pagopaLink: RootLinkType = {
+    label: 'PagoPA S.p.A.',
+    href: 'https://www.pagopa.it/',
+    ariaLabel: 'Link: vai al sito di PagoPA S.p.A.',
+    title: 'Sito di PagoPA S.p.A.'
+  };
 
   return (
-    <CommonHeader
-      onExit={() => {}}
-      withSecondHeader={withSecondHeader}
-      loggedUser={
-        false
-        // loggedUser
-        //   ? {
-        //       id: loggedUser ? loggedUser.uid : '',
-        //       name: loggedUser?.name,
-        //       surname: loggedUser?.surname,
-        //       email: loggedUser?.email,
-        //     }
-        //   : false
-      }
-      enableLogin={false}
-    />
+    <>
+      <HeaderAccount
+        rootLink={pagopaLink}
+        enableLogin={false}
+        enableDropdown
+        onAssistanceClick={onAssistanceClick}
+      />
+      <HeaderProduct
+        productsList={[product]}
+      />
+    </>
   );
 };
+
 export default Header;
