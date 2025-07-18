@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { Box } from '@mui/material';
 import { theme } from '@pagopa/mui-italia';
-import { Outlet, useMatches } from 'react-router-dom';
 import Header from '../Header/Header';
 import Sidebar from '../Sidebar/Sidebar';
 import CustomFooter from '../Footer/Footer';
 
-const Layout = () => {
+type LayoutProps = {
+  children: React.ReactNode;
+  hasSidebar?: boolean;
+};
+
+const Layout = ({ children, hasSidebar = true }: LayoutProps) => {
   const [collapsed, setCollapsed] = useState(false);
   const toggleSidebar = () => setCollapsed((prev) => !prev);
-
-  const matches = useMatches();
-  const lastMatch = matches[matches.length - 1];
-  const hasSidebar = (lastMatch?.handle as { hasSidebar?: boolean })?.hasSidebar ?? true;
 
   return (
     <Box
@@ -44,7 +44,7 @@ const Layout = () => {
           overflow={'auto'}
           minHeight={'100%'}
         >
-          <Outlet />
+          {children}
         </Box>
       </Box>
 
