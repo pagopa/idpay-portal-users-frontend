@@ -1,28 +1,16 @@
 import './App.css';
-// import { useEffect } from 'react';
-// import { useAuth } from 'react-oidc-context';
-
+import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
+import Dashboard from './pages/Dashboard/Dashboard';
 
 function App() {
-  // TODO 
-  // const = useAuth();
-
-  // useEffect(() => {
-  //   if (!auth.isLoading && !auth.isAuthenticated) {
-  //     auth.signinRedirect();
-  //   }
-  // }, [auth.isLoading, auth.isAuthenticated])
-
-  // if (auth.isLoading) {
-  //   return <div>Caricamento sessione...</div>;
-  // }
-
-  // if (!auth.isAuthenticated) {
-  //   return <div>Reindirizzamento al login...</div>;
-  // }
-
-  return <Layout />;
+  return (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route path="utente" element={<Dashboard />} />
+      </Route>
+    </Routes>
+  );
 }
 
 export default App;
