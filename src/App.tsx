@@ -1,16 +1,30 @@
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import Dashboard from './pages/Dashboard/Dashboard';
+import VerifyRequirements from './pages/VerifyRequirements/VerifyRequirements';
 
-function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route path="utente" element={<Dashboard />} />
-      </Route>
-    </Routes>
-  );
+const router = createBrowserRouter([
+  {
+    path: '/utente',
+    element: <Layout />,
+    children: [
+      {
+        path: '/utente/dashboard',
+        index: true,
+        element: <Dashboard />,
+        handle: { hasSidebar: true },
+      },
+      {
+        path: '/utente/verifyRequirements',
+        index: true,
+        element: <VerifyRequirements />,
+        handle: { hasSidebar: false },
+      },
+    ],
+  },
+]);
+
+export default function App() {
+  return <RouterProvider router={router} />;
 }
-
-export default App;

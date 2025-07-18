@@ -3,7 +3,6 @@ import './index.css';
 import App from './App.tsx';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from '@pagopa/mui-italia';
-import { BrowserRouter } from 'react-router-dom';
 
 import { AuthProvider } from "react-oidc-context";
 
@@ -21,11 +20,9 @@ const oidcConfig = {
 
 createRoot(document.getElementById('root')!).render(
   <AuthProvider {...oidcConfig}>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <App />
-      </ThemeProvider>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <App />
+    </ThemeProvider>
   </AuthProvider>
 );
