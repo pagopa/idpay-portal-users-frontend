@@ -1,40 +1,48 @@
-import { Box, Typography } from '@mui/material';
-import { Footer } from '@pagopa/selfcare-common-frontend/lib';
-
+import { useState } from 'react';
+import { Box } from '@mui/material';
+import { theme } from '@pagopa/mui-italia';
+import { Outlet } from 'react-router-dom';
 import Header from '../Header/Header';
-
+import Sidebar from '../Sidebar/Sidebar';
+import CustomFooter from '../Footer/Footer';
 
 const Layout = () => {
+  const [collapsed, setCollapsed] = useState(false);
+  const toggleSidebar = () => setCollapsed((prev) => !prev);
 
   return (
     <Box
-      display="grid"
-      gridTemplateColumns="1fr"
-      gridTemplateRows="auto 1fr auto"
-      gridTemplateAreas={`"header"
-                          "body"
-                          "footer"`}
+      display="flex"
+      flexDirection="column"
       minHeight="100vh"
-      overflow="hidden"
+      bgcolor={theme.palette.background.default}
     >
-      <Box gridArea="header">
-        <Header
-          withSecondHeader={false}
-          onExit={()=>{}}
-        />
+      <Box component="header">
+        <Header />
       </Box>
-      <Box
-        gridArea="body"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        overflow="hidden"
-      >
-        <Typography>Portale Utenti</Typography>
+
+      <Box component="main" display="flex" flexGrow={1} minHeight={0}>
+        <Box
+          width={collapsed ? 64 : 240}
+          bgcolor={theme.palette.background.paper}
+          sx={{
+            transition: 'width 0.3s ease'
+          }}
+        >
+          <Sidebar collapsed={collapsed} toggleSidebar={toggleSidebar} />
+        </Box>
+
+        <Box
+          flexGrow={1}
+          p={3}
+          overflow={'auto'}
+          minHeight={'100%'}
+        >
+          <Outlet />
+        </Box>
       </Box>
-      <Box gridArea="footer" overflow="hidden">
-        <Footer onExit={() =>{}} loggedUser={true} />
-      </Box>
+
+      <CustomFooter />
     </Box>
   );
 };
