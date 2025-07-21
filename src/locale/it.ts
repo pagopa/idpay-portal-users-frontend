@@ -30,7 +30,7 @@ const it = {
     "isee.hint.<25000": "Hai diritto fino a €200",
     "isee.hint.>=25000": "Hai diritto fino a €100",
     "isee.hint.none": "Hai diritto fino a €100",
-  
+    "error": "Seleziona un’opzione per continuare",
     "back": "Indietro",
     "submit": "Invia richiesta"
   },

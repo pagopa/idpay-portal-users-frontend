@@ -1,6 +1,6 @@
 
 const ROUTES = {
-	DASHBOARD: "/utente/dashboard",
+	DASHBOARD: "/utente",
     VERIFY_REQUIREMENTS: "/utente/verifyRequirements",
 };
 

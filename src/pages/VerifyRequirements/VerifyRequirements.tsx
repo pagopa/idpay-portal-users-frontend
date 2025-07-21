@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 const VerifyRequirements: React.FC = () => {
     const { t } = useTranslation();
     const [iseeValue, setIseeValue] = useState('');
+    const [switchValue, setSwitchValue] = useState(false);
 
     return (
         <Box
@@ -117,11 +118,30 @@ const VerifyRequirements: React.FC = () => {
                                                 <Typography sx={{fontWeight: "600", fontSize: "14px", color: "#5C6F82"}}>
                                                     {t('verifyRequirements.selfDeclaration.switchLabel')}
                                                 </Typography>
-                                                <Switch sx={{color: "#0073E6", ml: 2}} />
+                                                <Switch onChange={() => setSwitchValue(!switchValue)} sx={{
+                                                    ml: 2,
+                                                    '& .MuiSwitch-switchBase': {
+                                                        color: '#FFFFFF',
+                                                        '&.Mui-checked': {
+                                                            color: '#FFFFFF',
+                                                            '& + .MuiSwitch-track': {
+                                                            backgroundColor: '#0073E6',
+                                                            },
+                                                        },
+                                                    },
+                                                    '& .MuiSwitch-track': {
+                                                    backgroundColor: '#D85757',
+                                                    },
+                                                }} />
                                             </Box>
                                         </CardContent>
                                     </Card>
                                 </Box>
+                                { !switchValue &&
+                                    <Typography variant='caption-semibold' sx={{color: "#D85757"}}>
+                                        {t('verifyRequirements.error')}
+                                    </Typography>
+                                }
                             </CardContent>
                         </Card>
                     </Box>
@@ -202,6 +222,11 @@ const VerifyRequirements: React.FC = () => {
                                         </CardContent>
                                     </Card>
                                 </Box>
+                                { iseeValue === "" &&
+                                    <Typography variant='caption-semibold' sx={{color: "#D85757"}}>
+                                        {t('verifyRequirements.error')}
+                                    </Typography>
+                                }
                             </CardContent>
                         </Card>
                     </Box>
