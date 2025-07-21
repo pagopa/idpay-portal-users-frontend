@@ -3,13 +3,13 @@ import { ButtonNaked } from '@pagopa/mui-italia';
 import { ArrowBack, Info } from '@mui/icons-material'
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { italia, theme } from '@pagopa/mui-italia';
+import { theme } from '@pagopa/mui-italia';
+
 
 const VerifyRequirements: React.FC = () => {
     const { t } = useTranslation();
     const [iseeValue, setIseeValue] = useState('');
     const [switchValue, setSwitchValue] = useState(false);
-    console.log(theme);
 
     return (
         <Box
