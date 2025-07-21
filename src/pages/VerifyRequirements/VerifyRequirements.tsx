@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@pagopa/mui-italia';
 
+
 const VerifyRequirements: React.FC = () => {
     const { t } = useTranslation();
     const [iseeValue, setIseeValue] = useState('');
