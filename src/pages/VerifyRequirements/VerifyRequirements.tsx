@@ -3,11 +3,13 @@ import { ButtonNaked } from '@pagopa/mui-italia';
 import { ArrowBack, Info } from '@mui/icons-material'
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { italia, theme } from '@pagopa/mui-italia';
 
 const VerifyRequirements: React.FC = () => {
     const { t } = useTranslation();
     const [iseeValue, setIseeValue] = useState('');
     const [switchValue, setSwitchValue] = useState(false);
+    console.log(theme);
 
     return (
         <Box
@@ -30,8 +32,8 @@ const VerifyRequirements: React.FC = () => {
                         <ButtonNaked color="text"
                             onFocusVisible={() => { }}
                             size="medium"
-                            startIcon={<ArrowBack sx={{ color: "#0073E6", }} />}
-                            sx={{ color: "#0073E6", }}
+                            startIcon={<ArrowBack sx={{ color: theme.palette.primary.main, }} />}
+                            sx={{ color: theme.palette.primary.main, }}
                         >
                             {t('verifyRequirements.exit')}
                         </ButtonNaked>
@@ -70,14 +72,14 @@ const VerifyRequirements: React.FC = () => {
                                     </Box>
                                     <Tooltip
                                         title={
-                                            <Typography fontSize={10} color={"#FFFFFF"}>
+                                            <Typography fontSize={10} color={theme.palette.primary.contrastText}>
                                                 {t('verifyRequirements.tooltip')}
                                             </Typography>
                                         }
                                         placement="bottom"
                                         arrow
                                     >
-                                        <IconButton size="small" sx={{ mt: '2px', color: "#455B71" }}>
+                                        <IconButton size="small" sx={{ mt: '2px', color: theme.palette.action.active }}>
                                             <Info fontSize="small" />
                                         </IconButton>
                                     </Tooltip>
@@ -106,7 +108,7 @@ const VerifyRequirements: React.FC = () => {
                                         mt: 2,
                                     }}
                                 >
-                                    <Card sx={{borderColor: "#E3E7EB", borderWidth: "1px", borderStyle: "solid", width: "100%"}}>
+                                    <Card sx={{borderColor: theme.palette.divider, borderWidth: "1px", borderStyle: "solid", width: "100%"}}>
                                         <CardContent>
                                             <Box
                                                 sx={{
@@ -115,22 +117,22 @@ const VerifyRequirements: React.FC = () => {
                                                     alignItems: 'center',
                                                 }}
                                             >
-                                                <Typography sx={{fontWeight: "600", fontSize: "14px", color: "#5C6F82"}}>
+                                                <Typography sx={{fontWeight: "600", fontSize: "14px", color: theme.palette.text.secondary}}>
                                                     {t('verifyRequirements.selfDeclaration.switchLabel')}
                                                 </Typography>
                                                 <Switch onChange={() => setSwitchValue(!switchValue)} sx={{
                                                     ml: 2,
                                                     '& .MuiSwitch-switchBase': {
-                                                        color: '#FFFFFF',
+                                                        color: theme.palette.primary.contrastText,
                                                         '&.Mui-checked': {
-                                                            color: '#FFFFFF',
+                                                            color: theme.palette.primary.contrastText,
                                                             '& + .MuiSwitch-track': {
-                                                            backgroundColor: '#0073E6',
+                                                            backgroundColor: theme.palette.primary.main,
                                                             },
                                                         },
                                                     },
                                                     '& .MuiSwitch-track': {
-                                                    backgroundColor: '#D85757',
+                                                    backgroundColor: theme.palette.error.dark,
                                                     },
                                                 }} />
                                             </Box>
@@ -138,7 +140,7 @@ const VerifyRequirements: React.FC = () => {
                                     </Card>
                                 </Box>
                                 { !switchValue &&
-                                    <Typography variant='caption-semibold' sx={{color: "#D85757"}}>
+                                    <Typography variant='caption-semibold' sx={{color: theme.palette.error.dark}}>
                                         {t('verifyRequirements.error')}
                                     </Typography>
                                 }
@@ -166,7 +168,7 @@ const VerifyRequirements: React.FC = () => {
                                         mt: 2,
                                     }}
                                 >
-                                    <Card sx={{ borderColor: "#E3E7EB", borderWidth: "1px", borderStyle: "solid", width: "100%" }}>
+                                    <Card sx={{ borderColor: theme.palette.divider, borderWidth: "1px", borderStyle: "solid", width: "100%" }}>
                                         <CardContent>
                                             <FormControl component="fieldset" fullWidth>
                                                 <RadioGroup
@@ -223,7 +225,7 @@ const VerifyRequirements: React.FC = () => {
                                     </Card>
                                 </Box>
                                 { iseeValue === "" &&
-                                    <Typography variant='caption-semibold' sx={{color: "#D85757"}}>
+                                    <Typography variant='caption-semibold' sx={{color: theme.palette.error.dark}}>
                                         {t('verifyRequirements.error')}
                                     </Typography>
                                 }
@@ -232,7 +234,7 @@ const VerifyRequirements: React.FC = () => {
                     </Box>
 
                     <Box sx={{display: "flex", justifyContent: "space-between"}}>
-                        <Button variant="outlined" size='medium' startIcon={<ArrowBack sx={{ color: "#0073E6", }} />}>{t('verifyRequirements.back')}</Button>
+                        <Button variant="outlined" size='medium' startIcon={<ArrowBack sx={{ color: theme.palette.primary.main, }} />}>{t('verifyRequirements.back')}</Button>
                         <Button variant="contained" size='medium'>{t('verifyRequirements.submit')}</Button>
                     </Box>
                 </Box>
