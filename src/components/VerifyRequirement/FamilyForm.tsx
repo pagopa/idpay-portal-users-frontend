@@ -1,6 +1,6 @@
-import { ArrowBack, Info, Title } from '@mui/icons-material'
+import { Info } from '@mui/icons-material'
 import { Box, Card, CardContent, IconButton, Tooltip, Typography } from '@mui/material'
-import { theme, ButtonNaked } from '@pagopa/mui-italia'
+import { theme } from '@pagopa/mui-italia'
 import { useTranslation } from 'react-i18next'
 import TitleCard from '../Titles/TitleCard';
 

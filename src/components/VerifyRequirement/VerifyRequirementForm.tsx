@@ -1,5 +1,5 @@
 
-import { Box, Container, Button, Typography } from '@mui/material';
+import { Box, Container, Button } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next';
 import { theme } from '@pagopa/mui-italia';
