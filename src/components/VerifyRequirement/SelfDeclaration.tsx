@@ -18,9 +18,11 @@ export default function SelfDeclaration(props: SelfDeclarationProps) {
             <Card sx={{ borderRadius: "4px" }}>
                 <CardContent>
                     <TitleCard title='verifyRequirements.selfDeclaration.title'/>
-                    <Typography sx={{ fontSize: '14px', fontWeight: 400, my: 2, }}>
+                    <Box my={2}>
+                    <Typography variant='body2'>
                         {t('verifyRequirements.selfDeclaration.description')}
                     </Typography>
+                    </Box>
                     <Box
                         sx={{
                             display: 'flex',
@@ -38,7 +40,7 @@ export default function SelfDeclaration(props: SelfDeclarationProps) {
                                         alignItems: 'center',
                                     }}
                                 >
-                                    <Typography sx={{ fontWeight: "600", fontSize: "14px", color: theme.palette.text.secondary }}>
+                                    <Typography variant='body2' sx={{ fontWeight: theme.typography.fontWeightMedium, color: theme.palette.text.secondary }}>
                                         {t('verifyRequirements.selfDeclaration.switchLabel')}
                                     </Typography>
                                     <Switch onChange={() => setSwitchValue(!switchValue)} sx={{
@@ -47,7 +49,7 @@ export default function SelfDeclaration(props: SelfDeclarationProps) {
                                             color: theme.palette.primary.contrastText,
                                             '&.Mui-checked': {
                                                 color: theme.palette.primary.contrastText,
-                                                '& + .MuiSwitch-track': {
+                                                '& .MuiSwitch-track': {
                                                     backgroundColor: theme.palette.primary.main,
                                                 },
                                             },

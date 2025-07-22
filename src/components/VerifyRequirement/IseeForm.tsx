@@ -43,7 +43,7 @@ export default function IseeForm(props: IseeFormProps) {
                                             control={<Radio />}
                                             label={
                                                 <Box>
-                                                    <Typography fontWeight={500}>
+                                                    <Typography variant='body2'>
                                                         {t('verifyRequirements.isee.option.<25000')}
                                                     </Typography>
                                                     <Typography fontSize={14} color="text.secondary">
@@ -58,7 +58,7 @@ export default function IseeForm(props: IseeFormProps) {
                                             control={<Radio />}
                                             label={
                                                 <Box>
-                                                    <Typography fontWeight={500}>
+                                                    <Typography variant='body2'>
                                                         {t('verifyRequirements.isee.option.>=25000')}
                                                     </Typography>
                                                     <Typography fontSize={14} color="text.secondary">
@@ -72,7 +72,7 @@ export default function IseeForm(props: IseeFormProps) {
                                             control={<Radio />}
                                             label={
                                                 <Box>
-                                                    <Typography fontWeight={500}>
+                                                    <Typography variant='body2'>
                                                         {t('verifyRequirements.isee.option.none')}
                                                     </Typography>
                                                     <Typography fontSize={14} color="text.secondary">

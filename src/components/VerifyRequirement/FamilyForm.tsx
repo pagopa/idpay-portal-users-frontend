@@ -24,10 +24,10 @@ export default function FamilyForm() {
                             }}
                         >
                             <Box>
-                                <Typography sx={{ fontSize: '14px', fontWeight: 400, }}>
+                                <Typography variant='body2' >
                                     {t('verifyRequirements.family.description1')}
                                 </Typography>
-                                <Typography sx={{ fontSize: '14px', fontWeight: 400 }}>
+                                <Typography variant='body2'>
                                     {t('verifyRequirements.family.description2')}
                                 </Typography>
                             </Box>
