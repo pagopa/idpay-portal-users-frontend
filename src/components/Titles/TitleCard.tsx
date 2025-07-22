@@ -1,4 +1,5 @@
 import { Typography } from '@mui/material';
+import { theme } from '@pagopa/mui-italia';
 import { useTranslation } from 'react-i18next';
 
 interface TitlesProps {
@@ -8,10 +9,7 @@ export default function TitleCard(props: TitlesProps) {
     const {title} = props;
     const { t } = useTranslation();
     return (
-        <Typography
-            sx={{ fontWeight: 700, fontSize: '24px' }}
-            component="h2"
-        >
+        <Typography variant="h5" fontWeight={theme.typography.fontWeightBold}>
             {t(title)}
         </Typography>
     )

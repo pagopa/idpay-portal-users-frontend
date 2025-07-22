@@ -13,12 +13,8 @@ export default function FamilyForm() {
             <Box>
                 <Card sx={{ borderRadius: "4px" }}>
                     <CardContent>
-                        <Typography
-                            sx={{ fontWeight: 700, fontSize: '24px' }}
-                            component="h2"
-                        >
-                            {t('verifyRequirements.family.title')}
-                        </Typography>
+                        <TitleCard title='verifyRequirements.family.title'/>
+                        
                         <Box
                             sx={{
                                 display: 'flex',

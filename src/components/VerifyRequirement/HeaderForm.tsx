@@ -1,7 +1,6 @@
 import { ArrowBack } from '@mui/icons-material'
 import { Box, Typography } from '@mui/material'
 import { ButtonNaked, theme } from '@pagopa/mui-italia'
-import TitleCard from '../Titles/TitleCard'
 import { useTranslation } from 'react-i18next'
 
 export default function HeaderForm() {
