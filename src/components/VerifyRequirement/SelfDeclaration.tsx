@@ -3,6 +3,7 @@ import { Box, Card, CardContent, Switch, Typography } from '@mui/material'
 import { theme } from '@pagopa/mui-italia'
 import type { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
+import TitleCard from '../Titles/TitleCard';
 
 interface SelfDeclarationProps {
   switchValue: boolean;
@@ -16,12 +17,7 @@ export default function SelfDeclaration(props: SelfDeclarationProps) {
         <Box>
             <Card sx={{ borderRadius: "4px" }}>
                 <CardContent>
-                    <Typography
-                        sx={{ fontWeight: 700, fontSize: '24px' }}
-                        component="h2"
-                    >
-                        {t('verifyRequirements.selfDeclaration.title')}
-                    </Typography>
+                    <TitleCard title='verifyRequirements.selfDeclaration.title'/>
                     <Typography sx={{ fontSize: '14px', fontWeight: 400, my: 2, }}>
                         {t('verifyRequirements.selfDeclaration.description')}
                     </Typography>

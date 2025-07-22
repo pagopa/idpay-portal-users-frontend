@@ -1,28 +1,14 @@
-import { ArrowBack, Info } from '@mui/icons-material'
+import { ArrowBack, Info, Title } from '@mui/icons-material'
 import { Box, Card, CardContent, IconButton, Tooltip, Typography } from '@mui/material'
 import { theme, ButtonNaked } from '@pagopa/mui-italia'
 import { useTranslation } from 'react-i18next'
+import TitleCard from '../Titles/TitleCard';
 
 export default function FamilyForm() {
     const { t } = useTranslation();
     return (
         <>
-            <Box>
-                <ButtonNaked color="text"
-                    onFocusVisible={() => { }}
-                    size="medium"
-                    startIcon={<ArrowBack sx={{ color: theme.palette.primary.main, }} />}
-                    sx={{ color: theme.palette.primary.main, }}
-                >
-                    {t('verifyRequirements.exit')}
-                </ButtonNaked>
-                <Typography sx={{ fontWeight: "700", fontSize: "32px", mt: 2 }}>
-                    {t('verifyRequirements.title')}
-                </Typography>
-                <Typography sx={{ fontWeight: "400", fontSize: "16px", mt: 1 }}>
-                    {t('verifyRequirements.description')}
-                </Typography>
-            </Box>
+           
 
             <Box>
                 <Card sx={{ borderRadius: "4px" }}>

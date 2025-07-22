@@ -2,28 +2,26 @@ import { Box, Card, CardContent, FormControl, FormControlLabel, Radio, RadioGrou
 import { theme } from '@pagopa/mui-italia'
 import type { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
+import TitleCard from '../Titles/TitleCard';
 
 interface IseeFormProps {
-  iseeValue: string;
-  setIseeValue: Dispatch<SetStateAction<string>>;
+    iseeValue: string;
+    setIseeValue: Dispatch<SetStateAction<string>>;
 }
 
 export default function IseeForm(props: IseeFormProps) {
-    const {iseeValue, setIseeValue} = props;
+    const { iseeValue, setIseeValue } = props;
     const { t } = useTranslation();
     return (
         <Box>
             <Card sx={{ borderRadius: "4px" }}>
                 <CardContent>
-                    <Typography
-                        sx={{ fontWeight: 700, fontSize: '24px' }}
-                        component="h2"
-                    >
-                        {t('verifyRequirements.isee.title')}
-                    </Typography>
-                    <Typography sx={{ fontSize: '14px', fontWeight: 400, my: 2, }}>
-                        {t('verifyRequirements.isee.description')}
-                    </Typography>
+                    <TitleCard title='verifyRequirements.isee.title' />
+                    <Box my={1}>
+                        <Typography variant='body1'>
+                            {t('verifyRequirements.isee.description')}
+                        </Typography>
+                    </Box>
                     <Box
                         sx={{
                             display: 'flex',
