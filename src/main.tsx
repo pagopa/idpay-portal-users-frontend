@@ -6,22 +6,26 @@ import { theme } from '@pagopa/mui-italia';
 import { BrowserRouter } from 'react-router-dom';
 
 import './locale/i18n';
-import { AuthProvider } from "react-oidc-context";
+// import { AuthProvider } from "react-oidc-context";
 
 
-const oidcConfig = {
-  authority: import.meta.env.VITE_OIDC_AUTHORITY, //provider url
-  client_id: import.meta.env.VITE_OIDC_CLIENT_ID, //client univoque id
-  redirect_uri: import.meta.env.VITE_OIDC_REDIRECT_URI, //redirect uri after a successful login
-  automaticSilentRenew: true, // automatically renews tokens
-  onSigninCallback: () => {
-    // clean the url after a successful login
-    window.history.replaceState({}, document.title, window.location.pathname);
-  },
-};
+// const oidcConfig = {
+//   authority: import.meta.env.VITE_OIDC_AUTHORITY, //provider url
+//   client_id: import.meta.env.VITE_OIDC_CLIENT_ID, //client univoque id
+//   redirect_uri: import.meta.env.VITE_OIDC_REDIRECT_URI, //redirect uri after a successful login
+//   automaticSilentRenew: true, // automatically renews tokens
+//   onSigninCallback: () => {
+//     // clean the url after a successful login
+//     window.history.replaceState({}, document.title, window.location.pathname);
+//   },
+// };
+
+import { AuthProvider } from "./contexts/AuthContext";
+
 
 createRoot(document.getElementById('root')!).render(
-  <AuthProvider {...oidcConfig}>
+  // <AuthProvider {...oidcConfig}>
+  <AuthProvider>
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <CssBaseline />
