@@ -1,7 +1,7 @@
 
 const ROUTES = {
 	DASHBOARD: "/utente",
-    VERIFY_REQUIREMENTS: "/utente/verifyRequirements",
+    VERIFY_REQUIREMENTS: "/utente/verifica-requisiti",
 };
 
 export default ROUTES;
