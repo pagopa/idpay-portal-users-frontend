@@ -12,7 +12,11 @@
     "test:coverage": "jest --coverage",
     "generate": "npm run generate:api-portal",
     "clean:api-portal": "rimraf src/api/generated/portal && rimraf openApi/generated",
-    "generate:api-portal": "yarn run clean:api-portal && mkdirp openApi/generated && wget https://raw.githubusercontent.com/pagopa/pagopa-selfcare-ms-backoffice-backend/main/openapi/openapi.json -O ./openApi/generated/portal-api-docs.json"
+    "generate:api-portal": "yarn run clean:api-portal && mkdirp openApi/generated && wget https://raw.githubusercontent.com/pagopa/pagopa-selfcare-ms-backoffice-backend/main/openapi/openapi.json -O ./openApi/generated/portal-api-docs.json",
+    "clean:api-register": "rimraf src/api/generated/register && rimraf openApi/generated",
+    "generate:api-register": "yarn run clean:api-register && mkdirp openApi/generated && api-spec-converter --from=openapi_3 --to=swagger_2 openApi/openapi.register.yml > openApi/generated/register-swagger20.json && node ./node_modules/@pagopa/selfcare-common-frontend/utils/fixSwagger20ArraySchemaDef.js openApi/generated/register-swagger20.json && node ./openApi/scripts/api-register_fixPreGen.js && gen-api-models --api-spec openApi/generated/register-swagger20.json --out-dir src/api/generated/register --no-strict --request-types --response-decoders --client && node openApi/scripts/api-register_fixPostGen.js",
+    "clean:api-io": "rimraf src/api/generated/register && rimraf openApi/generated",
+    "generate:api-io": "yarn run clean:api-register && mkdirp openApi/generated && api-spec-converter --from=openapi_3 --to=swagger_2 openApi/openapi.appio.yml > openApi/generated/register-swagger20.json && node ./node_modules/@pagopa/selfcare-common-frontend/utils/fixSwagger20ArraySchemaDef.js openApi/generated/register-swagger20.json && node ./openApi/scripts/api-register_fixPreGen.js && gen-api-models --api-spec openApi/generated/register-swagger20.json --out-dir src/api/generated/register --no-strict --request-types --response-decoders --client && node openApi/scripts/api-register_fixPostGen.js" 
   },
   "dependencies": {
     "@babel/preset-env": "^7.28.0",

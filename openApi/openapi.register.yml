@@ -1,0 +1,898 @@
+openapi: 3.0.1
+info:
+  title: IDPAY ITN Register Portal Operation API
+  version: '1.0'
+servers:
+  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/register
+paths:
+  /permissions:
+    get:
+      tags:
+        - user-permission
+      summary: Return User Permissions
+      operationId: userPermission
+      responses:
+        '200':
+          description: Check successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPermissionDTO'
+              example:
+                role: string
+                permissions:
+                  - id: string
+                    name: string
+                    mode: string
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionErrorDTO'
+              example:
+                code: "ROLE_PERMISSION_INVALID_REQUEST"
+                message: "Something went wrong handling request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested ID was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionErrorDTO'
+              example:
+                code: "ROLE_PERMISSION_NOT_FOUND"
+                message: "Permissions not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionErrorDTO'
+              example:
+                code: "ROLE_PERMISSION_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionErrorDTO'
+              example:
+                code: "ROLE_PERMISSION_GENERIC_ERROR"
+                message: "Application error"
+  "/consent":
+    get:
+      tags:
+        - portal-consent
+      summary: Retrieve portal consent (ToS)
+      operationId: getPortalConsent
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PortalConsentDTO"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionErrorDTO'
+              example:
+                code: "ROLE_PERMISSION_INVALID_REQUEST"
+                message: "Something went wrong handling request"
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionErrorDTO'
+              example:
+                code: "ROLE_PERMISSION_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionErrorDTO'
+              example:
+                code: "ROLE_PERMISSION_GENERIC_ERROR"
+                message: "Application error"
+    post:
+      tags:
+        - portal-consent
+      summary: Save portal consent
+      operationId: savePortalConsent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PortalConsentDTO"
+        required: true
+      responses:
+        '200':
+          description: Ok
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionErrorDTO'
+              example:
+                code: "ROLE_PERMISSION_VERSION_NOT_MATCHED"
+                message: "The version id does not match"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested ID was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionErrorDTO'
+              example:
+                code: "ROLE_PERMISSION_NOT_FOUND"
+                message: "Permissions not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionErrorDTO'
+              example:
+                code: "ROLE_PERMISSION_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionErrorDTO'
+              example:
+                code: "ROLE_PERMISSION_GENERIC_ERROR"
+                message: "Application error"
+  /product-files:
+    post:
+      tags:
+        - products-upload
+      summary: Upload CSV file containing a list of products
+      description: 'ENG: Upload CSV file containing a list of products <br> IT: Caricamento del file CSV conentente una lista di prodotti'
+      operationId: uploadProductList
+      parameters:
+        - name: category
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - csv
+              type: object
+              properties:
+                csv:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterUploadResponseDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterErrorDTO'
+              example:
+                code: REGISTER_INVALID_REQUEST
+                message: Something went wrong handling request
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterErrorDTO'
+              example:
+                code: REGISTER_TOO_MANY_REQUESTS
+                message: Too many requests
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterErrorDTO'
+              example:
+                code: REGISTER_GENERIC_ERROR
+                message: An error occurred during file reading
+    get:
+      tags:
+        - products-upload
+      summary: Returns the uploads history list
+      description: 'ENG: Returns the history uploads list <br> IT: Lista storico caricamenti'
+      operationId: getProductFilesList
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadsListDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadsErrorDTO'
+              example:
+                code: UPLOADS_INVALID_REQUEST
+                message: Something went wrong handling request
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadsErrorDTO'
+              example:
+                code: UPLOADS_TOO_MANY_REQUESTS
+                message: Too many requests
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadsErrorDTO'
+              example:
+                code: UPLOADS_GENERIC_ERROR
+                message: An error occurred during file reading
+  /product-files/verify:
+    post:
+      tags:
+        - products-upload
+      summary: Veerify CSV file containing a list of products
+      description: 'ENG: Verify CSV file containing a list of products <br> IT: Verifica del file CSV conentente una lista di prodotti'
+      operationId: verifyProductList
+      parameters:
+        - name: category
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - csv
+              type: object
+              properties:
+                csv:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterUploadResponseDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterErrorDTO'
+              example:
+                code: REGISTER_INVALID_REQUEST
+                message: Something went wrong handling request
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterErrorDTO'
+              example:
+                code: REGISTER_TOO_MANY_REQUESTS
+                message: Too many requests
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterErrorDTO'
+              example:
+                code: REGISTER_GENERIC_ERROR
+                message: An error occurred during file reading
+  /product-files/{productFileId}/report:
+    get:
+      tags:
+        - products-upload
+      summary: Download errors report
+      description: "ENG: Download report containing errors from CSV validation<br> IT: Scarica il report contenente gli errori del controllo CSV"
+      operationId: downloadErrorReport
+      parameters:
+        - name: productFileId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "ENG: ID of the upload<br> IT: ID del caricamento"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CsvDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterErrorDTO'
+              example:
+                code: REGISTER_INVALID_REQUEST
+                message: Something went wrong handling request
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterErrorDTO'
+              example:
+                code: REGISTER_TOO_MANY_REQUESTS
+                message: Too many requests
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterErrorDTO'
+              example:
+                code: REGISTER_GENERIC_ERROR
+                message: An error occurred during file reading
+  /product-files/batch-list:
+    get:
+      tags:
+        - products-upload
+      summary: Get report IDs
+      description: "ENG: Retrieve the list of batch IDs<br> IT: Recupera la lista degli id dei lotti"
+      operationId: getBatchNameList
+      parameters:
+        - name: x-organization-selected
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchList'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterErrorDTO'
+              example:
+                code: REGISTER_INVALID_REQUEST
+                message: Something went wrong handling request
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterErrorDTO'
+              example:
+                code: REGISTER_TOO_MANY_REQUESTS
+                message: Too many requests
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterErrorDTO'
+              example:
+                code: REGISTER_GENERIC_ERROR
+                message: An error occurred during file reading
+  /products:
+    get:
+      tags:
+        - products
+      summary: Returns the products list
+      description: 'ENG: Returns product list <br> IT: Lista prodotti'
+      operationId: getProducts
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: eprelCode
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: gtinCode
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: productCode
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: productFileId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name:  x-organization-selected
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductListDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /institutions/{institutionId}:
+    get:
+      tags:
+        - institutions
+      summary: Gets the corresponding institution using institution id
+      description: 'ENG: Institution producer details <br> IT: Dettagli ente produttore'
+      operationId: retrieveInstitutionById
+      parameters:
+        - name: institutionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "ENG: ID of the producer IT: ID del produttore"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstitutionResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /institutions:
+    get:
+      tags:
+        - institutions
+      summary: Gets the institutions list
+      description: 'ENG:  Gets the institutions list <br> IT: Recupera elenco delle istituzioni'
+      operationId: getInstitutionsList
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstitutionsResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+components:
+  schemas:
+    UserPermissionDTO:
+      title: UserPermissionDTO
+      type: object
+      properties:
+        role:
+          type: string
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PermissionDTO'
+          description: List of permissions
+    PermissionDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        mode:
+          type: string
+    PortalConsentDTO:
+      type: object
+      properties:
+        versionId:
+          type: string
+        firstAcceptance:
+          type: boolean
+    PermissionErrorDTO:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - ROLE_PERMISSION_NOT_FOUND
+            - ROLE_PERMISSION_VERSION_NOT_MATCHED
+            - ROLE_PERMISSION_INVALID_REQUEST
+            - ROLE_PERMISSION_TOO_MANY_REQUESTS
+            - ROLE_PERMISSION_GENERIC_ERROR
+          description: >-
+            "ENG: Error code: ROLE_PERMISSION_NOT_FOUND: Permissions not found,
+             ROLE_PERMISSION_VERSION_NOT_MATCHED:  The version id does not match,
+             ROLE_PERMISSION_INVALID_REQUEST: Something went wrong handling request,
+             ROLE_PERMISSION_TOO_MANY_REQUESTS: Too many requests,
+             ROLE_PERMISSION_GENERIC_ERROR: Application Error - IT: Codice di errore:
+             ROLE_PERMISSION_NOT_FOUND: Permessi non trovati,
+             ROLE_PERMISSION_VERSION_NOT_MATCHED: Gli ID delle versioni non corrispondono,
+             ROLE_PERMISSION_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
+             ROLE_PERMISSION_TOO_MANY_REQUESTS: Troppe richieste,
+             ROLE_PERMISSION_GENERIC_ERROR: Errore generico"
+        message:
+          type: string
+          description: "ENG: Error message - IT: Messaggio di errore"
+    RegisterUploadResponseDTO:
+      type: object
+      properties:
+        status:
+          type: string
+          description: "ENG: Status of the upload <br> IT: Stato del caricamento"
+        errorKey:
+          type: string
+          description: "ENG: Error Key: <ul><li>product.invalid.file.maxrow: too many records</li><li>product.invalid.file.header: wrong headers</li><li>product.invalid.file.size: file size exceeds limit</li><li>product.invalid.file.report: error report generated</li><li>product.invalid.file.extension: file extension not valid (must be csv)</li></ul><br>IT: Chiave di errore: <ul><li>product.invalid.file.maxrow: numero di record non consentito</li><li>merchant.invalid.file.header: headers non validi</li><li>merchant.invalid.file.size: la dimensione del file supera il limite consentito<li>merchant.invalid.file.report: il file caricato ha generato un report file di errori</li></li><li>product.invalid.file.vat.wrong: partita IVA o CF non valido</li><li>product.invalid.file.extension: estensione file non valita (deve essere un csv)</li></ul>"
+        productFileId:
+          type: string
+          description: "ENG: Id of the partlial upload <br> IT: Id del caricamento parziale"
+    CsvDTO:
+      title: CsvDTO
+      type: object
+      properties:
+        data:
+          type: string
+    RegisterErrorDTO:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - REGISTER_TOO_MANY_REQUESTS
+            - REGISTER_INVALID_REQUEST
+            - REGISTER_GENERIC_ERROR
+          description: >-
+            "ENG: Error code:<br>
+            REGISTER_TOO_MANY_REQUESTS: Too many requests,<br>
+            REGISTER_INVALID_REQUEST: Something went wrong handling the request,<br>
+            REGISTER_GENERIC_ERROR: Application error,<br>
+            - IT: Codice di errore:<br>
+            REGISTER_TOO_MANY_REQUESTS: Troppe richieste,<br>
+            REGISTER_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,<br>
+            REGISTER_GENERIC_ERROR: Errore applicativo"
+        message:
+          type: string
+          description: 'ENG: Error message- IT: Messaggio di errore'
+    UploadsListDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/UploadDTO'
+        pageNo:
+          type: integer
+          format: int32
+          description: 'ENG: The number of the page <br> IT: Il numero della pagina'
+        pageSize:
+          type: integer
+          format: int32
+          description: 'ENG: The element size for page <br> IT: Il numero di elementi per pagina'
+        totalElements:
+          type: integer
+          format: int32
+          description: 'ENG: The total number of the elements <br> IT: Il numero totale degli elementi'
+        totalPages:
+          type: integer
+          format: int32
+          description: 'ENG: The total number of the pages <br> IT: Il numero totale delle pagine'
+    UploadDTO:
+      type: object
+      properties:
+        productFileId:
+          type: string
+          description: "ENG: The name of batch <br> IT: Nome del lotto"
+        category:
+          type: string
+          description: "ENG: The category of product in file <br> IT: Categoria dei prodotti contenuti nel file"
+        fileName:
+          type: string
+          description: "ENG: The original name of file <br> IT: Nome originale del file csv"
+        batchName:
+          type: string
+          description: "ENG: The computed name of file <br> IT: Nome ricalcolato del file csv"
+        uploadStatus:
+          type: string
+          description: "ENG: The state of batch uploaded <br> IT: Lo stato del lotto caricato"
+        dateUpload:
+          type: string
+          description: "ENG: The date of upload <br> IT: La data di caricamento"
+        findedProductsNumber:
+          type: number
+          description: "ENG: The number of products found in the batch <br> IT: Il numero di prodotti trovati nel lotto"
+        addedProductNumber:
+          type: number
+          description: "ENG: The number of products added to the register <br> IT: Il numero di prodotti aggiunti al registro"
+    UploadsErrorDTO:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    ProductListDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductDTO'
+        pageNo:
+          type: integer
+          format: int32
+          description: 'ENG: The number of the page <br> IT: Il numero della pagina'
+        pageSize:
+          type: integer
+          format: int32
+          description: 'ENG: The element size for page <br> IT: Il numero di elementi per pagina'
+        totalElements:
+          type: integer
+          format: int32
+          description: 'ENG: The total number of the elements <br> IT: Il numero totale degli elementi'
+        totalPages:
+          type: integer
+          format: int32
+          description: 'ENG: The total number of the pages <br> IT: Il numero totale delle pagine'
+    ProductDTO:
+      type: object
+      properties:
+        productFileId:
+          type: string
+          description: "ENG: The id of file which insert the product <br> IT: Id del lotto che ha censito il prodotto"
+        organizationId:
+          type: string
+          description: "ENG: The name of organization <br> IT: Id del produttore"
+        registrationDate:
+          type: string
+          format: date-time
+          description: "ENG: Timestamps of insert (after EPREL checks) <br> IT: Data caricamento prodotto (dopo la verifica EPREL)"
+        status:
+          type: string
+          description: "ENG: The status of the product <br> IT: Lo statos del prodotto"
+        model:
+          type: string
+          description: "ENG: The mode of the product <br> IT: il modello del prodotto"
+        productGroup:
+          type: string
+          description: "ENG: The EPREL category <br> IT: categoria EPREL"
+        category:
+          type: string
+          description: "ENG: The category of the product <br> IT: categoria del prodotto"
+        brand:
+          type: string
+          description: "ENG: The brand of the product <br> IT: brand del prodotto"
+        eprelCode:
+          type: string
+          description: "ENG: The EPREL code of the product <br> IT: Il code EPREL del prodotto"
+        gtinCode:
+          type: string
+          description: "ENG: The GTIN code of the product <br> IT: Il code GTIN del prodotto"
+        productCode:
+          type: string
+          description: "ENG: The product code <br> IT: Il codice prodotto"
+        energyClass:
+          type: string
+          description: "ENG: The product energy class <br> IT: La classe energetica del prodotto"
+        countryOfProduction:
+          type: string
+          description: "ENG: The production country of the product <br> IT: il paese di produzione del prodotto"
+        batchName:
+          type: string
+          description: "ENG: The batch name the product <br> IT: il nomelotto del prodotto"
+        linkEprel:
+          type: string
+          description: "ENG: The EPREL product link <br> IT: Il link EPREL del prodotto"
+        capacity:
+          type: string
+          description: "ENG: The capacity of the product <br> IT: Capacità del  prodotto"
+        productName:
+          type: string
+          description: "ENG: The name of the product  <br> IT: Nome del prodotto"
+    InstitutionResponse:
+      title: InstitutionResponse
+      type: object
+      properties:
+        address:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        county:
+          type: string
+        description:
+          type: string
+        digitalAddress:
+          type: string
+        fiscalCode:
+          type: string
+        vatNumber:
+          type: string
+        zipCode:
+          type: string
+    InstitutionsResponse:
+      title: InstitutionResponse
+      type: object
+      properties:
+        institutions:
+          type: array
+          items:
+            properties:
+              instituionId:
+                type: string
+              description:
+                type: string
+              createAt:
+                type: string
+              updatedAt:
+                type: string
+    BatchList:
+      title: InstitutionResponse
+      type: object
+      properties:
+        batches:
+          type: array
+          items:
+            properties:
+              productFileId:
+                type: string
+              batchName:
+                type: string
+    ErrorDTO:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+security:
+  - Bearer: []
