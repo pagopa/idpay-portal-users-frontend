@@ -14,7 +14,7 @@ export default function VerifyRequirementForm() {
     const [iseeValue, setIseeValue] = useState('');
     const [switchValue, setSwitchValue] = useState(false);
     return (
-        <Container sx={{ width: "100%", px: "20%" }}>
+        <Container sx={{ width: "100%", px: {md: "20%", sm: "10%", xs: "1%"} }}>
             <Box
                 sx={{
                     display: 'flex',
