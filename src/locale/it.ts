@@ -1,4 +1,37 @@
 const it = {
+  "bonus": "Bonus Elettrodomestici",
+
+  "tos":{
+    "description": "È il contributo, erogato dal Ministero delle Imprese e del Made in Italy, per incentivare la sostituzione di un elettrodomestico con un modello ad alta efficienza energetica e promuovere la sostenibilità e la transizione energetica.",
+  
+    "sideMenu":{
+      "element1":{
+        "title": "Chi può richiederlo?",
+        "description": "Tutti i <bold>maggiorenni residenti in Italia</bold> che acquistano un elettrodomestico nuovo e smaltiscono quello vecchio dello stesso tipo.<br/>Si può richiedere <bold>un solo bonus per ogni nucleo familiare</bold>."
+      },
+      "element2":{ 
+        "title": "Cosa offre?",
+        "description": "Uno <bold>sconto del 30%</bold> sul prezzo d’acquisto di un elettrodomestico nuovo ad alta efficienza di una di queste categorie: lavatrici e lavasciuga, forni, cappe da cucina, lavastoviglie, asciugabiancheria, frigoriferi, congelatori e piani cottura.<br/>Puoi ottenere:",
+        "listItem1": "Fino a 200 euro se il tuo ISEE è inferiore o uguale a 25.000 €",
+        "listItem2": "Fino a 100 euro per tutti gli altri o per chi non ha un ISEE disponibile.",
+        "link": "Mostra prodotti compatibili",
+      },
+      "element3":{ 
+        "title": "Come richiederlo?",
+        "description": "Puoi richiederlo tramite l’app IO o tramite il sito dedicato, fino a che saranno disponibili i fondi.<br/>Una volta effettuate le verifiche, riceverai in app o per email l’esito della tua richiesta."
+      },
+      "element4":{ 
+        "title": "Come si usa?",
+        "description": "Puoi usare il bonus <bold>entro 10 giorni</bold> da quando ricevi il messaggio di conferma dell’attivazione, e comunque entro il 31/12/2025.<br/><bold>Nei negozi fisici:</bold> accedi a IO e mostra il codice a barre, oppure mostra il codice a barre che puoi stampare dal sito.<br/><bold>Online:</bold> usa l’app per generare e usare lo sconto.<br/>",
+        "link": "Mostra l’elenco dei negozi"
+      }
+    },
+    
+    "postDescription": "<bold>Ricorda:</bold> quando acquisti, chiedi al venditore come smaltire il vecchio elettrodomestico. Il venditore deve gestire lo smaltimento.",
+    "privacy": "Premendo Continua dichiari di aver letto, compreso e accettato l’<a>Informativa Privacy</a> e i <a>Termini e Condizioni d’uso</a>.",
+    "continue": "Continua",
+  },
+
   "verifyRequirements":{
     "exit": "Esci",
     "title": "Verifica dei requisiti",

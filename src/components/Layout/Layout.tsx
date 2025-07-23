@@ -8,9 +8,11 @@ import CustomFooter from '../Footer/Footer';
 type LayoutProps = {
   children: React.ReactNode;
   hasSidebar?: boolean;
+  hasSubHeader?: boolean;
+  hasPadding?: boolean;
 };
 
-const Layout = ({ children, hasSidebar = true }: LayoutProps) => {
+const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding = true }: LayoutProps) => {
   const [collapsed, setCollapsed] = useState(false);
   const toggleSidebar = () => setCollapsed((prev) => !prev);
 
@@ -22,7 +24,7 @@ const Layout = ({ children, hasSidebar = true }: LayoutProps) => {
       bgcolor={theme.palette.background.default}
     >
       <Box component="header">
-        <Header />
+        <Header hasSubHeader={hasSubHeader} />
       </Box>
 
       <Box component="main" display="flex" flexGrow={1} minHeight={0}>
@@ -40,7 +42,7 @@ const Layout = ({ children, hasSidebar = true }: LayoutProps) => {
 
         <Box
           flexGrow={1}
-          p={3}
+          p={hasPadding ? 3 : 0}
           overflow={'auto'}
           minHeight={'100%'}
         >
