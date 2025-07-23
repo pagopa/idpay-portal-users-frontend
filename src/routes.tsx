@@ -1,7 +1,7 @@
 
 const ROUTES = {
 	DASHBOARD: "/utente",
-    TOS: "/utente/tos",
+    TOS: "/utente/termini-di-servizio",
     VERIFY_REQUIREMENTS: "/utente/verifica-requisiti",
 };
 
