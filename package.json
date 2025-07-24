@@ -12,8 +12,8 @@
     "test:coverage": "jest --coverage",
     "clean": "npm-run-all clean:*",
     "generate": "npm-run-all generate:*",
-    "clean:api-io": "rimraf src/api/generated/api-io && rimraf openApi/generated/api-io-swagger20.json",
-    "generate:api-io": "yarn run clean:api-io && mkdirp openApi/generated && api-spec-converter --from=openapi_3 --to=swagger_2 openApi/openapi.appio.full.yml > openApi/generated/api-io-swagger20.json && node ./node_modules/@pagopa/selfcare-common-frontend/utils/fixSwagger20ArraySchemaDef.js openApi/generated/api-io-swagger20.json && gen-api-models --api-spec openApi/generated/api-io-swagger20.json --out-dir src/api/generated/api-io --no-strict --request-types --response-decoders --client"
+    "clean:api-io": "rimraf src/api/generated/register && rimraf openApi/generated",
+    "generate:api-io": "yarn run clean:api-io && mkdirp openApi/generated && api-spec-converter --from=openapi_3 --to=swagger_2 openApi/openapi.appio.full.yml > openApi/generated/register-swagger20.json && node ./node_modules/@pagopa/selfcare-common-frontend/utils/fixSwagger20ArraySchemaDef.js openApi/generated/register-swagger20.json && node ./openApi/scripts/api-register_fixPreGen.js && gen-api-models --api-spec openApi/generated/register-swagger20.json --out-dir src/api/generated/register --no-strict --request-types --response-decoders --client && node openApi/scripts/api-register_fixPostGen.js"
   },
   "dependencies": {
     "@babel/preset-env": "^7.28.0",
