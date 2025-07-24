@@ -3835,15 +3835,8 @@ components:
           pattern: '$ ^[a-zA-Z0-9]+$'
         status:
           enum:
-            - ACCEPTED_TC
+            - ON_WAITING_LIST
             - ON_EVALUATION
-            - ONBOARDING_KO
-            - ELIGIBLE_KO
-            - ONBOARDING_OK
-            - UNSUBSCRIBED
-            - INVITED
-            - DEMANDED
-            - SUSPENDED
           type: string
           description: >-
             ENG: Actual status of the citizen onboarding for an initiative - IT:
@@ -3856,32 +3849,6 @@ components:
           description: >-
             ENG: Date on which the status changed to the current one - IT: Data
             in cui lo stato è cambiato allo stato attuale
-        detailKo:
-          enum:
-            - ONBOARDING_FAMILY_UNIT_ALREADY_JOINED
-            - ONBOARDING_WAITING_LIST
-            - ONBOARDING_USER_UNSUBSCRIBED
-            - ONBOARDING_PAGE_SIZE_NOT_ALLOWED
-            - ONBOARDING_PDND_CONSENT_DENIED
-            - ONBOARDING_SELF_DECLARATION_NOT_VALID
-            - ONBOARDING_SUSPENSION_NOT_ALLOWED_FOR_USER_STATUS
-            - ONBOARDING_READMISSION_NOT_ALLOWED_FOR_USER_STATUS
-            - ONBOARDING_INVALID_REQUEST
-            - ONBOARDING_USER_NOT_IN_WHITELIST
-            - ONBOARDING_INITIATIVE_NOT_STARTED
-            - ONBOARDING_INITIATIVE_ENDED
-            - ONBOARDING_BUDGET_EXHAUSTED
-            - ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED
-            - ONBOARDING_TECHNICAL_ERROR
-            - ONBOARDING_UNSATISFIED_REQUIREMENTS
-            - ONBOARDING_GENERIC_ERROR
-            - ONBOARDING_USER_NOT_ONBOARDED
-            - ONBOARDING_INITIATIVE_NOT_FOUND
-            - ONBOARDING_TOO_MANY_REQUESTS
-          type: string
-          description: >-
-            "ENG: Identify the detail of the ko status. - IT: Identifica il
-            dettaglio dello status di ko"
     OnboardingStatusDTO:
       title: OnboardingStatusDTO
       type: object
@@ -3912,32 +3879,6 @@ components:
           description: >-
             ENG: Date on which the status changed to the current one - IT: Data
             in cui lo stato è cambiato allo stato attuale
-        detailKo:
-          enum:
-            - ONBOARDING_FAMILY_UNIT_ALREADY_JOINED
-            - ONBOARDING_WAITING_LIST
-            - ONBOARDING_USER_UNSUBSCRIBED
-            - ONBOARDING_PAGE_SIZE_NOT_ALLOWED
-            - ONBOARDING_PDND_CONSENT_DENIED
-            - ONBOARDING_SELF_DECLARATION_NOT_VALID
-            - ONBOARDING_SUSPENSION_NOT_ALLOWED_FOR_USER_STATUS
-            - ONBOARDING_READMISSION_NOT_ALLOWED_FOR_USER_STATUS
-            - ONBOARDING_INVALID_REQUEST
-            - ONBOARDING_USER_NOT_IN_WHITELIST
-            - ONBOARDING_INITIATIVE_NOT_STARTED
-            - ONBOARDING_INITIATIVE_ENDED
-            - ONBOARDING_BUDGET_EXHAUSTED
-            - ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED
-            - ONBOARDING_TECHNICAL_ERROR
-            - ONBOARDING_UNSATISFIED_REQUIREMENTS
-            - ONBOARDING_GENERIC_ERROR
-            - ONBOARDING_USER_NOT_ONBOARDED
-            - ONBOARDING_INITIATIVE_NOT_FOUND
-            - ONBOARDING_TOO_MANY_REQUESTS
-          type: string
-          description: >-
-            "ENG: Identify the detail of the ko status. - IT: Identifica il
-            dettaglio dello status di ko"
         onboardingOkDate:
           type: string
           format: date-time
