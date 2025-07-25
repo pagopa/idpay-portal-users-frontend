@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Box } from '@mui/material';
 import { theme } from '@pagopa/mui-italia';
 import Header from '../Header/Header';
-import Sidebar from '../Sidebar/Sidebar';
+import Sidebar from '../Menu/Sidebar';
 import CustomFooter from '../Footer/Footer';
 
 type LayoutProps = {

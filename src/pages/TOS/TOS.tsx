@@ -2,10 +2,10 @@ import { Box } from '@mui/material';
 import { useRef, useState, useEffect } from 'react';
 import { theme } from '@pagopa/mui-italia';
 import { TOSHeader } from '../../components/TOS/TOSHeader';
-import { FixedSideMenu } from '../../components/Sidebar/FixedSideMenu';
+import { FixedSideMenu } from '../../components/Menu/FixedSideMenu';
 import { TOSContent } from '../../components/TOS/TOSContent';
 import { useIsMobile } from '../../hooks/useIsMobile';
-import { MobileDropdownMenu } from '../../components/Sidebar/MobileDropdownMenu';
+import { MobileDropdownMenu } from '../../components/Menu/MobileDropdownMenu';
 
 const TOS = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
