@@ -41,10 +41,10 @@ describe('EmailInputBox', () => {
       <EmailInputBox
         placeholderLabel="Email"
         showSubmitError={true}
-        errorMessage="Email non valida"
+        errorMessage="Invalid Email"
       />
     );
 
-    expect(screen.getByText(/email non valida/i)).toBeInTheDocument();
+    expect(screen.getByText(/Invalid Email/i)).toBeInTheDocument();
   });
 });
