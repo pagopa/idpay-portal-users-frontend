@@ -18,7 +18,6 @@ jobs:
         run: yarn generate
       - name: Test and coverage
         run: yarn test:coverage
-        uses: ArtiomTr/jest-coverage-report-action@v2.0-rc.6
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@ffc3010689be73b8e5ae0c57ce35968afd7909e8 # v5.0.0
         env:
