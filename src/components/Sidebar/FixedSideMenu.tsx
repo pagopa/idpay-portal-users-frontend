@@ -5,9 +5,10 @@ import { theme } from '@pagopa/mui-italia';
 interface Props {
   selectedIndex: number;
   onItemClick: (index: number) => void;
+  items: string[];
 }
 
-export const TOSSideMenu = ({ selectedIndex, onItemClick }: Props) => {
+export const FixedSideMenu = ({ selectedIndex, onItemClick, items }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -24,14 +25,14 @@ export const TOSSideMenu = ({ selectedIndex, onItemClick }: Props) => {
         justifyContent="space-between"
       >
         <List component="nav">
-          {[0, 1, 2, 3].map((i) => (
+          {items.map((element, i) => (
             <ListItemButton
               key={i}
               selected={selectedIndex === i}
               onClick={() => onItemClick(i)}
               sx={{ justifyContent: 'flex-start', px: 3 }}
             >
-              <ListItemText primary={t(`tos.sideMenu.element${i + 1}.title`)} />
+              <ListItemText primary={t(element)} />
             </ListItemButton>
           ))}
         </List>

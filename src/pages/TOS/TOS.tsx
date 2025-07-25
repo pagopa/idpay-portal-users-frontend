@@ -1,14 +1,15 @@
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import { useRef, useState, useEffect } from 'react';
 import { theme } from '@pagopa/mui-italia';
 import { TOSHeader } from '../../components/TOS/TOSHeader';
-import { TOSSideMenu } from '../../components/TOS/TOSSideMenu';
+import { FixedSideMenu } from '../../components/Sidebar/FixedSideMenu';
 import { TOSContent } from '../../components/TOS/TOSContent';
-import { useTranslation } from 'react-i18next';
+import { useIsMobile } from '../../hooks/useIsMobile';
+import { MobileDropdownMenu } from '../../components/Sidebar/MobileDropdownMenu';
 
 const TOS = () => {
-  const { t } = useTranslation();
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const isMobile = useIsMobile();
 
   const sectionRefs = [
     useRef<HTMLDivElement>(null),
@@ -21,6 +22,13 @@ const TOS = () => {
     setSelectedIndex(index);
     sectionRefs[index].current?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const items = [
+    `tos.sideMenu.element1.title`,
+    `tos.sideMenu.element2.title`,
+    `tos.sideMenu.element3.title`,
+    `tos.sideMenu.element4.title`,
+  ]
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,12 +56,10 @@ const TOS = () => {
       }}
     >
       <TOSHeader />
+      {isMobile && <MobileDropdownMenu selectedIndex={selectedIndex} onItemClick={handleListItemClick} items={items} />}
       <Box sx={{ display: 'flex' }}>
-        <TOSSideMenu selectedIndex={selectedIndex} onItemClick={handleListItemClick} />
+        {!isMobile && <FixedSideMenu selectedIndex={selectedIndex} onItemClick={handleListItemClick} items={items}/>}
         <TOSContent sectionRefs={sectionRefs} />
-      </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', py: 4 }}>
-        <Button variant="contained">{t('tos.continue')}</Button>
       </Box>
     </Box>
   );

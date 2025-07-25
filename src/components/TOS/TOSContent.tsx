@@ -1,6 +1,7 @@
-import { Box, Container, Typography, List, ListItem, Link } from '@mui/material';
+import { Box, Container, Typography, List, ListItem, Link, Button } from '@mui/material';
 import { Trans, useTranslation } from 'react-i18next';
 import { theme } from '@pagopa/mui-italia';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 interface Props {
   sectionRefs: React.RefObject<HTMLDivElement>[];
@@ -8,7 +9,8 @@ interface Props {
 
 export const TOSContent = ({ sectionRefs }: Props) => {
   const { t } = useTranslation();
-
+  const isMobile = useIsMobile();
+  
   return (
     <Container sx={{ width: '100%', px: '10%' }}>
       <Box ref={sectionRefs[0]}>
@@ -122,7 +124,7 @@ export const TOSContent = ({ sectionRefs }: Props) => {
           />
         </Typography>
 
-        <Typography sx={{ color: theme.palette.text.primary }} my={5}>
+        <Typography sx={{ color: theme.palette.text.primary }} mt={5}>
           <Trans
             i18nKey="tos.privacy"
             components={{
@@ -130,6 +132,10 @@ export const TOSContent = ({ sectionRefs }: Props) => {
             }}
           />
         </Typography>
+      </Box>
+      <Box sx={{py: 6, }}>
+        <Button variant="outlined" color='error' sx={{mr: {md: 2, sm: 1, xs: 1},}}>{t('exit')}</Button>
+        <Button variant="contained">{t('tos.continue')}</Button>
       </Box>
     </Container>
   );

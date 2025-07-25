@@ -1,6 +1,6 @@
 const it = {
   "bonus": "Bonus Elettrodomestici",
-
+  "exit": "Esci",
   "tos":{
     "description": "È il contributo, erogato dal Ministero delle Imprese e del Made in Italy, per incentivare la sostituzione di un elettrodomestico con un modello ad alta efficienza energetica e promuovere la sostenibilità e la transizione energetica.",
   
