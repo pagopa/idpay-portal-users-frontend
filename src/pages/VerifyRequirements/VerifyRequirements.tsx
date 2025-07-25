@@ -234,7 +234,7 @@ const VerifyRequirements: React.FC = () => {
                     </Box>
 
                     <Box sx={{display: "flex", justifyContent: "space-between"}}>
-                        <Button variant="outlined" size='medium' startIcon={<ArrowBack sx={{ color: theme.palette.primary.main, }} />}>{t('verifyRequirements.back')}</Button>
+                        <Button variant="outlined" size='medium' startIcon={<ArrowBack sx={{ color: theme.palette.primary.main, }} />}>{t('commons.back')}</Button>
                         <Button variant="contained" size='medium'>{t('verifyRequirements.submit')}</Button>
                     </Box>
                 </Box>
