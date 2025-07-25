@@ -16,10 +16,11 @@ const EmailInputBox = ({
   showSubmitError = false,
   errorMessage,
 }: Props) => {
+  const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const [value, setValue] = useState('');
 
   const validateEmail = (email: string) =>
-    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+    EMAIL_REGEX.test(email);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
