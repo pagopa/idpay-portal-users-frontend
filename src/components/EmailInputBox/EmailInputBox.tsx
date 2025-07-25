@@ -1,5 +1,6 @@
 import { Box, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
+import { validateEmail } from '../../utils/validateEmail';
 
 type Props = {
   onChange?: (email: string, isValid: boolean) => void;
@@ -16,11 +17,7 @@ const EmailInputBox = ({
   showSubmitError = false,
   errorMessage,
 }: Props) => {
-  const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const [value, setValue] = useState('');
-
-  const validateEmail = (email: string) =>
-    EMAIL_REGEX.test(email);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
