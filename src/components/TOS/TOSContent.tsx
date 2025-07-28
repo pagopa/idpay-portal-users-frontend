@@ -72,7 +72,7 @@ export const TOSContent = ({ sectionRefs }: Props) => {
         </List>
 
         <Typography sx={{ color: theme.palette.primary.main, fontWeight: theme.typography.fontWeightMedium, mb: 4 }}>
-          <Link href="http://www.google.com" underline="always" target="_blank">
+          <Link href="" underline="always" target="_blank">
             {t('tos.sideMenu.element2.link')}
           </Link>
         </Typography>
@@ -108,7 +108,7 @@ export const TOSContent = ({ sectionRefs }: Props) => {
         </Typography>
 
         <Typography sx={{ color: theme.palette.primary.main, fontWeight: theme.typography.fontWeightMedium, mb: 4, mt: 2 }}>
-          <Link href="http://www.google.com" underline="always" target="_blank">
+          <Link href="" underline="always" target="_blank">
             {t('tos.sideMenu.element4.link')}
           </Link>
         </Typography>
