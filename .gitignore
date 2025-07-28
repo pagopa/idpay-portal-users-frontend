@@ -28,3 +28,4 @@ generated
 build
 local
 dist
+coverage

@@ -1,4 +1,14 @@
 const it = {
+  "commons": {
+    "email": "Indirizzo email",
+    "confirmEmail": "Conferma indirizzo email",
+    "back": "Indietro",
+    "continue": "Continua",
+    "invalidEmail": "Email non valida",
+    "requiredField": "Campo obbligatorio",
+    "emailMismatch": "Le email non coincidono"
+  },
+
   "bonus": "Bonus Elettrodomestici",
   "exit": "Esci",
   "tos":{
@@ -70,9 +80,14 @@ const it = {
     },
     
     "error": "Seleziona un’opzione per continuare",
-    "back": "Indietro",
     "submit": "Invia richiesta"
   },
+
+  "insertEmail": {
+      "title": "Inserisci il tuo indirizzo email",
+      "description": "Abbiamo bisogno del tuo indirizzo email per poterti comunicare tutti gli aggiornamenti riguardanti il tuo bonus."
+    },
+
 };
 
 export default it;
