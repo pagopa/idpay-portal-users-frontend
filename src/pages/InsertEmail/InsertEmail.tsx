@@ -1,4 +1,4 @@
-import { Box, Button, Typography, Card, CardContent } from '@mui/material';
+import { Box, Button, Typography, Card, CardContent, Container } from '@mui/material';
 import EmailInputBox from '../../components/EmailInputBox/EmailInputBox';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -25,15 +25,8 @@ const InsertEmail = () => {
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      px={2}
-      py={{ xs: 4, sm: 6 }}
-    >
-      <Box textAlign="center" mb={3} width="100%" maxWidth={480}>
+    <Container maxWidth="sm" sx={{ py: { xs: 4, sm: 6 } }}>
+      <Box textAlign="center" mb={3}>
         <Typography variant="h3" fontWeight={theme.typography.fontWeightBold} mb={1}>
           {t('insertEmail.title')}
         </Typography>
@@ -42,14 +35,7 @@ const InsertEmail = () => {
         </Typography>
       </Box>
 
-      <Card
-        sx={{
-          width: '100%',
-          maxWidth: 480,
-          borderRadius: 3,
-          boxShadow: 3,
-        }}
-      >
+      <Card sx={{ borderRadius: 3, boxShadow: 3, mb: 4 }}>
         <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           <EmailInputBox
             onChange={(value, valid) => {
@@ -83,9 +69,6 @@ const InsertEmail = () => {
         display="flex"
         flexDirection={{ xs: 'column', sm: 'row' }}
         gap={2}
-        mt={4}
-        width="100%"
-        maxWidth={480}
         justifyContent="center"
       >
         <Button variant="outlined">{t('commons.back')}</Button>
@@ -93,7 +76,7 @@ const InsertEmail = () => {
           {t('commons.continue')}
         </Button>
       </Box>
-    </Box>
+    </Container>
   );
 };
 
