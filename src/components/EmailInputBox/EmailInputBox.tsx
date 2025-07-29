@@ -1,9 +1,8 @@
 import { Box, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
-import { validateEmail } from '../../utils/validateEmail';
 
 type Props = {
-  onChange?: (email: string, isValid: boolean) => void;
+  value: string;
+  onChange: (value: string) => void;
   placeholderLabel?: string;
   descriptionLabel?: string;
   showSubmitError?: boolean;
@@ -11,28 +10,20 @@ type Props = {
 };
 
 const EmailInputBox = ({
+  value,
   onChange,
   placeholderLabel,
   descriptionLabel,
   showSubmitError = false,
   errorMessage,
 }: Props) => {
-  const [value, setValue] = useState('');
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const isValid = validateEmail(value);
-    setValue(value);
-    onChange?.(value, isValid);
-  };
-
   return (
     <Box display="flex" flexDirection="column">
       <TextField
         label={placeholderLabel}
         variant="outlined"
         value={value}
-        onChange={handleChange}
+        onChange={(e) => onChange(e.target.value)}
         error={showSubmitError}
         helperText={showSubmitError ? errorMessage : ''}
         fullWidth
