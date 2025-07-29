@@ -27,7 +27,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const initKeycloak = async () => {
       try {
         const authenticated = await keycloak.init({
-          onLoad: 'login-required',
+          // onLoad: 'login-required',
           checkLoginIframe: false,
           pkceMethod: 'S256'
         });
@@ -37,6 +37,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           setToken(keycloak.token || null);
           const userProfile = await keycloak.loadUserProfile();
           setUser(userProfile);
+        } else {
+          keycloak.login({
+            idpHint: 'oneid-keycloak'
+          })
         }
       } catch (error) {
         console.error('Keycloak initialization error: ', error);
@@ -66,7 +70,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const login = useCallback(() => {
-    keycloak.login();
+    keycloak.login({
+      idpHint: 'oneid-keycloak'
+    });
   },[]);
 
   const logout = useCallback(() => {
