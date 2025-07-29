@@ -1,6 +1,8 @@
 import { Box, Container, Typography, List, ListItem, Link, Button } from '@mui/material';
 import { Trans, useTranslation } from 'react-i18next';
 import { theme } from '@pagopa/mui-italia';
+import { useNavigate } from 'react-router-dom';
+import ROUTES from '../../routes';
 
 interface Props {
   sectionRefs: React.RefObject<HTMLDivElement>[];
@@ -8,7 +10,13 @@ interface Props {
 
 export const TOSContent = ({ sectionRefs }: Props) => {
   const { t } = useTranslation();
-  
+  const navigate = useNavigate();
+
+  const handleContinue = () => {
+    //TODO call API
+    navigate(ROUTES.INSERT_EMAIL);
+  }
+
   return (
     <Container sx={{ width: '100%', px: '10%' }}>
       <Box ref={sectionRefs[0]}>
@@ -131,9 +139,9 @@ export const TOSContent = ({ sectionRefs }: Props) => {
           />
         </Typography>
       </Box>
-      <Box sx={{py: 6, }}>
-        <Button variant="outlined" color='error' sx={{mr: {md: 2, sm: 1, xs: 1},}}>{t('exit')}</Button>
-        <Button variant="contained">{t('tos.continue')}</Button>
+      <Box sx={{ py: 6 }}>
+        <Button variant="outlined" color='error' sx={{ mr: { md: 2, sm: 1, xs: 1 } }}>{t('exit')}</Button>
+        <Button variant="contained" onClick={handleContinue}>{t('tos.continue')}</Button>
       </Box>
     </Container>
   );

@@ -1,18 +1,32 @@
 import { Box, Button, Typography, Card, CardContent, Container } from '@mui/material';
 import EmailInputBox from '../../components/EmailInputBox/EmailInputBox';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@pagopa/mui-italia';
+import { useNavigate } from 'react-router-dom';
+import ROUTES from '../../routes';
+import { useEmailStore } from '../../hooks/useEmailStore';
+import { validateEmail } from '../../utils/validateEmail';
 
 const InsertEmail = () => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const [email, setEmail] = useState('');
-  const [confirmEmail, setConfirmEmail] = useState('');
-  const [isEmailValid, setIsEmailValid] = useState(false);
+  const { email, confirmEmail, setEmail, setConfirmEmail } = useEmailStore();
+  const [emailInput, setEmailInput] = useState(email);
+  const [confirmEmailInput, setConfirmEmailInput] = useState(confirmEmail);
   const [showErrors, setShowErrors] = useState(false);
 
-  const emailsMatch = email && confirmEmail && email === confirmEmail;
+  useEffect(() => {
+    setEmailInput(email);
+    setConfirmEmailInput(confirmEmail);
+  }, [email, confirmEmail]);
+
+  const isEmailValid = validateEmail(emailInput);
+  const emailsMatch =
+    emailInput !== '' &&
+    confirmEmailInput !== '' &&
+    emailInput === confirmEmailInput;
   const isFormValid = isEmailValid && emailsMatch;
 
   const handleContinue = () => {
@@ -20,8 +34,15 @@ const InsertEmail = () => {
       setShowErrors(true);
       return;
     }
+    setEmail(emailInput);
+    setConfirmEmail(confirmEmailInput);
+    navigate(ROUTES.VERIFY_REQUIREMENTS);
+  };
 
-    console.log('valid email:', email);
+  const handleBack = () => {
+    setEmail(emailInput);
+    setConfirmEmail(confirmEmailInput);
+    navigate(ROUTES.TOS);
   };
 
   return (
@@ -38,9 +59,9 @@ const InsertEmail = () => {
       <Card sx={{ borderRadius: 3, boxShadow: 3, mb: 4 }}>
         <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           <EmailInputBox
-            onChange={(value, valid) => {
-              setEmail(value);
-              setIsEmailValid(valid);
+            value={emailInput}
+            onChange={(val) => {
+              setEmailInput(val);
               setShowErrors(false);
             }}
             placeholderLabel={t('commons.email')}
@@ -48,14 +69,15 @@ const InsertEmail = () => {
             errorMessage={t('commons.invalidEmail')}
           />
           <EmailInputBox
-            onChange={(value) => {
-              setConfirmEmail(value);
+            value={confirmEmailInput}
+            onChange={(val) => {
+              setConfirmEmailInput(val);
               setShowErrors(false);
             }}
             placeholderLabel={t('commons.confirmEmail')}
             showSubmitError={showErrors && !emailsMatch}
             errorMessage={
-              !confirmEmail
+              !confirmEmailInput
                 ? t('commons.requiredField')
                 : !emailsMatch
                   ? t('commons.emailMismatch')
@@ -71,7 +93,9 @@ const InsertEmail = () => {
         gap={2}
         justifyContent="center"
       >
-        <Button variant="outlined">{t('commons.back')}</Button>
+        <Button variant="outlined" onClick={handleBack}>
+          {t('commons.back')}
+        </Button>
         <Button variant="contained" onClick={handleContinue}>
           {t('commons.continue')}
         </Button>

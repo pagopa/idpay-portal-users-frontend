@@ -19,7 +19,7 @@ export const feedbackStates: Record<string, FeedbackState> = {
     title: "feedbackStates.requestSubmitted.title",
     description: 'feedbackStates.requestSubmitted.description',
     buttonLabel: 'commons.exit',
-    buttonRedirect: '/utente/'
+    buttonRedirect: '/' //TODO add redirect
   }
   //TODO handle other states
 };
