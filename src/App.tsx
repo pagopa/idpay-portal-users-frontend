@@ -10,6 +10,8 @@ import ROUTES from './routes';
 
 const LocalRoutes = () => (
   <Routes>
+    {/* TODO tmp fallback route */}
+    <Route index path="*" element={<Layout hasSidebar={false} hasSubHeader={false} hasPadding={false}><TOS/></Layout>} /> 
     <Route path={ROUTES.DASHBOARD} element={<Layout hasSidebar={true}><Dashboard/></Layout>} />
     <Route path={ROUTES.VERIFY_REQUIREMENTS} element={<Layout hasSidebar={false}><VerifyRequirements/></Layout>} />
     <Route path={ROUTES.TOS} element={<Layout hasSidebar={false} hasSubHeader={false} hasPadding={false}><TOS/></Layout>} />
