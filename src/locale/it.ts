@@ -6,7 +6,8 @@ const it = {
     "continue": "Continua",
     "invalidEmail": "Email non valida",
     "requiredField": "Campo obbligatorio",
-    "emailMismatch": "Le email non coincidono"
+    "emailMismatch": "Le email non coincidono",
+    "exit": "Esci"
   },
 
   "bonus": "Bonus Elettrodomestici",
@@ -88,6 +89,12 @@ const it = {
       "description": "Abbiamo bisogno del tuo indirizzo email per poterti comunicare tutti gli aggiornamenti riguardanti il tuo bonus."
     },
 
+  "feedbackStates": {
+    "requestSubmitted": {
+      "title": "La tua richiesta è stata inviata!",
+      "description": "Controlla periodicamente la tua casella di posta.\nRiceverai tutti gli aggiornamenti all’indirizzo email che hai indicato."
+    }
+  }
 };
 
 export default it;
