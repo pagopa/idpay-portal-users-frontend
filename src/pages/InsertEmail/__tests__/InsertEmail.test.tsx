@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import InsertEmail from '../InsertEmail';
 import { MemoryRouter } from 'react-router-dom';
+import ROUTES from '../../../routes';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -8,14 +9,20 @@ jest.mock('react-i18next', () => ({
   })
 }));
 
-const mockConsoleLog = jest.fn();
-beforeAll(() => {
-  jest.spyOn(console, 'log').mockImplementation(mockConsoleLog);
-});
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate
+}));
 
-afterEach(() => {
-  mockConsoleLog.mockClear();
-});
+jest.mock('../../../hooks/useEmailStore', () => ({
+  useEmailStore: () => ({
+    email: '',
+    confirmEmail: '',
+    setEmail: jest.fn(),
+    setConfirmEmail: jest.fn()
+  })
+}));
 
 describe('InsertEmail page', () => {
   test('renders both email inputs and continue button', () => {
@@ -49,7 +56,7 @@ describe('InsertEmail page', () => {
     expect(screen.getByText(/commons.emailMismatch/i)).toBeInTheDocument();
   });
 
-  test('submits if email is valid and matches', () => {
+  test('navigates if email is valid and matches', () => {
     render(
       <MemoryRouter>
         <InsertEmail />
@@ -64,6 +71,6 @@ describe('InsertEmail page', () => {
     fireEvent.change(confirmEmailInput, { target: { value: 'test@example.com' } });
     fireEvent.click(continueButton);
 
-    expect(mockConsoleLog).toHaveBeenCalledWith('valid email:', 'test@example.com');
+    expect(mockNavigate).toHaveBeenCalledWith(ROUTES.VERIFY_REQUIREMENTS);
   });
 });

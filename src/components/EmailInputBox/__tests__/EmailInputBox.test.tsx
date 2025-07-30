@@ -5,40 +5,32 @@ describe('EmailInputBox', () => {
   test('renders placeholder and description', () => {
     render(
       <EmailInputBox
+        value=""
+        onChange={() => {}}
         placeholderLabel="Email"
-        descriptionLabel="Inserisci la tua email"
+        descriptionLabel="Insert Email"
       />
     );
 
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByText(/inserisci la tua email/i)).toBeInTheDocument();
+    expect(screen.getByText(/Insert Email/i)).toBeInTheDocument();
   });
 
-  test('calls onChange with valid email', () => {
+  test('calls onChange when value changes', () => {
     const handleChange = jest.fn();
-
-    render(<EmailInputBox placeholderLabel="Email" onChange={handleChange} />);
+    render(<EmailInputBox value="" onChange={handleChange} placeholderLabel="Email" />);
 
     const input = screen.getByLabelText(/email/i);
     fireEvent.change(input, { target: { value: 'test@example.com' } });
 
-    expect(handleChange).toHaveBeenCalledWith('test@example.com', true);
-  });
-
-  test('calls onChange with invalid email', () => {
-    const handleChange = jest.fn();
-
-    render(<EmailInputBox placeholderLabel="Email" onChange={handleChange} />);
-
-    const input = screen.getByLabelText(/email/i);
-    fireEvent.change(input, { target: { value: 'not-an-email' } });
-
-    expect(handleChange).toHaveBeenCalledWith('not-an-email', false);
+    expect(handleChange).toHaveBeenCalledWith('test@example.com');
   });
 
   test('shows error message if showSubmitError is true', () => {
     render(
       <EmailInputBox
+        value=""
+        onChange={() => {}}
         placeholderLabel="Email"
         showSubmitError={true}
         errorMessage="Invalid Email"
