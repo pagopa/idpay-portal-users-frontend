@@ -83,12 +83,13 @@ export const MobileDropdownMenu = ({ selectedIndex, onItemClick, items }: Props)
                             <CloseIcon />
                         </IconButton>
                     </Box>
-                    <List component="nav" disablePadding>
+                    <List component="nav" disablePadding data-testid="menu-list">
                         {items.map((element, i) => (
                             <ListItemButton
                                 key={i}
                                 selected={selectedIndex === i}
                                 onClick={() => handleClick(i)}
+                                data-testid={`menu-item-${i}`}
                                 sx={{
                                     justifyContent: 'flex-start',
                                     pr: 3,
