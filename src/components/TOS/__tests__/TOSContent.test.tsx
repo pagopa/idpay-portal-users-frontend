@@ -9,6 +9,11 @@ jest.mock('react-i18next', () => ({
   Trans: ({ i18nKey }: { i18nKey: string }) => <>{i18nKey}</>,
 }));
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => jest.fn(),
+}));
+
 describe('TOSContent', () => {
   const sectionRefs = [
     { current: document.createElement('div') },
