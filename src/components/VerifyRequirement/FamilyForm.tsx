@@ -8,8 +8,6 @@ export default function FamilyForm() {
     const { t } = useTranslation();
     return (
         <>
-           
-
             <Box>
                 <Card sx={{ borderRadius: "4px" }}>
                     <CardContent>

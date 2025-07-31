@@ -1,0 +1,60 @@
+import { render, screen, fireEvent } from '@testing-library/react';
+import SelfDeclaration from '../SelfDeclaration';
+import '@testing-library/jest-dom';
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+  }),
+}));
+
+jest.mock('../../Titles/TitleCard', () => (props: { title: string }) => (
+  <div data-testid="title-card">{props.title}</div>
+));
+
+describe('SelfDeclaration', () => {
+  test('renders TitleCard and description', () => {
+    render(<SelfDeclaration switchValue={false} setSwitchValue={jest.fn()} />);
+
+    expect(screen.getByTestId('title-card')).toHaveTextContent(
+      'verifyRequirements.selfDeclaration.title'
+    );
+    expect(
+      screen.getByText('verifyRequirements.selfDeclaration.description')
+    ).toBeInTheDocument();
+  });
+
+  test('renders the switch label', () => {
+    render(<SelfDeclaration switchValue={false} setSwitchValue={jest.fn()} />);
+
+    expect(
+      screen.getByText('verifyRequirements.selfDeclaration.switchLabel')
+    ).toBeInTheDocument();
+  });
+
+  test('calls setSwitchValue when switch is toggled', () => {
+    const setSwitchValueMock = jest.fn();
+    render(
+      <SelfDeclaration switchValue={false} setSwitchValue={setSwitchValueMock} />
+    );
+
+    const switchElement = screen.getByRole('checkbox');
+    fireEvent.click(switchElement);
+
+    expect(setSwitchValueMock).toHaveBeenCalledWith(true);
+  });
+
+  test('shows error message when switchValue is false', () => {
+    render(<SelfDeclaration switchValue={false} setSwitchValue={jest.fn()} />);
+
+    expect(screen.getByText('verifyRequirements.error')).toBeInTheDocument();
+  });
+
+  test('does not show error message when switchValue is true', () => {
+    render(<SelfDeclaration switchValue={true} setSwitchValue={jest.fn()} />);
+
+    expect(
+      screen.queryByText('verifyRequirements.error')
+    ).not.toBeInTheDocument();
+  });
+});
