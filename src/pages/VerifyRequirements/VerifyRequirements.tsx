@@ -1,10 +1,7 @@
 import { Box } from '@mui/material';
 import VerifyRequirementForm from '../../components/VerifyRequirement/VerifyRequirementForm';
 
-
 const VerifyRequirements: React.FC = () => {
-
-
 
     return (
         <Box
