@@ -520,7 +520,6 @@ components:
           type: string
           description: "ENG: Error message- IT: Messaggio di errore"
           maxLength: 2500
-          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
 
     InitiativeDTO:
       type: object
