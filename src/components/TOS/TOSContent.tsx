@@ -88,8 +88,8 @@ export const TOSContent = ({ sectionRefs }: Props) => {
           </ListItem>
         </List>
 
-        <Typography sx={{ color: theme.palette.primary.main, fontWeight: theme.typography.fontWeightMedium, mb: 4 }}>
-          <Link href="" underline="always" target="_blank">
+        <Typography sx={{ color: theme.palette.primary.main, fontWeight: theme.typography.fontWeightMedium, mb: 4, cursor: "pointer" }}>
+          <Link onClick={() => { }} underline="always" target="_blank">
             {t('tos.sideMenu.element2.link')}
           </Link>
         </Typography>
@@ -124,8 +124,8 @@ export const TOSContent = ({ sectionRefs }: Props) => {
           />
         </Typography>
 
-        <Typography sx={{ color: theme.palette.primary.main, fontWeight: theme.typography.fontWeightMedium, mb: 4, mt: 2 }}>
-          <Link href="" underline="always" target="_blank">
+        <Typography sx={{ color: theme.palette.primary.main, fontWeight: theme.typography.fontWeightMedium, mb: 4, mt: 2, cursor: "pointer" }}>
+          <Link onClick={() => { }} underline="always" target="_blank">
             {t('tos.sideMenu.element4.link')}
           </Link>
         </Typography>
@@ -140,7 +140,7 @@ export const TOSContent = ({ sectionRefs }: Props) => {
         </Typography>
 
         <Box mt={5} display="flex" alignItems="center">
-          <FormControl>
+          <FormControl sx={{ mr: isMobile ? 2 : 0 }}>
             <Checkbox
               checked={checked}
               onChange={(e) => {
@@ -149,27 +149,57 @@ export const TOSContent = ({ sectionRefs }: Props) => {
               }}
               color="primary" />
           </FormControl>
-          <Typography
-            sx={{
-              pl: isMobile ? 2 : 0,
-              fontSize: "18px",
-              lineHeight: "24px",
-              color: theme.palette.text.secondary,
-            }}
-          >
-            <Trans
-              i18nKey="tos.privacy"
-              components={{
-                a: (
-                  <Box
-                    component="span"
-                    sx={{ color: theme.palette.primary.main, cursor: "pointer" }}
-                  />
-                ),
+
+          <Box display="flex" flexWrap="wrap" alignItems="center">
+            <Typography
+              variant='body1'
+              sx={{
+                fontSize: '18px',
+                lineHeight: '24px',
+                color: theme.palette.text.secondary,
               }}
-            />
-          </Typography>
+            >
+              {t('tos.privacy_part1')}
+            </Typography>
+
+            <Link
+              onClick={() => { }}
+              underline="hover"
+              component="button"
+              sx={{
+                fontSize: '18px',
+                lineHeight: '24px',
+                mx: 0.5,
+              }}
+            >
+              {t('tos.privacy_terms')}
+            </Link>
+
+            <Typography
+              sx={{
+                fontSize: '18px',
+                lineHeight: '24px',
+                color: theme.palette.text.secondary,
+              }}
+            >
+              {t('tos.privacy_part2')}
+            </Typography>
+
+            <Link
+              component="button"
+              onClick={() => { }}
+              underline="hover"
+              sx={{
+                fontSize: '18px',
+                lineHeight: '24px',
+                mx: 0.5,
+              }}
+            >
+              {t('tos.privacy_policy')}
+            </Link>
+          </Box>
         </Box>
+
         {error && (
           <Typography
             variant="caption"

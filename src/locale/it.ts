@@ -40,7 +40,10 @@ const it = {
     },
     
     "postDescription": "<bold>Ricorda:</bold> quando acquisti, chiedi al venditore come smaltire il vecchio elettrodomestico. Il venditore deve gestire lo smaltimento.",
-    "privacy": "Accetto i <a>Termini e condizioni d’uso</a> e confermo di avere letto l’<a>Informativa Privacy</a>",
+    "privacy_part1": "Accetto i",
+    "privacy_terms": "Termini e condizioni d’uso",
+    "privacy_part2": "e confermo di avere letto l’",
+    "privacy_policy": "Informativa Privacy",
     "continue": "Continua",
   },
 
