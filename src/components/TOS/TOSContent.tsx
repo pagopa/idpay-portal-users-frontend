@@ -1,8 +1,10 @@
-import { Box, Container, Typography, List, ListItem, Link, Button } from '@mui/material';
+import { Box, Container, Typography, List, ListItem, Link, Button, Checkbox, FormControl } from '@mui/material';
 import { Trans, useTranslation } from 'react-i18next';
 import { theme } from '@pagopa/mui-italia';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
+import { useState } from 'react';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 interface Props {
   sectionRefs: React.RefObject<HTMLDivElement>[];
@@ -11,10 +13,17 @@ interface Props {
 export const TOSContent = ({ sectionRefs }: Props) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [checked, setChecked] = useState(false);
+  const [error, setError] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleContinue = () => {
-    //TODO call API
-    navigate(ROUTES.INSERT_EMAIL);
+    if (!checked) {
+      setError(true);
+    } else {
+      //TODO call API
+      navigate(ROUTES.INSERT_EMAIL);
+    }
   }
 
   return (
@@ -130,17 +139,48 @@ export const TOSContent = ({ sectionRefs }: Props) => {
           />
         </Typography>
 
-        <Typography sx={{ color: theme.palette.text.primary }} mt={5}>
-          <Trans
-            i18nKey="tos.privacy"
-            components={{
-              a: <Box component="span" sx={{ color: theme.palette.primary.main, cursor: 'pointer' }} />,
+        <Box mt={5} display="flex" alignItems="center">
+          <FormControl>
+            <Checkbox
+              checked={checked}
+              onChange={(e) => {
+                setChecked(e.target.checked);
+                if (e.target.checked) setError(false);
+              }}
+              color="primary" />
+          </FormControl>
+          <Typography
+            sx={{
+              pl: isMobile ? 2 : 0,
+              fontSize: "18px",
+              lineHeight: "24px",
+              color: theme.palette.text.secondary,
             }}
-          />
-        </Typography>
+          >
+            <Trans
+              i18nKey="tos.privacy"
+              components={{
+                a: (
+                  <Box
+                    component="span"
+                    sx={{ color: theme.palette.primary.main, cursor: "pointer" }}
+                  />
+                ),
+              }}
+            />
+          </Typography>
+        </Box>
+        {error && (
+          <Typography
+            variant="caption"
+            sx={{ color: theme.palette.error.main, display: "block", mt: 0.5 }}
+          >
+            {t('commons.mandatoryField')}
+          </Typography>
+        )}
       </Box>
       <Box sx={{ py: 6 }}>
-        <Button variant="outlined" color='error' sx={{ mr: { md: 2, sm: 1, xs: 1 } }}>{t('exit')}</Button>
+        <Button variant="outlined" sx={{ mr: { md: 2, sm: 1, xs: 1 } }}>{t('exit')}</Button>
         <Button variant="contained" onClick={handleContinue}>{t('tos.continue')}</Button>
       </Box>
     </Container>

@@ -27,10 +27,9 @@ export const MobileDropdownMenu = ({ selectedIndex, onItemClick, items }: Props)
     useLayoutEffect(() => {
         if (headerRef.current) {
             const rect = headerRef.current.getBoundingClientRect();
-            const scrollY = window.scrollY || window.pageYOffset;
-            setMenuTop(rect.top + scrollY + rect.height);
+            setMenuTop(rect.top);
         }
-    }, [open]);
+    }, []);
 
     const handleClick = (index: number) => {
         onItemClick(index);
@@ -44,18 +43,17 @@ export const MobileDropdownMenu = ({ selectedIndex, onItemClick, items }: Props)
                 sx={{
                     position: 'sticky',
                     top: 0,
-                    zIndex: 1100,
+                    zIndex: 100,
                     display: 'flex',
                     alignItems: 'center',
                     px: 3,
-                    pl: 4,
+                    pl: 2,
                     py: 1,
                     bgcolor: theme.palette.background.paper,
                     color: theme.palette.common.white,
                     borderStyle: "solid",
                     borderBottomWidth: 1,
                     borderBottomColor: theme.palette.divider,
-                    mb: 3,
                 }}
             >
                 <ButtonNaked startIcon={<MenuIcon />} color='text' >
@@ -64,6 +62,7 @@ export const MobileDropdownMenu = ({ selectedIndex, onItemClick, items }: Props)
                     </Typography>
                 </ButtonNaked>
             </Box>
+            
 
             {open && (
                 <Box
@@ -79,7 +78,7 @@ export const MobileDropdownMenu = ({ selectedIndex, onItemClick, items }: Props)
                     }}
                 >
                     <Box display={"flex"} justifyContent={"flex-end"} alignItems={"center"} >
-                        <IconButton onClick={() => setOpen(false)} sx={{ color: theme.palette.text.primary }}>
+                        <IconButton onClick={() => setOpen(false)} sx={{ color: theme.palette.text.primary, mr: 1 }}>
                             <CloseIcon />
                         </IconButton>
                     </Box>

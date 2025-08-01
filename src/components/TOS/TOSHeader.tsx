@@ -8,9 +8,9 @@ export const TOSHeader = () => {
   const isMobile = useIsMobile();
 
   return (
-    <Box bgcolor={theme.palette.primary.dark} paddingY={"6%"} height={"auto"}
+    <Box bgcolor={theme.palette.primary.dark} py={7} height={"auto"}
       display={"flex"} justifyContent={"center"} alignItems={"center"}
-      flexDirection={"column"} paddingX={{md: "30%", sm: "20%", xs: "10%"}} mb={isMobile ? 0 : 6}
+      flexDirection={"column"} px={{md: "30%", sm: "20%", xs: "10%"}} mb={isMobile ? 4 : 6}
     >
       <Typography textAlign="center" variant="h4" color={theme.palette.primary.contrastText}>
         {t('bonus')}

@@ -7,7 +7,8 @@ const it = {
     "invalidEmail": "Email non valida",
     "requiredField": "Campo obbligatorio",
     "emailMismatch": "Le email non coincidono",
-    "exit": "Esci"
+    "exit": "Esci",
+    "mandatoryField": "Campo obbligatorio",
   },
 
   "bonus": "Bonus Elettrodomestici",
@@ -39,7 +40,7 @@ const it = {
     },
     
     "postDescription": "<bold>Ricorda:</bold> quando acquisti, chiedi al venditore come smaltire il vecchio elettrodomestico. Il venditore deve gestire lo smaltimento.",
-    "privacy": "Premendo Continua dichiari di aver letto, compreso e accettato l’<a>Informativa Privacy</a> e i <a>Termini e Condizioni d’uso</a>.",
+    "privacy": "Accetto i <a>Termini e condizioni d’uso</a> e confermo di avere letto l’<a>Informativa Privacy</a>",
     "continue": "Continua",
   },
 
