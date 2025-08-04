@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import VerifyRequirementForm from '../VerifyRequirementForm';
 import '@testing-library/jest-dom';
 
@@ -9,13 +9,24 @@ jest.mock('react-i18next', () => ({
 }));
 
 jest.mock('../FamilyForm', () => () => <div data-testid="family-form" />);
-jest.mock('../SelfDeclaration', () => (props: any) => (
-  <div data-testid="self-declaration">{props.switchValue ? 'ON' : 'OFF'}</div>
-));
-jest.mock('../IseeForm', () => (props: any) => (
-  <div data-testid="isee-form">{props.iseeValue}</div>
-));
 jest.mock('../HeaderForm', () => () => <div data-testid="header-form" />);
+
+jest.mock('../SelfDeclaration', () => (props: any) => (
+  <button
+    data-testid="self-declaration"
+    onClick={() => props.setSwitchValue(true)}
+  >
+    {props.switchValue ? 'true' : 'false'}
+  </button>
+));
+
+jest.mock('../IseeForm', () => (props: any) => (
+  <input
+    data-testid="isee-form"
+    value={props.iseeValue}
+    onChange={(e) => props.setIseeValue(e.target.value)}
+  />
+));
 
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -25,6 +36,14 @@ jest.mock('react-router-dom', () => ({
 jest.mock('../../../routes', () => ({
   INSERT_EMAIL: '/insert-email',
   FEEDBACK: '/feedback',
+}));
+
+jest.mock('../../../api/onboardingWebApiClient', () => ({
+  OnboardingWebApi: {
+    getStatus: jest.fn().mockResolvedValue({ status: 200, data: {} }),
+    getDetail: jest.fn().mockResolvedValue({}),
+    save: jest.fn().mockResolvedValue(undefined)
+  }
 }));
 
 describe('VerifyRequirementForm', () => {
@@ -53,20 +72,25 @@ describe('VerifyRequirementForm', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/insert-email');
   });
 
-  test('navigates to feedback when continue button is clicked', () => {
+  test('navigates to feedback when continue button is clicked', async () => {
     render(<VerifyRequirementForm />);
 
+    fireEvent.change(screen.getByTestId('isee-form'), {
+      target: { value: 'ISEE123' }
+    });
+    fireEvent.click(screen.getByTestId('self-declaration'));
     fireEvent.click(screen.getByRole('button', { name: 'verifyRequirements.submit' }));
-    expect(mockNavigate).toHaveBeenCalledWith('/feedback', {
-      state: { status: 'REQUEST_SUBMITTED' },
+
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/feedback', {
+        state: { status: 'REQUEST_SUBMITTED' },
+      });
     });
   });
 
   test('passes correct props to SelfDeclaration and IseeForm', () => {
     render(<VerifyRequirementForm />);
-
-    expect(screen.getByTestId('self-declaration')).toHaveTextContent('OFF');
-
-    expect(screen.getByTestId('isee-form')).toHaveTextContent('');
+    expect(screen.getByTestId('self-declaration')).toHaveTextContent('false');
+    expect(screen.getByTestId('isee-form')).toHaveValue('');
   });
 });

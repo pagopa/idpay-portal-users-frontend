@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import { theme } from '@pagopa/mui-italia';
 import Header from '../Header/Header';
 import Sidebar from '../Menu/Sidebar';
 import CustomFooter from '../Footer/Footer';
+import { loadingRef } from '../../utils/loadingOverlay';
+import Overlay from '../Overlay/Overlay';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -14,7 +16,12 @@ type LayoutProps = {
 
 const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding = true }: LayoutProps) => {
   const [collapsed, setCollapsed] = useState(false);
+  const [loading, setLoading] = useState(false);
   const toggleSidebar = () => setCollapsed((prev) => !prev);
+
+  useEffect(() => {
+    loadingRef.setLoading = setLoading;
+  }, []);
 
   return (
     <Box
@@ -23,6 +30,7 @@ const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding =
       minHeight="100vh"
       bgcolor={theme.palette.background.default}
     >
+      {loading && <Overlay />}
       <Box component="header">
         <Header hasSubHeader={hasSubHeader} />
       </Box>
