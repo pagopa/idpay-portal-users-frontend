@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { TOSContent } from '../TOSContent';
 import '@testing-library/jest-dom';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -39,7 +40,10 @@ describe('TOSContent', () => {
     expect(screen.getByText('tos.sideMenu.element3.description')).toBeInTheDocument();
     expect(screen.getByText('tos.sideMenu.element4.description')).toBeInTheDocument();
     expect(screen.getByText('tos.postDescription')).toBeInTheDocument();
-    expect(screen.getByText('tos.privacy')).toBeInTheDocument();
+    expect(screen.getByText('tos.privacy_part1')).toBeInTheDocument();
+    expect(screen.getByText('tos.privacy_terms')).toBeInTheDocument();
+    expect(screen.getByText('tos.privacy_part2')).toBeInTheDocument();
+    expect(screen.getByText('tos.privacy_policy')).toBeInTheDocument();
   });
 
   test('renders list items in section 2', () => {
@@ -61,5 +65,33 @@ describe('TOSContent', () => {
 
     expect(screen.getByText('exit')).toBeInTheDocument();
     expect(screen.getByText('tos.continue')).toBeInTheDocument();
+  });
+
+  test('shows error when continue is clicked without accepting terms', async () => {
+    const user = userEvent.setup();
+  
+    render(<TOSContent sectionRefs={[...Array(4)].map(() => ({ current: document.createElement('div') }))} />);
+  
+    const continueBtn = screen.getByRole('button', { name: /tos.continue/i });
+    await user.click(continueBtn);
+  
+    expect(screen.getByText('commons.mandatoryField')).toBeInTheDocument();
+  });
+  
+  test('calls navigate when checkbox is checked and continue is clicked', async () => {
+    const mockNavigate = jest.fn();
+    (jest.requireMock('react-router-dom') as any).useNavigate = () => mockNavigate;
+  
+    const user = userEvent.setup();
+  
+    render(<TOSContent sectionRefs={[...Array(4)].map(() => ({ current: document.createElement('div') }))} />);
+  
+    const checkbox = screen.getByRole('checkbox');
+    await user.click(checkbox);
+  
+    const continueBtn = screen.getByRole('button', { name: /tos.continue/i });
+    await user.click(continueBtn);
+  
+    expect(mockNavigate).toHaveBeenCalledWith('/utente/inserisci-email');
   });
 });

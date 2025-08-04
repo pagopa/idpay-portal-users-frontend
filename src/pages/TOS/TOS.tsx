@@ -87,8 +87,8 @@ const TOS = () => {
         backgroundColor: theme.palette.background.paper
       }}
     >
-      <TOSHeader />
       {isMobile && <MobileDropdownMenu selectedIndex={selectedIndex} onItemClick={handleListItemClick} items={items} />}
+      <TOSHeader />
       <Box sx={{ display: 'flex' }}>
         {!isMobile && <FixedSideMenu selectedIndex={selectedIndex} onItemClick={handleListItemClick} items={items}/>}
         <TOSContent sectionRefs={sectionRefs} />
