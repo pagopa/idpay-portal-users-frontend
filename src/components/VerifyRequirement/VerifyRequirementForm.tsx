@@ -1,4 +1,3 @@
-
 import { Box, Container, Button } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next';
@@ -10,11 +9,13 @@ import SelfDeclaration from './SelfDeclaration';
 import HeaderForm from './HeaderForm';
 import ROUTES from '../../routes';
 import { useNavigate } from 'react-router-dom';
+import { useEmailStore } from '../../hooks/useEmailStore';
+import { commonHeaders, OnboardingWebApi } from '../../api/onboardingWebApiClient';
 
 export default function VerifyRequirementForm() {
     const { t } = useTranslation();
     const navigate = useNavigate();
-
+    const { email, confirmEmail } = useEmailStore();
     const [iseeValue, setIseeValue] = useState('');
     const [switchValue, setSwitchValue] = useState(false);
 
@@ -22,12 +23,44 @@ export default function VerifyRequirementForm() {
         navigate(ROUTES.INSERT_EMAIL);
     }
 
-    const handleContinue = () => {
-        //TODO add API call
-        const feedbackStatus = 'REQUEST_SUBMITTED'
-        navigate(ROUTES.FEEDBACK, {state: {status: feedbackStatus}})
-    }
-    
+    const handleContinue = async () => {
+        const isValid = iseeValue !== '' && switchValue === true;
+
+        if (!isValid) {
+            return;
+        }
+
+        try {
+            const initiativeId = 'INITIATIVE_ID' //TODO retrieve initiativeId
+            const confirmedTos = true;
+            const pdndAccept = true; //TODO
+
+            const selfDeclarationList = [
+                {
+                    code: iseeValue,
+                    accepted: switchValue
+                }
+            ];
+
+            await OnboardingWebApi.save({
+                body: {
+                    initiativeId,
+                    confirmedTos,
+                    pdndAccept,
+                    selfDeclarationList,
+                    userMail: email,
+                    userMailConfirmation: confirmEmail
+                },
+                ...commonHeaders
+            });
+
+            navigate(ROUTES.FEEDBACK, { state: { status: 'REQUEST_SUBMITTED' } });
+        } catch (error) {
+            //TODO add error redirect
+            console.error('Error: ', error);
+        };
+    };
+
     return (
         <Container sx={{ width: "100%", px: {lg: "5%", md: "20%", sm: "10%", xs: "1%"} }}>
             <Box

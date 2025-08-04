@@ -12,8 +12,8 @@
     "test:coverage": "jest --coverage",
     "clean": "npm-run-all clean:*",
     "generate": "npm-run-all generate:*",
-    "clean:api-io": "rimraf src/api/generated/api-io && rimraf openApi/generated/api-io-swagger20.json",
-    "generate:api-io": "yarn run clean:api-io && mkdirp openApi/generated && api-spec-converter --from=openapi_3 --to=swagger_2 openApi/openapi.appio.full.yml > openApi/generated/api-io-swagger20.json && node ./node_modules/@pagopa/selfcare-common-frontend/utils/fixSwagger20ArraySchemaDef.js openApi/generated/api-io-swagger20.json && node ./openApi/scripts/api-io_fixPreGen.cjs && gen-api-models --api-spec openApi/generated/api-io-swagger20.json --out-dir src/api/generated/api-io --no-strict --request-types --response-decoders --client"
+    "clean:onboarding-web": "rimraf src/api/generated/onboarding-web && rimraf openApi/generated/onboarding-web-swagger20.json",
+    "generate:onboarding-web": "yarn run clean:onboarding-web && mkdirp openApi/generated && api-spec-converter --from=openapi_3 --to=swagger_2 openApi/openapi.onboarding.web.yml > openApi/generated/onboarding-web-swagger20.json && node ./node_modules/@pagopa/selfcare-common-frontend/utils/fixSwagger20ArraySchemaDef.js openApi/generated/onboarding-web-swagger20.json && node ./openApi/scripts/onboarding-web_fixPreGen.cjs && gen-api-models --api-spec openApi/generated/onboarding-web-swagger20.json --out-dir src/api/generated/onboarding-web --no-strict --request-types --response-decoders --client"
   },
   "dependencies": {
     "@babel/preset-env": "^7.28.0",

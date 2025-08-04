@@ -6,6 +6,8 @@ import { FixedSideMenu } from '../../components/Menu/FixedSideMenu';
 import { TOSContent } from '../../components/TOS/TOSContent';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import { MobileDropdownMenu } from '../../components/Menu/MobileDropdownMenu';
+import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
+import { CodeEnum, OnboardingErrorDTO } from '../../api/generated/onboarding-web/OnboardingErrorDTO';
 
 const TOS = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -29,6 +31,36 @@ const TOS = () => {
     `tos.sideMenu.element3.title`,
     `tos.sideMenu.element4.title`,
   ]
+
+  const isErrorDTO = (data: OnboardingErrorDTO | unknown): data is OnboardingErrorDTO =>
+    typeof data === 'object' && data !== null && 'code' in data;
+
+  const isUserNotOnboardedError = (data: OnboardingErrorDTO | unknown): boolean =>
+    isErrorDTO(data) && data.code === CodeEnum.ONBOARDING_USER_NOT_ONBOARDED;
+
+  useEffect(() => {
+    const initiativeId = 'INITIATIVE_ID'; // TODO retrieve initiativeId
+
+    const fetchData = async () => {
+      try {
+        const statusResponse = await OnboardingWebApi.getStatus(initiativeId);
+        const { status, data: statusData } = statusResponse;
+
+        if (status === 200) {
+          //TODO handle onboarded status
+          return;
+        }
+
+        if (status === 404 && isUserNotOnboardedError(statusData)) {
+          return;
+        }
+      } catch (error) {
+        //TODO handle generic error
+      };
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
