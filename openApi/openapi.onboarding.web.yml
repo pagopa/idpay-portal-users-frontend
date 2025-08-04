@@ -171,7 +171,6 @@ components:
       schema:
         type: string
         maxLength: 24
-        pattern: "$ ^[a-zA-Z0-9]+$"
 
   responses:
 
@@ -281,7 +280,6 @@ components:
           type: string
           description: "ENG: Unique identifier of the subscribed initiative - IT: Identificativo univoco dell'iniziativa sottoscritta"
           maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
         confirmedTos:
           type: boolean
           description: >-
@@ -301,13 +299,11 @@ components:
           description: "ENG: Contact email provided by the user during web onboarding - IT: Mail di contatto fornita dall'utente in fase di onboarding web"
           maxLength: 24
           example: "utente@email.it"
-          pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
         userMailConfirmation:
           type: string
           description: "ENG: Confirm email provided by the user during web onboarding - IT: Mail di conferma fornita dall'utente in fase di onboarding web"
           maxLength: 24
           example: "utente@email.it"
-          pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
 
     SelfConsentDTO:
       oneOf:
