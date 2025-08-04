@@ -154,7 +154,6 @@ export const TOSContent = ({ sectionRefs }: Props) => {
             <Typography
               variant='body1'
               sx={{
-                fontSize: '18px',
                 lineHeight: '24px',
                 color: theme.palette.text.secondary,
               }}
@@ -167,17 +166,24 @@ export const TOSContent = ({ sectionRefs }: Props) => {
               underline="hover"
               component="button"
               sx={{
-                fontSize: '18px',
                 lineHeight: '24px',
                 mx: 0.5,
               }}
             >
-              {t('tos.privacy_terms')}
+              <Typography
+                variant='body1'
+                sx={{
+                  lineHeight: '24px',
+                  color: theme.palette.primary.main
+                }}
+              >
+                {t('tos.privacy_terms')}
+              </Typography>
             </Link>
 
             <Typography
+              variant='body1'
               sx={{
-                fontSize: '18px',
                 lineHeight: '24px',
                 color: theme.palette.text.secondary,
               }}
@@ -190,12 +196,19 @@ export const TOSContent = ({ sectionRefs }: Props) => {
               onClick={() => { }}
               underline="hover"
               sx={{
-                fontSize: '18px',
                 lineHeight: '24px',
-                mx: 0.5,
+                mx: 0,
               }}
             >
-              {t('tos.privacy_policy')}
+              <Typography
+                variant='body1'
+                sx={{
+                  lineHeight: '24px',
+                  color: theme.palette.primary.main
+                }}
+              >
+                {t('tos.privacy_policy')}
+              </Typography>
             </Link>
           </Box>
         </Box>
