@@ -336,7 +336,6 @@ components:
           type: string
           format: date-time
           minLength: 19
-          maxLength: 19
           description: "ENG: Date on which the status changed to the current one - IT: Data in cui lo stato è cambiato allo stato attuale"
         onboardingOkDate:
           type: string

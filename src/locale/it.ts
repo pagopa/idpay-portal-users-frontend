@@ -97,6 +97,10 @@ const it = {
     "requestSubmitted": {
       "title": "La tua richiesta è stata inviata!",
       "description": "Controlla periodicamente la tua casella di posta.\nRiceverai tutti gli aggiornamenti all’indirizzo email che hai indicato."
+    },
+    "onEvaluation": {
+      "title": "L’ente sta valutando la tua domanda di adesione",
+      "description": "Quando pronto, riceverai l’esito all’indirizzo email  indicato."
     }
   }
 };

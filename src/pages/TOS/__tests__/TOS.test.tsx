@@ -56,6 +56,13 @@ jest.mock('../../../api/onboardingWebApiClient', () => ({
   },
 }));
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockedUsedNavigate,
+}));
+
+const mockedUsedNavigate = jest.fn();
+
 describe('TOS Page', () => {
   const useIsMobile = require('../../../hooks/useIsMobile').useIsMobile;
   const { OnboardingWebApi } = require('../../../api/onboardingWebApiClient');
