@@ -8,7 +8,7 @@ const FeedbackPage = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const status = location.state?.status as keyof typeof feedbackStates;
-  const feedback = feedbackStates[status];
+  const feedback = feedbackStates[status] || feedbackStates.ON_EVALUATION; //TODO tmp fallback
 
   if (!feedback) {
     return <Navigate to="/utente/" replace />;

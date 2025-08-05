@@ -8,10 +8,14 @@ import { useIsMobile } from '../../hooks/useIsMobile';
 import { MobileDropdownMenu } from '../../components/Menu/MobileDropdownMenu';
 import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
 import { CodeEnum, OnboardingErrorDTO } from '../../api/generated/onboarding-web/OnboardingErrorDTO';
+import { useNavigate } from 'react-router-dom';
+import ROUTES from '../../routes';
+import { StatusEnum } from '../../api/generated/onboarding-web/OnboardingStatusDTO';
 
 const TOS = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   const sectionRefs = [
     useRef<HTMLDivElement>(null),
@@ -38,6 +42,15 @@ const TOS = () => {
   const isUserNotOnboardedError = (data: OnboardingErrorDTO | unknown): boolean =>
     isErrorDTO(data) && data.code === CodeEnum.ONBOARDING_USER_NOT_ONBOARDED;
 
+  const isValidStatus = (status: any): status is StatusEnum =>
+    Object.values(StatusEnum).includes(status);
+
+  const isStatusData = (data: any): data is { status: StatusEnum } =>
+    typeof data === 'object' &&
+    data !== null &&
+    'status' in data &&
+    isValidStatus(data.status);
+
   useEffect(() => {
     const initiativeId = 'INITIATIVE_ID'; // TODO retrieve initiativeId
 
@@ -46,8 +59,9 @@ const TOS = () => {
         const statusResponse = await OnboardingWebApi.getStatus(initiativeId);
         const { status, data: statusData } = statusResponse;
 
-        if (status === 200) {
-          //TODO handle onboarded status
+        if (status === 200 && isStatusData(statusData)) {
+          const statusString = (statusData as any).status;
+          navigate(ROUTES.FEEDBACK, { state: { status: statusString } });
           return;
         }
 
@@ -55,6 +69,7 @@ const TOS = () => {
           return;
         }
       } catch (error) {
+        console.log('Error: ', error);
         //TODO handle generic error
       };
     };

@@ -2,7 +2,7 @@ name: 'coverage'
 on:
   pull_request:
     branches:
-      - develop
+      - dev
       - uat
       - main
 jobs:
