@@ -117,7 +117,7 @@ trigger:
     include:
       - main
       - uat
-      - dev
+      - develop
 
 pr: none
 
