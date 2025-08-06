@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { IllusCompleted, IllusQuick } from '@pagopa/mui-italia';
+import { IllusCompleted, IllusHistoryDoc } from '@pagopa/mui-italia';
 
 export type FeedbackState = {
   icon: ReactNode;
@@ -21,7 +21,7 @@ export const feedbackStates: Record<string, FeedbackState> = {
     buttonRedirect: '/' //TODO add redirect
   },
   ON_EVALUATION: {
-    icon: <IllusQuick />,
+    icon: <IllusHistoryDoc />,
     title: "feedbackStates.onEvaluation.title",
     description: 'feedbackStates.onEvaluation.description',
     buttonLabel: 'commons.exit',
