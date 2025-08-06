@@ -61,6 +61,12 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockedUsedNavigate,
 }));
 
+jest.mock('../../../api/generated/onboarding-web/OnboardingStatusDTO', () => ({
+  StatusEnum: {
+    COMPLETED: 'COMPLETED',
+  },
+}));
+
 const mockedUsedNavigate = jest.fn();
 
 describe('TOS Page', () => {
@@ -128,5 +134,50 @@ describe('TOS Page', () => {
     await waitFor(() => {
       expect(screen.getByTestId('fixed-menu')).toBeInTheDocument();
     });
+  });
+
+  test('navigates to FEEDBACK if onboarding status is valid', async () => {
+    const mockStatus = { status: 'COMPLETED' };
+    OnboardingWebApi.getStatus.mockResolvedValue({
+      status: 200,
+      data: mockStatus,
+    });
+    useIsMobile.mockReturnValue(false);
+
+    render(<TOS />);
+
+    await waitFor(() => {
+      expect(mockedUsedNavigate).toHaveBeenCalledWith('/utente/esito', {
+        state: { status: 'COMPLETED' },
+      });
+    });
+  });
+
+  test('does nothing if user is not onboarded (404 with specific code)', async () => {
+    OnboardingWebApi.getStatus.mockResolvedValue({
+      status: 404,
+      data: { code: 'ONBOARDING_USER_NOT_ONBOARDED' },
+    });
+    useIsMobile.mockReturnValue(false);
+
+    render(<TOS />);
+
+    await waitFor(() => {
+      expect(mockedUsedNavigate).not.toHaveBeenCalled();
+    });
+  });
+
+  test('handles error in getStatus', async () => {
+    const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => { });
+    OnboardingWebApi.getStatus.mockRejectedValue(new Error('Network error'));
+    useIsMobile.mockReturnValue(false);
+
+    render(<TOS />);
+
+    await waitFor(() => {
+      expect(consoleSpy).toHaveBeenCalledWith('Error: ', expect.any(Error));
+    });
+
+    consoleSpy.mockRestore();
   });
 });
