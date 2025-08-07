@@ -27,6 +27,7 @@ variables:
     react_app_url_fe_assistance: '$(UAT_REACT_APP_URL_FE_ASSISTANCE_PORTAL)'
 
     react_app_url_storage: '$(UAT_REACT_APP_URL_STORAGE)'
+    vite_url_api_portal_users: '$(UAT_VITE_URL_API_PORTAL_USERS)'
 
     # react_app_one_trust_base_url: '$(UAT_REACT_APP_URL_CDN)/ot'
     # react_app_analytics_enabled: '$(UAT_ANALYTICS_ENABLED)'
@@ -59,6 +60,7 @@ variables:
 
     react_app_url_storage: '$(PROD_REACT_APP_URL_STORAGE)'
 
+    vite_url_api_portal_users: '$(PROD_VITE_URL_API_PORTAL_USERS)'
     # react_app_one_trust_base_url: '$(PROD_REACT_APP_URL_CDN)/ot'
     # react_app_analytics_enabled: '$(PROD_ANALYTICS_ENABLED)'
     # react_app_analytics_mocked: '$(PROD_ANALYTICS_MOCKED)'
@@ -91,7 +93,7 @@ variables:
     react_app_url_fe_auth: '$(DEV_REACT_APP_URL_FE_LOGIN)'
     react_app_url_fe_landing: '$(DEV_REACT_APP_URL_FE_LANDING)'
     react_app_url_fe_assistance: '$(DEV_REACT_APP_URL_FE_ASSISTANCE_PORTAL)'
-    REACT_APP_URL_API_ASSET_REGISTER_PORTAL: ''
+    vite_url_api_portal_users: '$(DEV_VITE_URL_API_PORTAL_USERS)'
 
     # react_app_one_trust_base_url: '$(DEV_REACT_APP_URL_CDN)/ot/test'
     # react_app_analytics_enabled: '$(DEV_ANALYTICS_ENABLED)'
@@ -114,7 +116,7 @@ trigger:
   branches:
     include:
       - main
-      - release-*
+      - uat
       - develop
 
 pr: none
@@ -194,7 +196,7 @@ stages:
               REACT_APP_URL_FE_ASSISTANCE_PORTAL: '$(react_app_url_fe_assistance)'
               REACT_APP_URL_INSTITUTION_LOGO_PREFIX: '$(react_app_url_storage)/institutions/'
 
-              REACT_APP_URL_API_ROLE_PERMISSION: '$(react_app_url_api_role_permission)'
+              VITE_URL_API_PORTAL_USERS: '$(vite_url_api_portal_users)'
 
               REACT_APP_ONE_TRUST_OTNOTICE_CDN_URL: $(react_app_one_trust_otnotice_cdn_url)
               REACT_APP_ONE_TRUST_OTNOTICE_CDN_SETTINGS: $(react_app_one_trust_otnotice_cdn_settings)

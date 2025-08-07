@@ -7,7 +7,8 @@ const it = {
     "invalidEmail": "Email non valida",
     "requiredField": "Campo obbligatorio",
     "emailMismatch": "Le email non coincidono",
-    "exit": "Esci"
+    "exit": "Esci",
+    "mandatoryField": "Campo obbligatorio",
   },
 
   "bonus": "Bonus Elettrodomestici",
@@ -39,7 +40,10 @@ const it = {
     },
     
     "postDescription": "<bold>Ricorda:</bold> quando acquisti, chiedi al venditore come smaltire il vecchio elettrodomestico. Il venditore deve gestire lo smaltimento.",
-    "privacy": "Premendo Continua dichiari di aver letto, compreso e accettato l’<a>Informativa Privacy</a> e i <a>Termini e Condizioni d’uso</a>.",
+    "privacy_part1": "Accetto i",
+    "privacy_terms": "Termini e condizioni d’uso",
+    "privacy_part2": "e confermo di avere letto l’",
+    "privacy_policy": "Informativa Privacy",
     "continue": "Continua",
   },
 
@@ -93,6 +97,10 @@ const it = {
     "requestSubmitted": {
       "title": "La tua richiesta è stata inviata!",
       "description": "Controlla periodicamente la tua casella di posta.\nRiceverai tutti gli aggiornamenti all’indirizzo email che hai indicato."
+    },
+    "onEvaluation": {
+      "title": "L’ente sta valutando la tua domanda di adesione",
+      "description": "Quando pronto, riceverai l’esito all’indirizzo email  indicato."
     }
   }
 };

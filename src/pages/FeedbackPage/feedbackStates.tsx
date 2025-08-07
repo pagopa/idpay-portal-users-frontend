@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import { theme } from '@pagopa/mui-italia';
+import { IllusCompleted, IllusHistoryDoc } from '@pagopa/mui-italia';
 
 export type FeedbackState = {
   icon: ReactNode;
@@ -15,9 +14,16 @@ export type FeedbackState = {
 export const feedbackStates: Record<string, FeedbackState> = {
 
   REQUEST_SUBMITTED: {
-    icon: <CheckCircleOutlineIcon sx={{ fontSize: 60, color: theme.palette.secondary.main }} />,
+    icon: <IllusCompleted />,
     title: "feedbackStates.requestSubmitted.title",
     description: 'feedbackStates.requestSubmitted.description',
+    buttonLabel: 'commons.exit',
+    buttonRedirect: '/' //TODO add redirect
+  },
+  ON_EVALUATION: {
+    icon: <IllusHistoryDoc />,
+    title: "feedbackStates.onEvaluation.title",
+    description: 'feedbackStates.onEvaluation.description',
     buttonLabel: 'commons.exit',
     buttonRedirect: '/' //TODO add redirect
   }

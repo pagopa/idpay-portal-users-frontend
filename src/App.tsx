@@ -7,22 +7,25 @@ import TOS from './pages/TOS/TOS';
 import InsertEmail from './pages/InsertEmail/InsertEmail';
 import FeedbackPage from './pages/FeedbackPage/FeedbackPage';
 import ROUTES from './routes';
+import { useIsMobile } from './hooks/useIsMobile';
 
-const LocalRoutes = () => (
+const LocalRoutes: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
   <Routes>
     {/* TODO tmp fallback route */}
-    <Route index path="*" element={<Layout hasSidebar={false} hasSubHeader={false} hasPadding={false}><TOS/></Layout>} /> 
+    <Route index path="*" element={<Layout hasSidebar={false} hasSubHeader={isMobile} hasPadding={false}><TOS/></Layout>} /> 
     <Route path={ROUTES.DASHBOARD} element={<Layout hasSidebar={true}><Dashboard/></Layout>} />
     <Route path={ROUTES.VERIFY_REQUIREMENTS} element={<Layout hasSidebar={false}><VerifyRequirements/></Layout>} />
-    <Route path={ROUTES.TOS} element={<Layout hasSidebar={false} hasSubHeader={false} hasPadding={false}><TOS/></Layout>} />
+    <Route path={ROUTES.TOS} element={<Layout hasSidebar={false} hasSubHeader={isMobile} hasPadding={false}><TOS/></Layout>} />
     <Route path={ROUTES.INSERT_EMAIL} element={<Layout hasSidebar={false}><InsertEmail /></Layout>} />
     <Route path={ROUTES.FEEDBACK} element={<Layout hasSidebar={false}><FeedbackPage /></Layout>} />
   </Routes>
 );
 
 function App() {
+  const isMobile = useIsMobile();
+
   return (
-    <LocalRoutes />
+    <LocalRoutes isMobile={isMobile}/>
   );
 }
 

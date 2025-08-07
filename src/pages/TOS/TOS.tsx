@@ -6,10 +6,16 @@ import { FixedSideMenu } from '../../components/Menu/FixedSideMenu';
 import { TOSContent } from '../../components/TOS/TOSContent';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import { MobileDropdownMenu } from '../../components/Menu/MobileDropdownMenu';
+import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
+import { CodeEnum, OnboardingErrorDTO } from '../../api/generated/onboarding-web/OnboardingErrorDTO';
+import { useNavigate } from 'react-router-dom';
+import ROUTES from '../../routes';
+import { StatusEnum } from '../../api/generated/onboarding-web/OnboardingStatusDTO';
 
 const TOS = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   const sectionRefs = [
     useRef<HTMLDivElement>(null),
@@ -29,6 +35,47 @@ const TOS = () => {
     `tos.sideMenu.element3.title`,
     `tos.sideMenu.element4.title`,
   ]
+
+  const isErrorDTO = (data: OnboardingErrorDTO | unknown): data is OnboardingErrorDTO =>
+    typeof data === 'object' && data !== null && 'code' in data;
+
+  const isUserNotOnboardedError = (data: OnboardingErrorDTO | unknown): boolean =>
+    isErrorDTO(data) && data.code === CodeEnum.ONBOARDING_USER_NOT_ONBOARDED;
+
+  const isValidStatus = (status: any): status is StatusEnum =>
+    Object.values(StatusEnum).includes(status);
+
+  const isStatusData = (data: any): data is { status: StatusEnum } =>
+    typeof data === 'object' &&
+    data !== null &&
+    'status' in data &&
+    isValidStatus(data.status);
+
+  useEffect(() => {
+    const initiativeId = 'INITIATIVE_ID'; // TODO retrieve initiativeId
+
+    const fetchData = async () => {
+      try {
+        const statusResponse = await OnboardingWebApi.getStatus(initiativeId);
+        const { status, data: statusData } = statusResponse;
+
+        if (status === 200 && isStatusData(statusData)) {
+          const statusString = (statusData as any).status;
+          navigate(ROUTES.FEEDBACK, { state: { status: statusString } });
+          return;
+        }
+
+        if (status === 404 && isUserNotOnboardedError(statusData)) {
+          return;
+        }
+      } catch (error) {
+        console.log('Error: ', error);
+        //TODO handle generic error
+      };
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,8 +102,8 @@ const TOS = () => {
         backgroundColor: theme.palette.background.paper
       }}
     >
-      <TOSHeader />
       {isMobile && <MobileDropdownMenu selectedIndex={selectedIndex} onItemClick={handleListItemClick} items={items} />}
+      <TOSHeader />
       <Box sx={{ display: 'flex' }}>
         {!isMobile && <FixedSideMenu selectedIndex={selectedIndex} onItemClick={handleListItemClick} items={items}/>}
         <TOSContent sectionRefs={sectionRefs} />
