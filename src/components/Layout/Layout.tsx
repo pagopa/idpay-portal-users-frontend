@@ -1,18 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import { theme } from '@pagopa/mui-italia';
 import Header from '../Header/Header';
-import Sidebar from '../Sidebar/Sidebar';
+import Sidebar from '../Menu/Sidebar';
 import CustomFooter from '../Footer/Footer';
+import { loadingRef } from '../../utils/loadingOverlay';
+import Overlay from '../Overlay/Overlay';
 
 type LayoutProps = {
   children: React.ReactNode;
   hasSidebar?: boolean;
+  hasSubHeader?: boolean;
+  hasPadding?: boolean;
 };
 
-const Layout = ({ children, hasSidebar = true }: LayoutProps) => {
+const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding = true }: LayoutProps) => {
   const [collapsed, setCollapsed] = useState(false);
+  const [loading, setLoading] = useState(false);
   const toggleSidebar = () => setCollapsed((prev) => !prev);
+
+  useEffect(() => {
+    loadingRef.setLoading = setLoading;
+  }, []);
 
   return (
     <Box
@@ -21,8 +30,9 @@ const Layout = ({ children, hasSidebar = true }: LayoutProps) => {
       minHeight="100vh"
       bgcolor={theme.palette.background.default}
     >
+      {loading && <Overlay />}
       <Box component="header">
-        <Header />
+        <Header hasSubHeader={hasSubHeader} />
       </Box>
 
       <Box component="main" display="flex" flexGrow={1} minHeight={0}>
@@ -40,7 +50,7 @@ const Layout = ({ children, hasSidebar = true }: LayoutProps) => {
 
         <Box
           flexGrow={1}
-          p={3}
+          p={hasPadding ? 3 : 0}
           overflow={'auto'}
           minHeight={'100%'}
         >

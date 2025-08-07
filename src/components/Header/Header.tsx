@@ -7,10 +7,12 @@ import {
 
 export type HeaderProps = {
   onAssistanceClick?: () => void;
+  hasSubHeader: boolean;
 };
 
 export const Header = (props: HeaderProps) => {
-  const { onAssistanceClick = () => null } = props;
+  const { onAssistanceClick = () => null, hasSubHeader } = props;
+
 
   const product: ProductEntity = {
     id: '0',
@@ -34,9 +36,11 @@ export const Header = (props: HeaderProps) => {
         enableDropdown
         onAssistanceClick={onAssistanceClick}
       />
-      <HeaderProduct
-        productsList={[product]}
-      />
+      { hasSubHeader &&
+        <HeaderProduct
+          productsList={[product]}
+        />
+      }
     </>
   );
 };
