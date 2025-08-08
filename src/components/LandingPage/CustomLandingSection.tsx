@@ -3,10 +3,20 @@ import { LanguageOutlined } from '@mui/icons-material';
 import { theme } from '@pagopa/mui-italia';
 import { useTranslation } from 'react-i18next';
 import { useIsMobile } from '../../hooks/useIsMobile';
+import { useAuth } from '../../contexts/AuthContext';
 
 const CustomLandingSection = () => {
   const { t } = useTranslation();
   const isMobile = useIsMobile();
+  const { initAuth } = useAuth();
+
+  const handleContinue = async () => {
+  try {
+    await initAuth();
+  } catch (error) {
+    console.error("Auth init failed", error);
+  }
+};
 
   return (
     <Box
@@ -40,7 +50,7 @@ const CustomLandingSection = () => {
               borderRadius: 2,
               boxShadow: theme.shadows[3],
             }}
-            onClick={() => {}}
+            onClick={handleContinue}
           >
             {t('landing.continueOnWeb')}
           </Button>
