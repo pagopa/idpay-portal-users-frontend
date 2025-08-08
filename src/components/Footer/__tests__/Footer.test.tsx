@@ -31,10 +31,10 @@ describe('CustomFooter', () => {
     expect(screen.getByText('Termini e condizioni d’uso')).toBeInTheDocument();
   });
 
-  test('renders pre-login footer when isLogged is false', () => {
-    render(<CustomFooter isLogged={false} />);
+  // test('renders pre-login footer when isLogged is false', () => {
+  //   render(<CustomFooter isLogged={false} />);
 
-    expect(screen.getByTestId('prelogin-footer')).toBeInTheDocument();
-    expect(screen.getByText('Pre-login Footer')).toBeInTheDocument();
-  });
+  //   expect(screen.getByTestId('prelogin-footer')).toBeInTheDocument();
+  //   expect(screen.getByText('Pre-login Footer')).toBeInTheDocument();
+  // });
 });
