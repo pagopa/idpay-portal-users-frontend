@@ -4,15 +4,22 @@ import { theme } from '@pagopa/mui-italia';
 import { useTranslation } from 'react-i18next';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import ROUTES from '../../routes';
 
 const CustomLandingSection = () => {
   const { t } = useTranslation();
   const isMobile = useIsMobile();
   const { initAuth } = useAuth();
+  const navigate = useNavigate();
 
   const handleContinue = async () => {
   try {
     await initAuth();
+    //redirect to TOS after mock login in local env
+    if (import.meta.env.VITE_KEYCLOAK_MOCK_AUTH === 'true') {
+      navigate(ROUTES.TOS);
+    }
   } catch (error) {
     console.error("Auth init failed", error);
   }
