@@ -5,7 +5,8 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from '@pagopa/mui-italia';
 import { BrowserRouter } from 'react-router-dom';
 
-import './locale/i18n';
+import './locale';
+import './locale/i18n.ts'
 import { AuthProvider } from "react-oidc-context";
 
 
