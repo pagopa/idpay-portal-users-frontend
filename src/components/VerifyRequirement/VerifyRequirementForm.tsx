@@ -31,18 +31,24 @@ export default function VerifyRequirementForm() {
         }
 
         try {
-            const initiativeId = 'INITIATIVE_ID' //TODO retrieve initiativeId
+            const initiativeId = '688ba02b2542210740f7ca48' //TODO retrieve and store initiativeId
             const confirmedTos = true;
             const pdndAccept = true; //TODO
 
             const selfDeclarationList = [
                 {
-                    code: iseeValue,
+                    _type: 'boolean',
+                    code: '1',
                     accepted: switchValue
+                },
+               {
+                    _type: 'text',
+                    code: '2',
+                    value: '' //TODO
                 }
             ];
 
-            await OnboardingWebApi.save({
+            const response = await OnboardingWebApi.save({
                 body: {
                     initiativeId,
                     confirmedTos,
@@ -54,9 +60,15 @@ export default function VerifyRequirementForm() {
                 ...commonHeaders
             });
 
+            if (response.status !== 202) {
+                console.error('Errore API:', response);
+                //TODO add error redirect
+                return;
+            }
+
             navigate(ROUTES.FEEDBACK, { state: { status: 'REQUEST_SUBMITTED' } });
         } catch (error) {
-            //TODO add error redirect
+            //TODO add generic error
             console.error('Error: ', error);
         };
     };

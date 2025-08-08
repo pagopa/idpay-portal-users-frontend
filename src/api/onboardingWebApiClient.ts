@@ -61,11 +61,16 @@ export const OnboardingWebApi = {
 
   save: async (
     params: Omit<RequestParams<WebSaveOnboardingT>, 'bearerAuth'>
-  ): Promise<void> => {
+  ): Promise<{ status: number; value: unknown }> => {
     const result = await onboardingClient.webSaveOnboarding({
       ...params,
       ...commonHeaders
     });
-    return await extractResponse(result, 202, onRedirectToLogin);
+
+    if (isRight(result)) {
+      return result.right;
+    } else {
+      throw result.left;
+    }
   }
 };

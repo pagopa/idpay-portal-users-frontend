@@ -42,7 +42,7 @@ jest.mock('../../../api/onboardingWebApiClient', () => ({
   OnboardingWebApi: {
     getStatus: jest.fn().mockResolvedValue({ status: 200, data: {} }),
     getDetail: jest.fn().mockResolvedValue({}),
-    save: jest.fn().mockResolvedValue(undefined)
+    save: jest.fn().mockResolvedValue({ status: 202 })
   }
 }));
 
