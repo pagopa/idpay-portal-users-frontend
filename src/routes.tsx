@@ -1,5 +1,6 @@
 
 const ROUTES = {
+	HOME: "/utente/home",
 	DASHBOARD: "/utente/dashboard",
     TOS: "/utente/termini-di-servizio",
     VERIFY_REQUIREMENTS: "/utente/verifica-requisiti",
