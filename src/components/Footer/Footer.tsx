@@ -1,5 +1,5 @@
 import { Footer, type PreLoginFooterLinksType } from '@pagopa/mui-italia';
-import { Footer as PreLoginFooter} from '@pagopa/selfcare-common-frontend/lib'
+// import { Footer as PreLoginFooter} from '@pagopa/selfcare-common-frontend/lib'
 
 const pagoPALink = {
     href: 'https://www.pagopa.it/',
@@ -63,7 +63,18 @@ const CustomFooter = ({isLogged = true}) => (
                 hideProductsColumn={false}
             />
             : 
-            <PreLoginFooter loggedUser={false} onExit={() => {}} />
+            <Footer 
+                loggedUser={false}
+                onExit={() => {}}
+                companyLink={pagoPALink}
+                legalInfo={companyLegalInfo}
+                postLoginLinks={postLoginLinks}
+                preLoginLinks={{} as PreLoginFooterLinksType}
+                currentLangCode="it"
+                onLanguageChanged={() => { }}
+                languages={LANGUAGES}
+                hideProductsColumn={false} />
+            // <PreLoginFooter loggedUser={false} onExit={() => {}} />
         }
     </>
 );
