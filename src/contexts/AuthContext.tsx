@@ -6,7 +6,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   user: unknown;
   token: string | null;
-  initAuth: () => Promise<void>;
+  initAuth: (shouldRedirectToLogin?: boolean) => Promise<void>;
   login: () => void;
   logout: () => void;
   loading: boolean;
@@ -24,7 +24,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const initAuth = useCallback(async () => {
+  const initAuth = useCallback(async (shouldRedirectToLogin = false) => {
     if (isMockMode) {
       console.log('mock-login');
       setIsAuthenticated(true);
@@ -45,10 +45,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const userProfile = await keycloak.loadUserProfile();
         setUser(userProfile);
       } else {
-        keycloak.login({ idpHint: 'oneid-keycloak' });
+        if (shouldRedirectToLogin) {
+          keycloak.login({ idpHint: 'oneid-keycloak' });
+        }
       }
     } catch (error) {
-      console.error('Keycloak initialization error: ', error);
+        console.log('Keycloak already initialized');
     } finally {
       setLoading(false);
     }
