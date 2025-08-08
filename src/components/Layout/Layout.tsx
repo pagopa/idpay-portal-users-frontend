@@ -12,9 +12,10 @@ type LayoutProps = {
   hasSidebar?: boolean;
   hasSubHeader?: boolean;
   hasPadding?: boolean;
+  isLogged?: boolean;
 };
 
-const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding = true }: LayoutProps) => {
+const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding = true, isLogged = true }: LayoutProps) => {
   const [collapsed, setCollapsed] = useState(false);
   const [loading, setLoading] = useState(false);
   const toggleSidebar = () => setCollapsed((prev) => !prev);
@@ -58,7 +59,7 @@ const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding =
         </Box>
       </Box>
 
-      <CustomFooter />
+      <CustomFooter isLogged={isLogged}/>
     </Box>
   );
 };
