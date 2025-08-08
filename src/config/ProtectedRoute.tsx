@@ -1,22 +1,19 @@
 import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import type { ReactNode } from 'react';
+import { Navigate } from 'react-router-dom';
+import ROUTES from '../routes';
 
 interface ProtectedRouteProps {
   children: ReactNode;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
-
-  if (loading) {
-    return <div>Caricamento sessione...</div>;
-  }
+  const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
-    return <div>Reindirizzamento al login...</div>;
+    return <Navigate to={ROUTES.HOME} />;
   }
-
   return <>{children}</>;
 };
 
