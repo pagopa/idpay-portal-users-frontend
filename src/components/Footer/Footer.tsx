@@ -6,14 +6,17 @@ import { LANGUAGES, pagoPALink } from '@pagopa/selfcare-common-frontend/lib/comp
 import ROUTES from '../../routes';
 import i18n from '@pagopa/selfcare-common-frontend/lib/locale/locale-utils';
 import { Box } from '@mui/material';
-import style from './styleFooter.module.css';
-// import { Footer as PreLoginFooter} from '@pagopa/selfcare-common-frontend/lib'
+import { Footer as PreLoginFooter } from '@pagopa/selfcare-common-frontend/lib'
+// import { useUnloadEventOnExit } from '@pagopa/selfcare-common-frontend/lib/hooks/useUnloadEventInterceptor';
+
 
 
 export default function CustomFooter({ isLogged = true }) {
 
     const { t } = useTranslation();
     const [selectedLanguage, setSelectedLanguage] = useState<LangCode>();
+
+//   const onExit = useUnloadEventOnExit();
 
     const preLoginLinks: PreLoginFooterLinksType = {
         // First column
@@ -211,10 +214,10 @@ export default function CustomFooter({ isLogged = true }) {
         </Trans>
     );
 
-  return  <Box className={'style.footer.MuiBox-root>.MuiContainer-root>.MuiGrid-root.MuiGrid-container'}>
+    return <Box gridArea="footer">
         {/* { isLogged ? */}
         <Footer
-            loggedUser={isLogged? true :false}
+            loggedUser={isLogged ? true : false}
             companyLink={pagoPALink}
             legalInfo={companyLegalInfo}
             postLoginLinks={postLoginLinks}
@@ -226,7 +229,7 @@ export default function CustomFooter({ isLogged = true }) {
                 await i18n.changeLanguage(language);
                 setSelectedLanguage(language);
             }}
-           
+
         />
         {/* : 
             <Footer 
@@ -242,6 +245,9 @@ export default function CustomFooter({ isLogged = true }) {
                 hideProductsColumn={false} />
             // <PreLoginFooter loggedUser={false} onExit={() => {}} />
         } */}
+        <Box gridArea="footer" id="footerBox">
+            <PreLoginFooter loggedUser={false} />
+        </Box>
     </Box>
 };
 
