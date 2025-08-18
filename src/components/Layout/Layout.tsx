@@ -25,7 +25,7 @@ const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding =
   }, []);
 
   return (
-    <Box
+    <><Box
       display="flex"
       flexDirection="column"
       minHeight="100vh"
@@ -37,7 +37,7 @@ const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding =
       </Box>
 
       <Box component="main" display="flex" flexGrow={1} minHeight={0}>
-        {hasSidebar && 
+        {hasSidebar &&
           <Box
             width={collapsed ? 64 : 240}
             bgcolor={theme.palette.background.paper}
@@ -46,8 +46,7 @@ const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding =
             }}
           >
             <Sidebar collapsed={collapsed} toggleSidebar={toggleSidebar} />
-          </Box>
-        }
+          </Box>}
 
         <Box
           flexGrow={1}
@@ -59,8 +58,10 @@ const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding =
         </Box>
       </Box>
 
-      <CustomFooter isLogged={isLogged}/>
+
     </Box>
+      <CustomFooter isLogged={isLogged} />
+    </>
   );
 };
 
