@@ -11,6 +11,16 @@ const it = {
     "mandatoryField": "Campo obbligatorio",
   },
 
+  "landing": {
+    "requestBonus": "Richiedi il Bonus Elettrodomestici online",
+    "requestBonusMobile": "Accedi al sito Bonus Elettrodomestici",
+    "loginMethods": "Accedi con SPID o CIE per richiedere il tuo bonus.",
+    "continueOnWeb": "Continua sul sito",
+    "withIO": "Con IO è tutto più semplice",
+    "descriptionWithIO": "Gestisci tutto in un posto: richiedi il bonus, ricevi l’esito della richiesta e usa il bonus. Più veloce, più comodo.",
+    "downloadIO": "Scarica IO",
+  },
+
   "bonus": "Bonus Elettrodomestici",
   "exit": "Esci",
   "tos":{
