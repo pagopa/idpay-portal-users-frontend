@@ -171,6 +171,7 @@ components:
       schema:
         type: string
         maxLength: 24
+        pattern: "^[a-zA-Z0-9]+$"
 
   responses:
 
@@ -280,6 +281,7 @@ components:
           type: string
           description: "ENG: Unique identifier of the subscribed initiative - IT: Identificativo univoco dell'iniziativa sottoscritta"
           maxLength: 24
+          pattern: "^[a-zA-Z0-9]+$"
         confirmedTos:
           type: boolean
           description: >-
@@ -299,11 +301,13 @@ components:
           description: "ENG: Contact email provided by the user during web onboarding - IT: Mail di contatto fornita dall'utente in fase di onboarding web"
           maxLength: 24
           example: "utente@email.it"
+          pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
         userMailConfirmation:
           type: string
           description: "ENG: Confirm email provided by the user during web onboarding - IT: Mail di conferma fornita dall'utente in fase di onboarding web"
           maxLength: 24
           example: "utente@email.it"
+          pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
 
     SelfConsentDTO:
       oneOf:
@@ -335,13 +339,10 @@ components:
         statusDate:
           type: string
           format: date-time
-          minLength: 19
           description: "ENG: Date on which the status changed to the current one - IT: Data in cui lo stato è cambiato allo stato attuale"
         onboardingOkDate:
           type: string
           format: date-time
-          minLength: 19
-          maxLength: 19
           description: "ENG: Date on which the onboarding successfully went through - IT: Data in cui l'adesione è avvenuta con successo"
 
     SelfConsentBoolDTO:
@@ -514,7 +515,6 @@ components:
         message:
           type: string
           description: "ENG: Error message- IT: Messaggio di errore"
-          maxLength: 2500
 
     InitiativeDTO:
       type: object
