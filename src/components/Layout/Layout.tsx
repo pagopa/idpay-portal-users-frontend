@@ -3,9 +3,9 @@ import { Box } from '@mui/material';
 import { theme } from '@pagopa/mui-italia';
 import Header from '../Header/Header';
 import Sidebar from '../Menu/Sidebar';
-import CustomFooter from '../Footer/Footer';
 import { loadingRef } from '../../utils/loadingOverlay';
 import Overlay from '../Overlay/Overlay';
+import { Footer } from '@pagopa/selfcare-common-frontend/lib';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -24,43 +24,49 @@ const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding =
     loadingRef.setLoading = setLoading;
   }, []);
 
+
+
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      minHeight="100vh"
-      bgcolor={theme.palette.background.default}
-    >
-      {loading && <Overlay />}
-      <Box component="header">
-        <Header hasSubHeader={hasSubHeader} />
-      </Box>
+      <Box
+        display="grid"
+        gridTemplateColumns="1fr"
+        gridTemplateRows="auto 1fr auto"
+        gridTemplateAreas={`"header"
+                          "body"
+                          "footer"`}
+        minHeight="100vh"
+      >
+        {loading && <Overlay />}
+        <Box component="header" gridArea="header">
+          <Header hasSubHeader={hasSubHeader} />
+        </Box>
 
-      <Box component="main" display="flex" flexGrow={1} minHeight={0}>
-        {hasSidebar && 
+        <Box component="main" display="flex" gridArea="body" flexGrow={1} minHeight={0}>
+          {hasSidebar &&
+            <Box
+              width={collapsed ? 64 : 240}
+              bgcolor={theme.palette.background.paper}
+              sx={{
+                transition: 'width 0.3s ease'
+              }}
+            >
+              <Sidebar collapsed={collapsed} toggleSidebar={toggleSidebar} />
+            </Box>}
+
           <Box
-            width={collapsed ? 64 : 240}
-            bgcolor={theme.palette.background.paper}
-            sx={{
-              transition: 'width 0.3s ease'
-            }}
+            flexGrow={1}
+            p={hasPadding ? 3 : 0}
+            overflow={'auto'}
+            minHeight={'100%'}
           >
-            <Sidebar collapsed={collapsed} toggleSidebar={toggleSidebar} />
+            {children}
           </Box>
-        }
+        </Box>
 
-        <Box
-          flexGrow={1}
-          p={hasPadding ? 3 : 0}
-          overflow={'auto'}
-          minHeight={'100%'}
-        >
-          {children}
+        <Box gridArea="footer"  id="footerBox">
+          <Footer loggedUser={isLogged} />
         </Box>
       </Box>
-
-      <CustomFooter isLogged={isLogged}/>
-    </Box>
   );
 };
 
