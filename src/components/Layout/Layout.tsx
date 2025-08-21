@@ -64,7 +64,7 @@ const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding =
         </Box>
 
         <Box gridArea="footer"  id="footerBox">
-          <Footer loggedUser={false} />
+          <Footer loggedUser={isLogged} />
         </Box>
       </Box>
   );
