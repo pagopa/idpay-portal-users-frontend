@@ -3,10 +3,17 @@ import { LanguageOutlined } from '@mui/icons-material';
 import { theme } from '@pagopa/mui-italia';
 import { useTranslation } from 'react-i18next';
 import { useIsMobile } from '../../hooks/useIsMobile';
+import { useNavigate } from 'react-router-dom';
+import ROUTES from '../../routes';
 
 const CustomLandingSection = () => {
   const { t } = useTranslation();
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
+
+  const handleContinue = () => {
+    navigate(ROUTES.TOS);
+  }
 
   return (
     <Box
@@ -40,7 +47,7 @@ const CustomLandingSection = () => {
               borderRadius: 2,
               boxShadow: theme.shadows[3],
             }}
-            onClick={() => {}}
+            onClick={handleContinue}
           >
             {t('landing.continueOnWeb')}
           </Button>

@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import CustomLandingSection from '../CustomLandingSection';
+import ROUTES from '../../../routes';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -19,15 +21,18 @@ jest.mock('../../../hooks/useIsMobile', () => ({
   useIsMobile: jest.fn(),
 }));
 
+const mockedNavigate = jest.fn();
+jest.mock('react-router-dom', () => {
+  const actual = jest.requireActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => mockedNavigate,
+  };
+});
+
 describe('CustomLandingSection', () => {
-  const originalOpen = window.open;
-
-  beforeEach(() => {
-    window.open = jest.fn();
-  });
-
   afterEach(() => {
-    window.open = originalOpen;
+    mockedNavigate.mockClear();
     jest.clearAllMocks();
   });
 
@@ -47,5 +52,14 @@ describe('CustomLandingSection', () => {
     render(<CustomLandingSection />);
 
     expect(screen.getByText('Request Bonus Mobile')).toBeInTheDocument();
+  });
+
+  it('navigates to TOS on button click', async () => {
+    require('../../../hooks/useIsMobile').useIsMobile.mockReturnValue(false);
+
+    render(<CustomLandingSection />);
+    await userEvent.click(screen.getByRole('button', { name: 'Continue on Web' }));
+
+    expect(mockedNavigate).toHaveBeenCalledWith(ROUTES.TOS);
   });
 });
