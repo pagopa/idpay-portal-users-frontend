@@ -5,7 +5,7 @@ import Header from '../Header/Header';
 import Sidebar from '../Menu/Sidebar';
 import { loadingRef } from '../../utils/loadingOverlay';
 import Overlay from '../Overlay/Overlay';
-import { Footer } from '@pagopa/selfcare-common-frontend/lib';
+import Footer from '@pagopa/selfcare-common-frontend/lib/components/Footer/Footer'
 
 type LayoutProps = {
   children: React.ReactNode;
