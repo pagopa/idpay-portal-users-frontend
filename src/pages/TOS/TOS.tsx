@@ -52,7 +52,7 @@ const TOS = () => {
     isValidStatus(data.status);
 
   useEffect(() => {
-    const initiativeId = '688ba02b2542210740f7ca48'; //TODO retrieve and store initiativeId
+    const initiativeId = '688ba02b2542210740f7ca481'; //TODO retrieve and store initiativeId
 
     const fetchData = async () => {
       try {
