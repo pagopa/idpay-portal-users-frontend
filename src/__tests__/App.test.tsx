@@ -11,6 +11,35 @@ jest.mock('../api/onboardingWebApiClient', () => ({
   }
 }));
 
+jest.mock('@pagopa/selfcare-common-frontend/lib/components/Footer/Footer', () => () => (
+  <div data-testid="footer" />
+));
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key
+  })
+}));
+
+jest.mock('../contexts/AuthContext', () => {
+  const initAuthMock = jest.fn();
+  return {
+    AuthProvider: ({ children }: any) => <>{children}</>,
+    useAuth: () => ({
+      initAuth: initAuthMock,
+      isAuthenticated: true
+    })
+  };
+});
+
+jest.mock('../hooks/useIsMobile', () => ({
+  useIsMobile: () => false,
+}));
+
+jest.mock('../utils/env', () => ({
+  isMockAuthEnabled: () => false,
+}));
+
 test('renders App component without crashing', () => {
   render(
     <MemoryRouter initialEntries={[ROUTES.DASHBOARD]}>

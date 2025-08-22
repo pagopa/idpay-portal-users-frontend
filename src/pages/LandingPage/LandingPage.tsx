@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
 import { useAuth } from '../../contexts/AuthContext';
+import { isMockAuthEnabled } from '../../utils/env';
 
 const LandingPage = () => {
   const { t } = useTranslation();
@@ -16,7 +17,7 @@ const LandingPage = () => {
 
 useEffect(() => {
   const initAndRedirect = async () => {
-    if (import.meta.env.VITE_KEYCLOAK_MOCK_AUTH === 'true' || isAuthenticated) {
+    if (isMockAuthEnabled() || isAuthenticated) {
       await initAuth(false);
         navigate(ROUTES.TOS);
     }

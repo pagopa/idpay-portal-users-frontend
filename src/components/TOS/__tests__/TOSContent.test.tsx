@@ -10,9 +10,18 @@ jest.mock('react-i18next', () => ({
   Trans: ({ i18nKey }: { i18nKey: string }) => <>{i18nKey}</>,
 }));
 
+jest.mock('../../../contexts/AuthContext', () => ({
+  useAuth: () => ({ logout: jest.fn() }),
+}));
+
+jest.mock('../../../hooks/useIsMobile', () => ({
+  useIsMobile: () => false,
+}));
+
+const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useNavigate: () => jest.fn(),
+  useNavigate: () => mockNavigate,
 }));
 
 describe('TOSContent', () => {
@@ -71,27 +80,24 @@ describe('TOSContent', () => {
     const user = userEvent.setup();
   
     render(<TOSContent sectionRefs={[...Array(4)].map(() => ({ current: document.createElement('div') }))} />);
-  
+
     const continueBtn = screen.getByRole('button', { name: /tos.continue/i });
     await user.click(continueBtn);
-  
+
     expect(screen.getByText('commons.mandatoryField')).toBeInTheDocument();
   });
-  
+
   test('calls navigate when checkbox is checked and continue is clicked', async () => {
-    const mockNavigate = jest.fn();
-    (jest.requireMock('react-router-dom') as any).useNavigate = () => mockNavigate;
-  
     const user = userEvent.setup();
   
     render(<TOSContent sectionRefs={[...Array(4)].map(() => ({ current: document.createElement('div') }))} />);
-  
+
     const checkbox = screen.getByRole('checkbox');
     await user.click(checkbox);
-  
+
     const continueBtn = screen.getByRole('button', { name: /tos.continue/i });
     await user.click(continueBtn);
-  
+
     expect(mockNavigate).toHaveBeenCalledWith('/utente/inserisci-email');
   });
 });
