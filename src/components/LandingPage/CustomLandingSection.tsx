@@ -8,15 +8,11 @@ import { useAuth } from '../../contexts/AuthContext';
 const CustomLandingSection = () => {
   const { t } = useTranslation();
   const isMobile = useIsMobile();
-  const { initAuth } = useAuth();
+  const { login } = useAuth();
 
-  const handleContinue = async () => {
-  try {
-    await initAuth(true);
-  } catch (error) {
-    console.error("Auth init failed", error);
-  }
-};
+  const handleContinue = () => {
+    login();
+  };
 
   return (
     <Box

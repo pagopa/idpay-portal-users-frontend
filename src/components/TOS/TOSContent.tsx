@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
 import { useState } from 'react';
 import { useIsMobile } from '../../hooks/useIsMobile';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface Props {
   sectionRefs: React.RefObject<HTMLDivElement>[];
@@ -16,6 +17,7 @@ export const TOSContent = ({ sectionRefs }: Props) => {
   const [checked, setChecked] = useState(false);
   const [error, setError] = useState(false);
   const isMobile = useIsMobile();
+  const { logout } = useAuth();
 
   const handleContinue = () => {
     if (!checked) {
@@ -25,6 +27,10 @@ export const TOSContent = ({ sectionRefs }: Props) => {
       navigate(ROUTES.INSERT_EMAIL);
     }
   }
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <Container sx={{ width: '100%', px: '10%' }}>
@@ -223,7 +229,7 @@ export const TOSContent = ({ sectionRefs }: Props) => {
         )}
       </Box>
       <Box sx={{ py: 6 }}>
-        <Button variant="outlined" sx={{ mr: { md: 2, sm: 1, xs: 1 } }}>{t('exit')}</Button>
+        <Button variant="outlined" onClick={handleLogout} sx={{ mr: { md: 2, sm: 1, xs: 1 } }}>{t('exit')}</Button>
         <Button variant="contained" onClick={handleContinue}>{t('tos.continue')}</Button>
       </Box>
     </Container>
