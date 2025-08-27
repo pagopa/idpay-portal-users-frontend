@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, useCallback, useMemo, useRef, type ReactNode } from 'react';
 import { AuthContextType, UserProfile } from '../types/auth';
-import { KeycloakService } from '../services/keycloakService';
+import { createKeycloakService, type KeycloakService } from '../services/keycloakService';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -24,8 +24,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setUser(null);
       setToken(null);
     };
-
-    keycloakServiceRef.current = new KeycloakService(handleTokenUpdate, handleAuthError);
+    keycloakServiceRef.current = createKeycloakService(handleTokenUpdate, handleAuthError);
 
     return () => {
       keycloakServiceRef.current?.cleanup();
@@ -36,7 +35,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (!keycloakServiceRef.current) return;
 
     setIsAuthenticated(true);
-    
+
     const currentToken = keycloakServiceRef.current.getCurrentToken();
     setToken(currentToken);
     keycloakServiceRef.current.saveToken(currentToken);
@@ -63,7 +62,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
 
       const authenticated = await keycloakServiceRef.current.initialize();
-      
+
       if (authenticated) {
         await setupAuthenticatedState();
       }

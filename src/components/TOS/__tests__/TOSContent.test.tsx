@@ -91,7 +91,7 @@ describe('TOSContent', () => {
     expect(screen.queryByText('commons.mandatoryField')).not.toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: /tos.continue/i }));
-    expect(mockNavigate).toHaveBeenCalledWith('/utente/inserisci-email');
+    expect(mockNavigate).toHaveBeenCalledWith('/inserisci-email');
   });
 
   test('clicking Exit calls logout', async () => {
