@@ -2,96 +2,119 @@ import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/stor
 
 const TOKEN_REFRESH_BEFORE_EXPIRY_SECONDS = 70;
 
-export class TokenManager {
-  private refreshTimer: number | null = null;
+export type TokenManager = {
+  saveToken: (token: string | null) => void;
+  getSavedToken: () => string | null;
+  isTokenValid: (token?: string | null) => boolean;
+  scheduleTokenRefresh: () => void;
+  forceRefreshToken: () => Promise<string | null>;
+  clearRefreshTimer: () => void;
+  cleanup: () => void;
+};
 
-  constructor(
-    private keycloak: any,
-    private onTokenUpdate: (token: string | null) => void,
-    private onAuthError: () => void
-  ) {}
+export function createTokenManager(
+  keycloak: any,
+  onTokenUpdate: (token: string | null) => void,
+  onAuthError: () => void
+): TokenManager {
+  let refreshTimer: number | null = null;
 
-  saveToken(token: string | null): void {
+  const saveToken = (token: string | null): void => {
     if (token) {
       storageTokenOps.write(token);
     } else {
       storageTokenOps.delete();
     }
-  }
+  };
 
-  getSavedToken(): string | null {
+  const getSavedToken = (): string | null => {
     return storageTokenOps.read();
-  }
+  };
 
-  isTokenValid(token?: string | null): boolean {
+  const isTokenValid = (token?: string | null): boolean => {
     if (!token || token.split('.').length !== 3) return false;
-    
+
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
       const expirationTime = payload.exp * 1000;
       const now = Date.now();
       const bufferTime = 30 * 1000;
-      
       return expirationTime > (now + bufferTime);
     } catch {
       return false;
     }
-  }
+  };
 
-  scheduleTokenRefresh(): void {
-    this.clearRefreshTimer();
-    
-    if (!this.keycloak.tokenParsed?.exp) return;
+  const clearRefreshTimer = (): void => {
+    if (refreshTimer) {
+      window.clearTimeout(refreshTimer);
+      refreshTimer = null;
+    }
+  };
 
-    const expirationTime = this.keycloak.tokenParsed.exp * 1000;
+  const scheduleTokenRefresh = (): void => {
+    clearRefreshTimer();
+
+    if (!keycloak.tokenParsed?.exp) return;
+
+    const expirationTime = keycloak.tokenParsed.exp * 1000;
     const now = Date.now();
-    const refreshTime = expirationTime - now - (TOKEN_REFRESH_BEFORE_EXPIRY_SECONDS * 1000);
+    const refreshTime =
+      expirationTime - now - TOKEN_REFRESH_BEFORE_EXPIRY_SECONDS * 1000;
+
     const timeUntilRefresh = Math.max(refreshTime, 5000);
 
-    this.refreshTimer = window.setTimeout(() => {
-      this.refreshToken();
+    refreshTimer = window.setTimeout(() => {
+      void refreshToken();
     }, timeUntilRefresh);
-  }
+  };
 
-  private async refreshToken(): Promise<void> {
+  const refreshToken = async (): Promise<void> => {
     try {
-      const refreshed = await this.keycloak.updateToken(TOKEN_REFRESH_BEFORE_EXPIRY_SECONDS);
-      
-      if (refreshed && this.keycloak.token) {
-        this.onTokenUpdate(this.keycloak.token);
-        this.saveToken(this.keycloak.token);
-        this.scheduleTokenRefresh();
+      const refreshed = await keycloak.updateToken(
+        TOKEN_REFRESH_BEFORE_EXPIRY_SECONDS
+      );
+
+      if (refreshed && keycloak.token) {
+        onTokenUpdate(keycloak.token);
+        saveToken(keycloak.token);
+        scheduleTokenRefresh();
       }
     } catch (error) {
       console.warn('Token refresh failed:', error);
-      this.onAuthError();
+      onAuthError();
     }
-  }
+  };
 
-  async forceRefreshToken(): Promise<string | null> {
+  const forceRefreshToken = async (): Promise<string | null> => {
     try {
-      const refreshed = await this.keycloak.updateToken(TOKEN_REFRESH_BEFORE_EXPIRY_SECONDS);
-      
-      if (refreshed && this.keycloak.token) {
-        this.onTokenUpdate(this.keycloak.token);
-        this.saveToken(this.keycloak.token);
+      const refreshed = await keycloak.updateToken(
+        TOKEN_REFRESH_BEFORE_EXPIRY_SECONDS
+      );
+
+      if (refreshed && keycloak.token) {
+        onTokenUpdate(keycloak.token);
+        saveToken(keycloak.token);
       }
-      
-      return this.keycloak.token || null;
+
+      return keycloak.token || null;
     } catch {
       return null;
     }
-  }
+  };
 
-  clearRefreshTimer(): void {
-    if (this.refreshTimer) {
-      window.clearTimeout(this.refreshTimer);
-      this.refreshTimer = null;
-    }
-  }
+  const cleanup = (): void => {
+    clearRefreshTimer();
+    saveToken(null);
+  };
 
-  cleanup(): void {
-    this.clearRefreshTimer();
-    this.saveToken(null);
-  }
+  return {
+    saveToken,
+    getSavedToken,
+    isTokenValid,
+    scheduleTokenRefresh,
+    forceRefreshToken,
+    clearRefreshTimer,
+    cleanup,
+  };
 }

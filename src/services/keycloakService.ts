@@ -1,32 +1,46 @@
 import keycloak from '../config/keycloak';
 import ROUTES from '../routes';
 import { UserProfile } from '../types/auth';
-import { TokenManager } from '../utils/tokenManager';
+import { createTokenManager } from '../utils/tokenManager';
 
-export class KeycloakService {
-  private tokenManager: TokenManager;
-  private isMockMode: boolean;
-  
-  constructor(
-    onTokenUpdate: (token: string | null) => void,
-    onAuthError: () => void
-  ) {
-    this.isMockMode = import.meta.env.VITE_KEYCLOAK_MOCK_AUTH === 'true';
-    this.tokenManager = new TokenManager(keycloak, onTokenUpdate, onAuthError);
-  }
+export type KeycloakService = {
+  initialize: () => Promise<boolean>;
+  loadUserProfile: () => Promise<UserProfile | null>;
+  login: () => void;
+  logout: () => void;
+  getCurrentToken: () => string | null;
+  getValidToken: () => Promise<string | null>;
+  isAuthenticated: () => boolean;
+  startTokenRefresh: () => void;
+  saveToken: (token: string | null) => void;
+  cleanup: () => void;
+};
 
-  async initialize(): Promise<boolean> {
-    if (this.isMockMode) return true;
+export function createKeycloakService(
+  onTokenUpdate: (token: string | null) => void,
+  onAuthError: () => void
+): KeycloakService {
+  const isMockMode = import.meta.env.VITE_KEYCLOAK_MOCK_AUTH === 'true';
+
+  const basePath =
+    ((import.meta.env.BASE_URL || '/').replace(/\/+$/, '') as string) || '/';
+
+  const buildFullUrl = (path: string) => `${window.location.origin}${basePath}${path}`;
+
+  const tokenManager = createTokenManager(keycloak, onTokenUpdate, onAuthError);
+
+  const initialize = async (): Promise<boolean> => {
+    if (isMockMode) return true;
 
     try {
-      const savedToken = this.tokenManager.getSavedToken();
-      const useBootstrap = this.tokenManager.isTokenValid(savedToken);
+      const savedToken = tokenManager.getSavedToken();
+      const useBootstrap = tokenManager.isTokenValid(savedToken);
 
       const authenticated = await keycloak.init({
         onLoad: 'check-sso',
         pkceMethod: 'S256',
         checkLoginIframe: false,
-        silentCheckSsoRedirectUri: `${window.location.origin}/utente/silent-check-sso.html`,
+        silentCheckSsoRedirectUri: buildFullUrl('/silent-check-sso.html'),
         ...(useBootstrap && savedToken ? { token: savedToken } : {}),
       });
 
@@ -35,13 +49,12 @@ export class KeycloakService {
       console.error('Keycloak initialization failed:', error);
       return false;
     }
-  }
+  };
 
-  async loadUserProfile(): Promise<UserProfile | null> {
-    if (this.isMockMode) {
+  const loadUserProfile = async (): Promise<UserProfile | null> => {
+    if (isMockMode) {
       return { name: 'Mock User', email: 'test@test.it' };
     }
-
     try {
       const profile = await keycloak.loadUserProfile();
       return profile as UserProfile;
@@ -49,55 +62,63 @@ export class KeycloakService {
       console.error('Failed to load user profile:', error);
       return null;
     }
-  }
+  };
 
-  login(): void {
-    if (this.isMockMode) return;
-
+  const login = (): void => {
+    if (isMockMode) return;
     keycloak.login({
       idpHint: 'oneid-keycloak',
-      redirectUri: `${window.location.origin}${ROUTES.TOS}`,
+      redirectUri: buildFullUrl(ROUTES.TOS),
     });
-  }
+  };
 
-  logout(): void {
-    this.tokenManager.cleanup();
-    
-    if (!this.isMockMode) {
+  const logout = (): void => {
+    tokenManager.cleanup();
+    if (!isMockMode) {
       keycloak.logout({
-        redirectUri: `${window.location.origin}${ROUTES.HOME}`,
+        redirectUri: buildFullUrl(ROUTES.HOME),
       });
     }
-  }
+  };
 
-  getCurrentToken(): string | null {
-    if (this.isMockMode) return 'mock-token';
+  const getCurrentToken = (): string | null => {
+    if (isMockMode) return 'mock-token';
     return keycloak.token || null;
-  }
+  };
 
-  async getValidToken(): Promise<string | null> {
-    if (this.isMockMode) return 'mock-token';
+  const getValidToken = async (): Promise<string | null> => {
+    if (isMockMode) return 'mock-token';
     if (!keycloak.authenticated) return null;
-    
-    return this.tokenManager.forceRefreshToken();
-  }
+    return tokenManager.forceRefreshToken();
+  };
 
-  isAuthenticated(): boolean {
-    if (this.isMockMode) return true;
+  const isAuthenticated = (): boolean => {
+    if (isMockMode) return true;
     return !!keycloak.authenticated;
-  }
+  };
 
-  startTokenRefresh(): void {
-    if (!this.isMockMode) {
-      this.tokenManager.scheduleTokenRefresh();
-    }
-  }
+  const startTokenRefresh = (): void => {
+    if (!isMockMode) tokenManager.scheduleTokenRefresh();
+  };
 
-  saveToken(token: string | null): void {
-    this.tokenManager.saveToken(token);
-  }
+  const saveToken = (token: string | null): void => {
+    tokenManager.saveToken(token);
+  };
 
-  cleanup(): void {
-    this.tokenManager.cleanup();
-  }
+  const cleanup = (): void => {
+    tokenManager.cleanup();
+  };
+
+  return {
+    initialize,
+    loadUserProfile,
+    login,
+    logout,
+    getCurrentToken,
+    getValidToken,
+    isAuthenticated,
+    startTokenRefresh,
+    saveToken,
+    cleanup,
+  };
 }
