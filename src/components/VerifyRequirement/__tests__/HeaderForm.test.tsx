@@ -8,6 +8,19 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
+jest.mock('../../../contexts/AuthContext', () => {
+  return {
+    useAuth: () => ({
+      logout: jest.fn(),
+      isAuthenticated: true,
+      loading: false,
+      getToken: jest.fn().mockResolvedValue('token'),
+      initAuth: jest.fn(),
+      login: jest.fn(),
+    }),
+  };
+});
+
 describe('HeaderForm', () => {
   test('renders the back button with the correct text', () => {
     render(<HeaderForm />);
