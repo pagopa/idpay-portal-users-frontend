@@ -4,9 +4,27 @@ import HeroBackground from '../../assets/io-gradient-blu.png'
 import CustomHeroSection from '../../components/LandingPage/CustomHeroSection';
 import { useTranslation } from 'react-i18next';
 import CustomLandingSection from '../../components/LandingPage/CustomLandingSection';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ROUTES from '../../routes';
+import { useAuth } from '../../contexts/AuthContext';
+import { isMockAuthEnabled } from '../../utils/env';
 
 const LandingPage = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { initAuth, isAuthenticated } = useAuth();
+
+useEffect(() => {
+  const initAndRedirect = async () => {
+    if (isMockAuthEnabled() || isAuthenticated) {
+      await initAuth(false);
+        navigate(ROUTES.TOS);
+    }
+  };
+
+  initAndRedirect();
+}, [initAuth, isAuthenticated]);
 
   const handleDownloadClick = () => {
     const userAgent = navigator.userAgent || navigator.vendor || '';

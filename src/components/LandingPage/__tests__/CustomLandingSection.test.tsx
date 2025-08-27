@@ -1,7 +1,7 @@
+import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import CustomLandingSection from '../CustomLandingSection';
-import ROUTES from '../../../routes';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -21,23 +21,36 @@ jest.mock('../../../hooks/useIsMobile', () => ({
   useIsMobile: jest.fn(),
 }));
 
-const mockedNavigate = jest.fn();
 jest.mock('react-router-dom', () => {
   const actual = jest.requireActual('react-router-dom');
   return {
     ...actual,
-    useNavigate: () => mockedNavigate,
+    useNavigate: () => jest.fn()
   };
 });
 
+jest.mock('../../../contexts/AuthContext', () => {
+  const mod: any = {};
+  mod.loginMock = jest.fn();
+  mod.useAuth = () => ({ login: mod.loginMock });
+  return mod;
+});
+
+
 describe('CustomLandingSection', () => {
+  const AuthCtxMock = require('../../../contexts/AuthContext');
+  const { useIsMobile } = require('../../../hooks/useIsMobile');
+
+  beforeEach(() => {
+    AuthCtxMock.loginMock.mockClear();
+  });
+
   afterEach(() => {
-    mockedNavigate.mockClear();
     jest.clearAllMocks();
   });
 
   it('renders desktop version of title and button', () => {
-    require('../../../hooks/useIsMobile').useIsMobile.mockReturnValue(false);
+    useIsMobile.mockReturnValue(false);
 
     render(<CustomLandingSection />);
 
@@ -47,19 +60,19 @@ describe('CustomLandingSection', () => {
   });
 
   it('renders mobile version of title when isMobile is true', () => {
-    require('../../../hooks/useIsMobile').useIsMobile.mockReturnValue(true);
+    useIsMobile.mockReturnValue(true);
 
     render(<CustomLandingSection />);
 
     expect(screen.getByText('Request Bonus Mobile')).toBeInTheDocument();
   });
 
-  it('navigates to TOS on button click', async () => {
-    require('../../../hooks/useIsMobile').useIsMobile.mockReturnValue(false);
+  it('calls login on button click', async () => {
+    useIsMobile.mockReturnValue(false);
 
     render(<CustomLandingSection />);
     await userEvent.click(screen.getByRole('button', { name: 'Continue on Web' }));
 
-    expect(mockedNavigate).toHaveBeenCalledWith(ROUTES.TOS);
+    expect(AuthCtxMock.loginMock).toHaveBeenCalledTimes(1);
   });
 });

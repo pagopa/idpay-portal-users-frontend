@@ -3,17 +3,16 @@ import { LanguageOutlined } from '@mui/icons-material';
 import { theme } from '@pagopa/mui-italia';
 import { useTranslation } from 'react-i18next';
 import { useIsMobile } from '../../hooks/useIsMobile';
-import { useNavigate } from 'react-router-dom';
-import ROUTES from '../../routes';
+import { useAuth } from '../../contexts/AuthContext';
 
 const CustomLandingSection = () => {
   const { t } = useTranslation();
   const isMobile = useIsMobile();
-  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleContinue = () => {
-    navigate(ROUTES.TOS);
-  }
+    login();
+  };
 
   return (
     <Box
