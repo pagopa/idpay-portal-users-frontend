@@ -8,23 +8,17 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
 import { useAuth } from '../../contexts/AuthContext';
-import { isMockAuthEnabled } from '../../utils/env';
 
 const LandingPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { initAuth, isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
 
-useEffect(() => {
-  const initAndRedirect = async () => {
-    if (isMockAuthEnabled() || isAuthenticated) {
-      await initAuth(false);
-        navigate(ROUTES.TOS);
-    }
-  };
-
-  initAndRedirect();
-}, [initAuth, isAuthenticated]);
+  useEffect(() => {
+  if (!loading && isAuthenticated) {
+    navigate(ROUTES.TOS);
+  }
+}, [loading, isAuthenticated]);
 
   const handleDownloadClick = () => {
     const userAgent = navigator.userAgent || navigator.vendor || '';
