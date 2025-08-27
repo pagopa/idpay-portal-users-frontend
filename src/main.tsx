@@ -10,7 +10,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 
 createRoot(document.getElementById('root')!).render(
   <AuthProvider>
-    <BrowserRouter>
+    <BrowserRouter basename='/utente'>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <App />

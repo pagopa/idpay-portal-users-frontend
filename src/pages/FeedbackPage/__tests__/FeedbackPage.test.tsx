@@ -60,7 +60,7 @@ describe('FeedbackPage', () => {
         );
     });
 
-    it('redirects to /utente/ if no status and no fallback', () => {
+    it('redirects to home if no status and no fallback', () => {
         const originalOnEvaluation = feedbackStates.ON_EVALUATION;
         delete feedbackStates.ON_EVALUATION;
 

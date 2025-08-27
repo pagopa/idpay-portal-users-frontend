@@ -1,144 +1,117 @@
-import React, { createContext, useContext, useEffect, useState, useMemo, useCallback, useRef } from 'react';
-import keycloak from '../config/keycloak';
-import type { ReactNode } from 'react';
-import ROUTES from '../routes';
-
-interface AuthContextType {
-  isAuthenticated: boolean;
-  user: unknown;
-  token: string | null;
-  initAuth: (shouldRedirectToLogin?: boolean) => Promise<void>;
-  login: () => void;
-  logout: () => void;
-  loading: boolean;
-}
+import React, { createContext, useContext, useEffect, useState, useCallback, useMemo, useRef, type ReactNode } from 'react';
+import { AuthContextType, UserProfile } from '../types/auth';
+import { createKeycloakService, type KeycloakService } from '../services/keycloakService';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<UserProfile | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const keycloakServiceRef = useRef<KeycloakService | null>(null);
+  const hasInitialized = useRef(false);
   const isMockMode = import.meta.env.VITE_KEYCLOAK_MOCK_AUTH === 'true';
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<unknown>(null);
-  const [token, setToken] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const handleTokenUpdate = (newToken: string | null) => {
+      setToken(newToken);
+    };
 
-  const hasInitialized = useRef(false);
-  const initPromise = useRef<Promise<boolean> | null>(null);
-
-  const readProfile = useCallback(async () => {
-    setIsAuthenticated(true);
-    setToken(keycloak.token || null);
-    try {
-      const profile = await keycloak.loadUserProfile();
-      setUser(profile);
-    } catch {
+    const handleAuthError = () => {
+      setIsAuthenticated(false);
       setUser(null);
-    }
+      setToken(null);
+    };
+    keycloakServiceRef.current = createKeycloakService(handleTokenUpdate, handleAuthError);
+
+    return () => {
+      keycloakServiceRef.current?.cleanup();
+    };
   }, []);
 
-  const initOnce = useCallback((onLoad?: 'check-sso' | 'login-required') => {
-    if (initPromise.current) return initPromise.current;
-    initPromise.current = keycloak
-      .init({
-        onLoad,
-        pkceMethod: 'S256',
-        checkLoginIframe: false,
-      })
-      .then((auth) => !!auth)
-      .catch(() => false);
-    return initPromise.current;
+  const setupAuthenticatedState = useCallback(async () => {
+    if (!keycloakServiceRef.current) return;
+
+    setIsAuthenticated(true);
+
+    const currentToken = keycloakServiceRef.current.getCurrentToken();
+    setToken(currentToken);
+    keycloakServiceRef.current.saveToken(currentToken);
+
+    const profile = await keycloakServiceRef.current.loadUserProfile();
+    setUser(profile);
+
+    keycloakServiceRef.current.startTokenRefresh();
   }, []);
 
-  const logout = useCallback(() => {
-    if (!isMockMode) {
-      keycloak.logout({
-        redirectUri: `${window.location.origin}${ROUTES.HOME}`,
-      });
+  const initAuth = useCallback(async () => {
+    if (!keycloakServiceRef.current || hasInitialized.current) return;
+    hasInitialized.current = true;
+
+    setLoading(true);
+
+    try {
+      if (isMockMode) {
+        setIsAuthenticated(true);
+        setUser({ name: 'Mock User', email: 'test@test.it' });
+        setToken('mock-token');
+        setLoading(false);
+        return;
+      }
+
+      const authenticated = await keycloakServiceRef.current.initialize();
+
+      if (authenticated) {
+        await setupAuthenticatedState();
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Auth initialization failed:', error);
+      setLoading(false);
     }
-    setIsAuthenticated(false);
-    setUser(null);
-    setToken(null);
-  }, [isMockMode]);
+  }, [setupAuthenticatedState, isMockMode]);
 
   const login = useCallback(() => {
     if (isMockMode) {
-      console.log('mock-login');
       setIsAuthenticated(true);
       setUser({ name: 'Mock User', email: 'test@test.it' });
       setToken('mock-token');
       return;
     }
-    keycloak.login({
-      idpHint: 'oneid-keycloak',
-      redirectUri: `${window.location.origin}${ROUTES.TOS}`,
-    });
+
+    keycloakServiceRef.current?.login();
   }, [isMockMode]);
 
-  const initAuth = useCallback(
-    async (shouldRedirectToLogin = false) => {
-      if (isMockMode) {
-        setIsAuthenticated(true);
-        setUser({ name: 'Mock User', email: 'test@test.it' });
-        setToken('mock-token');
-        return;
-      }
+  const logout = useCallback(() => {
+    setIsAuthenticated(false);
+    setUser(null);
+    setToken(null);
+    keycloakServiceRef.current?.logout();
+  }, []);
 
-      setLoading(true);
-      try {
-        if (!hasInitialized.current) {
-          const authenticated = await initOnce('check-sso');
-          hasInitialized.current = true;
-          if (authenticated) {
-            await readProfile();
-            return;
-          }
-        }
-        if (shouldRedirectToLogin) {
-          await keycloak.login({
-            idpHint: 'oneid-keycloak',
-            redirectUri: `${window.location.origin}${ROUTES.TOS}`,
-          });
-        }
-      } catch (err) {
-        console.error('Keycloak init/login error', err);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [initOnce, isMockMode, readProfile]
-  );
+  const getToken = useCallback(async (): Promise<string | null> => {
+    if (!keycloakServiceRef.current) return null;
+    return keycloakServiceRef.current.getValidToken();
+  }, []);
 
   useEffect(() => {
-    void initAuth(false);
+    void initAuth();
   }, [initAuth]);
-
-  useEffect(() => {
-    if (isMockMode) return;
-    const interval = setInterval(() => {
-      keycloak
-        .updateToken(70)
-        .then((refreshed) => {
-          if (refreshed) setToken(keycloak.token || null);
-        })
-        .catch(() => {
-          logout();
-        });
-    }, 60000);
-    return () => clearInterval(interval);
-  }, [isMockMode, logout]);
 
   const value = useMemo(
     () => ({
       isAuthenticated,
       user,
       token,
+      loading,
       initAuth,
       login,
       logout,
-      loading,
+      getToken,
     }),
-    [isAuthenticated, user, token, initAuth, login, logout, loading]
+    [isAuthenticated, user, token, loading, initAuth, login, logout, getToken]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

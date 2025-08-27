@@ -147,7 +147,7 @@ describe('TOS Page', () => {
     render(<TOS />);
 
     await waitFor(() => {
-      expect(mockedUsedNavigate).toHaveBeenCalledWith('/utente/esito', {
+      expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
         state: { status: 'COMPLETED' },
       });
     });
