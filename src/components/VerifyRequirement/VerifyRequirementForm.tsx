@@ -11,6 +11,7 @@ import ROUTES from '../../routes';
 import { useNavigate } from 'react-router-dom';
 import { useEmailStore } from '../../hooks/useEmailStore';
 import { commonHeaders, OnboardingWebApi } from '../../api/onboardingWebApiClient';
+import { extractErrorResponse, isSuccessStatus } from '../../utils/api';
 
 export default function VerifyRequirementForm() {
     const { t } = useTranslation();
@@ -25,56 +26,47 @@ export default function VerifyRequirementForm() {
 
     const handleContinue = async () => {
         const isValid = iseeValue !== '' && switchValue === true;
+       if (!isValid) { return; }
 
-        if (!isValid) {
-            return;
-        }
+        const payload = {
+            initiativeId: '68b1612f5a02762e0511c964',
+            confirmedTos: true,
+            pdndAccept: true,
+            selfDeclarationList: [
+                {
+                    _type: 'multi_consent',
+                    code: 'isee',
+                    value: '01', // TODO: retrieve from detail API
+                },
+            ],
+            userMail: email,
+            userMailConfirmation: confirmEmail,
+        };
 
         try {
-            const initiativeId = '688ba02b2542210740f7ca48' //TODO retrieve and store initiativeId
-            const confirmedTos = true;
-            const pdndAccept = true; //TODO
-
-            const selfDeclarationList = [
-                {
-                    _type: 'boolean',
-                    code: '1',
-                    accepted: switchValue
-                },
-               {
-                    _type: 'text',
-                    code: '2',
-                    value: '' //TODO
-                }
-            ];
-
-            const response = await OnboardingWebApi.save({
-                body: {
-                    initiativeId,
-                    confirmedTos,
-                    pdndAccept,
-                    selfDeclarationList,
-                    userMail: email,
-                    userMailConfirmation: confirmEmail
-                },
+            const apiResponse = await OnboardingWebApi.save({
+                body: payload,
                 ...commonHeaders
             });
 
-            if (response.status !== 202) {
-                console.error('Errore API:', response);
-                //TODO add error redirect
+            if (isSuccessStatus(apiResponse.status)) {
+                navigate(ROUTES.FEEDBACK, { state: { status: 'REQUEST_SUBMITTED' } });
                 return;
             }
-
-            navigate(ROUTES.FEEDBACK, { state: { status: 'REQUEST_SUBMITTED' } });
-        } catch (error) {
-            //TODO add generic error
-            console.error('Error: ', error);
-        };
+            console.error('Unexpected API response:', apiResponse);
+        
+        } catch (apiError: any) {
+            const res = extractErrorResponse(apiError);
+            if (isSuccessStatus(res?.status)) {
+                navigate(ROUTES.FEEDBACK, { state: { status: 'REQUEST_SUBMITTED' } });
+                return;
+            }
+            console.error('API call failed:', apiError);
+        }
     };
 
     return (
-        <Container sx={{ width: "100%", px: {lg: "5%", md: "20%", sm: "10%", xs: "1%"} }}>
+        <Container sx={{ width: "100%", px: { lg: "5%", md: "20%", sm: "10%", xs: "1%" } }}>
             <Box
                 sx={{
                     display: 'flex',
@@ -85,7 +77,7 @@ export default function VerifyRequirementForm() {
                 <HeaderForm />
 
                 <FamilyForm />
-                <SelfDeclaration switchValue={switchValue} setSwitchValue={setSwitchValue}/>
+                <SelfDeclaration switchValue={switchValue} setSwitchValue={setSwitchValue} />
                 <IseeForm iseeValue={iseeValue} setIseeValue={setIseeValue} />
 
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
