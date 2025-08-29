@@ -1,0 +1,14 @@
+<!-- Keycloak silent check-sso page
+     See Keycloak docs
+-->
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Silent Check SSO</title>
+  </head>
+  <body>
+    <script>
+      parent.postMessage(location.href, location.origin);
+    </script>
+  </body>
+</html>

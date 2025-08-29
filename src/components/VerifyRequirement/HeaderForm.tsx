@@ -2,9 +2,16 @@ import { ArrowBack } from '@mui/icons-material'
 import { Box, Typography } from '@mui/material'
 import { ButtonNaked, theme } from '@pagopa/mui-italia'
 import { useTranslation } from 'react-i18next'
+import { useAuth } from '../../contexts/AuthContext';
 
 export default function HeaderForm() {
     const { t } = useTranslation();
+    const { logout } = useAuth();
+
+    const handleLogout = () => {
+        logout();
+    };
+
     return (
         <Box>
             <ButtonNaked color="text"
@@ -12,6 +19,7 @@ export default function HeaderForm() {
                 size="medium"
                 startIcon={<ArrowBack sx={{ color: theme.palette.primary.main, }} />}
                 sx={{ color: theme.palette.primary.main, }}
+                onClick= {handleLogout}
             >
                 {t('verifyRequirements.exit')}
             </ButtonNaked>

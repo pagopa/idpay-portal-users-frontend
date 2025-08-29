@@ -9,16 +9,56 @@ import FeedbackPage from './pages/FeedbackPage/FeedbackPage';
 import ROUTES from './routes';
 import { useIsMobile } from './hooks/useIsMobile';
 import LandingPage from './pages/LandingPage/LandingPage';
+import ProtectedRoute from './config/ProtectedRoute';
+
+const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <Layout hasSidebar={false} hasSubHeader={false} hasPadding={false} isLogged={false}>
+    {children}
+  </Layout>
+);
+
+const PrivateLayout: React.FC<{
+  children: React.ReactNode;
+  hasSidebar?: boolean;
+  hasSubHeader?: boolean;
+  hasPadding?: boolean;
+}> = ({ children, hasSidebar = false, hasSubHeader = false, hasPadding = undefined }) => (
+  <ProtectedRoute>
+    <Layout hasSidebar={hasSidebar} hasSubHeader={hasSubHeader} hasPadding={hasPadding}>
+      {children}
+    </Layout>
+  </ProtectedRoute>
+);
 
 const LocalRoutes: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
   <Routes>
-    {/* TODO tmp fallback route */}
-    <Route index path="*" element={<Layout hasSidebar={false} hasSubHeader={false} hasPadding={false} isLogged={false}><LandingPage/></Layout>} /> 
-    <Route path={ROUTES.DASHBOARD} element={<Layout hasSidebar={true}><Dashboard/></Layout>} />
-    <Route path={ROUTES.VERIFY_REQUIREMENTS} element={<Layout hasSidebar={false}><VerifyRequirements/></Layout>} />
-    <Route path={ROUTES.TOS} element={<Layout hasSidebar={false} hasSubHeader={isMobile} hasPadding={false}><TOS/></Layout>} />
-    <Route path={ROUTES.INSERT_EMAIL} element={<Layout hasSidebar={false}><InsertEmail /></Layout>} />
-    <Route path={ROUTES.FEEDBACK} element={<Layout hasSidebar={false}><FeedbackPage /></Layout>} />
+    {/* fallback */}
+    <Route path="*" element={<PublicLayout><LandingPage /></PublicLayout>} />
+
+    {/* public route */}
+    <Route path={ROUTES.HOME} element={<PublicLayout><LandingPage /></PublicLayout>} />
+
+    {/* private route */}
+    <Route
+      path={ROUTES.DASHBOARD}
+      element={<PrivateLayout hasSidebar><Dashboard /></PrivateLayout>}
+    />
+    <Route
+      path={ROUTES.VERIFY_REQUIREMENTS}
+      element={<PrivateLayout><VerifyRequirements /></PrivateLayout>}
+    />
+    <Route
+      path={ROUTES.TOS}
+      element={<PrivateLayout hasSubHeader={isMobile} hasPadding={false}><TOS /></PrivateLayout>}
+    />
+    <Route
+      path={ROUTES.INSERT_EMAIL}
+      element={<PrivateLayout><InsertEmail /></PrivateLayout>}
+    />
+    <Route
+      path={ROUTES.FEEDBACK}
+      element={<PrivateLayout><FeedbackPage /></PrivateLayout>}
+    />
   </Routes>
 );
 

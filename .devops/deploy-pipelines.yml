@@ -29,6 +29,12 @@ variables:
     react_app_url_storage: '$(UAT_REACT_APP_URL_STORAGE)'
     vite_url_api_portal_users: '$(UAT_VITE_URL_API_PORTAL_USERS)'
 
+    #KEYCLOAK UAT
+    vite_keycloak_url: '$(UAT_VITE_KEYCLOAK_URL)' 
+    vite_keycloak_realm: '$(UAT_VITE_KEYCLOAK_REALM)'
+    vite_keycloak_client_id: '$(UAT_VITE_KEYCLOAK_CLIENT_ID)'
+    vite_keycloak_redirect_uri: '$(UAT_VITE_KEYCLOAK_REDIRECT_URI)'
+
     # react_app_one_trust_base_url: '$(UAT_REACT_APP_URL_CDN)/ot'
     # react_app_analytics_enabled: '$(UAT_ANALYTICS_ENABLED)'
     # react_app_analytics_mocked: '$(UAT_ANALYTICS_MOCKED)'
@@ -42,6 +48,7 @@ variables:
     react_app_one_trust_tos_id: $(UAT_REACT_APP_ONE_TRUST_TOS_ID)
     react_app_one_trust_tos_json_url: $(UAT_REACT_APP_ONE_TRUST_TOS_JSON_URL)
     react_app_url_api_register:  $(UAT_REACT_APP_URL_API_REGISTER)
+    cdn_domains: '$(UAT_CDN_DOMAINS)'
 
   ${{ elseif eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
     environment: 'PROD'
@@ -60,6 +67,12 @@ variables:
 
     react_app_url_storage: '$(PROD_REACT_APP_URL_STORAGE)'
 
+    #KEYCLOAK PROD
+    vite_keycloak_url: '$(PROD_VITE_KEYCLOAK_URL)' 
+    vite_keycloak_realm: '$(PROD_VITE_KEYCLOAK_REALM)'
+    vite_keycloak_client_id: '$(PROD_VITE_KEYCLOAK_CLIENT_ID)'
+    vite_keycloak_redirect_uri: '$(PROD_VITE_KEYCLOAK_REDIRECT_URI)'
+
     vite_url_api_portal_users: '$(PROD_VITE_URL_API_PORTAL_USERS)'
     # react_app_one_trust_base_url: '$(PROD_REACT_APP_URL_CDN)/ot'
     # react_app_analytics_enabled: '$(PROD_ANALYTICS_ENABLED)'
@@ -74,6 +87,7 @@ variables:
     react_app_one_trust_tos_id: $(PROD_REACT_APP_ONE_TRUST_TOS_ID)
     react_app_one_trust_tos_json_url: $(PROD_REACT_APP_ONE_TRUST_TOS_JSON_URL)
     react_app_url_api_register:  $(PROD_REACT_APP_URL_API_REGISTER)
+    cdn_domains: '$(PROD_CDN_DOMAINS)'
 
   # every branch different from past will be considered as DEV
   #  ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/release-dev') }}:
@@ -88,6 +102,12 @@ variables:
     react_app_url_cdn: '$(DEV_REACT_APP_URL_CDN)'
 
     react_app_url_storage: '$(DEV_REACT_APP_URL_STORAGE)'
+
+    #KEYCLOAK ENV
+    vite_keycloak_url: '$(DEV_VITE_KEYCLOAK_URL)' 
+    vite_keycloak_realm: '$(DEV_VITE_KEYCLOAK_REALM)'
+    vite_keycloak_client_id: '$(DEV_VITE_KEYCLOAK_CLIENT_ID)'
+    vite_keycloak_redirect_uri: '$(DEV_VITE_KEYCLOAK_REDIRECT_URI)'
 
     react_app_url_fe_pre_login: '$(DEV_REACT_APP_URL_FE_PRE_LOGIN)'
     react_app_url_fe_auth: '$(DEV_REACT_APP_URL_FE_LOGIN)'
@@ -108,6 +128,7 @@ variables:
     react_app_one_trust_tos_id: $(DEV_REACT_APP_ONE_TRUST_TOS_ID)
     react_app_one_trust_tos_json_url: $(DEV_REACT_APP_ONE_TRUST_TOS_JSON_URL)
     react_app_url_api_register: $(DEV_REACT_APP_URL_API_REGISTER)
+    cdn_domains: '$(DEV_CDN_DOMAINS)'
 
 
 # Automatically triggered on PR
@@ -205,6 +226,11 @@ stages:
               REACT_APP_ONE_TRUST_TOS_ID: $(react_app_one_trust_tos_id)
               REACT_APP_ONE_TRUST_TOS_JSON_URL: $(react_app_one_trust_tos_json_url)
 
+              VITE_KEYCLOAK_URL: '$(vite_keycloak_url)' 
+              VITE_KEYCLOAK_REALM: '$(vite_keycloak_realm)'
+              VITE_KEYCLOAK_CLIENT_ID: '$(vite_keycloak_client_id)'
+              VITE_KEYCLOAK_REDIRECT_URI: '$(vite_keycloak_redirect_uri)'
+
           - bash: |
               printf "$EXECUTION_ID\n$(git name-rev --name-only FETCH_HEAD) $(git rev-parse HEAD)" > $(System.DefaultWorkingDirectory)/dist/build.info
             env:
@@ -232,9 +258,13 @@ stages:
               inlineScript: |
                 az storage blob sync --container '$(blob_container_name)' --account-name $(storage_account) -s "$(Pipeline.Workspace)/Bundle" --destination '$(basePath)/'
           - task: AzureCLI@1
-            displayName: 'Purge CDN endpoint'
+            displayName: 'Purge Azure Front Door CDN endpoint'
             inputs:
               azureSubscription: '$(AZURE_SUBSCRIPTION)'
               scriptLocation: inlineScript
               inlineScript: |
-                az cdn endpoint purge -g $(resource_group) -n $(cdn_endpoint) --profile-name $(cdn_profile) --content-paths "/$(basePath)" "/$(basePath)/*" "/"
+                az afd endpoint purge -g $(resource_group) \
+                --profile-name $(cdn_profile) \
+                --endpoint-name $(cdn_endpoint) \
+                --domains $(cdn_domains) \
+                --content-paths "/$(basePath)" "/$(basePath)/*" "/"

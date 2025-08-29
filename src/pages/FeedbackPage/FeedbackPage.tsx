@@ -11,7 +11,7 @@ const FeedbackPage = () => {
   const feedback = feedbackStates[status] || feedbackStates.ON_EVALUATION; //TODO tmp fallback
 
   if (!feedback) {
-    return <Navigate to="/utente/" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return (

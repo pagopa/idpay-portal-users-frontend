@@ -52,8 +52,7 @@ const TOS = () => {
     isValidStatus(data.status);
 
   useEffect(() => {
-    const initiativeId = '688ba02b2542210740f7ca481'; //TODO retrieve and store initiativeId
-
+    const initiativeId = '68b1612f5a02762e0511c964';
     const fetchData = async () => {
       try {
         const statusResponse = await OnboardingWebApi.getStatus(initiativeId);

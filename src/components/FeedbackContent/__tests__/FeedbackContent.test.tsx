@@ -2,6 +2,19 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import FeedbackContent from '../FeedbackContent';
 
+jest.mock('../../../contexts/AuthContext', () => {
+    return {
+        useAuth: () => ({
+            logout: jest.fn(),
+            isAuthenticated: false,
+            loading: false,
+            getToken: jest.fn().mockResolvedValue(null),
+            initAuth: jest.fn(),
+            login: jest.fn()
+        }),
+    };
+});
+
 describe('FeedbackContent', () => {
     const defaultProps = {
         icon: <div data-testid="test-icon">ICON</div>,
@@ -75,5 +88,19 @@ describe('FeedbackContent', () => {
         );
 
         expect(screen.queryByRole('link')).not.toBeInTheDocument();
+    });
+
+    it('calls logout when buttonRedirect is "__LOGOUT__"', () => {
+        const logoutMock = jest.fn();
+        (require('../../../contexts/AuthContext') as any).useAuth = () => ({ logout: logoutMock });
+        render(
+            <FeedbackContent
+                {...defaultProps}
+                buttonLabel="Exit"
+                buttonRedirect="__LOGOUT__"
+            />
+        );
+        screen.getByRole('button', { name: 'Exit' }).click();
+        expect(logoutMock).toHaveBeenCalled();
     });
 });

@@ -18,14 +18,14 @@ export const feedbackStates: Record<string, FeedbackState> = {
     title: "feedbackStates.requestSubmitted.title",
     description: 'feedbackStates.requestSubmitted.description',
     buttonLabel: 'commons.exit',
-    buttonRedirect: '/' //TODO add redirect
+    buttonRedirect: '__LOGOUT__'
   },
   ON_EVALUATION: {
     icon: <IllusHistoryDoc />,
     title: "feedbackStates.onEvaluation.title",
     description: 'feedbackStates.onEvaluation.description',
     buttonLabel: 'commons.exit',
-    buttonRedirect: '/' //TODO add redirect
+    buttonRedirect: '__LOGOUT__'
   }
   //TODO handle other states
 };

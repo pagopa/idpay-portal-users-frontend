@@ -1,18 +1,10 @@
 import React from 'react';
 import { Box, Typography, Button, Link } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import { FeedbackState } from '../../pages/FeedbackPage/feedbackStates';
+import { useAuth } from '../../contexts/AuthContext';
 
-type FeedbackContentProps = {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  buttonLabel?: string;
-  buttonRedirect?: string;
-  supportLinkLabel?: string;
-  supportLinkUrl?: string;
-};
-
-const FeedbackContent: React.FC<FeedbackContentProps> = ({
+const FeedbackContent: React.FC<FeedbackState> = ({
   icon,
   title,
   description,
@@ -21,8 +13,15 @@ const FeedbackContent: React.FC<FeedbackContentProps> = ({
   supportLinkLabel,
   supportLinkUrl,
 }) => {
+  const { logout } = useAuth();
   const showButton = buttonLabel && buttonRedirect;
   const showSupportLink = supportLinkLabel && supportLinkUrl;
+
+  const handleClick = () => {
+    if (buttonRedirect === '__LOGOUT__') {
+      logout();
+    }
+  };
 
   return (
     <Box
@@ -53,11 +52,12 @@ const FeedbackContent: React.FC<FeedbackContentProps> = ({
           </Typography>
         )}
 
-      {showButton && (
+       {showButton && (
         <Button
           variant="contained"
-          component={RouterLink}
-          to={buttonRedirect}
+          component={buttonRedirect !== "__LOGOUT__" ? RouterLink : 'button'}
+          to={buttonRedirect !== "__LOGOUT__" ? buttonRedirect : undefined}
+          onClick={buttonRedirect === "__LOGOUT__" ? handleClick : undefined}
           sx={{ mt: 4, mb: showSupportLink ? 2 : 0 }}
         >
           {buttonLabel}
