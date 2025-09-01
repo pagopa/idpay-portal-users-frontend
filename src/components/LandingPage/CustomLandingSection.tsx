@@ -30,6 +30,7 @@ const CustomLandingSection = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        justifyContent: "center",
         textAlign: 'center',
       }}
     >

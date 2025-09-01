@@ -49,6 +49,7 @@ const LandingPage = () => {
           display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
           margin: '0 auto',
+          minHeight: {md: "70vh"},
           overflow: 'hidden',
         }}
       >
@@ -58,6 +59,7 @@ const LandingPage = () => {
           sx={{
             height: "auto",
             flex: 1,
+            minHeight: {md: "70vh"},
             backgroundColor: "#0B3EE3",
             color: theme.palette.common.white,
             display: 'flex',
