@@ -3,9 +3,10 @@ import { Trans, useTranslation } from 'react-i18next';
 import { theme } from '@pagopa/mui-italia';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTOSCheckboxStore } from '../../hooks/useTOSCheckboxStore';
 
 interface Props {
   sectionRefs: React.RefObject<HTMLDivElement>[];
@@ -17,7 +18,12 @@ export const TOSContent = ({ sectionRefs }: Props) => {
   const [checked, setChecked] = useState(false);
   const [error, setError] = useState(false);
   const isMobile = useIsMobile();
+  const { tosAccepted, setTosAccepted } = useTOSCheckboxStore();
   const { logout } = useAuth();
+
+  useEffect(() => {
+    setChecked(tosAccepted);
+  }, [])
 
   const handleContinue = () => {
     if (!checked) {
@@ -150,6 +156,7 @@ export const TOSContent = ({ sectionRefs }: Props) => {
             <Checkbox
               checked={checked}
               onChange={(e) => {
+                setTosAccepted(e.target.checked)
                 setChecked(e.target.checked);
                 if (e.target.checked) setError(false);
               }}
