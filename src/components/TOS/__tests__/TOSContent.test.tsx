@@ -1,6 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { render, renderHook, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
+import { useTOSCheckboxStore } from '../../../hooks/useTOSCheckboxStore';
+import { TOSContent } from '../TOSContent';
 
 const mockNavigate = jest.fn();
 const mockLogout = jest.fn();
@@ -109,5 +111,30 @@ describe('TOSContent', () => {
       render(<TOSContent sectionRefs={makeRefs()} />);
       expect(screen.getByRole('checkbox')).toBeInTheDocument();
     });
+  });
+
+  it('hydrates checkbox from persisted store when mounting', () => {
+    renderHook(() => {
+      const store = useTOSCheckboxStore();
+      store.setTosAccepted(true);
+    });
+
+    render(<TOSContent sectionRefs={makeRefs()} />);
+    const cb = screen.getByRole('checkbox') as HTMLInputElement;
+    expect(cb.checked).toBe(true);
+  });
+
+  it('accepting terms then continuing navigates without showing error after remount', async () => {
+    const user = userEvent.setup();
+
+    renderHook(() => {
+      const store = useTOSCheckboxStore();
+      store.setTosAccepted(true);
+    });
+
+    render(<TOSContent sectionRefs={makeRefs()} />);
+    await user.click(screen.getByRole('button', { name: /tos.continue/i }));
+
+    expect(mockNavigate).toHaveBeenCalledWith('/inserisci-email');
   });
 });
