@@ -151,6 +151,10 @@ const it = {
     "onEvaluation": {
       "title": "L’ente sta valutando la tua domanda di adesione",
       "description": "Quando pronto, riceverai l’esito all’indirizzo email  indicato."
+    },
+    "ageRestriction": {
+      "title": "Non hai l’età minima richiesta",
+      "description": "Per richiedere il bonus, devi avere minimo 18 anni"
     }
   },
   
