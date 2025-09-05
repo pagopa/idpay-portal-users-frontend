@@ -26,6 +26,13 @@ export const feedbackStates: Record<string, FeedbackState> = {
     description: 'feedbackStates.onEvaluation.description',
     buttonLabel: 'commons.exit',
     buttonRedirect: '__LOGOUT__'
+  },
+  INVALID_ACCESS_TOKEN: {
+    icon: <IllusHistoryDoc />,
+    title: "feedbackStates.accessToken.title",
+    description: 'feedbackStates.accessToken.description',
+    buttonLabel: 'commons.retry',
+    buttonRedirect: '__LOGOUT__',
   }
   //TODO handle other states
 };
