@@ -11,7 +11,7 @@ export type FeedbackState = {
   supportLinkUrl?: string;
 };
 
-export type FeedbackStateKey = 'REQUEST_SUBMITTED' | 'ON_EVALUATION' | 'AGE_RESTRICTION';
+export type FeedbackStateKey = 'REQUEST_SUBMITTED' | 'ON_EVALUATION' | 'AGE_RESTRICTION' | 'INVALID_ACCESS_TOKEN';
 
 export const feedbackStates: Record<FeedbackStateKey, FeedbackState> = {
 
@@ -28,6 +28,13 @@ export const feedbackStates: Record<FeedbackStateKey, FeedbackState> = {
     description: 'feedbackStates.onEvaluation.description',
     buttonLabel: 'commons.exit',
     buttonRedirect: '__LOGOUT__'
+  },
+  INVALID_ACCESS_TOKEN: {
+    icon: <IllusHistoryDoc />,
+    title: "feedbackStates.accessToken.title",
+    description: 'feedbackStates.accessToken.description',
+    buttonLabel: 'commons.retry',
+    buttonRedirect: '__LOGOUT__',
   },
   AGE_RESTRICTION: {
     icon: <IllusError />, //tmp icon, to be confirmed
