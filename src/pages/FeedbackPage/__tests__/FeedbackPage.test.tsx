@@ -92,4 +92,22 @@ describe('FeedbackPage', () => {
             feedbackStates.ON_EVALUATION.description
         );
     });
+
+    it('renders feedback for INVALID_ACCESS_TOKEN', () => {
+        (useLocation as jest.Mock).mockReturnValue({
+            state: { status: 'INVALID_ACCESS_TOKEN' },
+        });
+
+        render(<FeedbackPage />);
+
+        expect(screen.getByTestId('feedback-title')).toHaveTextContent(
+            feedbackStates.INVALID_ACCESS_TOKEN.title
+        );
+        expect(screen.getByTestId('feedback-description')).toHaveTextContent(
+            feedbackStates.INVALID_ACCESS_TOKEN.description
+        );
+        expect(screen.getByTestId('feedback-button')).toHaveTextContent(
+            feedbackStates.INVALID_ACCESS_TOKEN.buttonLabel!
+        );
+    });
 });

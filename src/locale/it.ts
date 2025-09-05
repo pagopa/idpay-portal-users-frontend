@@ -47,8 +47,9 @@ const it = {
         "protectionofpersonaldata": "Diritto alla protezione dei dati personali",
         "termsandconditions": "Termini e Condizioni",
         "accessibility": "Accessibilità"
-      }
-    }
+      },
+    },
+    "retry": "Riprova"
   },
 
   "landing": {
@@ -151,6 +152,10 @@ const it = {
     "onEvaluation": {
       "title": "L’ente sta valutando la tua domanda di adesione",
       "description": "Quando pronto, riceverai l’esito all’indirizzo email  indicato."
+    },
+    "accessToken": {
+      "title": "Non è stato possibile accedere",
+      "description": "Si è verificato un problema durante l'accesso.\nRiprova tra qualche minuto.",
     },
     "ageRestriction": {
       "title": "Non hai l’età minima richiesta",
