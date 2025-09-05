@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { IllusCompleted, IllusHistoryDoc } from '@pagopa/mui-italia';
+import { IllusCompleted, IllusHistoryDoc, IllusError } from '@pagopa/mui-italia';
 
 export type FeedbackState = {
   icon: ReactNode;
@@ -11,7 +11,9 @@ export type FeedbackState = {
   supportLinkUrl?: string;
 };
 
-export const feedbackStates: Record<string, FeedbackState> = {
+export type FeedbackStateKey = 'REQUEST_SUBMITTED' | 'ON_EVALUATION' | 'AGE_RESTRICTION' | 'INVALID_ACCESS_TOKEN';
+
+export const feedbackStates: Record<FeedbackStateKey, FeedbackState> = {
 
   REQUEST_SUBMITTED: {
     icon: <IllusCompleted />,
@@ -33,6 +35,12 @@ export const feedbackStates: Record<string, FeedbackState> = {
     description: 'feedbackStates.accessToken.description',
     buttonLabel: 'commons.retry',
     buttonRedirect: '__LOGOUT__',
+  },
+  AGE_RESTRICTION: {
+    icon: <IllusError />, //tmp icon, to be confirmed
+    title: "feedbackStates.ageRestriction.title",
+    description: 'feedbackStates.ageRestriction.description',
+    buttonLabel: 'commons.exit',
+    buttonRedirect: '__LOGOUT__'
   }
-  //TODO handle other states
 };

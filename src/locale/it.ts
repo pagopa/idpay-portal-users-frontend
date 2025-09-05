@@ -156,6 +156,10 @@ const it = {
     "accessToken": {
       "title": "Non è stato possibile accedere",
       "description": "Si è verificato un problema durante l'accesso.\nRiprova tra qualche minuto.",
+    },
+    "ageRestriction": {
+      "title": "Non hai l’età minima richiesta",
+      "description": "Per richiedere il bonus, devi avere minimo 18 anni"
     }
   },
   
