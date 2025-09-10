@@ -68,7 +68,7 @@ export function createKeycloakService(
     if (isMockMode) return;
     keycloak.login({
       idpHint: 'oneid-keycloak',
-      redirectUri: buildFullUrl(ROUTES.TOS),
+      redirectUri: buildFullUrl(ROUTES.GATEWAY),
     });
   };
 
