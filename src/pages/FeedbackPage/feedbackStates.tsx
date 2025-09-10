@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
-import { IllusCompleted, IllusHistoryDoc, IllusError } from '@pagopa/mui-italia';
+import { IllusCompleted, IllusHistoryDoc } from '@pagopa/mui-italia';
+import { IllusUmbrella, IllusUserDenied } from '../../assets/Icons';
 
 export type FeedbackState = {
   icon: ReactNode;
@@ -30,14 +31,14 @@ export const feedbackStates: Record<FeedbackStateKey, FeedbackState> = {
     buttonRedirect: '__LOGOUT__'
   },
   INVALID_ACCESS_TOKEN: {
-    icon: <IllusHistoryDoc />,
+    icon: <IllusUmbrella />,
     title: "feedbackStates.accessToken.title",
     description: 'feedbackStates.accessToken.description',
     buttonLabel: 'commons.retry',
     buttonRedirect: '__LOGOUT__',
   },
   AGE_RESTRICTION: {
-    icon: <IllusError />, //tmp icon, to be confirmed
+    icon: <IllusUserDenied />,
     title: "feedbackStates.ageRestriction.title",
     description: 'feedbackStates.ageRestriction.description',
     buttonLabel: 'commons.exit',
