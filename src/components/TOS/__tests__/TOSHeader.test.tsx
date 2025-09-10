@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { TOSHeader } from '../TOSHeader'; // Adjust path as needed
+import { TOSHeader } from '../TOSHeader';
 import '@testing-library/jest-dom';
 
 jest.mock('react-i18next', () => ({

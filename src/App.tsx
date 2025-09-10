@@ -10,9 +10,10 @@ import ROUTES from './routes';
 import { useIsMobile } from './hooks/useIsMobile';
 import LandingPage from './pages/LandingPage/LandingPage';
 import ProtectedRoute from './config/ProtectedRoute';
+import GatewayPage from './pages/GatewayPage/GatewayPage';
 
-const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <Layout hasSidebar={false} hasSubHeader={false} hasPadding={false} isLogged={false}>
+const PublicLayout: React.FC<{ children: React.ReactNode, isLogged: boolean }> = ({ children, isLogged = false }) => (
+  <Layout hasSidebar={false} hasSubHeader={false} hasPadding={false} isLogged={isLogged}>
     {children}
   </Layout>
 );
@@ -33,10 +34,17 @@ const PrivateLayout: React.FC<{
 const LocalRoutes: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
   <Routes>
     {/* fallback */}
-    <Route path="*" element={<PublicLayout><LandingPage /></PublicLayout>} />
+    <Route path="*" element={<PublicLayout isLogged={false}><LandingPage /></PublicLayout>} />
 
     {/* public route */}
-    <Route path={ROUTES.HOME} element={<PublicLayout><LandingPage /></PublicLayout>} />
+    <Route path={ROUTES.HOME} element={<PublicLayout isLogged={false}><LandingPage /></PublicLayout>} />
+
+    {/* gateway route */}
+    <Route path={ROUTES.GATEWAY}
+      element={<PublicLayout isLogged={true}><GatewayPage /></PublicLayout>}/>
+
+    {/* error page */}
+    <Route path={ROUTES.ERROR_PAGE} element={<PublicLayout isLogged={true}><FeedbackPage /></PublicLayout>}/>
 
     {/* private route */}
     <Route

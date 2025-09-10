@@ -15,10 +15,10 @@ const LandingPage = () => {
   const { isAuthenticated, loading } = useAuth();
 
   useEffect(() => {
-  if (!loading && isAuthenticated) {
-    navigate(ROUTES.TOS);
-  }
-}, [loading, isAuthenticated]);
+    if (!loading && isAuthenticated) {
+      navigate(ROUTES.GATEWAY);
+    }
+  }, [loading, isAuthenticated]);
 
   const handleDownloadClick = () => {
     const userAgent = navigator.userAgent || navigator.vendor || '';
