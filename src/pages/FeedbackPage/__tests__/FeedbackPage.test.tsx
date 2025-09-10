@@ -60,18 +60,54 @@ describe('FeedbackPage', () => {
         );
     });
 
-    it('redirects to home if no status and no fallback', () => {
-        const originalOnEvaluation = feedbackStates.ON_EVALUATION;
-        delete feedbackStates.ON_EVALUATION;
+     it('renders feedback for AGE_RESTRICTION', () => {
+        (useLocation as jest.Mock).mockReturnValue({
+            state: { status: 'AGE_RESTRICTION' },
+        });
 
+        render(<FeedbackPage />);
+
+        expect(screen.getByTestId('feedback-title')).toHaveTextContent(
+            feedbackStates.AGE_RESTRICTION.title
+        );
+        expect(screen.getByTestId('feedback-description')).toHaveTextContent(
+            feedbackStates.AGE_RESTRICTION.description
+        );
+        expect(screen.getByTestId('feedback-button')).toHaveTextContent(
+            feedbackStates.AGE_RESTRICTION.buttonLabel!
+        );
+    });
+
+    it('renders fallback feedback when state is null', () => {
         (useLocation as jest.Mock).mockReturnValue({
             state: null,
         });
 
         render(<FeedbackPage />);
 
-        expect(screen.getByText('Redirect')).toBeInTheDocument();
+        expect(screen.getByTestId('feedback-title')).toHaveTextContent(
+            feedbackStates.ON_EVALUATION.title
+        );
+        expect(screen.getByTestId('feedback-description')).toHaveTextContent(
+            feedbackStates.ON_EVALUATION.description
+        );
+    });
 
-        feedbackStates.ON_EVALUATION = originalOnEvaluation;
+    it('renders feedback for INVALID_ACCESS_TOKEN', () => {
+        (useLocation as jest.Mock).mockReturnValue({
+            state: { status: 'INVALID_ACCESS_TOKEN' },
+        });
+
+        render(<FeedbackPage />);
+
+        expect(screen.getByTestId('feedback-title')).toHaveTextContent(
+            feedbackStates.INVALID_ACCESS_TOKEN.title
+        );
+        expect(screen.getByTestId('feedback-description')).toHaveTextContent(
+            feedbackStates.INVALID_ACCESS_TOKEN.description
+        );
+        expect(screen.getByTestId('feedback-button')).toHaveTextContent(
+            feedbackStates.INVALID_ACCESS_TOKEN.buttonLabel!
+        );
     });
 });

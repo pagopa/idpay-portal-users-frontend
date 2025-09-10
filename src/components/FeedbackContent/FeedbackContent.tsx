@@ -1,8 +1,9 @@
 import React from 'react';
 import { Box, Typography, Button, Link } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { FeedbackState } from '../../pages/FeedbackPage/feedbackStates';
 import { useAuth } from '../../contexts/AuthContext';
+import ROUTES from '../../routes';
 
 const FeedbackContent: React.FC<FeedbackState> = ({
   icon,
@@ -13,13 +14,18 @@ const FeedbackContent: React.FC<FeedbackState> = ({
   supportLinkLabel,
   supportLinkUrl,
 }) => {
-  const { logout } = useAuth();
+  const { logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const showButton = buttonLabel && buttonRedirect;
   const showSupportLink = supportLinkLabel && supportLinkUrl;
 
   const handleClick = () => {
     if (buttonRedirect === '__LOGOUT__') {
-      logout();
+      if(isAuthenticated){
+        logout();
+      }else{
+        navigate(ROUTES.HOME)
+      }
     }
   };
 

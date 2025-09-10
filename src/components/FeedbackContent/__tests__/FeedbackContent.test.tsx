@@ -92,15 +92,29 @@ describe('FeedbackContent', () => {
 
     it('calls logout when buttonRedirect is "__LOGOUT__"', () => {
         const logoutMock = jest.fn();
-        (require('../../../contexts/AuthContext') as any).useAuth = () => ({ logout: logoutMock });
+
+        const auth = require('../../../contexts/AuthContext');
+        jest.spyOn(auth, 'useAuth').mockReturnValue({
+            logout: logoutMock,
+            isAuthenticated: true, 
+            loading: false,
+            getToken: jest.fn(),
+            initAuth: jest.fn(),
+            login: jest.fn(),
+        });
+
         render(
             <FeedbackContent
-                {...defaultProps}
-                buttonLabel="Exit"
-                buttonRedirect="__LOGOUT__"
-            />
+            {...defaultProps}
+            buttonLabel="Exit"
+            buttonRedirect="__LOGOUT__"
+            />,
+            { wrapper: MemoryRouter }
         );
+
         screen.getByRole('button', { name: 'Exit' }).click();
         expect(logoutMock).toHaveBeenCalled();
+
+        (auth.useAuth as jest.SpyInstance).mockRestore();
     });
 });
