@@ -5,6 +5,9 @@ export interface UserProfile {
   username?: string;
   firstName?: string;
   lastName?: string;
+  attributes?: {
+    dateOfBirth?: string[];
+  }
 }
 
 export interface AuthContextType {
