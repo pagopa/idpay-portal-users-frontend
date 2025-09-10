@@ -8,9 +8,10 @@ import ROUTES from '../../routes';
 import { StatusEnum } from '../../api/generated/onboarding-web/OnboardingStatusDTO';
 import { useAuth } from '../../contexts/AuthContext';
 import Overlay from '../../components/Overlay/Overlay';
+import { UserProfile } from '../../types/auth';
 
 const GatewayPage = () => {
-    const { loading, token } = useAuth();
+    const { loading, token, user } = useAuth();
     const navigate = useNavigate();
 
     const isErrorDTO = (data: OnboardingErrorDTO | unknown): data is OnboardingErrorDTO =>
@@ -28,6 +29,23 @@ const GatewayPage = () => {
         'status' in data &&
         isValidStatus(data.status);
 
+    const getDateOfBirth = (user: UserProfile): string | null => {
+        if (!user?.attributes?.dateOfBirth || !Array.isArray(user.attributes.dateOfBirth)) {
+            return null;
+        }
+        return user.attributes.dateOfBirth[0] || null;
+    };
+
+    const isAgeRestricted = (dateOfBirth: string | null): boolean => {
+        if (!dateOfBirth) return false;
+        
+        const birthDate = new Date(dateOfBirth);
+        const today = new Date();
+        const eighteenYearsAgo = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+        
+        return birthDate > eighteenYearsAgo;
+    };
+
     useEffect(() => {
         if(loading) {
             return;
@@ -35,6 +53,13 @@ const GatewayPage = () => {
         if (token == null) {
             navigate(ROUTES.ERROR_PAGE, { state: { status: "INVALID_ACCESS_TOKEN" } });
             return;
+        }
+        if (user) {
+            const dateOfBirth = getDateOfBirth(user);
+            if (dateOfBirth && isAgeRestricted(dateOfBirth)) {
+                navigate(ROUTES.ERROR_PAGE, { state: { status: 'AGE_RESTRICTION' } });
+                return;
+            };
         }
 
         const initiativeId = '68b1612f5a02762e0511c964';
@@ -60,7 +85,7 @@ const GatewayPage = () => {
         };
 
         fetchData();
-    }, [loading]);
+    }, [loading, token, user]);
 
     return (
         <Box
