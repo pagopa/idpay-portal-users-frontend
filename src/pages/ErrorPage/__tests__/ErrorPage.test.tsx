@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import FeedbackPage from '../FeedbackPage';
+import ErrorPage from '../ErrorPage';
 import { useLocation } from 'react-router-dom';
-import { feedbackStates } from '../feedbackStates';
+import { errorState } from '../errorStates';
 
 jest.mock('react-router-dom', () => ({
     useLocation: jest.fn(),
@@ -22,77 +22,59 @@ jest.mock('../../../components/FeedbackContent/FeedbackContent', () => (props: a
     </div>
 ));
 
-describe('FeedbackPage', () => {
+describe('ErrorPage', () => {
     afterEach(() => {
         jest.clearAllMocks();
     });
 
-    it('renders feedback for REQUEST_SUBMITTED', () => {
+    it('renders feedback for INVALID_ACCESS_TOKEN', () => {
         (useLocation as jest.Mock).mockReturnValue({
-            state: { status: 'REQUEST_SUBMITTED' },
+            state: { status: 'INVALID_ACCESS_TOKEN' },
         });
 
-        render(<FeedbackPage />);
+        render(<ErrorPage />);
 
         expect(screen.getByTestId('feedback-title')).toHaveTextContent(
-            feedbackStates.REQUEST_SUBMITTED.title
+            errorState.INVALID_ACCESS_TOKEN.title
         );
         expect(screen.getByTestId('feedback-description')).toHaveTextContent(
-            feedbackStates.REQUEST_SUBMITTED.description
+            errorState.INVALID_ACCESS_TOKEN.description
         );
         expect(screen.getByTestId('feedback-button')).toHaveTextContent(
-            feedbackStates.REQUEST_SUBMITTED.buttonLabel!
+            errorState.INVALID_ACCESS_TOKEN.buttonLabel!
         );
     });
 
-    it('renders feedback for ONBOARDING_FAMILY_UNIT_ALREADY_JOINED', () => {
+    it('renders feedback for AGE_RESTRICTION', () => {
         (useLocation as jest.Mock).mockReturnValue({
-            state: { status: 'ONBOARDING_FAMILY_UNIT_ALREADY_JOINED' },
+            state: { status: 'AGE_RESTRICTION' },
         });
 
-        render(<FeedbackPage />);
+        render(<ErrorPage />);
 
         expect(screen.getByTestId('feedback-title')).toHaveTextContent(
-            feedbackStates.ONBOARDING_FAMILY_UNIT_ALREADY_JOINED.title
+            errorState.AGE_RESTRICTION.title
         );
         expect(screen.getByTestId('feedback-description')).toHaveTextContent(
-            feedbackStates.ONBOARDING_FAMILY_UNIT_ALREADY_JOINED.description
+            errorState.AGE_RESTRICTION.description
         );
         expect(screen.getByTestId('feedback-button')).toHaveTextContent(
-            feedbackStates.ONBOARDING_FAMILY_UNIT_ALREADY_JOINED.buttonLabel!
-        );
-    });
-
-    it('renders feedback for WAITING_LIST', () => {
-        (useLocation as jest.Mock).mockReturnValue({
-            state: { status: 'WAITING_LIST' },
-        });
-
-        render(<FeedbackPage />);
-
-        expect(screen.getByTestId('feedback-title')).toHaveTextContent(
-            feedbackStates.WAITING_LIST.title
-        );
-        expect(screen.getByTestId('feedback-description')).toHaveTextContent(
-            feedbackStates.WAITING_LIST.description
-        );
-        expect(screen.getByTestId('feedback-button')).toHaveTextContent(
-            feedbackStates.WAITING_LIST.buttonLabel!
+            errorState.AGE_RESTRICTION.buttonLabel!
         );
     });
 
     it('renders fallback feedback for unknown status', () => {
         (useLocation as jest.Mock).mockReturnValue({
-            state: { status: 'UNKNOWN_STATUS' },
+            state: { status: 'SOME_UNKNOWN_ERROR' },
         });
 
-        render(<FeedbackPage />);
+        render(<ErrorPage />);
 
         expect(screen.getByTestId('feedback-title')).toHaveTextContent(
-            feedbackStates.ON_EVALUATION.title
+            errorState.INVALID_ACCESS_TOKEN.title
         );
         expect(screen.getByTestId('feedback-description')).toHaveTextContent(
-            feedbackStates.ON_EVALUATION.description
+            errorState.INVALID_ACCESS_TOKEN.description
         );
     });
 
@@ -101,13 +83,13 @@ describe('FeedbackPage', () => {
             state: null,
         });
 
-        render(<FeedbackPage />);
+        render(<ErrorPage />);
 
         expect(screen.getByTestId('feedback-title')).toHaveTextContent(
-            feedbackStates.ON_EVALUATION.title
+            errorState.INVALID_ACCESS_TOKEN.title
         );
         expect(screen.getByTestId('feedback-description')).toHaveTextContent(
-            feedbackStates.ON_EVALUATION.description
+            errorState.INVALID_ACCESS_TOKEN.description
         );
     });
 });
