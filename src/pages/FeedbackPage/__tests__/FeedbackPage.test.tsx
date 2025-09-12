@@ -81,6 +81,42 @@ describe('FeedbackPage', () => {
         );
     });
 
+    it('renders feedback for ONBOARDING_INITIATIVE_ENDED', () => {
+        (useLocation as jest.Mock).mockReturnValue({
+            state: { status: 'ONBOARDING_INITIATIVE_ENDED' },
+        });
+
+        render(<FeedbackPage />);
+
+        expect(screen.getByTestId('feedback-title')).toHaveTextContent(
+            feedbackStates.ONBOARDING_INITIATIVE_ENDED.title
+        );
+        expect(screen.getByTestId('feedback-description')).toHaveTextContent(
+            feedbackStates.ONBOARDING_INITIATIVE_ENDED.description
+        );
+        expect(screen.getByTestId('feedback-button')).toHaveTextContent(
+            feedbackStates.ONBOARDING_INITIATIVE_ENDED.buttonLabel!
+        );
+    });
+
+    it('renders feedback for ONBOARDING_BUDGET_EXHAUSTED', () => {
+        (useLocation as jest.Mock).mockReturnValue({
+            state: { status: 'ONBOARDING_BUDGET_EXHAUSTED' },
+        });
+
+        render(<FeedbackPage />);
+
+        expect(screen.getByTestId('feedback-title')).toHaveTextContent(
+            feedbackStates.ONBOARDING_BUDGET_EXHAUSTED.title
+        );
+        expect(screen.getByTestId('feedback-description')).toHaveTextContent(
+            feedbackStates.ONBOARDING_BUDGET_EXHAUSTED.description
+        );
+        expect(screen.getByTestId('feedback-button')).toHaveTextContent(
+            feedbackStates.ONBOARDING_BUDGET_EXHAUSTED.buttonLabel!
+        );
+    });
+
     it('renders fallback feedback for unknown status', () => {
         (useLocation as jest.Mock).mockReturnValue({
             state: { status: 'UNKNOWN_STATUS' },
