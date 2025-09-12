@@ -11,7 +11,7 @@ export type FeedbackState = {
   supportLinkUrl?: string;
 };
 
-export type FeedbackStateKey = 'REQUEST_SUBMITTED' | 'ON_EVALUATION' | 'ONBOARDING_FAMILY_UNIT_ALREADY_JOINED' | 'WAITING_LIST';
+export type FeedbackStateKey = 'REQUEST_SUBMITTED' | 'ON_EVALUATION' | 'ONBOARDING_FAMILY_UNIT_ALREADY_JOINED' | 'WAITING_LIST' | 'ONBOARDING_INITIATIVE_ENDED' | 'ONBOARDING_BUDGET_EXHAUSTED';
 
 export const feedbackStates: Record<FeedbackStateKey, FeedbackState> = {
 
@@ -42,5 +42,19 @@ export const feedbackStates: Record<FeedbackStateKey, FeedbackState> = {
     description: 'feedbackStates.waitingList.description',
     buttonLabel: 'commons.exit',
     buttonRedirect: '__LOGOUT__'
-  }
+  },
+  ONBOARDING_INITIATIVE_ENDED: {
+    icon: <IllusError />,
+    title: "feedbackStates.initiativeEnded.title",
+    description: 'feedbackStates.initiativeEnded.description',
+    buttonLabel: 'commons.exit',
+    buttonRedirect: '__LOGOUT__'
+  },
+  ONBOARDING_BUDGET_EXHAUSTED: {
+    icon: <IllusError />,
+    title: "feedbackStates.budgetExhausted.title",
+    description: 'feedbackStates.budgetExhausted.description',
+    buttonLabel: 'commons.exit',
+    buttonRedirect: '__LOGOUT__'
+  },
 };

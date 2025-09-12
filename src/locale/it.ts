@@ -169,6 +169,14 @@ const it = {
       "title": "Sei in lista d’attesa",
       "description": "La tua richiesta è in coda.\nTi contatteremo se saranno disponibili nuove\nrisorse."
     },
+    "initiativeEnded": {
+      "title": "Le iscrizioni sono terminate",
+      "description": "Non è più possibile aderire all’iniziativa. "
+    },
+    "budgetExhausted": {
+      "title": "I fondi messi a disposizione dall’ente sono terminati",
+      "description": "Non è più possibile aderire all’iniziativa. "
+    },
   },
   
 }
