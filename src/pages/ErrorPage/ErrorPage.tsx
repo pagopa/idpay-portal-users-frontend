@@ -1,14 +1,14 @@
 import { useLocation, Navigate } from 'react-router-dom';
-import { feedbackStates } from './feedbackStates';
+import { errorState } from './errorStates';
 import FeedbackContent from '../../components/FeedbackContent/FeedbackContent';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
 
-const FeedbackPage = () => {
+const ErrorPage = () => {
   const { t } = useTranslation();
   const location = useLocation();
-  const status = location.state?.status as keyof typeof feedbackStates;
-  const feedback = feedbackStates[status] || feedbackStates.ON_EVALUATION; //TODO tmp fallback
+  const status = location.state?.status as keyof typeof errorState;
+  const feedback = errorState[status] || errorState.INVALID_ACCESS_TOKEN; //TODO tmp fallback
 
   if (!feedback) {
     return <Navigate to="/" replace />;
@@ -29,4 +29,4 @@ const FeedbackPage = () => {
   );
 };
 
-export default FeedbackPage;
+export default ErrorPage;

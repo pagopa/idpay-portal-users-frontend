@@ -68,8 +68,8 @@ const GatewayPage = () => {
                 const statusResponse = await OnboardingWebApi.getStatus(initiativeId);
                 const { status, data: statusData } = statusResponse;
 
-                if (status === 200 && isStatusData(statusData)) {
-                    const statusString = (statusData as any).status;
+                if (status === 200 && (isStatusData(statusData) || isErrorDTO(statusData))) {
+                    const statusString = (statusData as any).status || (statusData as any).code;
                     navigate(ROUTES.FEEDBACK, { state: { status: statusString } });
                     return;
                 }
