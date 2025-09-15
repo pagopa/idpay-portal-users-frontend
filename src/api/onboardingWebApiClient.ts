@@ -6,7 +6,7 @@ import { InitiativeDTO } from './generated/onboarding-web/InitiativeDTO';
 import { WebSaveOnboardingT } from './generated/onboarding-web/requestTypes';
 import { RequestParams } from '@pagopa/ts-commons/lib/requests';
 import { OnboardingStatusDTO } from './generated/onboarding-web/OnboardingStatusDTO';
-import { OnboardingErrorDTO } from './generated/onboarding-web/OnboardingErrorDTO';
+import { CodeEnum, OnboardingErrorDTO } from './generated/onboarding-web/OnboardingErrorDTO';
 import { isRight } from 'fp-ts/Either';
 import { buildFetchApiWithLoading } from './buildFetchApiWithLoading';
 
@@ -32,6 +32,9 @@ const onboardingClient = createClient({
   withDefaults: withBearer,
 });
 
+const isCodeEnum = (v: unknown): v is CodeEnum =>
+  typeof v === "string" && (Object.values(CodeEnum) as string[]).includes(v);
+
 export const OnboardingWebApi = {
   getStatus: async (
     initiativeId: string
@@ -43,10 +46,24 @@ export const OnboardingWebApi = {
 
     if (isRight(result)) {
       const { status, value } = result.right;
-      if (status === 200) return { status: 200, data: value as OnboardingStatusDTO };
-      if (status === 404) return { status: 404, data: value as OnboardingErrorDTO };
-      throw new Error(`Unexpected status: ${status}`);
-    } else {
+        if (status === 200) return { status: 200, data: value as OnboardingStatusDTO };
+        if (status === 404) return { status: 404, data: value as OnboardingErrorDTO };
+        throw new Error(`Unexpected status: ${status}`);
+      } else {
+        const codeStr =
+        (result.left as any)?.at?.(0)?.value ??
+        (result.left as any)?.at?.(0)?.actual;
+
+      if (isCodeEnum(codeStr) || isCodeEnum("ONBOARDING_" + codeStr)) {
+        return {
+          status: 200,
+          data: {
+            code: codeStr as CodeEnum,
+            message: "",
+          } as OnboardingErrorDTO,
+        };
+      }
+
       throw result.left;
     }
   },

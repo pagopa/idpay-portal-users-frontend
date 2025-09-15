@@ -45,6 +45,78 @@ describe('FeedbackPage', () => {
         );
     });
 
+    it('renders feedback for ONBOARDING_FAMILY_UNIT_ALREADY_JOINED', () => {
+        (useLocation as jest.Mock).mockReturnValue({
+            state: { status: 'ONBOARDING_FAMILY_UNIT_ALREADY_JOINED' },
+        });
+
+        render(<FeedbackPage />);
+
+        expect(screen.getByTestId('feedback-title')).toHaveTextContent(
+            feedbackStates.ONBOARDING_FAMILY_UNIT_ALREADY_JOINED.title
+        );
+        expect(screen.getByTestId('feedback-description')).toHaveTextContent(
+            feedbackStates.ONBOARDING_FAMILY_UNIT_ALREADY_JOINED.description
+        );
+        expect(screen.getByTestId('feedback-button')).toHaveTextContent(
+            feedbackStates.ONBOARDING_FAMILY_UNIT_ALREADY_JOINED.buttonLabel!
+        );
+    });
+
+    it('renders feedback for WAITING_LIST', () => {
+        (useLocation as jest.Mock).mockReturnValue({
+            state: { status: 'WAITING_LIST' },
+        });
+
+        render(<FeedbackPage />);
+
+        expect(screen.getByTestId('feedback-title')).toHaveTextContent(
+            feedbackStates.WAITING_LIST.title
+        );
+        expect(screen.getByTestId('feedback-description')).toHaveTextContent(
+            feedbackStates.WAITING_LIST.description
+        );
+        expect(screen.getByTestId('feedback-button')).toHaveTextContent(
+            feedbackStates.WAITING_LIST.buttonLabel!
+        );
+    });
+
+    it('renders feedback for ONBOARDING_INITIATIVE_ENDED', () => {
+        (useLocation as jest.Mock).mockReturnValue({
+            state: { status: 'ONBOARDING_INITIATIVE_ENDED' },
+        });
+
+        render(<FeedbackPage />);
+
+        expect(screen.getByTestId('feedback-title')).toHaveTextContent(
+            feedbackStates.ONBOARDING_INITIATIVE_ENDED.title
+        );
+        expect(screen.getByTestId('feedback-description')).toHaveTextContent(
+            feedbackStates.ONBOARDING_INITIATIVE_ENDED.description
+        );
+        expect(screen.getByTestId('feedback-button')).toHaveTextContent(
+            feedbackStates.ONBOARDING_INITIATIVE_ENDED.buttonLabel!
+        );
+    });
+
+    it('renders feedback for ONBOARDING_BUDGET_EXHAUSTED', () => {
+        (useLocation as jest.Mock).mockReturnValue({
+            state: { status: 'ONBOARDING_BUDGET_EXHAUSTED' },
+        });
+
+        render(<FeedbackPage />);
+
+        expect(screen.getByTestId('feedback-title')).toHaveTextContent(
+            feedbackStates.ONBOARDING_BUDGET_EXHAUSTED.title
+        );
+        expect(screen.getByTestId('feedback-description')).toHaveTextContent(
+            feedbackStates.ONBOARDING_BUDGET_EXHAUSTED.description
+        );
+        expect(screen.getByTestId('feedback-button')).toHaveTextContent(
+            feedbackStates.ONBOARDING_BUDGET_EXHAUSTED.buttonLabel!
+        );
+    });
+
     it('renders fallback feedback for unknown status', () => {
         (useLocation as jest.Mock).mockReturnValue({
             state: { status: 'UNKNOWN_STATUS' },
@@ -60,24 +132,6 @@ describe('FeedbackPage', () => {
         );
     });
 
-     it('renders feedback for AGE_RESTRICTION', () => {
-        (useLocation as jest.Mock).mockReturnValue({
-            state: { status: 'AGE_RESTRICTION' },
-        });
-
-        render(<FeedbackPage />);
-
-        expect(screen.getByTestId('feedback-title')).toHaveTextContent(
-            feedbackStates.AGE_RESTRICTION.title
-        );
-        expect(screen.getByTestId('feedback-description')).toHaveTextContent(
-            feedbackStates.AGE_RESTRICTION.description
-        );
-        expect(screen.getByTestId('feedback-button')).toHaveTextContent(
-            feedbackStates.AGE_RESTRICTION.buttonLabel!
-        );
-    });
-
     it('renders fallback feedback when state is null', () => {
         (useLocation as jest.Mock).mockReturnValue({
             state: null,
@@ -90,24 +144,6 @@ describe('FeedbackPage', () => {
         );
         expect(screen.getByTestId('feedback-description')).toHaveTextContent(
             feedbackStates.ON_EVALUATION.description
-        );
-    });
-
-    it('renders feedback for INVALID_ACCESS_TOKEN', () => {
-        (useLocation as jest.Mock).mockReturnValue({
-            state: { status: 'INVALID_ACCESS_TOKEN' },
-        });
-
-        render(<FeedbackPage />);
-
-        expect(screen.getByTestId('feedback-title')).toHaveTextContent(
-            feedbackStates.INVALID_ACCESS_TOKEN.title
-        );
-        expect(screen.getByTestId('feedback-description')).toHaveTextContent(
-            feedbackStates.INVALID_ACCESS_TOKEN.description
-        );
-        expect(screen.getByTestId('feedback-button')).toHaveTextContent(
-            feedbackStates.INVALID_ACCESS_TOKEN.buttonLabel!
         );
     });
 });

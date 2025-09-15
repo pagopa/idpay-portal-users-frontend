@@ -11,6 +11,7 @@ import { useIsMobile } from './hooks/useIsMobile';
 import LandingPage from './pages/LandingPage/LandingPage';
 import ProtectedRoute from './config/ProtectedRoute';
 import GatewayPage from './pages/GatewayPage/GatewayPage';
+import ErrorPage from './pages/ErrorPage/ErrorPage';
 
 const PublicLayout: React.FC<{ children: React.ReactNode, isLogged: boolean }> = ({ children, isLogged = false }) => (
   <Layout hasSidebar={false} hasSubHeader={false} hasPadding={false} isLogged={isLogged}>
@@ -44,7 +45,7 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
       element={<PublicLayout isLogged={true}><GatewayPage /></PublicLayout>}/>
 
     {/* error page */}
-    <Route path={ROUTES.ERROR_PAGE} element={<PublicLayout isLogged={true}><FeedbackPage /></PublicLayout>}/>
+    <Route path={ROUTES.ERROR_PAGE} element={<PublicLayout isLogged={true}><ErrorPage /></PublicLayout>}/>
 
     {/* private route */}
     <Route

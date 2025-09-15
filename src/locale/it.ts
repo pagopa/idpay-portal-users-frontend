@@ -153,6 +153,10 @@ const it = {
       "title": "L’ente sta valutando la tua domanda di adesione",
       "description": "Quando pronto, riceverai l’esito all’indirizzo email  indicato."
     },
+    "familyMember": {
+      "title": "Un'altra persona del tuo nucleo familiare ha inviato la richiesta",
+      "description": "È possibile inviare una sola richiesta per ogni nucleo familiare."
+    },
     "accessToken": {
       "title": "Non è stato possibile accedere",
       "description": "Si è verificato un problema durante l'accesso.\nRiprova tra qualche minuto.",
@@ -160,7 +164,19 @@ const it = {
     "ageRestriction": {
       "title": "Non hai l’età minima richiesta",
       "description": "Per richiedere il bonus, devi avere minimo 18 anni"
-    }
+    },
+    "waitingList": {
+      "title": "Sei in lista d’attesa",
+      "description": "La tua richiesta è in coda.\nTi contatteremo se saranno disponibili nuove\nrisorse."
+    },
+    "initiativeEnded": {
+      "title": "Le iscrizioni sono terminate",
+      "description": "Non è più possibile aderire all’iniziativa. "
+    },
+    "budgetExhausted": {
+      "title": "I fondi messi a disposizione dall’ente sono terminati",
+      "description": "Non è più possibile aderire all’iniziativa. "
+    },
   },
   
 }
