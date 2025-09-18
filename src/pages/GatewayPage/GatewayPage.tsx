@@ -79,8 +79,8 @@ const GatewayPage = () => {
                     return;
                 }
             } catch (error) {
-                console.log('Error: ', error);
-                //TODO handle generic error
+                navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
+                return;
             };
         };
 
