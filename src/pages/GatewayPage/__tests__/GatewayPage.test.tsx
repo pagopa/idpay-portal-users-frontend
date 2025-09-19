@@ -17,7 +17,7 @@ jest.mock('../../../routes', () => {
   const routes = { FEEDBACK: '/esito', TOS: '/tos', ERROR_PAGE: '/esito' };
   return {
     __esModule: true,
-    default: routes, 
+    default: routes,
     FEEDBACK: routes.FEEDBACK,
     TOS: routes.TOS,
     ERROR_PAGE: routes.ERROR_PAGE,
@@ -51,11 +51,16 @@ let mockLoading = false;
 let mockUser: any = null;
 
 jest.mock('../../../contexts/AuthContext', () => ({
-  useAuth: () => ({ 
-    token: mockToken, 
+  useAuth: () => ({
+    token: mockToken,
     loading: mockLoading,
-    user: mockUser 
+    user: mockUser
   }),
+}));
+
+const mockIsStorageTokenExpired = jest.fn(() => false);
+jest.mock('../../../utils/tokenManager', () => ({
+  isStorageTokenExpired: () => mockIsStorageTokenExpired(),
 }));
 
 describe('GatewayPage', () => {
@@ -64,6 +69,7 @@ describe('GatewayPage', () => {
     mockToken = 'token-abc';
     mockLoading = false;
     mockUser = null;
+    mockIsStorageTokenExpired.mockReturnValue(false);
   });
 
   test('does not execute logic when loading is true', () => {
@@ -74,7 +80,19 @@ describe('GatewayPage', () => {
     expect(mockGetStatus).not.toHaveBeenCalled();
   });
 
-  test('redirects to FEEDBACK INVALID_ACCESS_TOKEN when token is null', async () => {
+  test('redirects to SESSION_EXPIRED when storage token is expired', async () => {
+    mockIsStorageTokenExpired.mockReturnValue(true);
+    mockUser = { attributes: {} };
+    render(<GatewayPage />);
+
+    await waitFor(() => {
+      expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+        state: { status: 'SESSION_EXPIRED' },
+      });
+    });
+  });
+
+  test('redirects to INVALID_ACCESS_TOKEN when token is null', async () => {
     mockToken = null;
     render(<GatewayPage />);
 
@@ -85,7 +103,7 @@ describe('GatewayPage', () => {
     });
   });
 
-  test('redirects to FEEDBACK INVALID_ACCESS_TOKEN when token is undefined', async () => {
+  test('redirects to INVALID_ACCESS_TOKEN when token is undefined', async () => {
     mockToken = undefined;
     render(<GatewayPage />);
 
@@ -95,10 +113,11 @@ describe('GatewayPage', () => {
       });
     });
   });
+
   test('redirects to AGE_RESTRICTION when user is under 18', async () => {
     const today = new Date();
     const underageDate = new Date(today.getFullYear() - 17, today.getMonth(), today.getDate());
-    
+
     mockUser = {
       attributes: {
         dateOfBirth: [underageDate.toISOString().split('T')[0]]
@@ -117,7 +136,7 @@ describe('GatewayPage', () => {
   test('does not redirect when user is 18 or older', async () => {
     const today = new Date();
     const adultDate = new Date(today.getFullYear() - 20, today.getMonth(), today.getDate());
-    
+
     mockUser = {
       attributes: {
         dateOfBirth: [adultDate.toISOString().split('T')[0]]
@@ -192,6 +211,7 @@ describe('GatewayPage', () => {
   });
 
   test('navigates to FEEDBACK when status 200 with valid status payload', async () => {
+    mockUser = { attributes: {} };
     mockGetStatus.mockResolvedValue({
       status: 200,
       data: { status: 'COMPLETED' },
@@ -208,6 +228,7 @@ describe('GatewayPage', () => {
   });
 
   test('navigates to TOS when 404 with ONBOARDING_USER_NOT_ONBOARDED', async () => {
+    mockUser = { attributes: {} };
     mockGetStatus.mockResolvedValue({
       status: 404,
       data: { code: 'ONBOARDING_USER_NOT_ONBOARDED' },
@@ -219,7 +240,9 @@ describe('GatewayPage', () => {
       expect(mockedUsedNavigate).toHaveBeenCalledWith('/tos');
     });
   });
+
   test('does not navigate when status 200 but invalid data structure', async () => {
+    mockUser = { attributes: {} };
     mockGetStatus.mockResolvedValue({
       status: 200,
       data: { invalidField: 'test' },
@@ -234,6 +257,7 @@ describe('GatewayPage', () => {
   });
 
   test('does not navigate when status 200 but data is null', async () => {
+    mockUser = { attributes: {} };
     mockGetStatus.mockResolvedValue({
       status: 200,
       data: null,
@@ -248,6 +272,7 @@ describe('GatewayPage', () => {
   });
 
   test('does not navigate when status 200 but status field has invalid value', async () => {
+    mockUser = { attributes: {} };
     mockGetStatus.mockResolvedValue({
       status: 200,
       data: { status: 'INVALID_STATUS' },
@@ -262,6 +287,7 @@ describe('GatewayPage', () => {
   });
 
   test('does not navigate when status 404 but wrong error code', async () => {
+    mockUser = { attributes: {} };
     mockGetStatus.mockResolvedValue({
       status: 404,
       data: { code: 'DIFFERENT_ERROR_CODE' },
@@ -276,6 +302,7 @@ describe('GatewayPage', () => {
   });
 
   test('does not navigate when status 404 but no error code', async () => {
+    mockUser = { attributes: {} };
     mockGetStatus.mockResolvedValue({
       status: 404,
       data: { message: 'Not found' },
@@ -290,6 +317,7 @@ describe('GatewayPage', () => {
   });
 
   test('does not navigate for unexpected status', async () => {
+    mockUser = { attributes: {} };
     mockGetStatus.mockResolvedValue({
       status: 418,
       data: { message: "I'm a teapot" },
@@ -315,6 +343,7 @@ describe('GatewayPage', () => {
   });
 
   test('renders overlay while processing', () => {
+    mockUser = { attributes: {} };
     mockGetStatus.mockResolvedValue({
       status: 200,
       data: { status: 'COMPLETED' },
@@ -326,7 +355,7 @@ describe('GatewayPage', () => {
   test('allows access when user is exactly 18 years old', async () => {
     const today = new Date();
     const exactlyEighteenDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-    
+
     mockUser = {
       attributes: {
         dateOfBirth: [exactlyEighteenDate.toISOString().split('T')[0]]
@@ -344,6 +373,19 @@ describe('GatewayPage', () => {
       expect(mockGetStatus).toHaveBeenCalled();
       expect(mockedUsedNavigate).not.toHaveBeenCalledWith('/esito', {
         state: { status: 'AGE_RESTRICTION' },
+      });
+    });
+  });
+
+  test('redirects to UNKNOWN_ERROR when user is null (final else)', async () => {
+    mockToken = 'token-abc';
+    mockIsStorageTokenExpired.mockReturnValue(false);
+
+    render(<GatewayPage />);
+
+    await waitFor(() => {
+      expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+        state: { status: 'UNKNOWN_ERROR' },
       });
     });
   });
