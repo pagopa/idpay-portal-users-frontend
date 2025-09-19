@@ -63,6 +63,42 @@ describe('ErrorPage', () => {
         );
     });
 
+    it('renders feedback for SESSION_EXPIRED', () => {
+        (useLocation as jest.Mock).mockReturnValue({
+            state: { status: 'SESSION_EXPIRED' },
+        });
+
+        render(<ErrorPage />);
+
+        expect(screen.getByTestId('feedback-title')).toHaveTextContent(
+            errorState.SESSION_EXPIRED.title
+        );
+        expect(screen.getByTestId('feedback-description')).toHaveTextContent(
+            errorState.SESSION_EXPIRED.description
+        );
+        expect(screen.getByTestId('feedback-button')).toHaveTextContent(
+            errorState.SESSION_EXPIRED.buttonLabel!
+        );
+    });
+
+    it('renders feedback for UNKNOWN_ERROR', () => {
+        (useLocation as jest.Mock).mockReturnValue({
+            state: { status: 'UNKNOWN_ERROR' },
+        });
+
+        render(<ErrorPage />);
+
+        expect(screen.getByTestId('feedback-title')).toHaveTextContent(
+            errorState.UNKNOWN_ERROR.title
+        );
+        expect(screen.getByTestId('feedback-description')).toHaveTextContent(
+            errorState.UNKNOWN_ERROR.description
+        );
+        expect(screen.getByTestId('feedback-button')).toHaveTextContent(
+            errorState.UNKNOWN_ERROR.buttonLabel!
+        );
+    });
+
     it('renders fallback feedback for unknown status', () => {
         (useLocation as jest.Mock).mockReturnValue({
             state: { status: 'SOME_UNKNOWN_ERROR' },
@@ -71,10 +107,10 @@ describe('ErrorPage', () => {
         render(<ErrorPage />);
 
         expect(screen.getByTestId('feedback-title')).toHaveTextContent(
-            errorState.INVALID_ACCESS_TOKEN.title
+            errorState.UNKNOWN_ERROR.title
         );
         expect(screen.getByTestId('feedback-description')).toHaveTextContent(
-            errorState.INVALID_ACCESS_TOKEN.description
+            errorState.UNKNOWN_ERROR.description
         );
     });
 
@@ -86,10 +122,10 @@ describe('ErrorPage', () => {
         render(<ErrorPage />);
 
         expect(screen.getByTestId('feedback-title')).toHaveTextContent(
-            errorState.INVALID_ACCESS_TOKEN.title
+            errorState.UNKNOWN_ERROR.title
         );
         expect(screen.getByTestId('feedback-description')).toHaveTextContent(
-            errorState.INVALID_ACCESS_TOKEN.description
+            errorState.UNKNOWN_ERROR.description
         );
     });
 });

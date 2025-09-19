@@ -49,7 +49,8 @@ const it = {
         "accessibility": "Accessibilità"
       },
     },
-    "retry": "Riprova"
+    "retry": "Riprova",
+    "login": "Accedi",
   },
 
   "landing": {
@@ -171,11 +172,19 @@ const it = {
     },
     "initiativeEnded": {
       "title": "Le iscrizioni sono terminate",
-      "description": "Non è più possibile aderire all’iniziativa. "
+      "description": "Non è più possibile aderire all’iniziativa."
     },
     "budgetExhausted": {
       "title": "I fondi messi a disposizione dall’ente sono terminati",
-      "description": "Non è più possibile aderire all’iniziativa. "
+      "description": "Non è più possibile aderire all’iniziativa."
+    },
+    "sessionExpired": {
+      "title": "La tua sessione è scaduta",
+      "description": "Accedi per riprendere la sessione, oppure prosegui senza effettuare il login."
+    },
+    "unknownError": {
+      "title": "Qualcosa non ha funzionato",
+      "description": "Si è verificato un errore imprevisto.\nRiprova tra qualche minuto."
     },
   },
   

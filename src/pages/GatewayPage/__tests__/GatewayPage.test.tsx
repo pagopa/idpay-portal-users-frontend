@@ -302,18 +302,16 @@ describe('GatewayPage', () => {
     });
   });
 
-  test('logs error and does not navigate when API throws', async () => {
-    const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+  test('navigates to ERROR_PAGE with UNKNOWN_ERROR when API throws', async () => {
     mockGetStatus.mockRejectedValue(new Error('Network error'));
 
     render(<GatewayPage />);
 
     await waitFor(() => {
-      expect(consoleSpy).toHaveBeenCalledWith('Error: ', expect.any(Error));
-      expect(mockedUsedNavigate).not.toHaveBeenCalled();
+      expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+        state: { status: 'UNKNOWN_ERROR' },
+      });
     });
-
-    consoleSpy.mockRestore();
   });
 
   test('renders overlay while processing', () => {
