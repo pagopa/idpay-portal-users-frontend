@@ -9,6 +9,8 @@ import { StatusEnum } from '../../api/generated/onboarding-web/OnboardingStatusD
 import { useAuth } from '../../contexts/AuthContext';
 import Overlay from '../../components/Overlay/Overlay';
 import { UserProfile } from '../../types/auth';
+import { isStorageTokenExpired } from '../../utils/tokenManager';
+import { ErrorStateKey } from '../ErrorPage/errorStates';
 
 const GatewayPage = () => {
     const { loading, token, user } = useAuth();
@@ -38,28 +40,34 @@ const GatewayPage = () => {
 
     const isAgeRestricted = (dateOfBirth: string | null): boolean => {
         if (!dateOfBirth) return false;
-        
+
         const birthDate = new Date(dateOfBirth);
         const today = new Date();
         const eighteenYearsAgo = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-        
+
         return birthDate > eighteenYearsAgo;
     };
 
     useEffect(() => {
-        if(loading) {
-            return;
-        }
-        if (token == null) {
-            navigate(ROUTES.ERROR_PAGE, { state: { status: "INVALID_ACCESS_TOKEN" } });
-            return;
-        }
-        if (user) {
+        if (loading) return;
+
+        let statusKey: ErrorStateKey | null = null;
+        if (isStorageTokenExpired()) {
+            statusKey = 'SESSION_EXPIRED';
+        } else if (token == null) {
+            statusKey = 'INVALID_ACCESS_TOKEN';
+        } else if (user) {
             const dateOfBirth = getDateOfBirth(user);
             if (dateOfBirth && isAgeRestricted(dateOfBirth)) {
-                navigate(ROUTES.ERROR_PAGE, { state: { status: 'AGE_RESTRICTION' } });
-                return;
-            };
+                statusKey = 'AGE_RESTRICTION';
+            }
+        } else {
+            statusKey = 'UNKNOWN_ERROR';
+        }
+
+        if (statusKey) {
+            navigate(ROUTES.ERROR_PAGE, { state: { status: statusKey } });
+            return;
         }
 
         const initiativeId = '68b1612f5a02762e0511c964';
