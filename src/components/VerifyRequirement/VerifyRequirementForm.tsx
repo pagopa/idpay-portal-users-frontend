@@ -26,7 +26,7 @@ export default function VerifyRequirementForm() {
 
     const handleContinue = async () => {
         const isValid = iseeValue !== '' && switchValue === true;
-       if (!isValid) { return; }
+        if (!isValid) { return; }
 
         const payload = {
             initiativeId: '68b1612f5a02762e0511c964',
@@ -53,15 +53,14 @@ export default function VerifyRequirementForm() {
                 navigate(ROUTES.FEEDBACK, { state: { status: 'REQUEST_SUBMITTED' } });
                 return;
             }
-            console.error('Unexpected API response:', apiResponse);
-        
+            navigate(ROUTES.ERROR_PAGE, { state: { status: 'TECHNICAL_ERROR' } });
         } catch (apiError: any) {
             const res = extractErrorResponse(apiError);
             if (isSuccessStatus(res?.status)) {
                 navigate(ROUTES.FEEDBACK, { state: { status: 'REQUEST_SUBMITTED' } });
                 return;
             }
-            console.error('API call failed:', apiError);
+            navigate(ROUTES.ERROR_PAGE, { state: { status: 'TECHNICAL_ERROR' } });
         }
     };
 

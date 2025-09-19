@@ -186,6 +186,10 @@ const it = {
       "title": "Qualcosa non ha funzionato",
       "description": "Si è verificato un errore imprevisto.\nRiprova tra qualche minuto."
     },
+    "technicalError": {
+      "title": "Non riusciamo a inviare la richiesta per questa iniziativa",
+      "description": "Siamo già a lavoro per risolvere.\nRiprova tra un po’."
+    },
   },
   
 }

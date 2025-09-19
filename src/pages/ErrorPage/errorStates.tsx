@@ -11,7 +11,7 @@ export type ErrorState = {
   supportLinkUrl?: string;
 };
 
-export type ErrorStateKey = 'AGE_RESTRICTION' | 'INVALID_ACCESS_TOKEN' | 'SESSION_EXPIRED' | 'UNKNOWN_ERROR';
+export type ErrorStateKey = 'AGE_RESTRICTION' | 'INVALID_ACCESS_TOKEN' | 'SESSION_EXPIRED' | 'UNKNOWN_ERROR' | 'TECHNICAL_ERROR';
 
 export const errorState: Record<ErrorStateKey, ErrorState> = {
 
@@ -43,4 +43,11 @@ export const errorState: Record<ErrorStateKey, ErrorState> = {
     buttonLabel: 'commons.retry',
     buttonRedirect: '__LOGOUT__'
   },
+  TECHNICAL_ERROR: {
+    icon: <IllusUmbrella />,
+    title: "feedbackStates.technicalError.title",
+    description: 'feedbackStates.technicalError.description',
+    buttonLabel: 'commons.exit',
+    buttonRedirect: '__LOGOUT__'
+  }
 };
