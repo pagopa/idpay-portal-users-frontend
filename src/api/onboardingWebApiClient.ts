@@ -3,7 +3,7 @@ import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/stor
 import { createClient, WithDefaultsT } from './generated/onboarding-web/client';
 
 import { InitiativeDTO } from './generated/onboarding-web/InitiativeDTO';
-import { WebSaveOnboardingT } from './generated/onboarding-web/requestTypes';
+import { SaveOnboardingT } from './generated/onboarding-web/requestTypes';
 import { RequestParams } from '@pagopa/ts-commons/lib/requests';
 import { OnboardingStatusDTO } from './generated/onboarding-web/OnboardingStatusDTO';
 import { CodeEnum, OnboardingErrorDTO } from './generated/onboarding-web/OnboardingErrorDTO';
@@ -27,7 +27,7 @@ const withBearer: WithDefaultsT<'bearerAuth'> = (wrappedOperation) => (params: a
 
 const onboardingClient = createClient({
   baseUrl: import.meta.env.VITE_URL_API_PORTAL_USERS,
-  basePath: '',
+  basePath: 'web',
   fetchApi: buildFetchApiWithLoading(),
   withDefaults: withBearer,
 });
@@ -39,7 +39,7 @@ export const OnboardingWebApi = {
   getStatus: async (
     initiativeId: string
   ): Promise<{ status: number; data: OnboardingStatusDTO | OnboardingErrorDTO }> => {
-    const result = await onboardingClient.webOnboardingStatus({
+    const result = await onboardingClient.onboardingStatus({
       initiativeId,
       ...commonHeaders
     });
@@ -69,7 +69,7 @@ export const OnboardingWebApi = {
   },
 
   getDetail: async (initiativeId: string): Promise<InitiativeDTO> => {
-    const result = await onboardingClient.webInitiativeDetail({
+    const result = await onboardingClient.initiativeDetail({
       initiativeId,
       ...commonHeaders
     });
@@ -77,9 +77,9 @@ export const OnboardingWebApi = {
   },
 
   save: async (
-    params: Omit<RequestParams<WebSaveOnboardingT>, 'bearerAuth'>
+    params: Omit<RequestParams<SaveOnboardingT>, 'bearerAuth'>
   ): Promise<{ status: number; value: unknown }> => {
-    const result = await onboardingClient.webSaveOnboarding({
+    const result = await onboardingClient.saveOnboarding({
       ...params,
       ...commonHeaders
     });
