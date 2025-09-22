@@ -2,6 +2,20 @@ import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/stor
 
 const TOKEN_REFRESH_BEFORE_EXPIRY_SECONDS = 70;
 
+export const isStorageTokenExpired = () => {
+  const storageToken = storageTokenOps.read();
+  if (!storageToken) return false;
+  try {
+    const [, payload] = storageToken.split('.');
+    const { exp } = JSON.parse(atob(payload));
+    if (typeof exp !== 'number') return false;
+    const now = Math.floor(Date.now() / 1000);
+    return now >= exp;
+  } catch {
+    return false;
+  }
+};
+
 export type TokenManager = {
   saveToken: (token: string | null) => void;
   getSavedToken: () => string | null;
