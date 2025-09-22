@@ -180,7 +180,7 @@ const it = {
     },
     "sessionExpired": {
       "title": "La tua sessione è scaduta",
-      "description": "Accedi per riprendere la sessione, oppure prosegui senza effettuare il login."
+      "description": "Accedi per riprendere la sessione."
     },
     "unknownError": {
       "title": "Qualcosa non ha funzionato",

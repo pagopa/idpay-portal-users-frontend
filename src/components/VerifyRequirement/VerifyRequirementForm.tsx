@@ -29,7 +29,7 @@ export default function VerifyRequirementForm() {
         if (!isValid) { return; }
 
         const payload = {
-            initiativeId: '68b1612f5a02762e0511c964',
+            initiativeId: '68c4449d0d8426093743d00e',
             confirmedTos: true,
             pdndAccept: true,
             selfDeclarationList: [
