@@ -33,7 +33,7 @@ jest.mock('../../../api/onboardingWebApiClient', () => ({
   },
 }));
 
-describe('Dashboard (logic only)', () => {
+describe('Dashboard logic', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -59,14 +59,14 @@ describe('Dashboard (logic only)', () => {
     expect(mockedUsedNavigate).not.toHaveBeenCalled();
   });
 
-  test('navigates to ERROR_PAGE with TECHNICAL_ERROR when API throws', async () => {
+  test('navigates to ERROR_PAGE with UNKNOWN_ERROR when API throws', async () => {
     mockGetBarCode.mockRejectedValue(new Error('boom'));
 
     render(<Dashboard />);
 
     await waitFor(() => {
       expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
-        state: { status: 'TECHNICAL_ERROR' },
+        state: { status: 'UNKNOWN_ERROR' },
       });
     });
 

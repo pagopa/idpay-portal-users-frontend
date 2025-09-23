@@ -34,7 +34,7 @@ const Dashboard = () => {
         const response = await OnboardingWebApi.getBarCode(initiativeId);
         setTrxCode(response.data?.trxCode);
       }catch(error){
-        navigate(ROUTES.ERROR_PAGE, { state: { status: "TECHNICAL_ERROR"}})
+        navigate(ROUTES.ERROR_PAGE, { state: { status: "UNKNOWN_ERROR"}})
       }finally{
         setIsLoading(false);
         console.log(trxCode)
