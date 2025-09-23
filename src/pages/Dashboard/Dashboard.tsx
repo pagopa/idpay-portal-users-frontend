@@ -2,8 +2,16 @@ import { Box, Typography, Card, CardContent, Button } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { ButtonNaked } from '@pagopa/mui-italia';
+import { useEffect, useState } from 'react';
+import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
+import { useNavigate } from 'react-router-dom';
+import ROUTES from '../../routes';
+import Overlay from '../../components/Overlay/Overlay';
 
 const Dashboard = () => {
+  const [trxCode, setTrxCode] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
   const mockResponse =
   {
     amount: '100,00 €',
@@ -18,6 +26,25 @@ const Dashboard = () => {
     { label: 'Durata del buono', value: mockResponse.validity },
     { label: 'Codice Fiscale', value: mockResponse.fiscalCode }
   ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const initiativeId = '68c4449d0d8426093743d00e';
+      try{
+        const response = await OnboardingWebApi.getBarCode(initiativeId);
+        setTrxCode(response.data?.trxCode);
+      }catch(error){
+        navigate(ROUTES.ERROR_PAGE, { state: { status: "UNKNOWN_ERROR"}})
+      }finally{
+        setIsLoading(false);
+        console.log(trxCode)
+      }
+    }
+
+    fetchData();
+  }, [])
+  
+  if(isLoading) return <Overlay />
 
   return (
     <>
