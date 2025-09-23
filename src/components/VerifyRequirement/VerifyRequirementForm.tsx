@@ -12,19 +12,25 @@ import { useNavigate } from 'react-router-dom';
 import { useEmailStore } from '../../hooks/useEmailStore';
 import { commonHeaders, OnboardingWebApi } from '../../api/onboardingWebApiClient';
 import { extractErrorResponse, isSuccessStatus } from '../../utils/api';
+import { useVerifyRequirementStore } from '../../hooks/useVerifyRequirementStore';
 
 export default function VerifyRequirementForm() {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { email, confirmEmail } = useEmailStore();
-    const [iseeValue, setIseeValue] = useState('');
-    const [switchValue, setSwitchValue] = useState(false);
+    const { isee, selfDeclaration, setIsee, setSelfDeclaration } = useVerifyRequirementStore();
+    const [iseeValue, setIseeValue] = useState(isee);
+    const [switchValue, setSwitchValue] = useState(selfDeclaration);
+    const [submitted, setSubmitted] = useState(false);
 
     const handleBack = () => {
+        setIsee(iseeValue);
+        setSelfDeclaration(switchValue);
         navigate(ROUTES.INSERT_EMAIL);
     }
 
     const handleContinue = async () => {
+        setSubmitted(true);
         const isValid = iseeValue !== '' && switchValue === true;
         if (!isValid) { return; }
 
@@ -36,7 +42,7 @@ export default function VerifyRequirementForm() {
                 {
                     _type: 'multi_consent',
                     code: 'isee',
-                    value: '01', // TODO: retrieve from detail API
+                    value: iseeValue, // TODO: retrieve from detail API
                 },
             ],
             userMail: email,
@@ -76,8 +82,8 @@ export default function VerifyRequirementForm() {
                 <HeaderForm />
 
                 <FamilyForm />
-                <SelfDeclaration switchValue={switchValue} setSwitchValue={setSwitchValue} />
-                <IseeForm iseeValue={iseeValue} setIseeValue={setIseeValue} />
+                <SelfDeclaration switchValue={switchValue} setSwitchValue={setSwitchValue} showError={submitted} />
+                <IseeForm iseeValue={iseeValue} setIseeValue={setIseeValue} showError={submitted} />
 
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Button variant="outlined" size='medium' startIcon={<ArrowBack sx={{ color: theme.palette.primary.main }} />} onClick={handleBack}>{t('commons.back')}</Button>
