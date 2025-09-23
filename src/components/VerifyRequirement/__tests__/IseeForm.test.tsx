@@ -45,7 +45,7 @@ describe('IseeForm', () => {
     const option = screen.getByText('verifyRequirements.isee.option.<25000');
     fireEvent.click(option);
 
-    expect(setIseeValueMock).toHaveBeenCalledWith('under25k');
+    expect(setIseeValueMock).toHaveBeenCalledWith('01');
   });
 
   test('displays error message when iseeValue is empty', () => {
@@ -57,7 +57,7 @@ describe('IseeForm', () => {
   });
 
   test('does not display error message when iseeValue is selected', () => {
-    render(<IseeForm iseeValue="under25k" setIseeValue={jest.fn()} />);
+    render(<IseeForm iseeValue="01" setIseeValue={jest.fn()} />);
 
     expect(
       screen.queryByText('verifyRequirements.error')

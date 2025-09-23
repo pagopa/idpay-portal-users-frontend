@@ -36,7 +36,7 @@ export default function VerifyRequirementForm() {
                 {
                     _type: 'multi_consent',
                     code: 'isee',
-                    value: '01', // TODO: retrieve from detail API
+                    value: iseeValue, // TODO: retrieve from detail API
                 },
             ],
             userMail: email,

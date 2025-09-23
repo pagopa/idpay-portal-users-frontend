@@ -39,7 +39,7 @@ export default function IseeForm(props: IseeFormProps) {
                                     >
                                         <FormControlLabel
                                             sx={{ pb: 2 }}
-                                            value="under25k"
+                                            value="01"
                                             control={<Radio />}
                                             label={
                                                 <Box>
@@ -54,7 +54,7 @@ export default function IseeForm(props: IseeFormProps) {
                                         />
                                         <FormControlLabel
                                             sx={{ pb: 2 }}
-                                            value="over25k"
+                                            value="02"
                                             control={<Radio />}
                                             label={
                                                 <Box>
@@ -68,7 +68,7 @@ export default function IseeForm(props: IseeFormProps) {
                                             }
                                         />
                                         <FormControlLabel
-                                            value="no"
+                                            value="03"
                                             control={<Radio />}
                                             label={
                                                 <Box>
