@@ -78,6 +78,10 @@ const GatewayPage = () => {
 
                 if (status === 200 && (isStatusData(statusData) || isErrorDTO(statusData))) {
                     const statusString = (statusData as any).status || (statusData as any).code;
+                    if(statusString === "ONBOARDING_OK"){
+                        navigate(ROUTES.DASHBOARD);
+                        return;
+                    }
                     navigate(ROUTES.FEEDBACK, { state: { status: statusString } });
                     return;
                 }
