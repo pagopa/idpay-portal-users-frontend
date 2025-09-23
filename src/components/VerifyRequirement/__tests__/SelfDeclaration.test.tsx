@@ -44,14 +44,30 @@ describe('SelfDeclaration', () => {
     expect(setSwitchValueMock).toHaveBeenCalledWith(true);
   });
 
-  test('shows error message when switchValue is false', () => {
-    render(<SelfDeclaration switchValue={false} setSwitchValue={jest.fn()} />);
+  test('shows error message when switchValue is false and showError is true', () => {
+    render(<SelfDeclaration switchValue={false} setSwitchValue={jest.fn()} showError={true} />);
 
     expect(screen.getByText('verifyRequirements.error')).toBeInTheDocument();
   });
 
-  test('does not show error message when switchValue is true', () => {
-    render(<SelfDeclaration switchValue={true} setSwitchValue={jest.fn()} />);
+  test('does not show error message when showError is false', () => {
+    render(<SelfDeclaration switchValue={false} setSwitchValue={jest.fn()} showError={false} />);
+
+    expect(
+      screen.queryByText('verifyRequirements.error')
+    ).not.toBeInTheDocument();
+  });
+
+  test('does not show error message when switchValue is true even if showError is true', () => {
+    render(<SelfDeclaration switchValue={true} setSwitchValue={jest.fn()} showError={true} />);
+
+    expect(
+      screen.queryByText('verifyRequirements.error')
+    ).not.toBeInTheDocument();
+  });
+
+  test('does not show error message when switchValue is true and showError is false', () => {
+    render(<SelfDeclaration switchValue={true} setSwitchValue={jest.fn()} showError={false} />);
 
     expect(
       screen.queryByText('verifyRequirements.error')

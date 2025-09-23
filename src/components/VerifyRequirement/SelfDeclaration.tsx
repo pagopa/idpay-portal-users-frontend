@@ -1,4 +1,3 @@
-
 import { Box, Card, CardContent, Switch, Typography } from '@mui/material'
 import { theme } from '@pagopa/mui-italia'
 import type { Dispatch, SetStateAction } from 'react';
@@ -6,8 +5,9 @@ import { useTranslation } from 'react-i18next';
 import TitleCard from '../Titles/TitleCard';
 
 interface SelfDeclarationProps {
-  switchValue: boolean;
-  setSwitchValue: Dispatch<SetStateAction<boolean>>;
+    switchValue: boolean;
+    setSwitchValue: Dispatch<SetStateAction<boolean>>;
+    showError?: boolean;
 }
 
 export default function SelfDeclaration(props: SelfDeclarationProps) {
@@ -19,9 +19,9 @@ export default function SelfDeclaration(props: SelfDeclarationProps) {
                 <CardContent>
                     <TitleCard title='verifyRequirements.selfDeclaration.title'/>
                     <Box my={2}>
-                    <Typography variant='body2'>
-                        {t('verifyRequirements.selfDeclaration.description')}
-                    </Typography>
+                        <Typography variant='body2'>
+                            {t('verifyRequirements.selfDeclaration.description')}
+                        </Typography>
                     </Box>
                     <Box
                         sx={{
@@ -43,7 +43,7 @@ export default function SelfDeclaration(props: SelfDeclarationProps) {
                                     <Typography variant='body2' sx={{ fontWeight: theme.typography.fontWeightMedium, color: theme.palette.text.secondary }}>
                                         {t('verifyRequirements.selfDeclaration.switchLabel')}
                                     </Typography>
-                                    <Switch onChange={() => setSwitchValue(!switchValue)} sx={{
+                                    <Switch checked={switchValue} onChange={(_, checked) => setSwitchValue(checked)} sx={{
                                         ml: 2,
                                         '& .MuiSwitch-switchBase': {
                                             color: theme.palette.primary.contrastText,
@@ -62,7 +62,7 @@ export default function SelfDeclaration(props: SelfDeclarationProps) {
                             </CardContent>
                         </Card>
                     </Box>
-                    {!switchValue &&
+                    {props.showError && !switchValue &&
                         <Typography variant='caption-semibold' sx={{ color: theme.palette.error.dark }}>
                             {t('verifyRequirements.error')}
                         </Typography>

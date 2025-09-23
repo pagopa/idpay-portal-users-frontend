@@ -7,6 +7,7 @@ import TitleCard from '../Titles/TitleCard';
 interface IseeFormProps {
     iseeValue: string;
     setIseeValue: Dispatch<SetStateAction<string>>;
+    showError?: boolean;
 }
 
 export default function IseeForm(props: IseeFormProps) {
@@ -39,7 +40,7 @@ export default function IseeForm(props: IseeFormProps) {
                                     >
                                         <FormControlLabel
                                             sx={{ pb: 2 }}
-                                            value="under25k"
+                                            value="1"
                                             control={<Radio />}
                                             label={
                                                 <Box>
@@ -54,7 +55,7 @@ export default function IseeForm(props: IseeFormProps) {
                                         />
                                         <FormControlLabel
                                             sx={{ pb: 2 }}
-                                            value="over25k"
+                                            value="2"
                                             control={<Radio />}
                                             label={
                                                 <Box>
@@ -68,7 +69,7 @@ export default function IseeForm(props: IseeFormProps) {
                                             }
                                         />
                                         <FormControlLabel
-                                            value="no"
+                                            value="3"
                                             control={<Radio />}
                                             label={
                                                 <Box>
@@ -86,7 +87,7 @@ export default function IseeForm(props: IseeFormProps) {
                             </CardContent>
                         </Card>
                     </Box>
-                    {iseeValue === "" &&
+                    {props.showError && iseeValue === "" &&
                         <Typography variant='caption-semibold' sx={{ color: theme.palette.error.dark }}>
                             {t('verifyRequirements.error')}
                         </Typography>
