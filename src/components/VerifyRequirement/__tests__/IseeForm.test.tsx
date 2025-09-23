@@ -45,19 +45,27 @@ describe('IseeForm', () => {
     const option = screen.getByText('verifyRequirements.isee.option.<25000');
     fireEvent.click(option);
 
-    expect(setIseeValueMock).toHaveBeenCalledWith('01');
+    expect(setIseeValueMock).toHaveBeenCalledWith('1');
   });
 
-  test('displays error message when iseeValue is empty', () => {
-    render(<IseeForm iseeValue="" setIseeValue={jest.fn()} />);
+  test('displays error message when iseeValue is empty and showError is true', () => {
+    render(<IseeForm iseeValue="" setIseeValue={jest.fn()} showError={true} />);
 
     expect(
       screen.getByText('verifyRequirements.error')
     ).toBeInTheDocument();
   });
 
-  test('does not display error message when iseeValue is selected', () => {
-    render(<IseeForm iseeValue="01" setIseeValue={jest.fn()} />);
+  test('does not display error message when showError is false', () => {
+    render(<IseeForm iseeValue="" setIseeValue={jest.fn()} showError={false} />);
+
+    expect(
+      screen.queryByText('verifyRequirements.error')
+    ).not.toBeInTheDocument();
+  });
+
+  test('does not display error message when iseeValue is selected even if showError is true', () => {
+    render(<IseeForm iseeValue="1" setIseeValue={jest.fn()} showError={true} />);
 
     expect(
       screen.queryByText('verifyRequirements.error')
