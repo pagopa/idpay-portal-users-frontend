@@ -1,15 +1,21 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Sidebar from '../Sidebar';
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key
+  })
+}));
+
 describe('Sidebar', () => {
     it('shows text when expanded', () => {
         render(<Sidebar collapsed={false} toggleSidebar={jest.fn()} />);
-        expect(screen.getByText('Panoramica')).toBeInTheDocument();
+        expect(screen.getByText('dashboard.title')).toBeInTheDocument();
     });
 
     it('hides text when collapsed', () => {
         render(<Sidebar collapsed={true} toggleSidebar={jest.fn()} />);
-        expect(screen.queryByText('Panoramica')).not.toBeInTheDocument();
+        expect(screen.queryByText('dashboard.title')).not.toBeInTheDocument();
     });
 
     it('calls toggleSidebar when icon clicked', () => {
@@ -22,7 +28,7 @@ describe('Sidebar', () => {
 
     it('sets selected state on list item', () => {
         render(<Sidebar collapsed={false} toggleSidebar={jest.fn()} />);
-        const listItem = screen.getByRole('button', { name: /Panoramica/i });
+        const listItem = screen.getAllByRole('button')[0];
         expect(listItem.className).toMatch(/Mui-selected/);
     });
 

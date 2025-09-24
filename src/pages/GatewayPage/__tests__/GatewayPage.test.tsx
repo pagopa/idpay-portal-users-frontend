@@ -14,13 +14,14 @@ jest.mock('../../../components/Overlay/Overlay', () => () => (
 ));
 
 jest.mock('../../../routes', () => {
-  const routes = { FEEDBACK: '/esito', TOS: '/tos', ERROR_PAGE: '/esito' };
+  const routes = { FEEDBACK: '/esito', TOS: '/tos', ERROR_PAGE: '/esito', DASHBOARD: '/dashboard' };
   return {
     __esModule: true,
     default: routes,
     FEEDBACK: routes.FEEDBACK,
     TOS: routes.TOS,
     ERROR_PAGE: routes.ERROR_PAGE,
+    DASHBOARD: routes.DASHBOARD,
     ROUTES: routes,
     routes,
   };
@@ -389,4 +390,19 @@ describe('GatewayPage', () => {
       });
     });
   });
+
+  test('navigates to DASHBOARD when status 200 and code is ONBOARDING_OK', async () => {
+    mockUser = { attributes: {} };
+    mockGetStatus.mockResolvedValue({
+      status: 200,
+      data: { code: 'ONBOARDING_OK' },
+    });
+
+    render(<GatewayPage />);
+
+    await waitFor(() => {
+      expect(mockedUsedNavigate).toHaveBeenCalledWith('/dashboard');
+    });
+  });
+
 });
