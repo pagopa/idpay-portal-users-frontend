@@ -42,6 +42,7 @@
     "keycloak-js": "^26.2.0",
     "oidc-client-ts": "^3.3.0",
     "react": "^18.2.0",
+    "react-barcode": "^1.6.1",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.3.8",
     "react-i18next": "11",

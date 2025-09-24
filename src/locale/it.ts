@@ -191,7 +191,15 @@ const it = {
       "description": "Siamo già a lavoro per risolvere.\nRiprova tra un po’."
     },
   },
-  
+  "dashboard": {
+    "title": "Il tuo bonus",
+    "description": "In questa pagina, puoi indicare e modificare i recapiti a cui vuoi ricevere le tue notifiche per via digitale.",
+    "barcodeSection": {
+      "barcodeDescription": "codice a barre",
+      "downloadBarcode": "Scarica codice",
+      "showMerchants": "Mostra esercenti",
+    }
+  }
 }
 
 

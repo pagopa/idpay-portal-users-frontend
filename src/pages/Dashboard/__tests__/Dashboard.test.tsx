@@ -4,6 +4,18 @@ import Dashboard from '../Dashboard';
 
 const mockedUsedNavigate = jest.fn();
 
+jest.mock('react-barcode', () => {
+  return function MockBarcode({ value }: { value: string }) {
+    return <div data-testid="barcode" data-value={value}>Mock Barcode: {value}</div>;
+  };
+});
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key
+  })
+}));
+
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockedUsedNavigate,
@@ -75,7 +87,7 @@ describe('Dashboard logic', () => {
     });
   });
 
-  test('renders overlay while loading', () => {
+  test('renders overlay while loading', async () => {
     mockGetBarCode.mockResolvedValue({
       status: 200,
       data: { trxCode: 'foo' },
@@ -83,5 +95,43 @@ describe('Dashboard logic', () => {
 
     render(<Dashboard />);
     expect(screen.getByTestId('overlay')).toBeInTheDocument();
+  });
+
+  test('shows barcode section when trxCode is available', async () => {
+    const trxCode = '2lezemi4';
+    mockGetBarCode.mockResolvedValue({
+      status: 200,
+      data: { trxCode },
+    });
+
+    render(<Dashboard />);
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('overlay')).not.toBeInTheDocument();
+    });
+
+    expect(screen.getByTestId('barcode')).toBeInTheDocument();
+    expect(screen.getByTestId('barcode')).toHaveAttribute('data-value', trxCode);
+
+    expect(screen.getByText('dashboard.barcodeSection.barcodeDescription')).toBeInTheDocument();
+
+    expect(screen.getByText('dashboard.barcodeSection.downloadBarcode')).toBeInTheDocument();
+    expect(screen.getByText('dashboard.barcodeSection.showMerchants')).toBeInTheDocument();
+  });
+
+  test('hides barcode section when trxCode is not available', async () => {
+    mockGetBarCode.mockResolvedValue({
+      status: 200,
+      data: { trxCode: '' }
+    });
+
+    render(<Dashboard />);
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('overlay')).not.toBeInTheDocument();
+    });
+
+    expect(screen.queryByTestId('barcode')).not.toBeInTheDocument();
+    expect(screen.queryByText('dashboard.barcodeSection.barcodeDescription')).not.toBeInTheDocument();
   });
 });
