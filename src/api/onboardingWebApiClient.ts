@@ -10,6 +10,7 @@ import { CodeEnum, OnboardingErrorDTO } from './generated/onboarding-web/Onboard
 import { isRight } from 'fp-ts/Either';
 import { buildFetchApiWithLoading } from './buildFetchApiWithLoading';
 import { TransactionBarCodeResponse } from './generated/onboarding-web/TransactionBarCodeResponse';
+import { OnboardingInitiativeDTO } from './generated/onboarding-web/OnboardingInitiativeDTO';
 
 export const commonHeaders = {
   'X-Api-Version': 'v1',
@@ -69,12 +70,12 @@ export const OnboardingWebApi = {
     }
   },
 
-  getDetail: async (initiativeId: string): Promise<InitiativeDTO> => {
+  getDetail: async (initiativeId: string): Promise<OnboardingInitiativeDTO> => {
     const result = await onboardingClient.initiativeDetail({
       initiativeId,
       ...commonHeaders
     });
-    return await extractResponse<InitiativeDTO>(result, 200, onRedirectToLogin);
+    return await extractResponse<OnboardingInitiativeDTO>(result, 200, onRedirectToLogin);
   },
 
   save: async (
@@ -116,6 +117,34 @@ export const OnboardingWebApi = {
       );
 
       if (valid?.actual) return { status: 200, data: valid.actual as TransactionBarCodeResponse };
+      throw result.left;
+    }
+  },
+
+  getBonusDetail: async (
+    initiativeId: string
+  ): Promise<{ status: number; data: InitiativeDTO }> => {
+    const result = await onboardingClient.getWalletDetail({
+      initiativeId,
+      ...commonHeaders
+    });
+
+    if (isRight(result)) {
+      const { status, value } = result.right;
+      if (status === 200) return { status: 200, data: value as InitiativeDTO };
+      throw new Error(`Unexpected status: ${status}`);
+    } else {
+      const leftItem = result.left?.[0];
+      const contexts = leftItem?.context ?? [];
+
+      const valid = contexts.find(
+        (c: any) =>
+          (c?.actual?.voucherStatus === "EXPIRED" || c?.actual?.voucherStatus === "USED"
+            || c?.actual?.voucherStatus === "ACTIVE" || c?.actual?.voucherStatus === "EXPIRING") &&
+          c?.actual?.voucherStartDate && c?.actual?.voucherEndDate
+      );
+
+      if (valid?.actual) return { status: 200, data: valid.actual as InitiativeDTO };
       throw result.left;
     }
   },

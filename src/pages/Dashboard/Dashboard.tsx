@@ -7,6 +7,7 @@ import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
 import Overlay from '../../components/Overlay/Overlay';
+import { VoucherStatusEnum } from '../../api/generated/onboarding-web/InitiativeDTO';
 import { theme } from '@pagopa/mui-italia';
 import Barcode from 'react-barcode';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +15,10 @@ import { useTranslation } from 'react-i18next';
 const Dashboard = () => {
   const { t } = useTranslation();
   const [trxCode, setTrxCode] = useState('');
+  const [voucherStatus, setVoucherStatus] = useState<VoucherStatusEnum | undefined>();
+  const [voucherStartDate, setVoucherStartDate] = useState<Date | undefined>();
+  const [voucherEndDate, setVoucherEndDate] = useState<Date | undefined>();
+  const [availableAmount, setAvailableAmount] = useState<Number | undefined>();
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const mockResponse =
@@ -34,13 +39,22 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       const initiativeId = '68c4449d0d8426093743d00e';
-      try {
-        const response = await OnboardingWebApi.getBarCode(initiativeId);
-        setTrxCode(response.data?.trxCode);
-      } catch (error) {
-        navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
-      } finally {
+      try{
+        const detailRes = await OnboardingWebApi.getBonusDetail(initiativeId);
+        const detailData = detailRes.data;
+        setVoucherStartDate(detailData?.voucherStartDate)
+        setVoucherEndDate(detailData?.voucherEndDate)
+        setVoucherStatus(detailData?.voucherStatus)
+        setAvailableAmount(detailData?.amountCents)
+        
+        if (detailData && detailData?.voucherStatus && (detailData?.voucherStatus === "ACTIVE" || detailData?.voucherStatus === "EXPIRING")) {
+          const response = await OnboardingWebApi.getBarCode(initiativeId);
+          setTrxCode(response.data?.trxCode);
+        }
         setIsLoading(false);
+        console.log(voucherStatus, voucherStartDate, voucherEndDate, availableAmount, trxCode)
+      }catch(error){
+        navigate(ROUTES.ERROR_PAGE, { state: { status: "UNKNOWN_ERROR"}})
       }
     };
 

@@ -38,10 +38,12 @@ jest.mock('../../../routes', () => {
 });
 
 const mockGetBarCode = jest.fn();
+const mockGetBonusDetail = jest.fn();
 
 jest.mock('../../../api/onboardingWebApiClient', () => ({
   OnboardingWebApi: {
     getBarCode: (...args: any[]) => mockGetBarCode(...args),
+    getBonusDetail: (...args: any[]) => mockGetBonusDetail(...args),
   },
 }));
 
@@ -50,7 +52,17 @@ describe('Dashboard logic', () => {
     jest.clearAllMocks();
   });
 
-  test('calls getBarCode with initiativeId and hides loader on success', async () => {
+  test('fetches detail and calls getBarCode only when voucherStatus is ACTIVE/EXPIRING; hides loader on success', async () => {
+    mockGetBonusDetail.mockResolvedValue({
+      status: 200,
+      data: {
+        voucherStatus: 'ACTIVE',
+        voucherStartDate: '2025-09-24',
+        voucherEndDate: '2025-09-24',
+        accruedCents: 10000,
+        refundedCents: 0,
+      },
+    });
     mockGetBarCode.mockResolvedValue({
       status: 200,
       data: { trxCode: '2lezemi4' },
@@ -59,6 +71,10 @@ describe('Dashboard logic', () => {
     render(<Dashboard />);
 
     expect(screen.getByTestId('overlay')).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(mockGetBonusDetail).toHaveBeenCalledWith('68c4449d0d8426093743d00e');
+    });
 
     await waitFor(() => {
       expect(mockGetBarCode).toHaveBeenCalledWith('68c4449d0d8426093743d00e');
@@ -71,8 +87,35 @@ describe('Dashboard logic', () => {
     expect(mockedUsedNavigate).not.toHaveBeenCalled();
   });
 
-  test('navigates to ERROR_PAGE with UNKNOWN_ERROR when API throws', async () => {
-    mockGetBarCode.mockRejectedValue(new Error('boom'));
+  test('does NOT call getBarCode when voucherStatus is not ACTIVE/EXPIRING; hides loader', async () => {
+    mockGetBonusDetail.mockResolvedValue({
+      status: 200,
+      data: {
+        voucherStatus: 'USED',
+        voucherStartDate: '2025-09-24',
+        voucherEndDate: '2025-09-24',
+        accruedCents: 10000,
+        refundedCents: 5000,
+      },
+    });
+
+    render(<Dashboard />);
+
+    await waitFor(() => {
+      expect(mockGetBonusDetail).toHaveBeenCalledWith('68c4449d0d8426093743d00e');
+    });
+
+    expect(mockGetBarCode).not.toHaveBeenCalled();
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('overlay')).not.toBeInTheDocument();
+    });
+
+    expect(mockedUsedNavigate).not.toHaveBeenCalled();
+  });
+
+  test('navigates to ERROR_PAGE with UNKNOWN_ERROR when detail API throws (overlay remains)', async () => {
+    mockGetBonusDetail.mockRejectedValue(new Error('boom'));
 
     render(<Dashboard />);
 
@@ -82,12 +125,22 @@ describe('Dashboard logic', () => {
       });
     });
 
-    await waitFor(() => {
-      expect(screen.queryByTestId('overlay')).not.toBeInTheDocument();
-    });
+    expect(screen.getByTestId('overlay')).toBeInTheDocument();
+
+    expect(mockGetBarCode).not.toHaveBeenCalled();
   });
 
-  test('renders overlay while loading', async () => {
+  test('renders overlay while loading', () => {
+    mockGetBonusDetail.mockResolvedValue({
+      status: 200,
+      data: {
+        voucherStatus: 'ACTIVE',
+        voucherStartDate: '2025-09-24',
+        voucherEndDate: '2025-09-24',
+        accruedCents: 10000,
+        refundedCents: 0,
+      },
+    });
     mockGetBarCode.mockResolvedValue({
       status: 200,
       data: { trxCode: 'foo' },
