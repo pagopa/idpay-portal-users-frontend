@@ -8,8 +8,9 @@ import {
   IconButton
 } from '@mui/material';
 import { theme } from '@pagopa/mui-italia';
-import ViewComfyIcon from '@mui/icons-material/ViewComfy';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useTranslation } from 'react-i18next';
+import { ConfirmationNumberRounded } from '@mui/icons-material';
 
 type SidebarProps = {
   collapsed: boolean;
@@ -17,6 +18,7 @@ type SidebarProps = {
 };
 
 const Sidebar = ({ collapsed, toggleSidebar }: SidebarProps) => {
+  const { t } = useTranslation();
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleListItemClick = (index: number) => {
@@ -47,9 +49,9 @@ const Sidebar = ({ collapsed, toggleSidebar }: SidebarProps) => {
           }}
         >
           <ListItemIcon sx={{ minWidth: collapsed ? 'auto' : undefined }}>
-            <ViewComfyIcon />
+            <ConfirmationNumberRounded />
           </ListItemIcon>
-          {!collapsed && <ListItemText primary="Panoramica" />}
+          {!collapsed && <ListItemText primary={t('dashboard.title')} />}
         </ListItemButton>
       </List>
 
@@ -60,7 +62,7 @@ const Sidebar = ({ collapsed, toggleSidebar }: SidebarProps) => {
         }}
       >
         <IconButton onClick={toggleSidebar}>
-          <MenuIcon sx={{color: theme.palette.text.primary}}/>
+          <MenuIcon sx={{ color: theme.palette.text.primary }} />
         </IconButton>
       </Box>
     </Box>
