@@ -18,7 +18,8 @@ const Dashboard = () => {
   const [voucherStatus, setVoucherStatus] = useState<VoucherStatusEnum | undefined>();
   const [voucherStartDate, setVoucherStartDate] = useState<Date | undefined>();
   const [voucherEndDate, setVoucherEndDate] = useState<Date | undefined>();
-  const [availableAmount, setAvailableAmount] = useState<Number | undefined>();  const [isLoading, setIsLoading] = useState(true);
+  const [availableAmount, setAvailableAmount] = useState<Number | undefined>();
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const mockResponse =
   {
