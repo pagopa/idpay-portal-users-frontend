@@ -7,6 +7,7 @@ export interface UserProfile {
   lastName?: string;
   attributes?: {
     dateOfBirth?: string[];
+    fiscalNumber?: string[];
   }
 }
 
