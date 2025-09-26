@@ -76,13 +76,13 @@ const DetailBonusCard: React.FC<DetailBonusCardProps> = ({ bonusData, fiscalNumb
 
         <DetailRow label={t('dashboard.detailBonusSection.voucherStartDate')}>
           <Typography variant='body2' fontStyle='semibold' fontWeight={600}>
-            {formatDate(bonusData.voucherStartDate)}
+            {formatDate(bonusData.voucherEndDate)}
           </Typography>
         </DetailRow>
 
         <DetailRow label={t('dashboard.detailBonusSection.voucherEndDate')}>
           <Typography variant='body2' fontStyle='semibold' fontWeight={600}>
-            {formatDate(bonusData.voucherEndDate)}
+            {formatDate(bonusData.voucherStartDate)}
           </Typography>
         </DetailRow>
 
