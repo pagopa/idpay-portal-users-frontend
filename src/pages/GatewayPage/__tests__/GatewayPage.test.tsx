@@ -31,6 +31,8 @@ jest.mock('../../../api/generated/onboarding-web/OnboardingStatusDTO', () => ({
   StatusEnum: {
     COMPLETED: 'COMPLETED',
     PENDING: 'PENDING',
+    ONBOARDING_OK: 'ONBOARDING_OK',
+    ONBOARDING_KO: 'ONBOARDING_KO',
   },
 }));
 jest.mock('../../../api/generated/onboarding-web/OnboardingErrorDTO', () => ({
@@ -404,5 +406,19 @@ describe('GatewayPage', () => {
       expect(mockedUsedNavigate).toHaveBeenCalledWith('/dashboard');
     });
   });
+  test('navigates to ERROR_PAGE with UNKNOWN_ERROR when status 200 and code is ONBOARDING_KO', async () => {
+    mockUser = { attributes: {} };
+    mockGetStatus.mockResolvedValue({
+      status: 200,
+      data: { code: 'ONBOARDING_KO' },
+    });
 
+    render(<GatewayPage />);
+
+    await waitFor(() => {
+      expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+        state: { status: 'UNKNOWN_ERROR' },
+      });
+    });
+  });
 });
