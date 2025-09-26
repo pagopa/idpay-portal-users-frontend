@@ -10,6 +10,7 @@ import { CodeEnum, OnboardingErrorDTO } from './generated/onboarding-web/Onboard
 import { isRight } from 'fp-ts/Either';
 import { buildFetchApiWithLoading } from './buildFetchApiWithLoading';
 import { TransactionBarCodeResponse } from './generated/onboarding-web/TransactionBarCodeResponse';
+import { OnboardingInitiativeDTO } from './generated/onboarding-web/OnboardingInitiativeDTO';
 
 export const commonHeaders = {
   'X-Api-Version': 'v1',
@@ -47,13 +48,13 @@ export const OnboardingWebApi = {
 
     if (isRight(result)) {
       const { status, value } = result.right;
-        if (status === 200) return { status: 200, data: value as OnboardingStatusDTO };
-        if (status === 404) return { status: 404, data: value as OnboardingErrorDTO };
-        throw new Error(`Unexpected status: ${status}`);
+      if (status === 200) return { status: 200, data: value as OnboardingStatusDTO };
+      if (status === 404) return { status: 404, data: value as OnboardingErrorDTO };
+      throw new Error(`Unexpected status: ${status}`);
     } else {
       const codeStr =
-      (result.left as any)?.at?.(0)?.value ??
-      (result.left as any)?.at?.(0)?.actual;
+        (result.left as any)?.at?.(0)?.value ??
+        (result.left as any)?.at?.(0)?.actual;
 
       if (isCodeEnum(codeStr) || isCodeEnum("ONBOARDING_" + codeStr)) {
         return {
@@ -69,12 +70,12 @@ export const OnboardingWebApi = {
     }
   },
 
-  getDetail: async (initiativeId: string): Promise<InitiativeDTO> => {
+  getDetail: async (initiativeId: string): Promise<OnboardingInitiativeDTO> => {
     const result = await onboardingClient.initiativeDetail({
       initiativeId,
       ...commonHeaders
     });
-    return await extractResponse<InitiativeDTO>(result, 200, onRedirectToLogin);
+    return await extractResponse<OnboardingInitiativeDTO>(result, 200, onRedirectToLogin);
   },
 
   save: async (
@@ -104,18 +105,42 @@ export const OnboardingWebApi = {
       const { status, value } = result.right;
       if (status === 200) return { status: 200, data: value as TransactionBarCodeResponse };
       throw new Error(`Unexpected status: ${status}`);
+    }
+
+    const leftItem = result.left?.[0];
+    const contexts = leftItem?.context ?? [];
+    const valid = contexts.find(
+      (c: any) => c?.actual?.trxCode && c?.actual?.trxCode.trim() !== ''
+    );
+
+    if (valid?.actual) return { status: 200, data: valid.actual as TransactionBarCodeResponse };
+    throw result.left;
+  },
+
+  getBonusDetail: async (
+    initiativeId: string
+  ): Promise<{ status: number; data: InitiativeDTO }> => {
+    const result = await onboardingClient.getWalletDetail({
+      initiativeId,
+      ...commonHeaders
+    });
+
+    if (isRight(result)) {
+      const { status, value } = result.right;
+      if (status === 200) return { status: 200, data: value as InitiativeDTO };
+      throw new Error(`Unexpected status: ${status}`);
     } else {
       const leftItem = result.left?.[0];
       const contexts = leftItem?.context ?? [];
 
       const valid = contexts.find(
         (c: any) =>
-          c?.actual?.status === "CREATED" &&
-          c?.actual?.trxCode &&
-          c?.actual?.trxCode.trim() !== ""
+          (c?.actual?.voucherStatus === "EXPIRED" || c?.actual?.voucherStatus === "USED"
+            || c?.actual?.voucherStatus === "ACTIVE" || c?.actual?.voucherStatus === "EXPIRING") &&
+          c?.actual?.voucherStartDate && c?.actual?.voucherEndDate
       );
 
-      if (valid?.actual) return { status: 200, data: valid.actual as TransactionBarCodeResponse };
+      if (valid?.actual) return { status: 200, data: valid.actual as InitiativeDTO };
       throw result.left;
     }
   },

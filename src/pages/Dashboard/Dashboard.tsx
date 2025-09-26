@@ -1,166 +1,123 @@
-import { Box, Typography, Card, CardContent, Button } from '@mui/material';
-import DownloadIcon from '@mui/icons-material/Download';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { ButtonNaked } from '@pagopa/mui-italia';
+import { Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
 import Overlay from '../../components/Overlay/Overlay';
-import { theme } from '@pagopa/mui-italia';
-import Barcode from 'react-barcode';
+import { VoucherStatusEnum } from '../../api/generated/onboarding-web/InitiativeDTO';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../contexts/AuthContext';
+import DetailBonusCard from '../../components/Dashboard/DetailBonusCard';
+import BarcodeCard from '../../components/Dashboard/BarcodeCard';
+import OperationsCard from '../../components/Dashboard/OperationsCard';
+
+interface BonusDetail {
+  voucherStatus: VoucherStatusEnum;
+  voucherStartDate: string;
+  voucherEndDate: string;
+  amountCents: number;
+}
 
 const Dashboard = () => {
   const { t } = useTranslation();
+  const [bonusData, setBonusData] = useState<BonusDetail | null>(null);
   const [trxCode, setTrxCode] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  const mockResponse =
-  {
-    amount: '100,00 €',
-    expirationDate: '03/10/2025',
-    validity: '10 giorni',
-    fiscalCode: 'RSSLNZ85T10H501Z'
-  };
-
-  const details = [
-    { label: 'Importo', value: mockResponse.amount },
-    { label: 'Da utilizzare entro il', value: mockResponse.expirationDate },
-    { label: 'Durata del buono', value: mockResponse.validity },
-    { label: 'Codice Fiscale', value: mockResponse.fiscalCode }
-  ];
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
       const initiativeId = '68c4449d0d8426093743d00e';
       try {
-        const response = await OnboardingWebApi.getBarCode(initiativeId);
-        setTrxCode(response.data?.trxCode);
-      } catch (error) {
-        navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
-      } finally {
+        const detailResponse = await OnboardingWebApi.getBonusDetail(initiativeId);
+        const detailData = detailResponse.data as unknown as BonusDetail;
+        setBonusData(detailData);
+
+        if (
+          detailData?.voucherStatus === VoucherStatusEnum.ACTIVE ||
+          detailData?.voucherStatus === VoucherStatusEnum.EXPIRING
+        ) {
+          const barcodeResponse = await OnboardingWebApi.getBarCode(initiativeId);
+          setTrxCode(barcodeResponse.data?.trxCode || '');
+        }
         setIsLoading(false);
+      } catch {
+        navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
       }
     };
-
     fetchData();
   }, []);
 
   if (isLoading) return <Overlay />;
 
-  const showBarcode = Boolean(trxCode);
+  if (!bonusData) {
+    navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
+    return null;
+  }
+
+  const fiscalNumber = user?.attributes?.fiscalNumber?.[0] || '-';
+  const showBarcode =
+    (bonusData.voucherStatus === VoucherStatusEnum.ACTIVE ||
+      bonusData.voucherStatus === VoucherStatusEnum.EXPIRING) && Boolean(trxCode);
 
   return (
     <>
       <Box>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant='h4' gutterBottom>
           {t('dashboard.title')}
         </Typography>
-        <Typography variant="body1" gutterBottom mt={2}>
+        <Typography variant='body1' gutterBottom mt={2}>
           {t('dashboard.description')}
         </Typography>
       </Box>
 
-      <Box mt={4}>
-        <Typography variant="h4" gutterBottom>
-          Dettagli del buono sconto
-        </Typography>
-
-        <Box
-          display="flex"
-          flexDirection={{ xs: 'column', md: 'row' }}
-          gap={3}
-          mt={2}
-        >
-          <Box flex={2}>
-            <Card>
-              <CardContent>
-                <Box mt={2}>
-                  {details.map((item, index) => (
-                    <Box
-                      key={index}
-                      display="flex"
-                      py={1}
-                    >
-                      <Typography
-                        variant="body2"
-                        width={'50%'}
-                        pr={2}
-                      >
-                        {item.label}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        fontWeight={'bold'}
-                        width={'40%'}
-                      >
-                        {item.value}
-                      </Typography>
-                    </Box>
-                  ))}
-                </Box>
-                <Box mt={2}>
-                  <ButtonNaked
-                    color="primary"
-                    size="medium"
-                    endIcon={<OpenInNewIcon />}
-                    sx={{ fontWeight: 'bold' }}
-                  >
-                    Visualizza i punti vendita abilitati
-                  </ButtonNaked>
-                </Box>
-              </CardContent>
-            </Card>
-          </Box>
-
-          {showBarcode && (
-            <Box flex={1}>
-              <Card>
-                <CardContent>
-                  <Typography variant="overline">
-                    {t('dashboard.barcodeSection.barcodeDescription')}
-                  </Typography>
-                  <Box
-                    border={1}
-                    borderColor={theme.palette.divider}
-                    borderRadius={1}
-                    px={1}
-                    py={3}
-                    mt={2}
-                    mb={3}
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                  >
-                    <Barcode value={trxCode} width={3} />
-                  </Box>
-
-                  <Box mb={2} display="flex" justifyContent="center">
-                    <Button
-                      disabled={true}
-                      endIcon={<DownloadIcon />}
-                      variant="contained"
-                    >
-                      {t('dashboard.barcodeSection.downloadBarcode')}
-                    </Button>
-                  </Box>
-
-                  <Box display="flex" justifyContent="center">
-                    <ButtonNaked
-                      endIcon={<OpenInNewIcon />}
-                      color='primary'
-                      size='medium'
-                      onClick={() => window.open("https://google.com", "_blank")}
-                    >
-                      {t('dashboard.barcodeSection.showMerchants')}
-                    </ButtonNaked>
-                  </Box>
-                </CardContent>
-              </Card>
+      <Box mt={3}>
+        {showBarcode ? (
+          <>
+            <Box
+              display='flex'
+              flexDirection={{ xs: 'column', md: 'row' }}
+              gap={3}
+              mt={2}
+              alignItems='stretch'
+            >
+              <Box flex={1}>
+                <DetailBonusCard bonusData={bonusData} fiscalNumber={fiscalNumber} />
+              </Box>
+              <Box flex={1}>
+                <BarcodeCard trxCode={trxCode} />
+              </Box>
             </Box>
-          )}
-        </Box>
+
+            <Box
+              display='flex'
+              flexDirection={{ xs: 'column', md: 'row' }}
+              gap={3}
+              mt={3}
+            >
+              <Box flex={1}>
+                <OperationsCard />
+              </Box>
+              <Box flex={1} />
+            </Box>
+          </>
+        ) : (
+          <Box
+            display='flex'
+            flexDirection={{ xs: 'column', md: 'row' }}
+            gap={3}
+            mt={2}
+            alignItems='stretch'
+          >
+            <Box flex={1}>
+              <DetailBonusCard bonusData={bonusData} fiscalNumber={fiscalNumber} />
+            </Box>
+            <Box flex={1}>
+              <OperationsCard />
+            </Box>
+          </Box>
+        )}
       </Box>
     </>
   );
