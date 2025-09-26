@@ -48,13 +48,13 @@ export const OnboardingWebApi = {
 
     if (isRight(result)) {
       const { status, value } = result.right;
-        if (status === 200) return { status: 200, data: value as OnboardingStatusDTO };
-        if (status === 404) return { status: 404, data: value as OnboardingErrorDTO };
-        throw new Error(`Unexpected status: ${status}`);
+      if (status === 200) return { status: 200, data: value as OnboardingStatusDTO };
+      if (status === 404) return { status: 404, data: value as OnboardingErrorDTO };
+      throw new Error(`Unexpected status: ${status}`);
     } else {
       const codeStr =
-      (result.left as any)?.at?.(0)?.value ??
-      (result.left as any)?.at?.(0)?.actual;
+        (result.left as any)?.at?.(0)?.value ??
+        (result.left as any)?.at?.(0)?.actual;
 
       if (isCodeEnum(codeStr) || isCodeEnum("ONBOARDING_" + codeStr)) {
         return {
@@ -105,20 +105,16 @@ export const OnboardingWebApi = {
       const { status, value } = result.right;
       if (status === 200) return { status: 200, data: value as TransactionBarCodeResponse };
       throw new Error(`Unexpected status: ${status}`);
-    } else {
-      const leftItem = result.left?.[0];
-      const contexts = leftItem?.context ?? [];
-
-      const valid = contexts.find(
-        (c: any) =>
-          c?.actual?.status === "CREATED" &&
-          c?.actual?.trxCode &&
-          c?.actual?.trxCode.trim() !== ""
-      );
-
-      if (valid?.actual) return { status: 200, data: valid.actual as TransactionBarCodeResponse };
-      throw result.left;
     }
+
+    const leftItem = result.left?.[0];
+    const contexts = leftItem?.context ?? [];
+    const valid = contexts.find(
+      (c: any) => c?.actual?.trxCode && c?.actual?.trxCode.trim() !== ''
+    );
+
+    if (valid?.actual) return { status: 200, data: valid.actual as TransactionBarCodeResponse };
+    throw result.left;
   },
 
   getBonusDetail: async (
