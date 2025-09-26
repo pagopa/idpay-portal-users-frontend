@@ -78,8 +78,12 @@ const GatewayPage = () => {
 
                 if (status === 200 && (isStatusData(statusData) || isErrorDTO(statusData))) {
                     const statusString = (statusData as any).status || (statusData as any).code;
-                    if(statusString === "ONBOARDING_OK"){
+                    if(statusString === StatusEnum.ONBOARDING_OK) {
                         navigate(ROUTES.DASHBOARD);
+                        return;
+                    }
+                    if(statusString === StatusEnum.ONBOARDING_KO) {
+                        navigate(ROUTES.ERROR_PAGE, { state: { status: "UNKNOWN_ERROR" } });
                         return;
                     }
                     navigate(ROUTES.FEEDBACK, { state: { status: statusString } });
