@@ -1,12 +1,31 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Dashboard from '../Dashboard';
+import { VoucherStatusEnum } from '../../../api/generated/onboarding-web/InitiativeDTO';
 
 const mockedUsedNavigate = jest.fn();
 
-jest.mock('react-barcode', () => {
-  return function MockBarcode({ value }: { value: string }) {
-    return <div data-testid="barcode" data-value={value}>Mock Barcode: {value}</div>;
+jest.mock('../../../components/Dashboard/DetailBonusCard', () => {
+  return function MockDetailBonusCard({ bonusData, fiscalNumber }: any) {
+    return (
+      <div data-testid="detail-bonus-card">
+        <span data-testid="bonus-amount">{bonusData.amountCents}</span>
+        <span data-testid="fiscal-number">{fiscalNumber}</span>
+        <span data-testid="voucher-status">{bonusData.voucherStatus}</span>
+      </div>
+    );
+  };
+});
+
+jest.mock('../../../components/Dashboard/BarcodeCard', () => {
+  return function MockBarcodeCard({ trxCode }: any) {
+    return trxCode ? <div data-testid="barcode-card" data-trx-code={trxCode} /> : null;
+  };
+});
+
+jest.mock('../../../components/Dashboard/OperationsCard', () => {
+  return function MockOperationsCard() {
+    return <div data-testid="operations-card" />;
   };
 });
 
@@ -47,22 +66,45 @@ jest.mock('../../../api/onboardingWebApiClient', () => ({
   },
 }));
 
-describe('Dashboard logic', () => {
+let mockToken: string | null | undefined = 'token-abc';
+let mockLoading = false;
+let mockUser: any = {
+  attributes: {
+    fiscalNumber: ['RSSLNZ85T10H501Z']
+  }
+};
+
+jest.mock('../../../contexts/AuthContext', () => ({
+  useAuth: () => ({
+    token: mockToken,
+    loading: mockLoading,
+    user: mockUser
+  }),
+}));
+
+describe('Dashboard Integration', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockUser = {
+      attributes: {
+        fiscalNumber: ['RSSLNZ85T10H501Z']
+      }
+    };
   });
 
-  test('fetches detail and calls getBarCode only when voucherStatus is ACTIVE/EXPIRING; hides loader on success', async () => {
+  test('fetches detail and calls getBarCode only when voucherStatus is ACTIVE; renders all components', async () => {
+    const mockBonusData = {
+      voucherStatus: VoucherStatusEnum.ACTIVE,
+      voucherStartDate: '2025-09-24',
+      voucherEndDate: '2025-10-24',
+      amountCents: 10000,
+    };
+
     mockGetBonusDetail.mockResolvedValue({
       status: 200,
-      data: {
-        voucherStatus: 'ACTIVE',
-        voucherStartDate: '2025-09-24',
-        voucherEndDate: '2025-09-24',
-        accruedCents: 10000,
-        refundedCents: 0,
-      },
+      data: mockBonusData,
     });
+
     mockGetBarCode.mockResolvedValue({
       status: 200,
       data: { trxCode: '2lezemi4' },
@@ -84,19 +126,64 @@ describe('Dashboard logic', () => {
       expect(screen.queryByTestId('overlay')).not.toBeInTheDocument();
     });
 
+    expect(screen.getByTestId('detail-bonus-card')).toBeInTheDocument();
+    expect(screen.getByTestId('barcode-card')).toBeInTheDocument();
+    expect(screen.getByTestId('operations-card')).toBeInTheDocument();
+    expect(screen.getByTestId('bonus-amount')).toHaveTextContent('10000');
+    expect(screen.getByTestId('fiscal-number')).toHaveTextContent('RSSLNZ85T10H501Z');
+    expect(screen.getByTestId('voucher-status')).toHaveTextContent('ACTIVE');
+    expect(screen.getByTestId('barcode-card')).toHaveAttribute('data-trx-code', '2lezemi4');
+
     expect(mockedUsedNavigate).not.toHaveBeenCalled();
   });
 
-  test('does NOT call getBarCode when voucherStatus is not ACTIVE/EXPIRING; hides loader', async () => {
+  test('fetches detail and calls getBarCode only when voucherStatus is EXPIRING', async () => {
+    const mockBonusData = {
+      voucherStatus: VoucherStatusEnum.EXPIRING,
+      voucherStartDate: '2025-09-24',
+      voucherEndDate: '2025-10-24',
+      amountCents: 5000,
+    };
+
     mockGetBonusDetail.mockResolvedValue({
       status: 200,
-      data: {
-        voucherStatus: 'USED',
-        voucherStartDate: '2025-09-24',
-        voucherEndDate: '2025-09-24',
-        accruedCents: 10000,
-        refundedCents: 5000,
-      },
+      data: mockBonusData,
+    });
+
+    mockGetBarCode.mockResolvedValue({
+      status: 200,
+      data: { trxCode: 'expiring123' },
+    });
+
+    render(<Dashboard />);
+
+    await waitFor(() => {
+      expect(mockGetBonusDetail).toHaveBeenCalledWith('68c4449d0d8426093743d00e');
+    });
+
+    await waitFor(() => {
+      expect(mockGetBarCode).toHaveBeenCalledWith('68c4449d0d8426093743d00e');
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('overlay')).not.toBeInTheDocument();
+    });
+
+    expect(screen.getByTestId('barcode-card')).toBeInTheDocument();
+    expect(mockedUsedNavigate).not.toHaveBeenCalled();
+  });
+
+  test('does NOT call getBarCode when voucherStatus is USED; hides barcode component', async () => {
+    const mockBonusData = {
+      voucherStatus: VoucherStatusEnum.USED,
+      voucherStartDate: '2025-09-24',
+      voucherEndDate: '2025-10-24',
+      amountCents: 10000,
+    };
+
+    mockGetBonusDetail.mockResolvedValue({
+      status: 200,
+      data: mockBonusData,
     });
 
     render(<Dashboard />);
@@ -111,11 +198,47 @@ describe('Dashboard logic', () => {
       expect(screen.queryByTestId('overlay')).not.toBeInTheDocument();
     });
 
+    expect(screen.getByTestId('detail-bonus-card')).toBeInTheDocument();
+    expect(screen.getByTestId('operations-card')).toBeInTheDocument();
+    expect(screen.queryByTestId('barcode-card')).not.toBeInTheDocument();
+
     expect(mockedUsedNavigate).not.toHaveBeenCalled();
   });
 
-  test('navigates to ERROR_PAGE with UNKNOWN_ERROR when detail API throws (overlay remains)', async () => {
-    mockGetBonusDetail.mockRejectedValue(new Error('boom'));
+  test('does NOT call getBarCode when voucherStatus is EXPIRED; hides barcode component', async () => {
+    const mockBonusData = {
+      voucherStatus: VoucherStatusEnum.EXPIRED,
+      voucherStartDate: '2025-09-24',
+      voucherEndDate: '2025-10-24',
+      amountCents: 10000,
+    };
+
+    mockGetBonusDetail.mockResolvedValue({
+      status: 200,
+      data: mockBonusData,
+    });
+
+    render(<Dashboard />);
+
+    await waitFor(() => {
+      expect(mockGetBonusDetail).toHaveBeenCalledWith('68c4449d0d8426093743d00e');
+    });
+
+    expect(mockGetBarCode).not.toHaveBeenCalled();
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('overlay')).not.toBeInTheDocument();
+    });
+
+    expect(screen.getByTestId('detail-bonus-card')).toBeInTheDocument();
+    expect(screen.getByTestId('operations-card')).toBeInTheDocument();
+    expect(screen.queryByTestId('barcode-card')).not.toBeInTheDocument();
+
+    expect(mockedUsedNavigate).not.toHaveBeenCalled();
+  });
+
+  test('navigates to ERROR_PAGE with UNKNOWN_ERROR when detail API throws', async () => {
+    mockGetBonusDetail.mockRejectedValue(new Error('API Error'));
 
     render(<Dashboard />);
 
@@ -125,22 +248,37 @@ describe('Dashboard logic', () => {
       });
     });
 
-    expect(screen.getByTestId('overlay')).toBeInTheDocument();
-
     expect(mockGetBarCode).not.toHaveBeenCalled();
   });
 
-  test('renders overlay while loading', () => {
+  test('navigates to ERROR_PAGE when bonusData is null after loading', async () => {
     mockGetBonusDetail.mockResolvedValue({
       status: 200,
-      data: {
-        voucherStatus: 'ACTIVE',
-        voucherStartDate: '2025-09-24',
-        voucherEndDate: '2025-09-24',
-        accruedCents: 10000,
-        refundedCents: 0,
-      },
+      data: null,
     });
+
+    render(<Dashboard />);
+
+    await waitFor(() => {
+      expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+        state: { status: 'UNKNOWN_ERROR' },
+      });
+    });
+  });
+
+  test('renders overlay while loading', () => {
+    const mockBonusData = {
+      voucherStatus: VoucherStatusEnum.ACTIVE,
+      voucherStartDate: '2025-09-24',
+      voucherEndDate: '2025-10-24',
+      amountCents: 10000,
+    };
+
+    mockGetBonusDetail.mockResolvedValue({
+      status: 200,
+      data: mockBonusData,
+    });
+
     mockGetBarCode.mockResolvedValue({
       status: 200,
       data: { trxCode: 'foo' },
@@ -150,8 +288,104 @@ describe('Dashboard logic', () => {
     expect(screen.getByTestId('overlay')).toBeInTheDocument();
   });
 
-  test('shows barcode section when trxCode is available', async () => {
+  test('renders dashboard title and description', async () => {
+    const mockBonusData = {
+      voucherStatus: VoucherStatusEnum.ACTIVE,
+      voucherStartDate: '2025-09-24',
+      voucherEndDate: '2025-10-24',
+      amountCents: 10000,
+    };
+
+    mockGetBonusDetail.mockResolvedValue({
+      status: 200,
+      data: mockBonusData,
+    });
+
+    mockGetBarCode.mockResolvedValue({
+      status: 200,
+      data: { trxCode: 'test123' },
+    });
+
+    render(<Dashboard />);
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('overlay')).not.toBeInTheDocument();
+    });
+
+    expect(screen.getByText('dashboard.title')).toBeInTheDocument();
+    expect(screen.getByText('dashboard.description')).toBeInTheDocument();
+  });
+
+  test('passes correct fiscal number to DetailBonusCard', async () => {
+    const mockBonusData = {
+      voucherStatus: VoucherStatusEnum.ACTIVE,
+      voucherStartDate: '2025-09-24',
+      voucherEndDate: '2025-10-24',
+      amountCents: 10000,
+    };
+
+    mockGetBonusDetail.mockResolvedValue({
+      status: 200,
+      data: mockBonusData,
+    });
+
+    mockGetBarCode.mockResolvedValue({
+      status: 200,
+      data: { trxCode: 'test123' },
+    });
+
+    render(<Dashboard />);
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('overlay')).not.toBeInTheDocument();
+    });
+
+    expect(screen.getByTestId('fiscal-number')).toHaveTextContent('RSSLNZ85T10H501Z');
+  });
+
+  test('passes default fiscal number when user has no fiscal number', async () => {
+    mockUser = { attributes: {} };
+
+    const mockBonusData = {
+      voucherStatus: VoucherStatusEnum.ACTIVE,
+      voucherStartDate: '2025-09-24',
+      voucherEndDate: '2025-10-24',
+      amountCents: 10000,
+    };
+
+    mockGetBonusDetail.mockResolvedValue({
+      status: 200,
+      data: mockBonusData,
+    });
+
+    mockGetBarCode.mockResolvedValue({
+      status: 200,
+      data: { trxCode: 'test123' },
+    });
+
+    render(<Dashboard />);
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('overlay')).not.toBeInTheDocument();
+    });
+
+    expect(screen.getByTestId('fiscal-number')).toHaveTextContent('-');
+  });
+
+  test('shows barcode when trxCode is available and status is ACTIVE', async () => {
     const trxCode = '2lezemi4';
+    const mockBonusData = {
+      voucherStatus: VoucherStatusEnum.ACTIVE,
+      voucherStartDate: '2025-09-24',
+      voucherEndDate: '2025-10-24',
+      amountCents: 10000,
+    };
+
+    mockGetBonusDetail.mockResolvedValue({
+      status: 200,
+      data: mockBonusData,
+    });
+
     mockGetBarCode.mockResolvedValue({
       status: 200,
       data: { trxCode },
@@ -163,16 +397,23 @@ describe('Dashboard logic', () => {
       expect(screen.queryByTestId('overlay')).not.toBeInTheDocument();
     });
 
-    expect(screen.getByTestId('barcode')).toBeInTheDocument();
-    expect(screen.getByTestId('barcode')).toHaveAttribute('data-value', trxCode);
-
-    expect(screen.getByText('dashboard.barcodeSection.barcodeDescription')).toBeInTheDocument();
-
-    expect(screen.getByText('dashboard.barcodeSection.downloadBarcode')).toBeInTheDocument();
-    expect(screen.getByText('dashboard.barcodeSection.showMerchants')).toBeInTheDocument();
+    expect(screen.getByTestId('barcode-card')).toBeInTheDocument();
+    expect(screen.getByTestId('barcode-card')).toHaveAttribute('data-trx-code', trxCode);
   });
 
-  test('hides barcode section when trxCode is not available', async () => {
+  test('hides barcode when trxCode is not available', async () => {
+    const mockBonusData = {
+      voucherStatus: VoucherStatusEnum.ACTIVE,
+      voucherStartDate: '2025-09-24',
+      voucherEndDate: '2025-10-24',
+      amountCents: 10000,
+    };
+
+    mockGetBonusDetail.mockResolvedValue({
+      status: 200,
+      data: mockBonusData,
+    });
+
     mockGetBarCode.mockResolvedValue({
       status: 200,
       data: { trxCode: '' }
@@ -184,7 +425,6 @@ describe('Dashboard logic', () => {
       expect(screen.queryByTestId('overlay')).not.toBeInTheDocument();
     });
 
-    expect(screen.queryByTestId('barcode')).not.toBeInTheDocument();
-    expect(screen.queryByText('dashboard.barcodeSection.barcodeDescription')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('barcode-card')).not.toBeInTheDocument();
   });
 });
