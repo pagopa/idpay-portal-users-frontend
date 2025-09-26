@@ -193,11 +193,28 @@ const it = {
   },
   "dashboard": {
     "title": "Il tuo bonus",
-    "description": "In questa pagina, puoi indicare e modificare i recapiti a cui vuoi ricevere le tue notifiche per via digitale.",
+    "description": "Qui puoi visualizzare e scaricare il tuo bonus.",
     "barcodeSection": {
       "barcodeDescription": "codice a barre",
       "downloadBarcode": "Scarica codice",
-      "showMerchants": "Mostra esercenti",
+      "showMerchants": "Mostra esercenti"
+    },
+    "detailBonusSection": {
+      "bonusDetail": "dettagli del Bonus",
+      "amount": "Importo disponibile",
+      "status": "Stato del bonus",
+      "voucherStartDate": "Valido fino al",
+      "voucherEndDate": "Bonus emesso il",
+      "fiscalNumber": "Codice Fiscale"
+    },
+    "voucherStatus": {
+      "ACTIVE": "Attivo",
+      "EXPIRING": "In scadenza",
+      "EXPIRED": "Scaduto",
+      "USED": "Utilizzato"
+    },
+    "operationsSection": {
+      "title": "Le tue operazioni"
     }
   }
 }
