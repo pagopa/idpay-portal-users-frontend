@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import BarcodeCard from '../BarcodeCard';
 
@@ -17,6 +17,67 @@ jest.mock('react-i18next', () => ({
 const mockWindowOpen = jest.fn();
 Object.defineProperty(window, 'open', {
   value: mockWindowOpen,
+});
+const mockDownloadPDF = jest.fn();
+jest.mock('../../../api/onboardingWebApiClient', () => ({
+  OnboardingWebApi: {
+    downloadPDF: (...args: any[]) => mockDownloadPDF(...args),
+  },
+}));
+
+const mockDownloadFileFromBase64 = jest.fn();
+jest.mock('../../../commons/decode', () => ({
+  downloadFileFromBase64: (...args: any[]) => mockDownloadFileFromBase64(...args),
+}));
+
+describe('BarcodeCard – download flow', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test('download button triggers API and file download (success)', async () => {
+    const trxCode = '2lezemi4';
+    mockDownloadPDF.mockResolvedValue({
+      status: 200,
+      data: { data: 'BASE64PDF==' },
+    });
+
+    render(<BarcodeCard trxCode={trxCode} />);
+
+    const btn = screen.getByRole('button', { name: /dashboard.barcodeSection.downloadBarcode/i });
+    expect(btn).toBeEnabled();
+
+    fireEvent.click(btn);
+
+    await waitFor(() => expect(btn).toBeDisabled());
+
+    expect(mockDownloadPDF).toHaveBeenCalledWith(expect.any(String), trxCode);
+
+    await waitFor(() =>
+      expect(mockDownloadFileFromBase64).toHaveBeenCalledWith(
+        'BASE64PDF==',
+        `barcode_${trxCode}.pdf`
+      )
+    );
+
+    await waitFor(() => expect(btn).toBeEnabled());
+  });
+
+  test('download button re-enables and no file download on API error', async () => {
+    const trxCode = 'ERR123';
+    mockDownloadPDF.mockRejectedValue(new Error('boom'));
+
+    render(<BarcodeCard trxCode={trxCode} />);
+
+    const btn = screen.getByRole('button', { name: /dashboard.barcodeSection.downloadBarcode/i });
+    fireEvent.click(btn);
+
+    await waitFor(() => expect(btn).toBeDisabled());
+
+    await waitFor(() => expect(mockDownloadFileFromBase64).not.toHaveBeenCalled());
+
+    await waitFor(() => expect(btn).toBeEnabled());
+  });
 });
 
 describe('BarcodeCard', () => {
@@ -58,13 +119,11 @@ describe('BarcodeCard', () => {
     expect(screen.queryByTestId('barcode')).not.toBeInTheDocument();
   });
 
-  test('download button is disabled', () => {
+ test('download button is enabled initially', () => {
     const trxCode = '2lezemi4';
-    
     render(<BarcodeCard trxCode={trxCode} />);
-
     const downloadButton = screen.getByRole('button', { name: /dashboard.barcodeSection.downloadBarcode/i });
-    expect(downloadButton).toBeDisabled();
+    expect(downloadButton).toBeEnabled();
   });
 
   test('show merchants button opens new window', () => {
