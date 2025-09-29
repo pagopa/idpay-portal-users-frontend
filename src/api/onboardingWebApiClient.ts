@@ -11,6 +11,7 @@ import { isRight } from 'fp-ts/Either';
 import { buildFetchApiWithLoading } from './buildFetchApiWithLoading';
 import { TransactionBarCodeResponse } from './generated/onboarding-web/TransactionBarCodeResponse';
 import { OnboardingInitiativeDTO } from './generated/onboarding-web/OnboardingInitiativeDTO';
+import { ReportDTO } from './generated/onboarding-web/ReportDTO';
 
 export const commonHeaders = {
   'X-Api-Version': 'v1',
@@ -143,5 +144,25 @@ export const OnboardingWebApi = {
       if (valid?.actual) return { status: 200, data: valid.actual as InitiativeDTO };
       throw result.left;
     }
+  },
+
+  downloadPDF: async (
+    initiativeId: string,
+    trxCode: string,
+  ): Promise<{ status: number; data: ReportDTO}> => {
+    const result = await onboardingClient.getTransactionPdf({
+      initiativeId,
+      trxCode,
+      ...commonHeaders,
+    });
+
+    if (isRight(result)) {
+      const { status, value } = result.right;
+      if (status === 200){ 
+        return { status: 200, data: value as ReportDTO }
+      };
+      throw new Error(`Unexpected status: ${status}`);
+    }
+    throw result.left;
   },
 };

@@ -4,6 +4,9 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { ButtonNaked, theme } from '@pagopa/mui-italia';
 import { useTranslation } from 'react-i18next';
 import Barcode from 'react-barcode';
+import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
+import { useState } from 'react';
+import { downloadFileFromBase64 } from '../../commons/decode';
 
 interface BarcodeCardProps {
   trxCode: string;
@@ -11,6 +14,23 @@ interface BarcodeCardProps {
 
 const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
   const { t } = useTranslation();
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const downloadPDF = async () => {
+    const initiativeId = '68c4449d0d8426093743d00e';
+    setIsDownloading(true)
+    try{
+      const pdfResponse = await OnboardingWebApi.downloadPDF(initiativeId, trxCode);
+      if (pdfResponse.status === 200 && pdfResponse.data) {
+        const { data } = pdfResponse.data;
+        if(data) downloadFileFromBase64(data, `barcode_${trxCode}.pdf`)
+      }
+    }catch(error){
+      console.error(error)
+    }finally{
+      setIsDownloading(false);
+    }
+  }
 
   if (!trxCode) return null;
 
@@ -36,7 +56,7 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
         </Box>
         <Box mt='auto'>
           <Box py={1} display='flex' justifyContent='center'>
-            <Button disabled endIcon={<DownloadIcon />} variant='contained'>
+            <Button disabled={isDownloading} endIcon={<DownloadIcon />} variant='contained' onClick={() => downloadPDF()}>
               {t('dashboard.barcodeSection.downloadBarcode')}
             </Button>
           </Box>
