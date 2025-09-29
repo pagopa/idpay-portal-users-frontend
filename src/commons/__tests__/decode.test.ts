@@ -5,7 +5,6 @@ describe('downloadFileFromBase64', () => {
   let createObjectURLMock: jest.Mock;
   let revokeObjectURLMock: jest.Mock;
   let clickSpy: jest.SpyInstance;
-  let removeSpy: jest.SpyInstance;
 
   beforeEach(() => {
     fetchMock = jest.fn().mockResolvedValue({
@@ -27,11 +26,6 @@ describe('downloadFileFromBase64', () => {
     clickSpy = jest
       .spyOn(HTMLAnchorElement.prototype, 'click')
       .mockImplementation(() => {});
-    removeSpy = jest
-      .spyOn(HTMLAnchorElement.prototype, 'remove')
-      .mockImplementation(function (this: HTMLAnchorElement) {
-        this.parentNode?.removeChild(this);
-      });
   });
 
   afterEach(() => {
