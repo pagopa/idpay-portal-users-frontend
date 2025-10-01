@@ -13,6 +13,7 @@ import { useEmailStore } from '../../hooks/useEmailStore';
 import { commonHeaders, OnboardingWebApi } from '../../api/onboardingWebApiClient';
 import { extractErrorResponse, isSuccessStatus } from '../../utils/api';
 import { useVerifyRequirementStore } from '../../hooks/useVerifyRequirementStore';
+import { useTOSCheckboxStore } from '../../hooks/useTOSCheckboxStore';
 
 export default function VerifyRequirementForm() {
     const { t } = useTranslation();
@@ -22,6 +23,7 @@ export default function VerifyRequirementForm() {
     const [iseeValue, setIseeValue] = useState(isee);
     const [switchValue, setSwitchValue] = useState(selfDeclaration);
     const [submitted, setSubmitted] = useState(false);
+    const { tosAccepted } = useTOSCheckboxStore();
 
     const handleBack = () => {
         setIsee(iseeValue);
@@ -35,15 +37,20 @@ export default function VerifyRequirementForm() {
         if (!isValid) { return; }
 
         const payload = {
-            initiativeId: '68c4449d0d8426093743d00e',
-            confirmedTos: true,
+            initiativeId: '68dd003ccce8c534d1da22bc',
+            confirmedTos: tosAccepted,
             pdndAccept: true,
             selfDeclarationList: [
                 {
                     _type: 'multi_consent',
                     code: 'isee',
-                    value: iseeValue, // TODO: retrieve from detail API
+                    value: iseeValue
                 },
+                {
+                    _type: 'boolean',
+                    'code': '1',
+                    'accepted': switchValue
+                }
             ],
             userMail: email,
             userMailConfirmation: confirmEmail,

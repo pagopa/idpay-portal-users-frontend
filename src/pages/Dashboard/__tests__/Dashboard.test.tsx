@@ -115,11 +115,11 @@ describe('Dashboard Integration', () => {
     expect(screen.getByTestId('overlay')).toBeInTheDocument();
 
     await waitFor(() => {
-      expect(mockGetBonusDetail).toHaveBeenCalledWith('68c4449d0d8426093743d00e');
+      expect(mockGetBonusDetail).toHaveBeenCalledWith('68dd003ccce8c534d1da22bc');
     });
 
     await waitFor(() => {
-      expect(mockGetBarCode).toHaveBeenCalledWith('68c4449d0d8426093743d00e');
+      expect(mockGetBarCode).toHaveBeenCalledWith('68dd003ccce8c534d1da22bc');
     });
 
     await waitFor(() => {
@@ -158,11 +158,11 @@ describe('Dashboard Integration', () => {
     render(<Dashboard />);
 
     await waitFor(() => {
-      expect(mockGetBonusDetail).toHaveBeenCalledWith('68c4449d0d8426093743d00e');
+      expect(mockGetBonusDetail).toHaveBeenCalledWith('68dd003ccce8c534d1da22bc');
     });
 
     await waitFor(() => {
-      expect(mockGetBarCode).toHaveBeenCalledWith('68c4449d0d8426093743d00e');
+      expect(mockGetBarCode).toHaveBeenCalledWith('68dd003ccce8c534d1da22bc');
     });
 
     await waitFor(() => {
@@ -189,7 +189,7 @@ describe('Dashboard Integration', () => {
     render(<Dashboard />);
 
     await waitFor(() => {
-      expect(mockGetBonusDetail).toHaveBeenCalledWith('68c4449d0d8426093743d00e');
+      expect(mockGetBonusDetail).toHaveBeenCalledWith('68dd003ccce8c534d1da22bc');
     });
 
     expect(mockGetBarCode).not.toHaveBeenCalled();
@@ -221,7 +221,7 @@ describe('Dashboard Integration', () => {
     render(<Dashboard />);
 
     await waitFor(() => {
-      expect(mockGetBonusDetail).toHaveBeenCalledWith('68c4449d0d8426093743d00e');
+      expect(mockGetBonusDetail).toHaveBeenCalledWith('68dd003ccce8c534d1da22bc');
     });
 
     expect(mockGetBarCode).not.toHaveBeenCalled();
