@@ -28,7 +28,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const initiativeId = '68c4449d0d8426093743d00e';
+      const initiativeId = '68dd003ccce8c534d1da22bc';
       try {
         const detailResponse = await OnboardingWebApi.getBonusDetail(initiativeId);
         const detailData = detailResponse.data as unknown as BonusDetail;

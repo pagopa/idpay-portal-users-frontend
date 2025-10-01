@@ -17,7 +17,7 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
   const [isDownloading, setIsDownloading] = useState(false);
 
   const downloadPDF = async () => {
-    const initiativeId = '68c4449d0d8426093743d00e';
+    const initiativeId = '68dd003ccce8c534d1da22bc';
     setIsDownloading(true)
     try{
       const pdfResponse = await OnboardingWebApi.downloadPDF(initiativeId, trxCode);

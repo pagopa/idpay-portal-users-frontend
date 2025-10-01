@@ -70,7 +70,7 @@ const GatewayPage = () => {
             return;
         }
 
-        const initiativeId = '68c4449d0d8426093743d00e';
+        const initiativeId = '68dd003ccce8c534d1da22bc';
         const fetchData = async () => {
             try {
                 const statusResponse = await OnboardingWebApi.getStatus(initiativeId);
