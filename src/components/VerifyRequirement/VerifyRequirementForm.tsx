@@ -2,7 +2,7 @@ import { Box, Container, Button } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next';
 import { theme } from '@pagopa/mui-italia';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FamilyForm from './FamilyForm';
 import IseeForm from './IseeForm';
 import SelfDeclaration from './SelfDeclaration';
@@ -24,6 +24,17 @@ export default function VerifyRequirementForm() {
     const [switchValue, setSwitchValue] = useState(selfDeclaration);
     const [submitted, setSubmitted] = useState(false);
     const { tosAccepted } = useTOSCheckboxStore();
+
+    useEffect(() => {
+        if (!tosAccepted) {
+            navigate(ROUTES.GATEWAY, { replace: true });
+            return;
+        }
+    }, [tosAccepted]);
+
+    if (!tosAccepted) {
+        return null;
+    }
 
     const handleBack = () => {
         setIsee(iseeValue);

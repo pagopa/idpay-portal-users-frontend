@@ -7,7 +7,11 @@ export const buildFetchApiWithLoading = () => {
   return async (input: RequestInfo | URL, init?: RequestInit) => {
     try {
       loadingRef.setLoading(true);
-      return await originalFetch(input, init);
+      const res = await originalFetch(input, init);
+      if (res.status === 429) {
+        throw res;
+      }
+      return res;
     } finally {
       loadingRef.setLoading(false);
     }

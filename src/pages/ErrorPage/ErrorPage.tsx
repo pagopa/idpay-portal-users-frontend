@@ -1,5 +1,5 @@
 import { errorState } from "./errorStates";
-import { makeStatusPage } from "../StatusPageFactory/StatusPageFactory";
+import { makeStatusPage } from "../../components/StatusPageFactory/StatusPageFactory";
 
-const ErrorPage = makeStatusPage(errorState, "UNKNOWN_ERROR");
+const ErrorPage = makeStatusPage(errorState);
 export default ErrorPage;

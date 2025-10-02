@@ -2,6 +2,8 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import TOS from '../TOS';
 import '@testing-library/jest-dom';
 
+const mockcanAccessTOS = jest.fn(() => true);
+
 jest.mock('../../../hooks/useIsMobile');
 
 jest.mock('../../../components/TOS/TOSHeader', () => ({
@@ -18,6 +20,12 @@ jest.mock('../../../components/Menu/FixedSideMenu', () => ({
       ))}
     </div>
   ),
+}));
+
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate
 }));
 
 jest.mock('../../../components/Menu/MobileDropdownMenu', () => ({
@@ -44,6 +52,12 @@ jest.mock('../../../components/TOS/TOSContent', () => ({
     });
     return <div data-testid="tos-content" />;
   },
+}));
+
+jest.mock('../../../hooks/useCanAccessTOSStore', () => ({
+  useCanAccessTOSStore: () => ({
+    canAccessTOS: mockcanAccessTOS(),
+  }),
 }));
 
 const mockedUseIsMobile = require('../../../hooks/useIsMobile').useIsMobile;

@@ -3,10 +3,18 @@ import InsertEmail from '../InsertEmail';
 import { MemoryRouter } from 'react-router-dom';
 import ROUTES from '../../../routes';
 
+const mockTosAccepted = jest.fn(() => true);
+
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => key
   })
+}));
+
+jest.mock('../../../hooks/useTOSCheckboxStore', () => ({
+  useTOSCheckboxStore: () => ({
+    tosAccepted: mockTosAccepted(),
+  }),
 }));
 
 const mockNavigate = jest.fn();

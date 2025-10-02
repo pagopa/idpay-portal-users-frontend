@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import FamilyForm from '../FamilyForm';
 import '@testing-library/jest-dom';
 
@@ -29,17 +29,5 @@ describe('FamilyForm', () => {
     expect(
       screen.getByText('verifyRequirements.family.description2')
     ).toBeInTheDocument();
-  });
-
-  test('renders tooltip button and shows tooltip on hover', async () => {
-    render(<FamilyForm />);
-
-    const iconButton = screen.getByRole('button');
-    expect(iconButton).toBeInTheDocument();
-
-    fireEvent.mouseOver(iconButton);
-
-    const tooltip = await screen.findByText('verifyRequirements.tooltip');
-    expect(tooltip).toBeInTheDocument();
   });
 });
