@@ -122,7 +122,7 @@ describe('VerifyRequirementForm', () => {
     const callArg = mockSave.mock.calls[0][0];
     expect(callArg.body.userMail).toBe('user@test.it');
     expect(callArg.body.userMailConfirmation).toBe('user@test.it');
-    expect(callArg.body.initiativeId).toBe('68c4449d0d8426093743d00e');
+    expect(callArg.body.initiativeId).toBe('68dd003ccce8c534d1da22bc');
   });
 
   test('handles non-success API status', async () => {
