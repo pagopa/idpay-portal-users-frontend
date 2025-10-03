@@ -103,26 +103,23 @@ const it = {
     "exit": "Esci",
     "title": "Verifica dei requisiti",
     "description":
-      "Compila i campi e invia la tua richiesta. Se rispetta i requisiti, riceverai il buono sconto da scaricare e mostrare nei punti vendita abilitati.",
+      "Per accedere al Bonus Elettrodomestici, consulteremo altri enti per verificare se hai i requisiti previsti.",
 
     "family": {
-      "title": "Nucleo familiare",
+      "title": "Famiglia anagrafica",
       "description1":
-        "Per accedere all’iniziativa {{Bonus Elettrodomestici}}, verificheremo con alcuni enti se hai il requisito relativo al tuo nucleo familiare.",
+        "Per accedere all’iniziativa, comunichiamo direttamente con il Ministero dell’Interno per verificare questa informazione.",
       "description2":
-        "Questo passaggio è richiesto dal Ministero dell’Interno.",
+        "In questo modo non devi produrre nessuna autocertificazione.",
     },
 
     "selfDeclaration": {
       "title": "Autodichiarazione",
       "description":
-        "L'autodichiarazione è resa ai sensi del D.P.R. 28 dicembre 2000, n. 445.",
+        "Dichiaro che, ai sensi del D.P.R. 28 dicembre 2000, n. 445",
       "switchLabel":
-        "Dichiaro che userò il bonus per l’acquisto di un elettrodomestico di classe energetica superiore destinato a sostituire un altro della stessa tipologia",
+        "Userò il bonus per l’acquisto di un elettrodomestico di classe energetica superiore destinato a sostituire un altro della stessa tipologia.",
     },
-
-    "tooltip":
-      "Comunichiamo direttamente con l’ente che detiene l’informazione necessaria a effettuare il controllo, in questo caso **{{provider}}**. In questo modo non devi produrre alcuna autodichiarazione.",
 
     "isee": {
       "title": "Dichiarazione ISEE 2025",
@@ -137,6 +134,7 @@ const it = {
     },
 
     "error": "Seleziona un’opzione per continuare",
+    "selfDeclarationError": "Seleziona per continuare",
     "submit": "Invia richiesta"
   },
 
@@ -155,8 +153,8 @@ const it = {
       "description": "Quando pronto, riceverai l’esito all’indirizzo email  indicato."
     },
     "familyMember": {
-      "title": "Un'altra persona del tuo nucleo familiare ha inviato la richiesta",
-      "description": "È possibile inviare una sola richiesta per ogni nucleo familiare."
+      "title": "Un'altra persona della tua\nfamiglia ha inviato la\nrichiesta",
+      "description": "È possibile inviare una sola richiesta per ogni\nfamiglia anagrafica."
     },
     "accessToken": {
       "title": "Non è stato possibile accedere",
@@ -171,11 +169,11 @@ const it = {
       "description": "La tua richiesta è in coda.\nTi contatteremo se saranno disponibili nuove\nrisorse."
     },
     "initiativeEnded": {
-      "title": "Le iscrizioni sono terminate",
+      "title": "Le adesioni sono\nterminate",
       "description": "Non è più possibile aderire all’iniziativa."
     },
     "budgetExhausted": {
-      "title": "I fondi messi a disposizione dall’ente sono terminati",
+      "title": "I fondi messi a\ndisposizione dall’ente\nsono terminati",
       "description": "Non è più possibile aderire all’iniziativa."
     },
     "sessionExpired": {
@@ -187,9 +185,13 @@ const it = {
       "description": "Si è verificato un errore imprevisto.\nRiprova tra qualche minuto."
     },
     "technicalError": {
-      "title": "Non riusciamo a inviare la richiesta per questa iniziativa",
+      "title": "Non è possibile\ncompletare la richiesta\nper questa iniziativa",
       "description": "Siamo già a lavoro per risolvere.\nRiprova tra un po’."
     },
+     "tooManyRequests": {
+      "title": "Sembra che le cose\nvadano un po' a rilento",
+      "description": "Potreste essere in tanti in questo momento.\nRiprova tra qualche minuto."
+    }
   },
   "dashboard": {
     "title": "Il tuo bonus",

@@ -21,9 +21,9 @@ const FeedbackContent: React.FC<FeedbackState> = ({
 
   const handleClick = () => {
     if (buttonRedirect === '__LOGOUT__') {
-      if(isAuthenticated){
+      if (isAuthenticated) {
         logout();
-      }else{
+      } else {
         navigate(ROUTES.HOME)
       }
     }
@@ -39,9 +39,21 @@ const FeedbackContent: React.FC<FeedbackState> = ({
     >
       <Box mb={3}>{icon}</Box>
 
-      <Typography variant="h4" mb={3}>
-        {title}
-      </Typography>
+      {title.includes('\n') ?
+        title.split('\n').map((line, i) => (
+          <Typography
+            key={i}
+            variant="h4"
+            mb={i < title.split('\n').length-1 ? 0 : 3 }
+          >
+            {line}
+          </Typography>
+        ))
+        : (
+          <Typography variant="h4" mb={3}>
+            {title}
+          </Typography>
+        )}
 
       {description.includes('\n') ?
         description.split('\n').map((line, i) => (
@@ -58,7 +70,7 @@ const FeedbackContent: React.FC<FeedbackState> = ({
           </Typography>
         )}
 
-       {showButton && (
+      {showButton && (
         <Button
           variant="contained"
           component={buttonRedirect !== "__LOGOUT__" ? RouterLink : 'button'}

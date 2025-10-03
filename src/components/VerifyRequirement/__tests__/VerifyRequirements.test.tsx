@@ -4,6 +4,7 @@ import '@testing-library/jest-dom';
 
 const mockNavigate = jest.fn();
 const mockSave = jest.fn();
+const mockTosAccepted = jest.fn(() => true);
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key }),
@@ -33,6 +34,7 @@ jest.mock('react-router-dom', () => ({
 jest.mock('../../../routes', () => ({
   INSERT_EMAIL: '/insert-email',
   FEEDBACK: '/feedback',
+  GATEWAY: '/gateway' 
 }));
 
 jest.mock('../../../hooks/useEmailStore', () => ({
@@ -52,6 +54,13 @@ jest.mock('../../../utils/api', () => {
     extractErrorResponse: jest.fn(),
   };
 });
+
+
+jest.mock('../../../hooks/useTOSCheckboxStore', () => ({
+  useTOSCheckboxStore: () => ({
+    tosAccepted: mockTosAccepted(),
+  }),
+}));
 
 import { isSuccessStatus, extractErrorResponse } from '../../../utils/api';
 
@@ -170,4 +179,12 @@ describe('VerifyRequirementForm', () => {
     await waitFor(() => expect(mockNavigate).not.toHaveBeenCalled());
     errorSpy.mockRestore();
   });
+
+  test('redirects to GATEWAY when TOS not accepted', () => {
+  mockTosAccepted.mockReturnValueOnce(false);
+  
+  render(<VerifyRequirementForm />);
+  
+  expect(mockNavigate).toHaveBeenCalledWith('/gateway', { replace: true });
+});
 });

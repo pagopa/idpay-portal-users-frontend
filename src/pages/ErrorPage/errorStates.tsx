@@ -11,7 +11,7 @@ export type ErrorState = {
   supportLinkUrl?: string;
 };
 
-export type ErrorStateKey = 'AGE_RESTRICTION' | 'INVALID_ACCESS_TOKEN' | 'SESSION_EXPIRED' | 'UNKNOWN_ERROR' | 'TECHNICAL_ERROR';
+export type ErrorStateKey = 'AGE_RESTRICTION' | 'INVALID_ACCESS_TOKEN' | 'SESSION_EXPIRED' | 'UNKNOWN_ERROR' | 'TECHNICAL_ERROR' | 'TOO_MANY_REQUESTS';
 
 export const errorState: Record<ErrorStateKey, ErrorState> = {
 
@@ -47,6 +47,13 @@ export const errorState: Record<ErrorStateKey, ErrorState> = {
     icon: <IllusUmbrella />,
     title: "feedbackStates.technicalError.title",
     description: 'feedbackStates.technicalError.description',
+    buttonLabel: 'commons.exit',
+    buttonRedirect: '__LOGOUT__'
+  },
+  TOO_MANY_REQUESTS: {
+    icon: <IllusAlarmClock />,
+    title: "feedbackStates.tooManyRequests.title",
+    description: 'feedbackStates.tooManyRequests.description',
     buttonLabel: 'commons.exit',
     buttonRedirect: '__LOGOUT__'
   }

@@ -117,33 +117,17 @@ describe('FeedbackPage', () => {
         );
     });
 
-    it('renders fallback feedback for unknown status', () => {
-        (useLocation as jest.Mock).mockReturnValue({
-            state: { status: 'UNKNOWN_STATUS' },
-        });
+    it('redirects when state is null', () => {
+        (useLocation as jest.Mock).mockReturnValue({ state: null });
 
-        render(<FeedbackPage />);
+        const { queryByTestId, getByText } = render(<FeedbackPage />);
 
-        expect(screen.getByTestId('feedback-title')).toHaveTextContent(
-            feedbackStates.ON_EVALUATION.title
-        );
-        expect(screen.getByTestId('feedback-description')).toHaveTextContent(
-            feedbackStates.ON_EVALUATION.description
-        );
-    });
+        expect(getByText('Redirect')).toBeInTheDocument();
+        expect(queryByTestId('feedback-title')).toBeNull();
+        expect(queryByTestId('feedback-description')).toBeNull();
+        expect(queryByTestId('feedback-button')).toBeNull();
 
-    it('renders fallback feedback when state is null', () => {
-        (useLocation as jest.Mock).mockReturnValue({
-            state: null,
-        });
-
-        render(<FeedbackPage />);
-
-        expect(screen.getByTestId('feedback-title')).toHaveTextContent(
-            feedbackStates.ON_EVALUATION.title
-        );
-        expect(screen.getByTestId('feedback-description')).toHaveTextContent(
-            feedbackStates.ON_EVALUATION.description
-        );
+        const { Navigate } = require('react-router-dom');
+        expect(Navigate).toHaveBeenCalled();
     });
 });

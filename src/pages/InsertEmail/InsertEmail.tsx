@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
 import { useEmailStore } from '../../hooks/useEmailStore';
 import { validateEmail } from '../../utils/validateEmail';
+import { useTOSCheckboxStore } from '../../hooks/useTOSCheckboxStore';
 
 const InsertEmail = () => {
   const navigate = useNavigate();
@@ -16,11 +17,20 @@ const InsertEmail = () => {
   const [emailInput, setEmailInput] = useState(email);
   const [confirmEmailInput, setConfirmEmailInput] = useState(confirmEmail);
   const [showErrors, setShowErrors] = useState(false);
+  const { tosAccepted } = useTOSCheckboxStore();
 
   useEffect(() => {
+    if (!tosAccepted) {
+      navigate(ROUTES.GATEWAY, { replace: true });
+      return;
+    }
     setEmailInput(email);
     setConfirmEmailInput(confirmEmail);
-  }, [email, confirmEmail]);
+  }, [tosAccepted, email, confirmEmail]);
+
+  if (!tosAccepted) {
+    return null;
+  }
 
   const isEmailValid = validateEmail(emailInput);
   const emailsMatch =

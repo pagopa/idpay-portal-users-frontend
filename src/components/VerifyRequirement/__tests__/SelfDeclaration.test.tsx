@@ -47,7 +47,7 @@ describe('SelfDeclaration', () => {
   test('shows error message when switchValue is false and showError is true', () => {
     render(<SelfDeclaration switchValue={false} setSwitchValue={jest.fn()} showError={true} />);
 
-    expect(screen.getByText('verifyRequirements.error')).toBeInTheDocument();
+    expect(screen.getByText('verifyRequirements.selfDeclarationError')).toBeInTheDocument();
   });
 
   test('does not show error message when showError is false', () => {
