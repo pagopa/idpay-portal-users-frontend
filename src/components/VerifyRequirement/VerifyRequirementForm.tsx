@@ -84,6 +84,10 @@ export default function VerifyRequirementForm() {
                 navigate(ROUTES.FEEDBACK, { state: { status: 'REQUEST_SUBMITTED' } });
                 return;
             }
+            if(res?.status === 429){
+                navigate(ROUTES.WAITING_PAGE, {state: payload});
+                return;
+            }
             navigate(ROUTES.ERROR_PAGE, { state: { status: 'TECHNICAL_ERROR' } });
         }
     };

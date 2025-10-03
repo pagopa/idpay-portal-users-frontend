@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Box } from "@mui/material";
 import FeedbackContent from "../FeedbackContent/FeedbackContent";
 import ROUTES from "../../routes";
+import { errorState } from "../../pages/ErrorPage/errorStates";
 
 export type FeedbackDef = {
   icon: ReactNode;
@@ -18,15 +19,17 @@ export type FeedbackDef = {
 export function makeStatusPage<T extends Record<string, FeedbackDef>>(states: T) {
   return function StatusPage() {
     const { t } = useTranslation();
-    const location = useLocation() as { state?: { status?: keyof T } };
+    const location = useLocation() as { state?: { status?: keyof T | string } };
+    const status = location.state?.status as string | undefined;
 
-    const status = location.state?.status;
-
-    if (!status || !states[status]) {
+    if (!status) {
       return <Navigate to={ROUTES.HOME} replace />;
     }
 
-    const feedback = states[status as keyof T];
+    const feedback: FeedbackDef =
+      status in states
+        ? (states[status as keyof T] as FeedbackDef)
+        : (errorState.UNKNOWN_ERROR as FeedbackDef);
 
     return (
       <Box

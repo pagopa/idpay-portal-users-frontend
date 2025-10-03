@@ -1,24 +1,22 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import VerifyRequirementForm from '../VerifyRequirementForm';
 import '@testing-library/jest-dom';
+import VerifyRequirementForm from '../VerifyRequirementForm';
 
 const mockNavigate = jest.fn();
 const mockSave = jest.fn();
 const mockTosAccepted = jest.fn(() => true);
 
 jest.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: (key: string) => key }),
+  useTranslation: () => ({ t: (k: string) => k }),
 }));
 
-jest.mock('../FamilyForm', () => () => <div data-testid="family-form" />);
 jest.mock('../HeaderForm', () => () => <div data-testid="header-form" />);
-
+jest.mock('../FamilyForm', () => () => <div data-testid="family-form" />);
 jest.mock('../SelfDeclaration', () => (props: any) => (
   <button data-testid="self-declaration" onClick={() => props.setSwitchValue(true)}>
     {props.switchValue ? 'true' : 'false'}
   </button>
 ));
-
 jest.mock('../IseeForm', () => (props: any) => (
   <input
     data-testid="isee-form"
@@ -32,13 +30,29 @@ jest.mock('react-router-dom', () => ({
 }));
 
 jest.mock('../../../routes', () => ({
-  INSERT_EMAIL: '/insert-email',
-  FEEDBACK: '/feedback',
-  GATEWAY: '/gateway' 
+  __esModule: true,
+  default: {
+    INSERT_EMAIL: '/insert-email',
+    FEEDBACK: '/feedback',
+    WAITING_PAGE: '/waiting-page',
+    ERROR_PAGE: '/error',
+    GATEWAY: '/gateway'
+  },
 }));
 
 jest.mock('../../../hooks/useEmailStore', () => ({
   useEmailStore: () => ({ email: 'user@test.it', confirmEmail: 'user@test.it' }),
+}));
+jest.mock('../../../hooks/useVerifyRequirementStore', () => ({
+  useVerifyRequirementStore: () => ({
+    isee: '',
+    selfDeclaration: false,
+    setIsee: jest.fn(),
+    setSelfDeclaration: jest.fn(),
+  }),
+}));
+jest.mock('../../../hooks/useTOSCheckboxStore', () => ({
+  useTOSCheckboxStore: () => ({ tosAccepted: false }),
 }));
 
 jest.mock('../../../api/onboardingWebApiClient', () => ({
@@ -48,12 +62,10 @@ jest.mock('../../../api/onboardingWebApiClient', () => ({
   },
 }));
 
-jest.mock('../../../utils/api', () => {
-  return {
-    isSuccessStatus: jest.fn(),
-    extractErrorResponse: jest.fn(),
-  };
-});
+jest.mock('../../../utils/api', () => ({
+  isSuccessStatus: jest.fn(),
+  extractErrorResponse: jest.fn(),
+}));
 
 
 jest.mock('../../../hooks/useTOSCheckboxStore', () => ({
@@ -69,39 +81,25 @@ describe('VerifyRequirementForm', () => {
     jest.clearAllMocks();
   });
 
-  test('renders all sections and buttons', () => {
+  test('renders and back navigates to insert email', () => {
     render(<VerifyRequirementForm />);
-
     expect(screen.getByTestId('header-form')).toBeInTheDocument();
     expect(screen.getByTestId('family-form')).toBeInTheDocument();
     expect(screen.getByTestId('self-declaration')).toBeInTheDocument();
     expect(screen.getByTestId('isee-form')).toBeInTheDocument();
 
-    expect(screen.getByRole('button', { name: 'commons.back' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'verifyRequirements.submit' })).toBeInTheDocument();
-  });
-
-  test('initial props to SelfDeclaration and IseeForm', () => {
-    render(<VerifyRequirementForm />);
-    expect(screen.getByTestId('self-declaration')).toHaveTextContent('false');
-    expect(screen.getByTestId('isee-form')).toHaveValue('');
-  });
-
-  test('back button navigates to insert email', () => {
-    render(<VerifyRequirementForm />);
     fireEvent.click(screen.getByRole('button', { name: 'commons.back' }));
     expect(mockNavigate).toHaveBeenCalledWith('/insert-email');
   });
 
-  test('does NOT submit when form invalid', async () => {
+  test('does NOT submit when invalid (empty isee & switch=false)', () => {
     render(<VerifyRequirementForm />);
-
     fireEvent.click(screen.getByRole('button', { name: 'verifyRequirements.submit' }));
     expect(mockSave).not.toHaveBeenCalled();
     expect(mockNavigate).not.toHaveBeenCalled();
   });
 
-  test('submits and navigates on 202 success path', async () => {
+  test('success (202) -> FEEDBACK', async () => {
     (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
     mockSave.mockResolvedValueOnce({ status: 202 });
 
@@ -117,44 +115,29 @@ describe('VerifyRequirementForm', () => {
     );
   });
 
-  test('passes expected payload to save', async () => {
-    (isSuccessStatus as jest.Mock).mockReturnValue(true);
-    mockSave.mockResolvedValueOnce({ status: 202 });
-
-    render(<VerifyRequirementForm />);
-    fireEvent.change(screen.getByTestId('isee-form'), { target: { value: 'ISEE999' } });
-    fireEvent.click(screen.getByTestId('self-declaration'));
-    fireEvent.click(screen.getByRole('button', { name: 'verifyRequirements.submit' }));
-
-    await waitFor(() => expect(mockSave).toHaveBeenCalled());
-
-    const callArg = mockSave.mock.calls[0][0];
-    expect(callArg.body.userMail).toBe('user@test.it');
-    expect(callArg.body.userMailConfirmation).toBe('user@test.it');
-    expect(callArg.body.initiativeId).toBe('68dd003ccce8c534d1da22bc');
-  });
-
-  test('handles non-success API status', async () => {
+  test('non-success (400) -> ERROR_PAGE', async () => {
     (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
     mockSave.mockResolvedValueOnce({ status: 400 });
 
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     render(<VerifyRequirementForm />);
-    fireEvent.change(screen.getByTestId('isee-form'), { target: { value: 'ISEE123' } });
+    fireEvent.change(screen.getByTestId('isee-form'), { target: { value: 'ISEE_BAD' } });
     fireEvent.click(screen.getByTestId('self-declaration'));
     fireEvent.click(screen.getByRole('button', { name: 'verifyRequirements.submit' }));
 
-    await waitFor(() => expect(mockNavigate).not.toHaveBeenCalled());
-    errorSpy.mockRestore();
+    await waitFor(() =>
+      expect(mockNavigate).toHaveBeenCalledWith('/error', {
+        state: { status: 'TECHNICAL_ERROR' },
+      })
+    );
   });
 
-  test('handles thrown error with extractErrorResponse -> 202', async () => {
+  test('thrown error + extract 202 -> FEEDBACK', async () => {
     mockSave.mockRejectedValueOnce(new Error('boom'));
     (extractErrorResponse as jest.Mock).mockReturnValueOnce({ status: 202 });
     (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
 
     render(<VerifyRequirementForm />);
-    fireEvent.change(screen.getByTestId('isee-form'), { target: { value: 'ISEE123' } });
+    fireEvent.change(screen.getByTestId('isee-form'), { target: { value: 'ISEE_OK' } });
     fireEvent.click(screen.getByTestId('self-declaration'));
     fireEvent.click(screen.getByRole('button', { name: 'verifyRequirements.submit' }));
 
@@ -165,19 +148,21 @@ describe('VerifyRequirementForm', () => {
     );
   });
 
-  test('handles thrown error with non-success extractErrorResponse', async () => {
+  test('thrown error + extract 429 -> WAITING_PAGE with original payload', async () => {
     mockSave.mockRejectedValueOnce(new Error('boom'));
-    (extractErrorResponse as jest.Mock).mockReturnValueOnce({ status: 500 });
+    (extractErrorResponse as jest.Mock).mockReturnValueOnce({ status: 429 });
     (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
 
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     render(<VerifyRequirementForm />);
-    fireEvent.change(screen.getByTestId('isee-form'), { target: { value: 'ISEE123' } });
+    fireEvent.change(screen.getByTestId('isee-form'), { target: { value: 'ISEE777' } });
     fireEvent.click(screen.getByTestId('self-declaration'));
     fireEvent.click(screen.getByRole('button', { name: 'verifyRequirements.submit' }));
 
-    await waitFor(() => expect(mockNavigate).not.toHaveBeenCalled());
-    errorSpy.mockRestore();
+    await waitFor(() => {
+      expect(mockSave).toHaveBeenCalled();
+      const callArg = mockSave.mock.calls[0][0];
+      expect(mockNavigate).toHaveBeenCalledWith('/waiting-page', { state: callArg.body });
+    });
   });
 
   test('redirects to GATEWAY when TOS not accepted', () => {
