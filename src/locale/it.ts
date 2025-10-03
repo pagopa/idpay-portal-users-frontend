@@ -143,6 +143,11 @@ const it = {
     "description": "Abbiamo bisogno del tuo indirizzo email per poterti comunicare tutti gli aggiornamenti riguardanti il tuo bonus."
   },
 
+  "click-day": {
+    "firstDescription": "Stiamo per collegarti.\nAttendi qualche secondo...",
+    "secondDescription": "Ancora un po’ di pazienza..."
+  },
+
   "feedbackStates": {
     "requestSubmitted": {
       "title": "La tua richiesta è stata inviata!",

@@ -7,7 +7,8 @@ const ROUTES = {
     VERIFY_REQUIREMENTS: "/verifica-requisiti",
     INSERT_EMAIL: "/inserisci-email",
     FEEDBACK: "/esito",
-    ERROR_PAGE: "/error"
+    ERROR_PAGE: "/error",
+    WAITING_PAGE: "/waiting"
 };
 
 export default ROUTES;

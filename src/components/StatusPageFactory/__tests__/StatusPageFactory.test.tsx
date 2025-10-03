@@ -16,6 +16,18 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
+jest.mock('../../../pages/ErrorPage/errorStates', () => ({
+  errorState: {
+    UNKNOWN_ERROR: {
+      icon: null,
+      title: 'feedbackStates.unknownError.title',
+      description: 'feedbackStates.unknownError.description',
+      buttonLabel: 'commons.exit',
+      buttonRedirect: '__LOGOUT__',
+    },
+  },
+}));
+
 jest.mock('../../FeedbackContent/FeedbackContent', () => (props: any) => (
   <div data-testid="feedback">
     <div data-testid="feedback-title">{props.title}</div>
@@ -85,20 +97,26 @@ describe('makeStatusPage', () => {
     expect(mockNavigate).not.toHaveBeenCalled();
   });
 
-  it('redirects when status is unknown', () => {
-    mockUseLocation.mockReturnValue({ state: { status: 'UNKNOWN' } });
+  it('falls back to UNKNOWN_ERROR when status is unknown (no redirect)', () => {
+    mockUseLocation.mockReturnValue({ state: { status: 'UNKNOWN_STATUS' } });
     const Page = makeStatusPage(states);
 
-    const { getByText, queryByTestId } = render(<Page />);
+    render(<Page />);
 
-    expect(getByText('Redirect')).toBeInTheDocument();
-    expect(queryByTestId('feedback')).toBeNull();
+    expect(screen.getByTestId('feedback')).toBeInTheDocument();
+    expect(screen.getByTestId('feedback-title')).toHaveTextContent(
+      'feedbackStates.unknownError.title'
+    );
+    expect(screen.getByTestId('feedback-description')).toHaveTextContent(
+      'feedbackStates.unknownError.description'
+    );
+    expect(screen.getByTestId('feedback-button')).toHaveTextContent('commons.exit');
+    expect(screen.getByTestId('feedback-button-redirect')).toHaveTextContent('__LOGOUT__');
 
-    const firstCallProps = mockNavigate.mock.calls[0][0];
-    expect(firstCallProps).toMatchObject({ to: '/', replace: true });
+    expect(mockNavigate).not.toHaveBeenCalled();
   });
 
-  it('redirects to the provided redirectOnMissing when state is missing', () => {
+  it('redirects to HOME when status is missing', () => {
     mockUseLocation.mockReturnValue({});
     const Page = makeStatusPage(states);
 

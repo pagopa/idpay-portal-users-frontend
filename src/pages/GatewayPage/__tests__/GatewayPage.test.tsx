@@ -597,7 +597,7 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockGetStatus).toHaveBeenCalledWith('68dd003ccce8c534d1da22bc');
+        expect(mockGetStatus).toHaveBeenCalledWith('68dd003ccce8c534d1da22bc', {"showLoader": false});
       });
     });
   });

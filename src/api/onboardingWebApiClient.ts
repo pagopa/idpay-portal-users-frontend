@@ -18,6 +18,8 @@ export const commonHeaders = {
   'Accept-Language': 'it-IT'
 };
 
+type SaveNoLoader = { showLoader?: boolean };
+
 const onRedirectToLogin = () => '/'; // TODO: implement real redirect
 
 const withBearer: WithDefaultsT<'bearerAuth'> = (wrappedOperation) => (params: any) => {
@@ -31,7 +33,14 @@ const withBearer: WithDefaultsT<'bearerAuth'> = (wrappedOperation) => (params: a
 const onboardingClient = createClient({
   baseUrl: import.meta.env.VITE_URL_API_PORTAL_USERS,
   basePath: 'web',
-  fetchApi: buildFetchApiWithLoading(),
+  fetchApi: buildFetchApiWithLoading(true),
+  withDefaults: withBearer,
+});
+
+const onboardingClientNoLoader = createClient({
+  baseUrl: import.meta.env.VITE_URL_API_PORTAL_USERS,
+  basePath: 'web',
+  fetchApi: buildFetchApiWithLoading(false),
   withDefaults: withBearer,
 });
 
@@ -40,9 +49,13 @@ const isCodeEnum = (v: unknown): v is CodeEnum =>
 
 export const OnboardingWebApi = {
   getStatus: async (
-    initiativeId: string
+    initiativeId: string, opts?: SaveNoLoader
   ): Promise<{ status: number; data: OnboardingStatusDTO | OnboardingErrorDTO }> => {
-    const result = await onboardingClient.onboardingStatus({
+    const client = opts?.showLoader === false
+      ? onboardingClientNoLoader
+      : onboardingClient;
+
+    const result = await client.onboardingStatus({
       initiativeId,
       ...commonHeaders
     });
@@ -79,10 +92,15 @@ export const OnboardingWebApi = {
     return await extractResponse<OnboardingInitiativeDTO>(result, 200, onRedirectToLogin);
   },
 
+
   save: async (
-    params: Omit<RequestParams<SaveOnboardingT>, 'bearerAuth'>
-  ): Promise<{ status: number; value: unknown }> => {
-    const result = await onboardingClient.saveOnboarding({
+    params: Omit<RequestParams<SaveOnboardingT>, 'bearerAuth'>, opts?: SaveNoLoader
+  ): Promise<{ status: number; value: unknown; isLoading?: boolean }> => {
+     const client = opts?.showLoader === false
+      ? onboardingClientNoLoader
+      : onboardingClient;
+
+    const result = await client.saveOnboarding({
       ...params,
       ...commonHeaders
     });
