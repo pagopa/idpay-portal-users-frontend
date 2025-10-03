@@ -1,6 +1,4 @@
-import { Info } from '@mui/icons-material'
-import { Box, Card, CardContent, IconButton, Tooltip, Typography } from '@mui/material'
-import { theme } from '@pagopa/mui-italia'
+import { Box, Card, CardContent, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import TitleCard from '../Titles/TitleCard';
 
@@ -29,19 +27,6 @@ export default function FamilyForm() {
                                     {t('verifyRequirements.family.description2')}
                                 </Typography>
                             </Box>
-                            <Tooltip
-                                title={
-                                    <Typography fontSize={10} color={theme.palette.primary.contrastText}>
-                                        {t('verifyRequirements.tooltip')}
-                                    </Typography>
-                                }
-                                placement="bottom"
-                                arrow
-                            >
-                                <IconButton size="small" sx={{ mt: '2px', color: theme.palette.action.active }}>
-                                    <Info fontSize="small" />
-                                </IconButton>
-                            </Tooltip>
                         </Box>
                     </CardContent>
                 </Card>

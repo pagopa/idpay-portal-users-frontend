@@ -24,12 +24,12 @@ export default function HeaderForm() {
                 {t('verifyRequirements.exit')}
             </ButtonNaked>
 
-            <Box mt={1.5} >
+            <Box mt={2} >
                 <Typography variant='h4' >
                     {t('verifyRequirements.title')}
                 </Typography>
             </Box>
-            <Box mt={1}>
+            <Box mt={3}>
                  <Typography variant='body1'>
                     {t('verifyRequirements.description')}
                 </Typography>

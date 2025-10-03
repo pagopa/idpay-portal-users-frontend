@@ -11,10 +11,13 @@ import Overlay from '../../components/Overlay/Overlay';
 import { UserProfile } from '../../types/auth';
 import { isStorageTokenExpired } from '../../utils/tokenManager';
 import { ErrorStateKey } from '../ErrorPage/errorStates';
+import { useCanAccessTOSStore } from '../../hooks/useCanAccessTOSStore';
+import { extractErrorResponse } from '../../utils/api';
 
 const GatewayPage = () => {
     const { loading, token, user } = useAuth();
     const navigate = useNavigate();
+    const { setCanAccessTOS } = useCanAccessTOSStore();
 
     const isErrorDTO = (data: OnboardingErrorDTO | unknown): data is OnboardingErrorDTO =>
         typeof data === 'object' && data !== null && 'code' in data;
@@ -73,17 +76,17 @@ const GatewayPage = () => {
         const initiativeId = '68dd003ccce8c534d1da22bc';
         const fetchData = async () => {
             try {
-                const statusResponse = await OnboardingWebApi.getStatus(initiativeId);
+                const statusResponse = await OnboardingWebApi.getStatus(initiativeId, {showLoader: false});
                 const { status, data: statusData } = statusResponse;
 
                 if (status === 200 && (isStatusData(statusData) || isErrorDTO(statusData))) {
                     const statusString = (statusData as any).status || (statusData as any).code;
-                    if(statusString === StatusEnum.ONBOARDING_OK) {
+                    if (statusString === StatusEnum.ONBOARDING_OK) {
                         navigate(ROUTES.DASHBOARD);
                         return;
                     }
-                    if(statusString === StatusEnum.ONBOARDING_KO) {
-                        navigate(ROUTES.ERROR_PAGE, { state: { status: "UNKNOWN_ERROR" } });
+                    if (statusString === StatusEnum.ONBOARDING_KO) {
+                        navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
                         return;
                     }
                     navigate(ROUTES.FEEDBACK, { state: { status: statusString } });
@@ -91,10 +94,17 @@ const GatewayPage = () => {
                 }
 
                 if (status === 404 && isUserNotOnboardedError(statusData)) {
+                    setCanAccessTOS(true);
                     navigate(ROUTES.TOS);
                     return;
                 }
-            } catch (error) {
+            } catch (error: any) {
+                if (extractErrorResponse(error)) {
+                    if (error?.status === 429) {
+                        navigate(ROUTES.ERROR_PAGE, { state: { status: 'TOO_MANY_REQUESTS' } });
+                        return;
+                    }
+                }
                 navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
                 return;
             };

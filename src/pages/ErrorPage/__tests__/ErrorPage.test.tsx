@@ -99,33 +99,34 @@ describe('ErrorPage', () => {
         );
     });
 
-    it('renders fallback feedback for unknown status', () => {
+    it('renders feedback for TOO_MANY_REQUESTS', () => {
         (useLocation as jest.Mock).mockReturnValue({
-            state: { status: 'SOME_UNKNOWN_ERROR' },
+            state: { status: 'TOO_MANY_REQUESTS' },
         });
 
         render(<ErrorPage />);
 
         expect(screen.getByTestId('feedback-title')).toHaveTextContent(
-            errorState.UNKNOWN_ERROR.title
+            errorState.TOO_MANY_REQUESTS.title
         );
         expect(screen.getByTestId('feedback-description')).toHaveTextContent(
-            errorState.UNKNOWN_ERROR.description
+            errorState.TOO_MANY_REQUESTS.description
+        );
+        expect(screen.getByTestId('feedback-button')).toHaveTextContent(
+            errorState.TOO_MANY_REQUESTS.buttonLabel!
         );
     });
+    it('redirects when state is null', () => {
+        (useLocation as jest.Mock).mockReturnValue({ state: null });
 
-    it('renders fallback feedback when state is null', () => {
-        (useLocation as jest.Mock).mockReturnValue({
-            state: null,
-        });
+        const { queryByTestId, getByText } = render(<ErrorPage />);
 
-        render(<ErrorPage />);
+        expect(getByText('Redirect')).toBeInTheDocument();
+        expect(queryByTestId('feedback-title')).toBeNull();
+        expect(queryByTestId('feedback-description')).toBeNull();
+        expect(queryByTestId('feedback-button')).toBeNull();
 
-        expect(screen.getByTestId('feedback-title')).toHaveTextContent(
-            errorState.UNKNOWN_ERROR.title
-        );
-        expect(screen.getByTestId('feedback-description')).toHaveTextContent(
-            errorState.UNKNOWN_ERROR.description
-        );
+        const { Navigate } = require('react-router-dom');
+        expect(Navigate).toHaveBeenCalled();
     });
 });

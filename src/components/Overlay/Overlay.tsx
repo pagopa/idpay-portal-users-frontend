@@ -12,6 +12,7 @@ const Overlay = () => (
     alignItems="center"
     justifyContent="center"
     bgcolor={theme.palette.action.disabledBackground}
+    zIndex={9999}
   >
     <CircularProgress />
   </Box>

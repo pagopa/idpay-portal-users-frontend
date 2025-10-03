@@ -2,11 +2,13 @@ import { ReactNode } from "react";
 import { useLocation, Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Box } from "@mui/material";
-import FeedbackContent from "../../components/FeedbackContent/FeedbackContent";
+import FeedbackContent from "../FeedbackContent/FeedbackContent";
+import ROUTES from "../../routes";
+import { errorState } from "../../pages/ErrorPage/errorStates";
 
 export type FeedbackDef = {
   icon: ReactNode;
-  title: string; 
+  title: string;
   description: string;
   buttonLabel?: string;
   buttonRedirect?: string;
@@ -14,21 +16,20 @@ export type FeedbackDef = {
   supportLinkUrl?: string;
 };
 
-export function makeStatusPage<T extends Record<string, FeedbackDef>>(
-  states: T,
-  fallbackKey: keyof T,
-  redirectOnMissing: string = "/"
-) {
+export function makeStatusPage<T extends Record<string, FeedbackDef>>(states: T) {
   return function StatusPage() {
     const { t } = useTranslation();
-    const location = useLocation() as { state?: { status?: keyof T } };
+    const location = useLocation() as { state?: { status?: keyof T | string } };
+    const status = location.state?.status as string | undefined;
 
-    const status = location.state?.status;
-    const feedback = (status && states[status]) || states[fallbackKey];
-
-    if (!feedback) {
-      return <Navigate to={redirectOnMissing} replace />;
+    if (!status) {
+      return <Navigate to={ROUTES.HOME} replace />;
     }
+
+    const feedback: FeedbackDef =
+      status in states
+        ? (states[status as keyof T] as FeedbackDef)
+        : (errorState.UNKNOWN_ERROR as FeedbackDef);
 
     return (
       <Box

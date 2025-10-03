@@ -67,16 +67,19 @@ describe('BarcodeCard – download flow', () => {
     const trxCode = 'ERR123';
     mockDownloadPDF.mockRejectedValue(new Error('boom'));
 
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+
     render(<BarcodeCard trxCode={trxCode} />);
 
     const btn = screen.getByRole('button', { name: /dashboard.barcodeSection.downloadBarcode/i });
     fireEvent.click(btn);
 
     await waitFor(() => expect(btn).toBeDisabled());
-
     await waitFor(() => expect(mockDownloadFileFromBase64).not.toHaveBeenCalled());
-
     await waitFor(() => expect(btn).toBeEnabled());
+
+    expect(consoleErrorSpy).toHaveBeenCalled();
+    consoleErrorSpy.mockRestore();
   });
 });
 
@@ -87,7 +90,7 @@ describe('BarcodeCard', () => {
 
   test('renders barcode when trxCode is provided', () => {
     const trxCode = '2lezemi4';
-    
+
     render(<BarcodeCard trxCode={trxCode} />);
 
     expect(screen.getByTestId('barcode')).toBeInTheDocument();
@@ -97,7 +100,7 @@ describe('BarcodeCard', () => {
 
   test('renders barcode description and buttons when trxCode is provided', () => {
     const trxCode = '2lezemi4';
-    
+
     render(<BarcodeCard trxCode={trxCode} />);
 
     expect(screen.getByText('dashboard.barcodeSection.barcodeDescription')).toBeInTheDocument();
@@ -107,19 +110,19 @@ describe('BarcodeCard', () => {
 
   test('does not render when trxCode is empty string', () => {
     const { container } = render(<BarcodeCard trxCode="" />);
-    
+
     expect(container.firstChild).toBeNull();
     expect(screen.queryByTestId('barcode')).not.toBeInTheDocument();
   });
 
   test('does not render when trxCode is falsy', () => {
     const { container } = render(<BarcodeCard trxCode={undefined as any} />);
-    
+
     expect(container.firstChild).toBeNull();
     expect(screen.queryByTestId('barcode')).not.toBeInTheDocument();
   });
 
- test('download button is enabled initially', () => {
+  test('download button is enabled initially', () => {
     const trxCode = '2lezemi4';
     render(<BarcodeCard trxCode={trxCode} />);
     const downloadButton = screen.getByRole('button', { name: /dashboard.barcodeSection.downloadBarcode/i });
@@ -128,7 +131,7 @@ describe('BarcodeCard', () => {
 
   test('show merchants button opens new window', () => {
     const trxCode = '2lezemi4';
-    
+
     render(<BarcodeCard trxCode={trxCode} />);
 
     const showMerchantsButton = screen.getByRole('button', { name: /dashboard.barcodeSection.showMerchants/i });
@@ -151,7 +154,7 @@ describe('BarcodeCard', () => {
 
   test('barcode component receives correct props', () => {
     const trxCode = '2lezemi4';
-    
+
     render(<BarcodeCard trxCode={trxCode} />);
 
     const barcodeElement = screen.getByTestId('barcode');

@@ -12,6 +12,7 @@ import LandingPage from './pages/LandingPage/LandingPage';
 import ProtectedRoute from './config/ProtectedRoute';
 import GatewayPage from './pages/GatewayPage/GatewayPage';
 import ErrorPage from './pages/ErrorPage/ErrorPage';
+import WaitingPage from './pages/WaitingPage/WaitingPage';
 
 const PublicLayout: React.FC<{ children: React.ReactNode, isLogged: boolean }> = ({ children, isLogged = false }) => (
   <Layout hasSidebar={false} hasSubHeader={false} hasPadding={false} isLogged={isLogged}>
@@ -67,6 +68,10 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
     <Route
       path={ROUTES.FEEDBACK}
       element={<PrivateLayout><FeedbackPage /></PrivateLayout>}
+    />
+    <Route
+      path={ROUTES.WAITING_PAGE}
+      element={<PrivateLayout><WaitingPage /></PrivateLayout>}
     />
   </Routes>
 );

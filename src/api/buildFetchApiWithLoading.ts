@@ -1,15 +1,17 @@
 import { buildFetchApi } from '@pagopa/selfcare-common-frontend/lib/utils/api-utils';
 import { loadingRef } from '../utils/loadingOverlay';
 
-export const buildFetchApiWithLoading = () => {
+export const buildFetchApiWithLoading = (showLoader: boolean) => {
   const originalFetch = buildFetchApi();
 
   return async (input: RequestInfo | URL, init?: RequestInit) => {
+    if (showLoader) loadingRef.setLoading(true);
     try {
-      loadingRef.setLoading(true);
-      return await originalFetch(input, init);
+      const res = await originalFetch(input, init);
+      if (res.status === 429) throw res;
+      return res;
     } finally {
-      loadingRef.setLoading(false);
+      if (showLoader) loadingRef.setLoading(false);
     }
   };
 };

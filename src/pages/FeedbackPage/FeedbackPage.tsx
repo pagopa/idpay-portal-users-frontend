@@ -1,5 +1,5 @@
 import { feedbackStates } from "./feedbackStates";
-import { makeStatusPage } from "../StatusPageFactory/StatusPageFactory";
+import { makeStatusPage } from "../../components/StatusPageFactory/StatusPageFactory";
 
-const FeedbackPage = makeStatusPage(feedbackStates, "ON_EVALUATION");
+const FeedbackPage = makeStatusPage(feedbackStates);
 export default FeedbackPage;
