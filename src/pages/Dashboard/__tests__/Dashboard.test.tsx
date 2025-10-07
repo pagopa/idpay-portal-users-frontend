@@ -58,11 +58,13 @@ jest.mock('../../../routes', () => {
 
 const mockGetBarCode = jest.fn();
 const mockGetBonusDetail = jest.fn();
+const mockGetTimeline = jest.fn();
 
 jest.mock('../../../api/onboardingWebApiClient', () => ({
   OnboardingWebApi: {
     getBarCode: (...args: any[]) => mockGetBarCode(...args),
     getBonusDetail: (...args: any[]) => mockGetBonusDetail(...args),
+    timeline: (...args: any[]) => mockGetTimeline(...args),
   },
 }));
 
@@ -90,6 +92,32 @@ describe('Dashboard Integration', () => {
         fiscalNumber: ['RSSLNZ85T10H501Z']
       }
     };
+    mockGetTimeline.mockResolvedValue({
+      status: 200,
+      data: {
+        operationList: [
+          {
+            operationId: 'txn-2',
+            operationType: 'TRANSACTION',
+            operationDate: '2025-10-10T11:30:00.000Z',
+            businessName: 'Shop Bravo',
+            accruedCents: 50,
+          },
+          {
+            operationId: 'txn-1',
+            operationType: 'TRANSACTION',
+            operationDate: '2025-10-10T10:00:00.000Z',
+            businessName: 'Shop Alpha',
+            accruedCents: 30,
+          },
+          {
+            operationId: 'onb-1',
+            operationType: 'ONBOARDING',
+            operationDate: '2025-09-01T08:00:00.000Z',
+          },
+        ],
+      },
+    });
   });
 
   test('fetches detail and calls getBarCode only when voucherStatus is ACTIVE; renders all components', async () => {
@@ -109,6 +137,7 @@ describe('Dashboard Integration', () => {
       status: 200,
       data: { trxCode: '2lezemi4' },
     });
+    
 
     render(<Dashboard />);
 
@@ -120,6 +149,10 @@ describe('Dashboard Integration', () => {
 
     await waitFor(() => {
       expect(mockGetBarCode).toHaveBeenCalledWith('68dd003ccce8c534d1da22bc');
+    });
+
+    await waitFor(() => {
+      expect(mockGetTimeline).toHaveBeenCalledWith('68dd003ccce8c534d1da22bc');
     });
 
     await waitFor(() => {
