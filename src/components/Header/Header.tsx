@@ -1,9 +1,11 @@
 import {
   HeaderAccount,
   HeaderProduct,
+  JwtUser,
   type ProductEntity,
   type RootLinkType
 } from '@pagopa/mui-italia';
+import { useAuth } from '../../contexts/AuthContext';
 
 export type HeaderProps = {
   onAssistanceClick?: () => void;
@@ -11,6 +13,7 @@ export type HeaderProps = {
 };
 
 export const Header = (props: HeaderProps) => {
+  const { isAuthenticated, logout, user } = useAuth();
   const { onAssistanceClick = () => null, hasSubHeader } = props;
 
 
@@ -28,15 +31,23 @@ export const Header = (props: HeaderProps) => {
     title: 'Sito di PagoPA S.p.A.'
   };
 
+  const authUser: JwtUser = {
+    id: user?.id || '1',
+    name: user?.firstName,
+    surname: user?.lastName,
+    email: user?.email
+  };
+
   return (
     <>
       <HeaderAccount
         rootLink={pagopaLink}
-        enableLogin={false}
-        enableDropdown
+        enableLogin={isAuthenticated}
+        loggedUser={isAuthenticated ? authUser : undefined}
         onAssistanceClick={onAssistanceClick}
+        onLogout={logout}
       />
-      { hasSubHeader &&
+      {hasSubHeader &&
         <HeaderProduct
           productsList={[product]}
         />
