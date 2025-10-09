@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import Dashboard from '../Dashboard';
 import { VoucherStatusEnum } from '../../../api/generated/onboarding-web/InitiativeDTO';
@@ -24,10 +25,32 @@ jest.mock('../../../components/Dashboard/BarcodeCard', () => {
 });
 
 jest.mock('../../../components/Dashboard/OperationsCard', () => {
-  return function MockOperationsCard() {
-    return <div data-testid="operations-card" />;
+  return function MockOperationsCard({ onClick, timelineData }: any) {
+    return (
+      <div data-testid="operations-card">
+        <button
+          data-testid="open-operation"
+          onClick={() => onClick?.('txn-2')}
+        >
+          open
+        </button>
+        <span data-testid="timeline-length">{timelineData?.length ?? 0}</span>
+      </div>
+    );
   };
 });
+
+jest.mock('../../../components/CustomDrawer/CustomDrawer', () => ({
+  CustomDrawer: ({ open, operation, onClose }: any) => (
+    <div
+      data-testid="custom-drawer"
+      data-open={open ? 'true' : 'false'}
+      data-operation-id={operation?.operationId ?? ''}
+    >
+      <button data-testid="close-drawer" onClick={onClose}>close</button>
+    </div>
+  ),
+}));
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -138,7 +161,6 @@ describe('Dashboard Integration', () => {
       data: { trxCode: '2lezemi4' },
     });
     
-
     render(<Dashboard />);
 
     expect(screen.getByTestId('overlay')).toBeInTheDocument();
@@ -459,5 +481,33 @@ describe('Dashboard Integration', () => {
     });
 
     expect(screen.queryByTestId('barcode-card')).not.toBeInTheDocument();
+  });
+
+  test('opens drawer with selected transaction when an operation is clicked', async () => {
+    const mockBonusData = {
+      voucherStatus: VoucherStatusEnum.ACTIVE,
+      voucherStartDate: '2025-09-24',
+      voucherEndDate: '2025-10-24',
+      amountCents: 10000,
+    };
+
+    mockGetBonusDetail.mockResolvedValue({ status: 200, data: mockBonusData });
+    mockGetBarCode.mockResolvedValue({ status: 200, data: { trxCode: 'abc' } });
+
+    render(<Dashboard />);
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('overlay')).not.toBeInTheDocument();
+    });
+
+    expect(screen.getByTestId('custom-drawer')).toHaveAttribute('data-open', 'false');
+
+    await userEvent.click(screen.getByTestId('open-operation'));
+
+    expect(screen.getByTestId('custom-drawer')).toHaveAttribute('data-open', 'true');
+    expect(screen.getByTestId('custom-drawer')).toHaveAttribute('data-operation-id', 'txn-2');
+
+    await userEvent.click(screen.getByTestId('close-drawer'));
+    expect(screen.getByTestId('custom-drawer')).toHaveAttribute('data-open', 'false');
   });
 });
