@@ -1,17 +1,12 @@
 import { downloadFileFromBase64 } from '../decode';
 
 describe('downloadFileFromBase64', () => {
-  let fetchMock: jest.Mock;
   let createObjectURLMock: jest.Mock;
   let revokeObjectURLMock: jest.Mock;
   let clickSpy: jest.SpyInstance;
+  let atobSpy: jest.SpyInstance;
 
   beforeEach(() => {
-    fetchMock = jest.fn().mockResolvedValue({
-      blob: () => Promise.resolve(new Blob(['dummy'], { type: 'application/pdf' })),
-    });
-    (globalThis as any).fetch = fetchMock;
-
     createObjectURLMock = jest.fn(() => 'blob:mock');
     revokeObjectURLMock = jest.fn();
     Object.defineProperty(window, 'URL', {
@@ -25,7 +20,9 @@ describe('downloadFileFromBase64', () => {
 
     clickSpy = jest
       .spyOn(HTMLAnchorElement.prototype, 'click')
-      .mockImplementation(() => {});
+      .mockImplementation(() => { });
+
+    atobSpy = jest.spyOn(window, 'atob').mockReturnValue('decoded-binary-data');
   });
 
   afterEach(() => {
@@ -33,21 +30,55 @@ describe('downloadFileFromBase64', () => {
     document.body.innerHTML = '';
   });
 
-  it('adds prefix when missing and triggers download', async () => {
-    await downloadFileFromBase64('dGVzdA==', 'file.pdf');
+  it('should download file from base64 without prefix', () => {
+    const base64 = 'dGVzdA==';
+    const fileName = 'test.pdf';
 
-    expect(fetchMock).toHaveBeenCalledWith(
-      'data:application/pdf;base64,dGVzdA=='
-    );
+    downloadFileFromBase64(base64, fileName);
+
+    expect(atobSpy).toHaveBeenCalledWith(base64);
+
     expect(createObjectURLMock).toHaveBeenCalledTimes(1);
-    expect(clickSpy).toHaveBeenCalled();
+    const blobArg = createObjectURLMock.mock.calls[0][0];
+    expect(blobArg).toBeInstanceOf(Blob);
+    expect(blobArg.type).toBe('application/pdf');
+
+    expect(clickSpy).toHaveBeenCalledTimes(1);
+
     expect(revokeObjectURLMock).toHaveBeenCalledWith('blob:mock');
   });
 
-  it('uses provided data: URL when present', async () => {
-    const prefixed = 'data:application/pdf;base64,abcd1234';
-    await downloadFileFromBase64(prefixed, 'file.pdf');
+  it('should remove data: prefix when present', () => {
+    const base64WithPrefix = 'data:application/pdf;base64,dGVzdA==';
+    const fileName = 'test.pdf';
 
-    expect(fetchMock).toHaveBeenCalledWith(prefixed);
+    downloadFileFromBase64(base64WithPrefix, fileName);
+
+    expect(atobSpy).toHaveBeenCalledWith('dGVzdA==');
+
+    expect(createObjectURLMock).toHaveBeenCalledTimes(1);
+    expect(clickSpy).toHaveBeenCalledTimes(1);
+    expect(revokeObjectURLMock).toHaveBeenCalledWith('blob:mock');
+  });
+
+  it('should create anchor element with correct attributes', () => {
+    const base64 = 'dGVzdA==';
+    const fileName = 'my-document.pdf';
+
+    downloadFileFromBase64(base64, fileName);
+
+    const anchors = document.getElementsByTagName('a');
+    expect(anchors.length).toBe(0);
+
+    expect(clickSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle empty base64 string', () => {
+    atobSpy.mockReturnValue('');
+
+    downloadFileFromBase64('', 'empty.pdf');
+
+    expect(atobSpy).toHaveBeenCalledWith('');
+    expect(createObjectURLMock).toHaveBeenCalledTimes(1);
   });
 });

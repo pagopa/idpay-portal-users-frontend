@@ -12,6 +12,8 @@ import BarcodeCard from '../../components/Dashboard/BarcodeCard';
 import OperationsCard from '../../components/Dashboard/OperationsCard';
 import { TimelineDTO } from '../../api/generated/onboarding-web/TimelineDTO';
 import { OperationDTO } from '../../api/generated/onboarding-web/OperationDTO';
+import { CustomDrawer } from '../../components/CustomDrawer/CustomDrawer';
+import { formatDateTime } from '../../utils/formatUtils';
 
 interface BonusDetail {
   voucherStatus: VoucherStatusEnum;
@@ -30,28 +32,27 @@ interface TimelineItem {
 const Dashboard = () => {
   const { t } = useTranslation();
   const [bonusData, setBonusData] = useState<BonusDetail | null>(null);
-  const [timeline, setTimeline] = useState<OperationDTO[] | null>(null)
-  const [timelineData, setTimelineData] = useState<TimelineItem[] | null>(null)
-  const [timelineDetailData] = useState<OperationDTO | null>(null)
+  const [timelineData, setTimelineData] = useState<TimelineItem[] | null>(null);
+  const [transactionDetails, setTransactionDetails] = useState<OperationDTO[]>([]);
+  const [selectedTransaction, setSelectedTransaction] = useState<OperationDTO | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [trxCode, setTrxCode] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  function formatDate(dateString: string): string {
-    const date = new Date(dateString);
+  // const handleOpenDrawer = (operationId: string) => {
+  //   const transaction = transactionDetails.find(t => t.operationId === operationId);
+  //   if (transaction) {
+  //     setSelectedTransaction(transaction);
+  //     setDrawerOpen(true);
+  //   }
+  // };
 
-    const formatter = new Intl.DateTimeFormat("it-IT", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
-
-    return formatter.format(date).replace(/\./g, "");
-  }
+  const handleDrawerClose = () => {
+    setDrawerOpen(false);
+    setSelectedTransaction(null);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,27 +71,37 @@ const Dashboard = () => {
         }
 
         const timelineResponse = await OnboardingWebApi.timeline(initiativeId);
-        if(timelineResponse?.status && timelineResponse.status === 200) {
+        if (timelineResponse?.status && timelineResponse.status === 200) {
           const timelineList = (timelineResponse.data as TimelineDTO).operationList as OperationDTO[];
           const sortedOperations = [...timelineList].sort(
             (a, b) => new Date(b.operationDate).getTime() - new Date(a.operationDate).getTime()
           );
-          setTimeline(sortedOperations);
-          const onboarding = sortedOperations?.find(e => e?.operationType === "ONBOARDING")
-          const onboardingItem: TimelineItem = {label: "Adesione iniziativa", date: formatDate(onboarding?.operationDate!), id: onboarding?.operationId!}
-          var operationItems: TimelineItem[] = []
+
+          const onboarding = sortedOperations?.find(e => e?.operationType === "ONBOARDING");
+          const onboardingItem: TimelineItem = {
+            label: t('operationsSection.onboardingInitiative'),
+            date: formatDateTime(onboarding?.operationDate!),
+            id: onboarding?.operationId!
+          };
+
+          let operationItems: TimelineItem[] = [];
+          let transactionDetailsArray: OperationDTO[] = [];
 
           for (const operation of sortedOperations) {
             if (operation?.operationType === "TRANSACTION") {
               operationItems.push({
-                label: operation.businessName ?? "N/A",
-                date: formatDate(operation.operationDate!),
+                label: operation.businessName ?? '-',
+                date: formatDateTime(operation.operationDate!),
                 cents: operation.accruedCents,
                 id: operation.operationId
               });
+
+              transactionDetailsArray.push(operation);
             }
           }
+
           setTimelineData([...operationItems, onboardingItem]);
+          setTransactionDetails(transactionDetailsArray);
         }
         setIsLoading(false);
       } catch {
@@ -111,7 +122,7 @@ const Dashboard = () => {
   const showBarcode =
     (bonusData.voucherStatus === VoucherStatusEnum.ACTIVE ||
       bonusData.voucherStatus === VoucherStatusEnum.EXPIRING) && Boolean(trxCode);
-      console.log(timelineData, timelineDetailData, timeline)
+  console.log(timelineData, transactionDetails);
   return (
     <>
       <Box>
@@ -133,10 +144,10 @@ const Dashboard = () => {
               mt={2}
               alignItems='stretch'
             >
-              <Box flex={1}>
+              <Box flex='1 1 50%' minWidth={0}>
                 <DetailBonusCard bonusData={bonusData} fiscalNumber={fiscalNumber} />
               </Box>
-              <Box flex={1}>
+              <Box flex='1 1 50%' minWidth={0}>
                 <BarcodeCard trxCode={trxCode} />
               </Box>
             </Box>
@@ -146,11 +157,12 @@ const Dashboard = () => {
               flexDirection={{ xs: 'column', md: 'row' }}
               gap={3}
               mt={3}
+              alignItems='stretch'
             >
-              <Box flex={1}>
+              <Box flex='1 1 50%' minWidth={0}>
                 <OperationsCard />
               </Box>
-              <Box flex={1} />
+              <Box flex='1 1 50%' minWidth={0} />
             </Box>
           </>
         ) : (
@@ -170,6 +182,12 @@ const Dashboard = () => {
           </Box>
         )}
       </Box>
+
+      <CustomDrawer
+        open={drawerOpen}
+        onClose={handleDrawerClose}
+        operation={selectedTransaction}
+      />
     </>
   );
 };

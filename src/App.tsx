@@ -51,7 +51,7 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
     {/* private route */}
     <Route
       path={ROUTES.DASHBOARD}
-      element={<PrivateLayout hasSidebar><Dashboard /></PrivateLayout>}
+      element={<PrivateLayout hasSidebar hasSubHeader><Dashboard /></PrivateLayout>}
     />
     <Route
       path={ROUTES.VERIFY_REQUIREMENTS}
