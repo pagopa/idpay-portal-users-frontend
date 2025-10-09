@@ -27,7 +27,7 @@ const Sidebar = ({ collapsed, toggleSidebar }: SidebarProps) => {
 
   return (
     <Box
-      width={collapsed ? 64 : 240}
+      width={collapsed ? 64 : 300}
       height={'100%'}
       bgcolor={theme.palette.background.paper}
       borderRight='1px solid #e0e0e0'
@@ -46,6 +46,7 @@ const Sidebar = ({ collapsed, toggleSidebar }: SidebarProps) => {
           sx={{
             justifyContent: collapsed ? 'center' : 'flex-start',
             px: collapsed ? 2 : 3,
+            mt: 1.5
           }}
         >
           <ListItemIcon sx={{ minWidth: collapsed ? 'auto' : undefined }}>

@@ -49,6 +49,12 @@ const it = {
         "accessibility": "Accessibilità"
       },
     },
+    "header": {
+      "pagopaLinkLabel": "PagoPA S.p.A.",
+      "pagopaLinkAriaLabel": "Link: vai al sito di PagoPA S.p.A.",
+      "pagopaLinkTitle": "Sito di PagoPA S.p.A.",
+      "productTitle": "Bonus Elettrodomestici",
+    },
     "retry": "Riprova",
     "login": "Accedi",
   },
@@ -193,7 +199,7 @@ const it = {
       "title": "Non è possibile\ncompletare la richiesta\nper questa iniziativa",
       "description": "Siamo già a lavoro per risolvere.\nRiprova tra un po’."
     },
-     "tooManyRequests": {
+    "tooManyRequests": {
       "title": "Sembra che le cose\nvadano un po' a rilento",
       "description": "Potreste essere in tanti in questo momento.\nRiprova tra qualche minuto."
     }
@@ -221,7 +227,23 @@ const it = {
       "USED": "Utilizzato"
     },
     "operationsSection": {
-      "title": "Le tue operazioni"
+      "title": "Le tue operazioni",
+      "onboardingInitiative": "Adesione iniziativa"
+    },
+  },
+  "drawerDetail": {
+    "title": "Dettaglio dell’operazione",
+    "assetAmount": "Importo del bene",
+    "appliedDiscount": "Sconto riconosciuto",
+    "transactionInformation": "Informazioni sulla transazione",
+    "merchant": "Esercente",
+    "date": "Data",
+    "status": "Stato",
+    "idTransaction": "ID transazione",
+    "statusMap": {
+      "AUTHORIZED": "Autorizzata",
+      "CANCELLED": "Cancellata",
+      "REWARDED": "Assegnata"
     }
   }
 }
