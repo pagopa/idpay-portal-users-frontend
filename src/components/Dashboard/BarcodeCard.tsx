@@ -41,7 +41,7 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
 
   return (
     <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <CardContent sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <CardContent>
         <Typography variant='overline'>
           {t('dashboard.barcodeSection.barcodeDescription')}
         </Typography>
