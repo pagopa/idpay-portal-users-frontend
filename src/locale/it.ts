@@ -49,6 +49,12 @@ const it = {
         "accessibility": "Accessibilità"
       },
     },
+    "header": {
+      "pagopaLinkLabel": "PagoPA S.p.A.",
+      "pagopaLinkAriaLabel": "Link: vai al sito di PagoPA S.p.A.",
+      "pagopaLinkTitle": "Sito di PagoPA S.p.A.",
+      "productTitle": "Bonus Elettrodomestici",
+    },
     "retry": "Riprova",
     "login": "Accedi",
   },

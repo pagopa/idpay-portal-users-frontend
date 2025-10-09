@@ -144,10 +144,10 @@ const Dashboard = () => {
               mt={2}
               alignItems='stretch'
             >
-              <Box flex={1}>
+              <Box flex='1 1 50%' minWidth={0}>
                 <DetailBonusCard bonusData={bonusData} fiscalNumber={fiscalNumber} />
               </Box>
-              <Box flex={1}>
+              <Box flex='1 1 50%' minWidth={0}>
                 <BarcodeCard trxCode={trxCode} />
               </Box>
             </Box>
@@ -157,11 +157,12 @@ const Dashboard = () => {
               flexDirection={{ xs: 'column', md: 'row' }}
               gap={3}
               mt={3}
+              alignItems='stretch'
             >
-              <Box flex={1}>
+              <Box flex='1 1 50%' minWidth={0}>
                 <OperationsCard />
               </Box>
-              <Box flex={1} />
+              <Box flex='1 1 50%' minWidth={0} />
             </Box>
           </>
         ) : (

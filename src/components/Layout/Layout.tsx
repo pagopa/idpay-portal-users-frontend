@@ -44,7 +44,7 @@ const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding =
         <Box component="main" display="flex" gridArea="body" flexGrow={1} minHeight={0}>
           {hasSidebar &&
             <Box
-              width={collapsed ? 64 : 240}
+              width={collapsed ? 64 : 300}
               bgcolor={theme.palette.background.paper}
               sx={{
                 transition: 'width 0.3s ease'

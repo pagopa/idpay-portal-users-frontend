@@ -6,6 +6,7 @@ import {
   type RootLinkType
 } from '@pagopa/mui-italia';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 export type HeaderProps = {
   onAssistanceClick?: () => void;
@@ -13,22 +14,23 @@ export type HeaderProps = {
 };
 
 export const Header = (props: HeaderProps) => {
+  const { t } = useTranslation();
   const { isAuthenticated, logout, user } = useAuth();
   const { onAssistanceClick = () => null, hasSubHeader } = props;
 
 
   const product: ProductEntity = {
     id: '0',
-    title: 'Bonus Elettrodomestici',
+    title: t('commons.header.productTitle'),
     productUrl: '',
     linkType: 'internal'
   };
 
   const pagopaLink: RootLinkType = {
-    label: 'PagoPA S.p.A.',
+    label: t('commons.header.pagopaLinkLabel'),
     href: 'https://www.pagopa.it/',
-    ariaLabel: 'Link: vai al sito di PagoPA S.p.A.',
-    title: 'Sito di PagoPA S.p.A.'
+    ariaLabel: t('commons.header.pagopaLinkAriaLabel'),
+    title: t('commons.header.pagopaLinkTitle')
   };
 
   const authUser: JwtUser = {
