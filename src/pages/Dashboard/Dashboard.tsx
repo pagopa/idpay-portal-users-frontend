@@ -41,13 +41,13 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  // const handleOpenDrawer = (operationId: string) => {
-  //   const transaction = transactionDetails.find(t => t.operationId === operationId);
-  //   if (transaction) {
-  //     setSelectedTransaction(transaction);
-  //     setDrawerOpen(true);
-  //   }
-  // };
+  const handleOpenDrawer = (operationId: string) => {
+    const transaction = transactionDetails.find(t => t.operationId === operationId);
+    if (transaction) {
+      setSelectedTransaction(transaction);
+      setDrawerOpen(true);
+    }
+  };
 
   const handleDrawerClose = () => {
     setDrawerOpen(false);
@@ -79,7 +79,7 @@ const Dashboard = () => {
 
           const onboarding = sortedOperations?.find(e => e?.operationType === "ONBOARDING");
           const onboardingItem: TimelineItem = {
-            label: t('operationsSection.onboardingInitiative'),
+            label: t('dashboard.operationsSection.onboardingInitiative'),
             date: formatDateTime(onboarding?.operationDate!),
             id: onboarding?.operationId!
           };
@@ -122,7 +122,7 @@ const Dashboard = () => {
   const showBarcode =
     (bonusData.voucherStatus === VoucherStatusEnum.ACTIVE ||
       bonusData.voucherStatus === VoucherStatusEnum.EXPIRING) && Boolean(trxCode);
-  console.log(timelineData, transactionDetails);
+
   return (
     <>
       <Box>
@@ -160,7 +160,7 @@ const Dashboard = () => {
               alignItems='stretch'
             >
               <Box flex='1 1 50%' minWidth={0}>
-                <OperationsCard />
+                <OperationsCard timelineData={timelineData!} onClick={handleOpenDrawer}/>
               </Box>
               <Box flex='1 1 50%' minWidth={0} />
             </Box>
@@ -177,7 +177,7 @@ const Dashboard = () => {
               <DetailBonusCard bonusData={bonusData} fiscalNumber={fiscalNumber} />
             </Box>
             <Box flex={1}>
-              <OperationsCard />
+              <OperationsCard timelineData={timelineData!} onClick={handleOpenDrawer}/>
             </Box>
           </Box>
         )}
