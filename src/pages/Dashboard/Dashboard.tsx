@@ -14,6 +14,7 @@ import { TimelineDTO } from '../../api/generated/onboarding-web/TimelineDTO';
 import { OperationDTO } from '../../api/generated/onboarding-web/OperationDTO';
 import { CustomDrawer } from '../../components/CustomDrawer/CustomDrawer';
 import { formatDateTime } from '../../utils/formatUtils';
+import { getInitiativeId } from '../../utils/env';
 
 interface BonusDetail {
   voucherStatus: VoucherStatusEnum;
@@ -56,7 +57,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const initiativeId = '68dd003ccce8c534d1da22bc';
+      const initiativeId = getInitiativeId();
       try {
         const detailResponse = await OnboardingWebApi.getBonusDetail(initiativeId);
         const detailData = detailResponse.data as unknown as BonusDetail;

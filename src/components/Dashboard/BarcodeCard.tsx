@@ -8,6 +8,7 @@ import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
 import { useState } from 'react';
 import { downloadFileFromBase64 } from '../../commons/decode';
 import { BARCODE_BREAKPOINTS, getBarcodeWidth } from '../../utils/barcodeResponsiveUtils';
+import { getInitiativeId } from '../../utils/env';
 
 interface BarcodeCardProps {
   trxCode: string;
@@ -22,7 +23,7 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
   const isSmallScreen = useMediaQuery(BARCODE_BREAKPOINTS.small);
 
   const downloadPDF = async () => {
-    const initiativeId = '68dd003ccce8c534d1da22bc';
+    const initiativeId = getInitiativeId();
     setIsDownloading(true)
     try {
       const pdfResponse = await OnboardingWebApi.downloadPDF(initiativeId, trxCode);

@@ -14,6 +14,10 @@ jest.mock('../../../components/WaitingPage/WaitingContent', () => {
   };
 });
 
+jest.mock('../../../utils/env', () => ({
+  getInitiativeId: () => '68dd003ccce8c534d1da22bc',
+}));
+
 describe('WaitingPage', () => {
   test('passes location.state to WaitingContent', () => {
     const payload = {

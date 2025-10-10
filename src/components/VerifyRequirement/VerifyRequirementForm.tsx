@@ -14,6 +14,7 @@ import { commonHeaders, OnboardingWebApi } from '../../api/onboardingWebApiClien
 import { extractErrorResponse, isSuccessStatus } from '../../utils/api';
 import { useVerifyRequirementStore } from '../../hooks/useVerifyRequirementStore';
 import { useTOSCheckboxStore } from '../../hooks/useTOSCheckboxStore';
+import { getInitiativeId } from '../../utils/env';
 
 export default function VerifyRequirementForm() {
     const { t } = useTranslation();
@@ -48,7 +49,7 @@ export default function VerifyRequirementForm() {
         if (!isValid) { return; }
 
         const payload = {
-            initiativeId: '68dd003ccce8c534d1da22bc',
+            initiativeId: getInitiativeId(),
             confirmedTos: tosAccepted,
             pdndAccept: true,
             selfDeclarationList: [

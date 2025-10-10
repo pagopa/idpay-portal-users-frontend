@@ -62,6 +62,10 @@ jest.mock('../utils/env', () => ({
   isMockAuthEnabled: () => false,
 }));
 
+jest.mock('../utils/env', () => ({
+  getInitiativeId: () => '68dd003ccce8c534d1da22bc',
+}));
+
 test('PublicLayout props are passed (isLogged=false, no sidebar/subheader, padding=false)', () => {
   render(
     <MemoryRouter initialEntries={[ROUTES.HOME]}>

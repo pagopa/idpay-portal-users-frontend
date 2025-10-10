@@ -2,6 +2,10 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import BarcodeCard from '../BarcodeCard';
 
+jest.mock('../../../utils/env', () => ({
+  getInitiativeId: () => '68dd003ccce8c534d1da22bc',
+}));
+
 jest.mock('react-barcode', () => {
   return function MockBarcode({ value }: { value: string }) {
     return <div data-testid="barcode" data-value={value}>Mock Barcode: {value}</div>;
