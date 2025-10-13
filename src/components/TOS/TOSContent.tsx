@@ -81,7 +81,13 @@ export const TOSContent = ({ sectionRefs }: Props) => {
               }}
             />
             <Typography variant="body1">
-              {t('tos.sideMenu.element2.listItem1')}
+              <Trans
+                i18nKey="tos.sideMenu.element2.listItem1"
+                components={{
+                  bold: <Box component="span" sx={{ fontWeight: theme.typography.fontWeightBold }} />,
+                  br: <br />
+                }}
+              />
             </Typography>
           </ListItem>
           <ListItem sx={{ display: 'flex', pl: 0 }}>
@@ -95,10 +101,20 @@ export const TOSContent = ({ sectionRefs }: Props) => {
               }}
             />
             <Typography variant="body1">
-              {t('tos.sideMenu.element2.listItem2')}
+              <Trans
+              i18nKey="tos.sideMenu.element2.listItem2"
+              components={{
+                bold: <Box component="span" sx={{ fontWeight: theme.typography.fontWeightBold }} />,
+                br: <br />
+              }}
+            />
             </Typography>
           </ListItem>
         </List>
+
+        <Typography variant="body1" sx={{ color: theme.palette.text.primary }} mb={2}>
+          {t('tos.sideMenu.element2.subDescription')}
+        </Typography>
 
         <Typography sx={{ color: theme.palette.primary.main, fontWeight: theme.typography.fontWeightMedium, mb: 4, cursor: "pointer" }}>
           <Link onClick={() => { }} underline="always" target="_blank">

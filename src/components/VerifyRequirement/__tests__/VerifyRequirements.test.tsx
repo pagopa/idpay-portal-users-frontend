@@ -10,6 +10,10 @@ jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (k: string) => k }),
 }));
 
+jest.mock('../../../utils/env', () => ({
+  getInitiativeId: () => '68dd003ccce8c534d1da22bc',
+}));
+
 jest.mock('../HeaderForm', () => () => <div data-testid="header-form" />);
 jest.mock('../FamilyForm', () => () => <div data-testid="family-form" />);
 jest.mock('../SelfDeclaration', () => (props: any) => (

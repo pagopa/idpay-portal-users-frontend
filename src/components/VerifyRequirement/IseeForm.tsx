@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, FormControl, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material'
+import { Box, Card, CardContent, FormControl, FormControlLabel, Link, Radio, RadioGroup, Typography } from '@mui/material'
 import { theme } from '@pagopa/mui-italia'
 import type { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,8 +19,10 @@ export default function IseeForm(props: IseeFormProps) {
                 <CardContent>
                     <TitleCard title='verifyRequirements.isee.title' />
                     <Box my={1}>
-                        <Typography variant='body1'>
-                            {t('verifyRequirements.isee.description')}
+                        <Typography sx={{ color: theme.palette.primary.main, fontWeight: theme.typography.fontWeightMedium, cursor: "pointer" }}>
+                            <Link onClick={() => { }} underline="always" target="_blank">
+                                {t('verifyRequirements.isee.description')}
+                            </Link>
                         </Typography>
                     </Box>
                     <Box
@@ -31,7 +33,7 @@ export default function IseeForm(props: IseeFormProps) {
                             mt: 2,
                         }}
                     >
-                        <Card sx={{ borderColor: theme.palette.divider, borderWidth: "1px", borderStyle: "solid", width: "100%" }}>
+                        <Card sx={{ borderColor: theme.palette.divider, width: "100%" }}>
                             <CardContent>
                                 <FormControl component="fieldset" fullWidth>
                                     <RadioGroup

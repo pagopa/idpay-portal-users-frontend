@@ -12,10 +12,9 @@ type LayoutProps = {
   hasSidebar?: boolean;
   hasSubHeader?: boolean;
   hasPadding?: boolean;
-  isLogged?: boolean;
 };
 
-const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding = true, isLogged = true }: LayoutProps) => {
+const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding = true }: LayoutProps) => {
   const [collapsed, setCollapsed] = useState(false);
   const [loading, setLoading] = useState(false);
   const toggleSidebar = () => setCollapsed((prev) => !prev);
@@ -24,49 +23,47 @@ const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding =
     loadingRef.setLoading = setLoading;
   }, []);
 
-
-
   return (
-      <Box
-        display="grid"
-        gridTemplateColumns="1fr"
-        gridTemplateRows="auto 1fr auto"
-        gridTemplateAreas={`"header"
+    <Box
+      display="grid"
+      gridTemplateColumns="1fr"
+      gridTemplateRows="auto 1fr auto"
+      gridTemplateAreas={`"header"
                           "body"
                           "footer"`}
-        minHeight="100vh"
-      >
-        {loading && <Overlay />}
-        <Box component="header" gridArea="header">
-          <Header hasSubHeader={hasSubHeader} />
-        </Box>
+      minHeight="100vh"
+    >
+      {loading && <Overlay />}
+      <Box component="header" gridArea="header">
+        <Header hasSubHeader={hasSubHeader} />
+      </Box>
 
-        <Box component="main" display="flex" gridArea="body" flexGrow={1} minHeight={0}>
-          {hasSidebar &&
-            <Box
-              width={collapsed ? 64 : 300}
-              bgcolor={theme.palette.background.paper}
-              sx={{
-                transition: 'width 0.3s ease'
-              }}
-            >
-              <Sidebar collapsed={collapsed} toggleSidebar={toggleSidebar} />
-            </Box>}
-
+      <Box component="main" display="flex" gridArea="body" flexGrow={1} minHeight={0}>
+        {hasSidebar &&
           <Box
-            flexGrow={1}
-            p={hasPadding ? 3 : 0}
-            overflow={'auto'}
-            minHeight={'100%'}
+            width={collapsed ? 64 : 300}
+            bgcolor={theme.palette.background.paper}
+            sx={{
+              transition: 'width 0.3s ease'
+            }}
           >
-            {children}
-          </Box>
-        </Box>
+            <Sidebar collapsed={collapsed} toggleSidebar={toggleSidebar} />
+          </Box>}
 
-        <Box gridArea="footer"  id="footerBox">
-          <Footer loggedUser={isLogged} />
+        <Box
+          flexGrow={1}
+          p={hasPadding ? 3 : 0}
+          overflow={'auto'}
+          minHeight={'100%'}
+        >
+          {children}
         </Box>
       </Box>
+
+      <Box gridArea="footer" id="footerBox">
+        <Footer loggedUser />
+      </Box>
+    </Box>
   );
 };
 

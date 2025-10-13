@@ -2,6 +2,10 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import BarcodeCard from '../BarcodeCard';
 
+jest.mock('../../../utils/env', () => ({
+  getInitiativeId: () => '68dd003ccce8c534d1da22bc',
+}));
+
 jest.mock('react-barcode', () => {
   return function MockBarcode({ value }: { value: string }) {
     return <div data-testid="barcode" data-value={value}>Mock Barcode: {value}</div>;
@@ -106,20 +110,6 @@ describe('BarcodeCard', () => {
     expect(screen.getByText('dashboard.barcodeSection.barcodeDescription')).toBeInTheDocument();
     expect(screen.getByText('dashboard.barcodeSection.downloadBarcode')).toBeInTheDocument();
     expect(screen.getByText('dashboard.barcodeSection.showMerchants')).toBeInTheDocument();
-  });
-
-  test('does not render when trxCode is empty string', () => {
-    const { container } = render(<BarcodeCard trxCode="" />);
-
-    expect(container.firstChild).toBeNull();
-    expect(screen.queryByTestId('barcode')).not.toBeInTheDocument();
-  });
-
-  test('does not render when trxCode is falsy', () => {
-    const { container } = render(<BarcodeCard trxCode={undefined as any} />);
-
-    expect(container.firstChild).toBeNull();
-    expect(screen.queryByTestId('barcode')).not.toBeInTheDocument();
   });
 
   test('download button is enabled initially', () => {

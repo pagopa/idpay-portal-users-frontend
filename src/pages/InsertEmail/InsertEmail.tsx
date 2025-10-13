@@ -8,6 +8,7 @@ import ROUTES from '../../routes';
 import { useEmailStore } from '../../hooks/useEmailStore';
 import { validateEmail } from '../../utils/validateEmail';
 import { useTOSCheckboxStore } from '../../hooks/useTOSCheckboxStore';
+import { ArrowBack } from '@mui/icons-material';
 
 const InsertEmail = () => {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ const InsertEmail = () => {
   return (
     <Container maxWidth="sm" sx={{ py: { xs: 4, sm: 6 } }}>
       <Box textAlign="center" mb={3}>
-        <Typography variant="h3" fontWeight={theme.typography.fontWeightBold} mb={1}>
+        <Typography variant="h3" fontWeight={theme.typography.fontWeightBold} mb={2}>
           {t('insertEmail.title')}
         </Typography>
         <Typography variant="body1">
@@ -103,7 +104,7 @@ const InsertEmail = () => {
         gap={2}
         justifyContent="center"
       >
-        <Button variant="outlined" onClick={handleBack}>
+        <Button variant="outlined" size='medium' startIcon={<ArrowBack sx={{ color: theme.palette.primary.main }} />} onClick={handleBack}>
           {t('commons.back')}
         </Button>
         <Button variant="contained" onClick={handleContinue}>

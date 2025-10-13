@@ -31,7 +31,7 @@ export default function SelfDeclaration(props: SelfDeclarationProps) {
                             mt: 2,
                         }}
                     >
-                        <Card sx={{ borderColor: theme.palette.divider, borderWidth: "1px", borderStyle: "solid", width: "100%" }}>
+                        <Card sx={{ borderColor: theme.palette.divider, width: "100%" }}>
                             <CardContent>
                                 <Box
                                     sx={{
@@ -52,7 +52,7 @@ export default function SelfDeclaration(props: SelfDeclarationProps) {
                                             },
                                         },
                                         '& .MuiSwitch-track': {
-                                            backgroundColor: theme.palette.error.dark,
+                                            backgroundColor: props.showError ? theme.palette.error.dark : null,
                                         },
                                     }} />
                                     <Typography variant='body2' sx={{ fontWeight: theme.typography.fontWeightMedium, color: theme.palette.text.secondary }}>
