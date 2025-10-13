@@ -65,6 +65,15 @@ jest.mock('../utils/env', () => ({
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
 }));
 
+const mockScrollTo = jest.fn();
+
+beforeAll(() => {
+  Object.defineProperty(window, 'scrollTo', {
+    value: mockScrollTo,
+    writable: true,
+  });
+});
+
 test('PublicLayout props are passed (isLogged=true, no sidebar/subheader, padding=false)', () => {
   render(
     <MemoryRouter initialEntries={[ROUTES.HOME]}>
