@@ -13,6 +13,7 @@ import ProtectedRoute from './config/ProtectedRoute';
 import GatewayPage from './pages/GatewayPage/GatewayPage';
 import ErrorPage from './pages/ErrorPage/ErrorPage';
 import WaitingPage from './pages/WaitingPage/WaitingPage';
+import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 
 const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <Layout hasSidebar={false} hasSubHeader={false} hasPadding={false} >
@@ -80,7 +81,10 @@ function App() {
   const isMobile = useIsMobile();
 
   return (
-    <LocalRoutes isMobile={isMobile} />
+    <>
+      <ScrollToTop />
+      <LocalRoutes isMobile={isMobile}/>
+    </>
   );
 }
 
