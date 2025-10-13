@@ -112,20 +112,6 @@ describe('BarcodeCard', () => {
     expect(screen.getByText('dashboard.barcodeSection.showMerchants')).toBeInTheDocument();
   });
 
-  test('does not render when trxCode is empty string', () => {
-    const { container } = render(<BarcodeCard trxCode="" />);
-
-    expect(container.firstChild).toBeNull();
-    expect(screen.queryByTestId('barcode')).not.toBeInTheDocument();
-  });
-
-  test('does not render when trxCode is falsy', () => {
-    const { container } = render(<BarcodeCard trxCode={undefined as any} />);
-
-    expect(container.firstChild).toBeNull();
-    expect(screen.queryByTestId('barcode')).not.toBeInTheDocument();
-  });
-
   test('download button is enabled initially', () => {
     const trxCode = '2lezemi4';
     render(<BarcodeCard trxCode={trxCode} />);

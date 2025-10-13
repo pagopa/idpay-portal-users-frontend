@@ -117,7 +117,7 @@ export const OnboardingWebApi = {
 
   getBarCode: async (
     initiativeId: string
-  ): Promise<{ status: number; data: TransactionBarCodeResponse }> => {
+  ): Promise<{ status: number; data: TransactionBarCodeResponse | null }> => {
     const result = await onboardingClient.retrievectiveBarCodeTransaction({
       initiativeId,
       ...commonHeaders
@@ -131,10 +131,14 @@ export const OnboardingWebApi = {
 
     const leftItem = result.left?.[0];
     const contexts = leftItem?.context ?? [];
+    const actualValue = contexts.find((c: any) => c.key === '')?.actual;
+    if (actualValue && typeof actualValue === 'object' && Object.keys(actualValue).length === 0) {
+      return { status: 200, data: null };
+    }
+
     const valid = contexts.find(
       (c: any) => c?.actual?.trxCode && c?.actual?.trxCode.trim() !== ''
     );
-
     if (valid?.actual) return { status: 200, data: valid.actual as TransactionBarCodeResponse };
     throw result.left;
   },

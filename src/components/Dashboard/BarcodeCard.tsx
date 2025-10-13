@@ -38,8 +38,6 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
     }
   }
 
-  if (!trxCode) return null;
-
   return (
     <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <CardContent>
@@ -58,20 +56,27 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
           flexDirection='column'
           alignItems='center'
         >
-          <Barcode
+          {trxCode ? <Barcode
             value={trxCode}
             fontSize={18}
             textMargin={20}
             fontOptions="bold"
             width={getBarcodeWidth(isLargeScreen, isMediumScreen, isSmallScreen)}
-          />
+          /> : (
+          <>
+          <Typography mt={2} textAlign={"center"}>Stiamo preparando il tuo barcode.</Typography>
+          <Typography mt={4} mb={2} textAlign={"center"}>Puoi provare ad aggiornarne lo stato tra qualche istante.</Typography>
+          </>
+          )
+          }
         </Box>
         <Box mt='auto'>
-          <Box py={1} display='flex' justifyContent='center'>
+          {trxCode && <Box py={1} display='flex' justifyContent='center'>
             <Button disabled={isDownloading} endIcon={<DownloadIcon />} variant='contained' onClick={() => downloadPDF()}>
               {t('dashboard.barcodeSection.downloadBarcode')}
             </Button>
           </Box>
+          }
           <Box py={1} display='flex' justifyContent='center'>
             <ButtonNaked
               weight='default'

@@ -122,7 +122,7 @@ const Dashboard = () => {
   const fiscalNumber = user?.attributes?.fiscalNumber?.[0] || '-';
   const showBarcode =
     (bonusData.voucherStatus === VoucherStatusEnum.ACTIVE ||
-      bonusData.voucherStatus === VoucherStatusEnum.EXPIRING) && Boolean(trxCode);
+      bonusData.voucherStatus === VoucherStatusEnum.EXPIRING);
 
   return (
     <>
