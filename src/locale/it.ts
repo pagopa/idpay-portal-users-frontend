@@ -77,27 +77,28 @@ const it = {
     "sideMenu": {
       "element1": {
         "title": "Chi può richiederlo?",
-        "description": "Tutti i <bold>maggiorenni residenti in Italia</bold> che acquistano un elettrodomestico nuovo e smaltiscono quello vecchio dello stesso tipo.<br/>Si può richiedere <bold>un solo bonus per ogni nucleo familiare</bold>."
+        "description": "Tutti i <bold>maggiorenni residenti in Italia</bold> che acquistano un elettrodomestico nuovo e smaltiscono quello vecchio dello stesso tipo.<br/>Si può richiedere <bold>un solo bonus per ogni famiglia anagrafica</bold>."
       },
       "element2": {
         "title": "Cosa offre?",
-        "description": "Uno <bold>sconto del 30%</bold> sul prezzo d’acquisto di un elettrodomestico nuovo ad alta efficienza di una di queste categorie: lavatrici e lavasciuga, forni, cappe da cucina, lavastoviglie, asciugabiancheria, frigoriferi, congelatori e piani cottura.<br/>Puoi ottenere:",
-        "listItem1": "Fino a 200 euro se il tuo ISEE è inferiore o uguale a 25.000 €",
-        "listItem2": "Fino a 100 euro per tutti gli altri o per chi non ha un ISEE disponibile.",
+        "description": "Uno sconto del 30% sul prezzo d’acquisto di un solo elettrodomestico, nuovo e ad alta efficienza, di una di queste categorie: lavatrici e lavasciuga, forni, cappe da cucina, lavastoviglie, asciugabiancheria, frigoriferi, congelatori e piani cottura. Lo sconto massimo che puoi ottenere è:",
+        "listItem1": "<bold>Fino a 100 euro</bold>",
+        "listItem2": "<bold>Fino a 200 euro</bold> se il tuo ISEE è inferiore a 25.000 €",
+        "subDescription": "Lo sconto non è cumulabile con altre agevolazioni, anche di tipo fiscale.",
         "link": "Mostra prodotti compatibili",
       },
       "element3": {
         "title": "Come richiederlo?",
-        "description": "Puoi richiederlo tramite l’app IO o tramite il sito dedicato, fino a che saranno disponibili i fondi.<br/>Una volta effettuate le verifiche, riceverai in app o per email l’esito della tua richiesta."
+        "description": "Puoi richiederlo tramite questo sito web o dall’app IO, fino a che saranno disponibili i fondi.<br/>Una volta effettuate le verifiche, a seconda del canale usato, riceverai un’email con l’esito o un messaggio in app."
       },
       "element4": {
         "title": "Come si usa?",
-        "description": "Puoi usare il bonus <bold>entro 10 giorni</bold> da quando ricevi il messaggio di conferma dell’attivazione, e comunque entro il 31/12/2025.<br/><bold>Nei negozi fisici:</bold> accedi a IO e mostra il codice a barre, oppure mostra il codice a barre che puoi stampare dal sito.<br/><bold>Online:</bold> usa l’app per generare e usare lo sconto.<br/>",
+        "description": "Puoi usare il bonus entro 10 giorni da quando ricevi il messaggio di conferma dell’attivazione, e comunque entro il 31/12/2025.<br/>Nei negozi fisici: accedi a IO e mostra il codice a barre.<br/>Online: usa l’app per generare e usare lo sconto",
         "link": "Mostra l’elenco dei negozi"
       }
     },
 
-    "postDescription": "<bold>Ricorda:</bold> quando acquisti, chiedi al venditore come smaltire il vecchio elettrodomestico. Il venditore deve gestire lo smaltimento.",
+    "postDescription": "<bold>Ricorda:</bold> quando acquisti, chiedi al venditore come smaltire il vecchio elettrodomestico. Lo smaltimento deve essere gestito gratuitamente dal venditore.",
     "privacy_part1": "Accetto i",
     "privacy_terms": "Termini e condizioni d’uso",
     "privacy_part2": "e confermo di avere letto l’",
@@ -128,15 +129,15 @@ const it = {
     },
 
     "isee": {
-      "title": "Dichiarazione ISEE 2025",
+      "title": "Hai un ISEE 2025 in corso di validità?",
       "description":
-        "Se sei in possesso di un ISEE 2025 inferiore a 25.000€, verrà effettuata una verifica con INPS",
+        "Quando un ISEE è valido?",
       "option.<25000": "Ho un ISEE inferiore a 25.000€",
       "option.>=25000": "Ho un ISEE uguale o superiore a 25.000€",
-      "option.none": "Non ho un ISEE",
-      "hint.<25000": "Hai diritto fino a €200",
-      "hint.>=25000": "Hai diritto fino a €100",
-      "hint.none": "Hai diritto fino a €100",
+      "option.none": "Non ho un ISEE o preferisco non rispondere",
+      "hint.<25000": "Hai diritto fino a 200€. Verificheremo questa informazione con INPS",
+      "hint.>=25000": "Hai diritto fino a 100€",
+      "hint.none": "Hai diritto fino a 100€",
     },
 
     "error": "Seleziona un’opzione per continuare",
@@ -146,7 +147,7 @@ const it = {
 
   "insertEmail": {
     "title": "Inserisci il tuo indirizzo email",
-    "description": "Abbiamo bisogno del tuo indirizzo email per poterti comunicare tutti gli aggiornamenti riguardanti il tuo bonus."
+    "description": "Ci servirà per comunicarti tutti gli aggiornamenti sul Bonus Elettrodomestici."
   },
 
   "click-day": {
@@ -160,7 +161,7 @@ const it = {
       "description": "Controlla periodicamente la tua casella di posta.\nRiceverai tutti gli aggiornamenti all’indirizzo email che hai indicato."
     },
     "onEvaluation": {
-      "title": "L’ente sta valutando la tua domanda di adesione",
+      "title": "La tua richiesta è in fase di valutazione",
       "description": "Quando pronto, riceverai l’esito all’indirizzo email  indicato."
     },
     "familyMember": {

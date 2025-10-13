@@ -38,9 +38,10 @@ const LandingPage = () => {
   return (
     <Box
       sx={{
+        height: '100%',
         overflowX: 'clip',
+        display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
         backgroundColor: theme.palette.background.default,
       }}
     >
@@ -48,8 +49,7 @@ const LandingPage = () => {
         sx={{
           display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
-          margin: '0 auto',
-          minHeight: {md: "70vh"},
+          flex: 1,
           overflow: 'hidden',
         }}
       >
@@ -57,9 +57,7 @@ const LandingPage = () => {
         
         <Box
           sx={{
-            height: "auto",
             flex: 1,
-            minHeight: {md: "70vh"},
             backgroundColor: "#0B3EE3",
             color: theme.palette.common.white,
             display: 'flex',

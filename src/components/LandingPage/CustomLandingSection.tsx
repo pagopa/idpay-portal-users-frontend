@@ -25,7 +25,7 @@ const CustomLandingSection = () => {
     <Box
       sx={{
         flex: 1,
-        px: {md: 24, sm: 8, xs: 8},
+        px: {md: 16, sm: 8, xs: 8},
         py: {md: 16, sm: 8, xs: 8},
         display: 'flex',
         flexDirection: 'column',
