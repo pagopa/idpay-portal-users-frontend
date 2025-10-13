@@ -65,6 +65,18 @@ jest.mock('../utils/env', () => ({
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
 }));
 
+test('PublicLayout props are passed (isLogged=true, no sidebar/subheader, padding=false)', () => {
+  render(
+    <MemoryRouter initialEntries={[ROUTES.HOME]}>
+      <App />
+    </MemoryRouter>
+  );
+  const layout = screen.getByTestId('layout');
+  expect(layout).toHaveAttribute('data-sidebar', 'false');
+  expect(layout).toHaveAttribute('data-subheader', 'false');
+  expect(layout).toHaveAttribute('data-padding', 'false');
+});
+
 test('PrivateLayout default props are applied (sidebar=false, subheader=false, padding=undefined)', () => {
   render(
     <MemoryRouter initialEntries={[ROUTES.VERIFY_REQUIREMENTS]}>
