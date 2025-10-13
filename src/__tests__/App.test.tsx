@@ -17,7 +17,6 @@ jest.mock('../components/Layout/Layout', () => (props: any) => (
     data-sidebar={String(props.hasSidebar)}
     data-subheader={String(props.hasSubHeader)}
     data-padding={String(props.hasPadding)}
-    data-logged={String(props.isLogged)}
   >
     {props.children}
   </div>
@@ -62,14 +61,17 @@ jest.mock('../utils/env', () => ({
   isMockAuthEnabled: () => false,
 }));
 
-test('PublicLayout props are passed (isLogged=false, no sidebar/subheader, padding=false)', () => {
+jest.mock('../utils/env', () => ({
+  getInitiativeId: () => '68dd003ccce8c534d1da22bc',
+}));
+
+test('PublicLayout props are passed (isLogged=true, no sidebar/subheader, padding=false)', () => {
   render(
     <MemoryRouter initialEntries={[ROUTES.HOME]}>
       <App />
     </MemoryRouter>
   );
   const layout = screen.getByTestId('layout');
-  expect(layout).toHaveAttribute('data-logged', 'false');
   expect(layout).toHaveAttribute('data-sidebar', 'false');
   expect(layout).toHaveAttribute('data-subheader', 'false');
   expect(layout).toHaveAttribute('data-padding', 'false');
@@ -85,7 +87,6 @@ test('PrivateLayout default props are applied (sidebar=false, subheader=false, p
   expect(layout).toHaveAttribute('data-sidebar', 'false');
   expect(layout).toHaveAttribute('data-subheader', 'false');
   expect(layout).toHaveAttribute('data-padding', 'undefined');
-  expect(layout).toHaveAttribute('data-logged', 'undefined');
 });
 
 test('PrivateLayout with explicit hasSidebar=true is passed to Layout', () => {

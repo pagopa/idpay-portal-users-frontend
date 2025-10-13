@@ -13,6 +13,7 @@ import { isStorageTokenExpired } from '../../utils/tokenManager';
 import { ErrorStateKey } from '../ErrorPage/errorStates';
 import { useCanAccessTOSStore } from '../../hooks/useCanAccessTOSStore';
 import { extractErrorResponse } from '../../utils/api';
+import { getInitiativeId } from '../../utils/env';
 
 const GatewayPage = () => {
     const { loading, token, user } = useAuth();
@@ -73,7 +74,7 @@ const GatewayPage = () => {
             return;
         }
 
-        const initiativeId = '68dd003ccce8c534d1da22bc';
+        const initiativeId = getInitiativeId();
         const fetchData = async () => {
             try {
                 const statusResponse = await OnboardingWebApi.getStatus(initiativeId, {showLoader: false});

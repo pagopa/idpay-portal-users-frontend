@@ -38,6 +38,10 @@ jest.mock('../../../utils/api', () => ({
   extractErrorResponse: jest.fn(),
 }));
 
+jest.mock('../../../utils/env', () => ({
+  getInitiativeId: () => '68dd003ccce8c534d1da22bc',
+}));
+
 import { isSuccessStatus, extractErrorResponse } from '../../../utils/api';
 
 const basePayload = {

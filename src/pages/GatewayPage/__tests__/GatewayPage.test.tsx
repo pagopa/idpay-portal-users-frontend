@@ -79,6 +79,10 @@ jest.mock('../../../utils/api', () => ({
   extractErrorResponse: (error: any) => mockExtractErrorResponse(error),
 }));
 
+jest.mock('../../../utils/env', () => ({
+  getInitiativeId: () => '68dd003ccce8c534d1da22bc',
+}));
+
 describe('GatewayPage', () => {
   beforeEach(() => {
     jest.clearAllMocks();

@@ -4,6 +4,10 @@ import '@testing-library/jest-dom';
 import Dashboard from '../Dashboard';
 import { VoucherStatusEnum } from '../../../api/generated/onboarding-web/InitiativeDTO';
 
+jest.mock('../../../utils/env', () => ({
+  getInitiativeId: () => '68dd003ccce8c534d1da22bc',
+}));
+
 const mockedUsedNavigate = jest.fn();
 
 jest.mock('../../../components/Dashboard/DetailBonusCard', () => {
