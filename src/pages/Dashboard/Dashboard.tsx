@@ -136,13 +136,12 @@ const Dashboard = () => {
         width={collapsed ? 64 : 300}
         bgcolor={theme.palette.background.paper}
         sx={{
+          transition: 'width 0.3s ease',
         }}
       >
         <Sidebar collapsed={collapsed} toggleSidebar={toggleSidebar} onSectionChange={handleSectionChange} />
       </Box>
 
-              display='flex'
-              flexDirection={{ xs: 'column', md: 'row' }}
       <Box flexGrow={1} p={3} overflow="auto">
       {activeSection === 'bonus' ? (
         <YourBonus
