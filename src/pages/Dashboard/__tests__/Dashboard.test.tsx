@@ -29,6 +29,17 @@ jest.mock('../../../components/Menu/Sidebar', () => ({
   ),
 }));
 
+jest.mock('../../../components/Dashboard/DashboardDropdownMenu', () => ({
+  __esModule: true,
+  default: ({ onSectionChange }: any) => (
+    <div data-testid="dropdown-menu">
+      <button data-testid="faq-btn-mobile" onClick={() => onSectionChange('faq')}>
+        FAQ Mobile
+      </button>
+    </div>
+  ),
+}));
+
 jest.mock('../../../components/Overlay/Overlay', () => () => (
   <div data-testid="overlay" />
 ));
@@ -59,6 +70,10 @@ jest.mock('../../../contexts/AuthContext', () => ({
   useAuth: () => ({
     user: mockUser,
   }),
+}));
+
+jest.mock('../../../hooks/useIsMobile', () => ({
+  useIsMobile: jest.fn(() => false),
 }));
 
 describe('Dashboard Integration (API & Navigation)', () => {
@@ -150,7 +165,7 @@ describe('Dashboard Integration (API & Navigation)', () => {
     });
   });
 
-  test('renders FAQ section when section changed', async () => {
+  test('renders FAQ section when section changed (desktop sidebar)', async () => {
     const mockBonusData = {
       voucherStatus: VoucherStatusEnum.ACTIVE,
       amountCents: 10000,

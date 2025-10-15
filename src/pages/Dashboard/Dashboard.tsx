@@ -13,6 +13,8 @@ import { TimelineDTO } from '../../api/generated/onboarding-web/TimelineDTO';
 import { OperationDTO } from '../../api/generated/onboarding-web/OperationDTO';
 import { formatDateTime } from '../../utils/formatUtils';
 import { getInitiativeId } from '../../utils/env';
+import { useIsMobile } from '../../hooks/useIsMobile';
+import DashboardDropdownMenu from '../../components/Dashboard/DashboardDropdownMenu';
 
 interface BonusDetail {
   voucherStatus: VoucherStatusEnum;
@@ -37,6 +39,7 @@ const Dashboard = () => {
   const [trxCode, setTrxCode] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [collapsed, setCollapsed] = useState(false);
+  const isMobile = useIsMobile()
 
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -130,38 +133,47 @@ const Dashboard = () => {
     bonusData.voucherStatus === VoucherStatusEnum.EXPIRING;
 
   return (
-    <Box display="flex" height="100%">
-
-      <Box
-        width={collapsed ? 64 : 300}
-        bgcolor={theme.palette.background.paper}
-        sx={{
-          transition: 'width 0.3s ease',
-        }}
-      >
-        <Sidebar collapsed={collapsed} toggleSidebar={toggleSidebar} onSectionChange={handleSectionChange} />
-      </Box>
-
-      <Box flexGrow={1} p={3} overflow="auto">
-      {activeSection === 'bonus' ? (
-        <YourBonus
-          bonusData={bonusData}
-          timelineData={timelineData}
-          trxCode={trxCode}
-          fiscalNumber={fiscalNumber}
-          showBarcode={showBarcode}
-          drawerOpen={drawerOpen}
-          selectedTransaction={selectedTransaction}
-          onOpenDrawer={handleOpenDrawer}
-          onCloseDrawer={handleDrawerClose}
+    <>
+    { isMobile &&
+      <DashboardDropdownMenu
+          selectedSection={activeSection}
+          onSectionChange={handleSectionChange}
         />
-      ) : (
-        <Box>
-          <h2>Domande frequenti</h2>
+    }
+      <Box display="flex" height="100%">
+        { !isMobile &&
+          <Box
+            width={collapsed ? 64 : 300}
+            bgcolor={theme.palette.background.paper}
+            sx={{
+              transition: 'width 0.3s ease',
+            }}
+          >
+            <Sidebar collapsed={collapsed} toggleSidebar={toggleSidebar} onSectionChange={handleSectionChange} />
+          </Box>
+        }
+
+        <Box flexGrow={1} p={3} overflow="auto">
+        {activeSection === 'bonus' ? (
+          <YourBonus
+            bonusData={bonusData}
+            timelineData={timelineData}
+            trxCode={trxCode}
+            fiscalNumber={fiscalNumber}
+            showBarcode={showBarcode}
+            drawerOpen={drawerOpen}
+            selectedTransaction={selectedTransaction}
+            onOpenDrawer={handleOpenDrawer}
+            onCloseDrawer={handleDrawerClose}
+          />
+        ) : (
+          <Box>
+            <h2>Domande frequenti</h2>
+          </Box>
+        )}
         </Box>
-      )}
       </Box>
-    </Box>
+    </>
   );
 };
 
