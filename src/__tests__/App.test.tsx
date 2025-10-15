@@ -14,7 +14,6 @@ jest.mock('react-router-dom', () => {
 jest.mock('../components/Layout/Layout', () => (props: any) => (
   <div
     data-testid="layout"
-    data-sidebar={String(props.hasSidebar)}
     data-subheader={String(props.hasSubHeader)}
     data-padding={String(props.hasPadding)}
   >
@@ -28,8 +27,8 @@ jest.mock('../api/onboardingWebApiClient', () => ({
   OnboardingWebApi: {
     getStatus: jest.fn().mockResolvedValue({ status: 200, data: {} }),
     getDetail: jest.fn().mockResolvedValue({}),
-    save: jest.fn().mockResolvedValue(undefined)
-  }
+    save: jest.fn().mockResolvedValue(undefined),
+  },
 }));
 
 jest.mock('@pagopa/selfcare-common-frontend/lib/components/Footer/Footer', () => () => (
@@ -38,8 +37,8 @@ jest.mock('@pagopa/selfcare-common-frontend/lib/components/Footer/Footer', () =>
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => key
-  })
+    t: (key: string) => key,
+  }),
 }));
 
 jest.mock('../contexts/AuthContext', () => {
@@ -48,8 +47,8 @@ jest.mock('../contexts/AuthContext', () => {
     AuthProvider: ({ children }: any) => <>{children}</>,
     useAuth: () => ({
       initAuth: initAuthMock,
-      isAuthenticated: true
-    })
+      isAuthenticated: true,
+    }),
   };
 });
 
@@ -59,9 +58,6 @@ jest.mock('../hooks/useIsMobile', () => ({
 
 jest.mock('../utils/env', () => ({
   isMockAuthEnabled: () => false,
-}));
-
-jest.mock('../utils/env', () => ({
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
 }));
 
@@ -74,36 +70,37 @@ beforeAll(() => {
   });
 });
 
-test('PublicLayout props are passed (isLogged=true, no sidebar/subheader, padding=false)', () => {
-  render(
-    <MemoryRouter initialEntries={[ROUTES.HOME]}>
-      <App />
-    </MemoryRouter>
-  );
-  const layout = screen.getByTestId('layout');
-  expect(layout).toHaveAttribute('data-sidebar', 'false');
-  expect(layout).toHaveAttribute('data-subheader', 'false');
-  expect(layout).toHaveAttribute('data-padding', 'false');
-});
+describe('App Routing and Layout props', () => {
+  test('PublicLayout props are passed (no subheader, no padding)', () => {
+    render(
+      <MemoryRouter initialEntries={[ROUTES.HOME]}>
+        <App />
+      </MemoryRouter>
+    );
+    const layout = screen.getByTestId('layout');
+    expect(layout).toHaveAttribute('data-subheader', 'false');
+    expect(layout).toHaveAttribute('data-padding', 'false');
+  });
 
-test('PrivateLayout default props are applied (sidebar=false, subheader=false, padding=undefined)', () => {
-  render(
-    <MemoryRouter initialEntries={[ROUTES.VERIFY_REQUIREMENTS]}>
-      <App />
-    </MemoryRouter>
-  );
-  const layout = screen.getByTestId('layout');
-  expect(layout).toHaveAttribute('data-sidebar', 'false');
-  expect(layout).toHaveAttribute('data-subheader', 'false');
-  expect(layout).toHaveAttribute('data-padding', 'undefined');
-});
+  test('PrivateLayout default props are applied (subheader=false, padding=undefined)', () => {
+    render(
+      <MemoryRouter initialEntries={[ROUTES.VERIFY_REQUIREMENTS]}>
+        <App />
+      </MemoryRouter>
+    );
+    const layout = screen.getByTestId('layout');
+    expect(layout).toHaveAttribute('data-subheader', 'false');
+    expect(layout).toHaveAttribute('data-padding', 'undefined');
+  });
 
-test('PrivateLayout with explicit hasSidebar=true is passed to Layout', () => {
-  render(
-    <MemoryRouter initialEntries={[ROUTES.DASHBOARD]}>
-      <App />
-    </MemoryRouter>
-  );
-  const layout = screen.getByTestId('layout');
-  expect(layout).toHaveAttribute('data-sidebar', 'true');
+  test('PrivateLayout passes explicit props (hasSubHeader=true, hasPadding=false)', () => {
+    render(
+      <MemoryRouter initialEntries={[ROUTES.DASHBOARD]}>
+        <App />
+      </MemoryRouter>
+    );
+    const layout = screen.getByTestId('layout');
+    expect(layout).toHaveAttribute('data-subheader', 'true');
+    expect(layout).toHaveAttribute('data-padding', 'false');
+  });
 });

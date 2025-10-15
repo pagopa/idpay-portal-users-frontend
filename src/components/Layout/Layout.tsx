@@ -1,23 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
-import { theme } from '@pagopa/mui-italia';
-import Header from '../Header/Header';
-import Sidebar from '../Menu/Sidebar';
 import { loadingRef } from '../../utils/loadingOverlay';
 import Overlay from '../Overlay/Overlay';
-import Footer from '@pagopa/selfcare-common-frontend/lib/components/Footer/Footer'
+import Header from '../Header/Header';
+import Footer from '@pagopa/selfcare-common-frontend/lib/components/Footer/Footer';
 
 type LayoutProps = {
   children: React.ReactNode;
-  hasSidebar?: boolean;
   hasSubHeader?: boolean;
   hasPadding?: boolean;
 };
 
-const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding = true }: LayoutProps) => {
-  const [collapsed, setCollapsed] = useState(false);
+const Layout = ({ children, hasSubHeader = true, hasPadding = true }: LayoutProps) => {
   const [loading, setLoading] = useState(false);
-  const toggleSidebar = () => setCollapsed((prev) => !prev);
 
   useEffect(() => {
     loadingRef.setLoading = setLoading;
@@ -28,33 +23,21 @@ const Layout = ({ children, hasSidebar = true, hasSubHeader = true, hasPadding =
       display="grid"
       gridTemplateColumns="1fr"
       gridTemplateRows="auto 1fr auto"
-      gridTemplateAreas={`"header"
-                          "body"
-                          "footer"`}
+      gridTemplateAreas={`"header" "body" "footer"`}
       minHeight="100vh"
     >
       {loading && <Overlay />}
+
       <Box component="header" gridArea="header">
         <Header hasSubHeader={hasSubHeader} />
       </Box>
 
-      <Box component="main" display="flex" gridArea="body" flexGrow={1} minHeight={0}>
-        {hasSidebar &&
-          <Box
-            width={collapsed ? 64 : 300}
-            bgcolor={theme.palette.background.paper}
-            sx={{
-              transition: 'width 0.3s ease'
-            }}
-          >
-            <Sidebar collapsed={collapsed} toggleSidebar={toggleSidebar} />
-          </Box>}
-
+      <Box component="main" gridArea="body" flexGrow={1} minHeight={0}>
         <Box
           flexGrow={1}
           p={hasPadding ? 3 : 0}
-          overflow={'auto'}
-          minHeight={'100%'}
+          overflow="auto"
+          minHeight="100%"
         >
           {children}
         </Box>

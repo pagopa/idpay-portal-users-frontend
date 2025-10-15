@@ -16,19 +16,18 @@ import WaitingPage from './pages/WaitingPage/WaitingPage';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 
 const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <Layout hasSidebar={false} hasSubHeader={false} hasPadding={false} >
+  <Layout hasSubHeader={false} hasPadding={false} >
     {children}
   </Layout>
 );
 
 const PrivateLayout: React.FC<{
   children: React.ReactNode;
-  hasSidebar?: boolean;
   hasSubHeader?: boolean;
   hasPadding?: boolean;
-}> = ({ children, hasSidebar = false, hasSubHeader = false, hasPadding = undefined }) => (
+}> = ({ children, hasSubHeader = false, hasPadding = undefined }) => (
   <ProtectedRoute>
-    <Layout hasSidebar={hasSidebar} hasSubHeader={hasSubHeader} hasPadding={hasPadding}>
+    <Layout hasSubHeader={hasSubHeader} hasPadding={hasPadding}>
       {children}
     </Layout>
   </ProtectedRoute>
@@ -52,7 +51,7 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
     {/* private route */}
     <Route
       path={ROUTES.DASHBOARD}
-      element={<PrivateLayout hasSidebar hasSubHeader><Dashboard /></PrivateLayout>}
+      element={<PrivateLayout hasPadding={false} hasSubHeader><Dashboard /></PrivateLayout>}
     />
     <Route
       path={ROUTES.VERIFY_REQUIREMENTS}
