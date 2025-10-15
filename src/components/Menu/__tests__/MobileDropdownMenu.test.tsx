@@ -1,95 +1,64 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitForElementToBeRemoved } from '@testing-library/react';
 import { MobileDropdownMenu } from '../MobileDropdownMenu';
 import '@testing-library/jest-dom';
 
 jest.mock('react-i18next', () => ({
-    useTranslation: () => ({
-        t: (key: string) => key,
-    }),
+  useTranslation: () => ({
+    t: (key: string) => key,
+  }),
 }));
 
-describe('MobileDropdownMenu', () => {
-    const items = [
-        'tos.sideMenu.element1.title',
-        'tos.sideMenu.element2.title',
-        'tos.sideMenu.element3.title',
-    ];
+describe('MobileDropdownMenu (Drawer-based)', () => {
+  const items = [
+    'tos.sideMenu.element1.title',
+    'tos.sideMenu.element2.title',
+    'tos.sideMenu.element3.title',
+  ];
 
-    test('renders menu button and not the dropdown initially', () => {
-        render(
-            <MobileDropdownMenu
-                selectedIndex={0}
-                onItemClick={jest.fn()}
-                items={items}
-            />
-        );
+  test('renders menu button and not the drawer initially', () => {
+    render(<MobileDropdownMenu selectedIndex={0} onItemClick={jest.fn()} items={items} />);
 
-        expect(screen.getByText('Menu')).toBeInTheDocument();
-        expect(screen.queryByTestId('menu-list')).not.toBeInTheDocument();
-    });
+    expect(screen.getByText('dashboard.menu')).toBeInTheDocument();
+    expect(screen.queryByTestId('menu-list')).not.toBeInTheDocument();
+  });
 
-    test('opens dropdown when Menu is clicked', () => {
-        render(
-            <MobileDropdownMenu
-                selectedIndex={0}
-                onItemClick={jest.fn()}
-                items={items}
-            />
-        );
+  test('opens drawer when Menu is clicked', () => {
+    render(<MobileDropdownMenu selectedIndex={0} onItemClick={jest.fn()} items={items} />);
 
-        fireEvent.click(screen.getByText('Menu'));
-        expect(screen.getByTestId('menu-list')).toBeInTheDocument();
-        expect(screen.getByText(items[0])).toBeInTheDocument();
-    });
+    fireEvent.click(screen.getByText('dashboard.menu'));
+    expect(screen.getByTestId('menu-list')).toBeInTheDocument();
+    expect(screen.getByText(items[0])).toBeInTheDocument();
+  });
 
-    test('closes dropdown when Close icon is clicked', () => {
-        render(
-            <MobileDropdownMenu
-                selectedIndex={0}
-                onItemClick={jest.fn()}
-                items={items}
-            />
-        );
+  test('closes drawer when Close icon is clicked', async () => {
+    render(<MobileDropdownMenu selectedIndex={0} onItemClick={jest.fn()} items={items} />);
 
-        fireEvent.click(screen.getByText('Menu'));
+    fireEvent.click(screen.getByText('dashboard.menu'));
 
-        const closeButton = screen.getByTestId('CloseIcon').closest('button');
-        fireEvent.click(closeButton!);
+    const closeButton = screen.getByRole('button', { name: '' });
+    fireEvent.click(closeButton);
 
-        expect(screen.queryByTestId('menu-list')).not.toBeInTheDocument();
-    });
+    await waitForElementToBeRemoved(() => screen.queryByTestId('menu-list'));
+  });
 
-    test('calls onItemClick and closes menu when item is clicked', () => {
-        const onItemClickMock = jest.fn();
+  test('calls onItemClick and closes drawer when item is clicked', async () => {
+    const onItemClickMock = jest.fn();
 
-        render(
-            <MobileDropdownMenu
-                selectedIndex={1}
-                onItemClick={onItemClickMock}
-                items={items}
-            />
-        );
+    render(<MobileDropdownMenu selectedIndex={1} onItemClick={onItemClickMock} items={items} />);
 
-        fireEvent.click(screen.getByText('Menu'));
-        const secondItem = screen.getByText(items[1]);
-        fireEvent.click(secondItem);
+    fireEvent.click(screen.getByText('dashboard.menu'));
+    fireEvent.click(screen.getByText(items[1]));
 
-        expect(onItemClickMock).toHaveBeenCalledWith(1);
-        expect(screen.queryByTestId('menu-list')).not.toBeInTheDocument();
-    });
+    expect(onItemClickMock).toHaveBeenCalledWith(1);
+    await waitForElementToBeRemoved(() => screen.queryByTestId('menu-list'));
+  });
 
-    test('applies selected style to the selected index', () => {
-        render(
-            <MobileDropdownMenu
-                selectedIndex={2}
-                onItemClick={jest.fn()}
-                items={items}
-            />
-        );
+  test('applies selected style to the selected index', () => {
+    render(<MobileDropdownMenu selectedIndex={2} onItemClick={jest.fn()} items={items} />);
 
-        fireEvent.click(screen.getByText('Menu'));
+    fireEvent.click(screen.getByText('dashboard.menu'));
 
-        const selectedItem = screen.getByTestId('menu-item-2');
-        expect(selectedItem).toHaveClass('Mui-selected');
-    });
+    const selectedItem = screen.getByTestId('menu-item-2');
+    expect(selectedItem).toHaveClass('Mui-selected');
+  });
 });
