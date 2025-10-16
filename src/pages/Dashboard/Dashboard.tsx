@@ -1,20 +1,20 @@
-import { Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
+import { Box } from '@mui/material';
+import { theme } from '@pagopa/mui-italia';
+import Sidebar from '../../components/Menu/Sidebar';
+import Overlay from '../../components/Overlay/Overlay';
+import YourBonus from '../../components/Dashboard/YourBonus';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
-import Overlay from '../../components/Overlay/Overlay';
-import { VoucherStatusEnum } from '../../api/generated/onboarding-web/InitiativeDTO';
-import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
-import DetailBonusCard from '../../components/Dashboard/DetailBonusCard';
-import BarcodeCard from '../../components/Dashboard/BarcodeCard';
-import OperationsCard from '../../components/Dashboard/OperationsCard';
+import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
+import { VoucherStatusEnum } from '../../api/generated/onboarding-web/InitiativeDTO';
 import { TimelineDTO } from '../../api/generated/onboarding-web/TimelineDTO';
 import { OperationDTO } from '../../api/generated/onboarding-web/OperationDTO';
-import { CustomDrawer } from '../../components/CustomDrawer/CustomDrawer';
 import { formatDateTime } from '../../utils/formatUtils';
 import { getInitiativeId } from '../../utils/env';
+import { useIsMobile } from '../../hooks/useIsMobile';
+import DashboardDropdownMenu from '../../components/Dashboard/DashboardDropdownMenu';
 
 interface BonusDetail {
   voucherStatus: VoucherStatusEnum;
@@ -31,7 +31,6 @@ interface TimelineItem {
 }
 
 const Dashboard = () => {
-  const { t } = useTranslation();
   const [bonusData, setBonusData] = useState<BonusDetail | null>(null);
   const [timelineData, setTimelineData] = useState<TimelineItem[] | null>(null);
   const [transactionDetails, setTransactionDetails] = useState<OperationDTO[]>([]);
@@ -39,8 +38,17 @@ const Dashboard = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [trxCode, setTrxCode] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
+  const isMobile = useIsMobile()
+
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [activeSection, setActiveSection] = useState<'bonus' | 'faq'>('bonus');
+
+  const handleSectionChange = (section: 'bonus' | 'faq') => {
+    setActiveSection(section);
+  };
+  const toggleSidebar = () => setCollapsed(prev => !prev);
 
   const handleOpenDrawer = (operationId: string) => {
     const transaction = transactionDetails.find(t => t.operationId === operationId);
@@ -78,25 +86,24 @@ const Dashboard = () => {
             (a, b) => new Date(b.operationDate).getTime() - new Date(a.operationDate).getTime()
           );
 
-          const onboarding = sortedOperations?.find(e => e?.operationType === "ONBOARDING");
+          const onboarding = sortedOperations.find(e => e?.operationType === 'ONBOARDING');
           const onboardingItem: TimelineItem = {
-            label: t('dashboard.operationsSection.onboardingInitiative'),
+            label: 'dashboard.operationsSection.onboardingInitiative',
             date: formatDateTime(onboarding?.operationDate!),
             id: onboarding?.operationId!
           };
 
-          let operationItems: TimelineItem[] = [];
-          let transactionDetailsArray: OperationDTO[] = [];
+          const operationItems: TimelineItem[] = [];
+          const transactionDetailsArray: OperationDTO[] = [];
 
           for (const operation of sortedOperations) {
-            if (operation?.operationType === "TRANSACTION") {
+            if (operation?.operationType === 'TRANSACTION') {
               operationItems.push({
                 label: operation.businessName ?? '-',
                 date: formatDateTime(operation.operationDate!),
                 cents: operation.accruedCents,
                 id: operation.operationId
               });
-
               transactionDetailsArray.push(operation);
             }
           }
@@ -109,88 +116,66 @@ const Dashboard = () => {
         navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
       }
     };
+
     fetchData();
-  }, []);
+  }, [navigate]);
 
   if (isLoading) return <Overlay />;
 
-  if (!bonusData) {
+  if (!bonusData || !timelineData) {
     navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
     return null;
   }
 
   const fiscalNumber = user?.attributes?.fiscalNumber?.[0] || '-';
   const showBarcode =
-    (bonusData.voucherStatus === VoucherStatusEnum.ACTIVE ||
-      bonusData.voucherStatus === VoucherStatusEnum.EXPIRING);
+    bonusData.voucherStatus === VoucherStatusEnum.ACTIVE ||
+    bonusData.voucherStatus === VoucherStatusEnum.EXPIRING;
 
   return (
     <>
-      <Box>
-        <Typography variant='h4' gutterBottom>
-          {t('dashboard.title')}
-        </Typography>
-        <Typography variant='body1' gutterBottom mt={2}>
-          {t('dashboard.description')}
-        </Typography>
-      </Box>
-
-      <Box mt={3}>
-        {showBarcode ? (
-          <>
-            <Box
-              display='flex'
-              flexDirection={{ xs: 'column', md: 'row' }}
-              gap={3}
-              mt={2}
-              alignItems='stretch'
-            >
-              <Box flex='1 1 50%' minWidth={0}>
-                <DetailBonusCard bonusData={bonusData} fiscalNumber={fiscalNumber} />
-              </Box>
-              <Box flex='1 1 50%' minWidth={0}>
-                <BarcodeCard trxCode={trxCode} />
-              </Box>
-            </Box>
-
-            <Box
-              display='flex'
-              flexDirection={{ xs: 'column', md: 'row' }}
-              gap={3}
-              mt={3}
-              alignItems='stretch'
-            >
-              <Box flex='1 1 50%' minWidth={0}>
-                <OperationsCard timelineData={timelineData!} onClick={handleOpenDrawer}/>
-              </Box>
-              <Box flex='1 1 50%' minWidth={0} />
-            </Box>
-          </>
-        ) : (
+    { isMobile &&
+      <DashboardDropdownMenu
+          selectedSection={activeSection}
+          onSectionChange={handleSectionChange}
+        />
+    }
+      <Box display="flex" height="100%">
+        { !isMobile &&
           <Box
-            display='flex'
-            flexDirection={{ xs: 'column', md: 'row' }}
-            gap={3}
-            mt={2}
-            alignItems='stretch'
+            width={collapsed ? 64 : 300}
+            bgcolor={theme.palette.background.paper}
+            sx={{
+              transition: 'width 0.3s ease',
+            }}
           >
-            <Box flex={1}>
-              <DetailBonusCard bonusData={bonusData} fiscalNumber={fiscalNumber} />
-            </Box>
-            <Box flex={1}>
-              <OperationsCard timelineData={timelineData!} onClick={handleOpenDrawer}/>
-            </Box>
+            <Sidebar collapsed={collapsed} toggleSidebar={toggleSidebar} onSectionChange={handleSectionChange} />
+          </Box>
+        }
+
+        <Box flexGrow={1} p={3} overflow="auto">
+        {activeSection === 'bonus' ? (
+          <YourBonus
+            bonusData={bonusData}
+            timelineData={timelineData}
+            trxCode={trxCode}
+            fiscalNumber={fiscalNumber}
+            showBarcode={showBarcode}
+            drawerOpen={drawerOpen}
+            selectedTransaction={selectedTransaction}
+            onOpenDrawer={handleOpenDrawer}
+            onCloseDrawer={handleDrawerClose}
+          />
+        ) : (
+          <Box>
+            <h2>Domande frequenti</h2>
           </Box>
         )}
+        </Box>
       </Box>
-
-      <CustomDrawer
-        open={drawerOpen}
-        onClose={handleDrawerClose}
-        operation={selectedTransaction}
-      />
     </>
   );
 };
 
 export default Dashboard;
+export type { BonusDetail, TimelineItem };

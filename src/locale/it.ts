@@ -231,6 +231,8 @@ const it = {
       "title": "Le tue operazioni",
       "onboardingInitiative": "Adesione iniziativa"
     },
+    "faq": "Domande frequenti",
+    "menu": "Menu"
   },
   "drawerDetail": {
     "title": "Dettaglio dell’operazione",

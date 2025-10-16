@@ -7,6 +7,7 @@ type Props = {
   descriptionLabel?: string;
   showSubmitError?: boolean;
   errorMessage?: string;
+  onPaste?: (e: React.ClipboardEvent<HTMLInputElement>) => void;
 };
 
 const EmailInputBox = ({
@@ -16,6 +17,7 @@ const EmailInputBox = ({
   descriptionLabel,
   showSubmitError = false,
   errorMessage,
+  onPaste,
 }: Props) => {
   return (
     <Box display="flex" flexDirection="column">
@@ -27,6 +29,7 @@ const EmailInputBox = ({
         error={showSubmitError}
         helperText={showSubmitError ? errorMessage : ''}
         fullWidth
+        onPaste={onPaste}
       />
       {descriptionLabel && (
         <Typography variant="caption" mt={1}>

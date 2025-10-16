@@ -94,6 +94,7 @@ const InsertEmail = () => {
                   ? t('commons.emailMismatch')
                   : ''
             }
+            onPaste={(e) => e.preventDefault()}
           />
         </CardContent>
       </Card>
