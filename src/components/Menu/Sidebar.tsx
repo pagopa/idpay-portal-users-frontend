@@ -29,7 +29,7 @@ const Sidebar = ({ collapsed, toggleSidebar, onSectionChange }: SidebarProps) =>
 
   return (
     <Box
-      width={collapsed ? 64 : 300}
+      width={collapsed ? 64 : 320}
       height="100%"
       bgcolor={theme.palette.background.paper}
       borderRight="1px solid #e0e0e0"
