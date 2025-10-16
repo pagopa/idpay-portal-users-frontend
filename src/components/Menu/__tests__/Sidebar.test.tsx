@@ -8,36 +8,84 @@ jest.mock('react-i18next', () => ({
 }));
 
 describe('Sidebar', () => {
-    it('shows text when expanded', () => {
-        render(<Sidebar collapsed={false} toggleSidebar={jest.fn()} />);
-        expect(screen.getByText('dashboard.title')).toBeInTheDocument();
-    });
+  const mockToggleSidebar = jest.fn();
+  const mockOnSectionChange = jest.fn();
 
-    it('hides text when collapsed', () => {
-        render(<Sidebar collapsed={true} toggleSidebar={jest.fn()} />);
-        expect(screen.queryByText('dashboard.title')).not.toBeInTheDocument();
-    });
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-    it('calls toggleSidebar when icon clicked', () => {
-        const toggleSidebar = jest.fn();
-        render(<Sidebar collapsed={false} toggleSidebar={toggleSidebar} />);
-        const toggleBtn = screen.getAllByRole('button')[1];
-        fireEvent.click(toggleBtn);
-        expect(toggleSidebar).toHaveBeenCalledTimes(1);
-    });
+  it('renders text when expanded', () => {
+    render(
+      <Sidebar
+        collapsed={false}
+        toggleSidebar={mockToggleSidebar}
+        onSectionChange={mockOnSectionChange}
+      />
+    );
 
-    it('sets selected state on list item', () => {
-        render(<Sidebar collapsed={false} toggleSidebar={jest.fn()} />);
-        const listItem = screen.getAllByRole('button')[0];
-        expect(listItem.className).toMatch(/Mui-selected/);
-    });
+    expect(screen.getByText('dashboard.title')).toBeInTheDocument();
+    expect(screen.getByText('dashboard.faq')).toBeInTheDocument();
+  });
 
-    it('calls handleListItemClick and updates selectedIndex', () => {
-        const { container } = render(<Sidebar collapsed={false} toggleSidebar={jest.fn()} />);
-        const listItems = container.querySelectorAll('[role="button"]');
-        fireEvent.click(listItems[0]);
-        expect(listItems[0].className).toMatch(/Mui-selected/);
-        fireEvent.click(listItems[0]);
-        expect(listItems[0].className).toMatch(/Mui-selected/);
-    });
+  it('renders hidden text when collapsed (opacity 0)', () => {
+    render(
+      <Sidebar
+        collapsed={true}
+        toggleSidebar={mockToggleSidebar}
+        onSectionChange={mockOnSectionChange}
+      />
+    );
+
+    expect(screen.queryByText('dashboard.title')).not.toBeInTheDocument();
+  });
+
+  it('calls toggleSidebar when icon button is clicked', () => {
+    render(
+      <Sidebar
+        collapsed={false}
+        toggleSidebar={mockToggleSidebar}
+        onSectionChange={mockOnSectionChange}
+      />
+    );
+
+    const toggleButton = screen.getAllByRole('button').pop()!;
+    fireEvent.click(toggleButton);
+    expect(mockToggleSidebar).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls onSectionChange when a menu item is clicked', () => {
+    render(
+      <Sidebar
+        collapsed={false}
+        toggleSidebar={mockToggleSidebar}
+        onSectionChange={mockOnSectionChange}
+      />
+    );
+
+    const listItems = screen.getAllByRole('button');
+    const bonusItem = listItems[0];
+    const faqItem = listItems[1];
+
+    fireEvent.click(bonusItem);
+    expect(mockOnSectionChange).toHaveBeenCalledWith('bonus');
+
+    fireEvent.click(faqItem);
+    expect(mockOnSectionChange).toHaveBeenCalledWith('faq');
+  });
+
+  it('changes selected state when a list item is clicked', () => {
+    render(
+      <Sidebar
+        collapsed={false}
+        toggleSidebar={mockToggleSidebar}
+        onSectionChange={mockOnSectionChange}
+      />
+    );
+
+    const listButtons = screen.getAllByRole('button');
+    const firstItem = listButtons[0];
+    fireEvent.click(firstItem);
+    expect(firstItem.className).toMatch(/Mui-selected/);
+  });
 });
