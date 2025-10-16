@@ -4,6 +4,12 @@ import '@testing-library/jest-dom';
 import Dashboard from '../Dashboard';
 import { VoucherStatusEnum } from '../../../api/generated/onboarding-web/InitiativeDTO';
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+  }),
+}));
+
 jest.mock('../../../utils/env', () => ({
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
 }));
@@ -182,7 +188,7 @@ describe('Dashboard Integration (API & Navigation)', () => {
 
     await userEvent.click(screen.getByTestId('faq-btn'));
 
-    expect(screen.getByText('Domande frequenti')).toBeInTheDocument();
+    expect(screen.getByText('FAQSection.title')).toBeInTheDocument();
   });
 
   test('toggles sidebar collapsed state', async () => {

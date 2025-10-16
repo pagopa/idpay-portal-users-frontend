@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import { loadingRef } from '../../utils/loadingOverlay';
 import Overlay from '../Overlay/Overlay';
 import Header from '../Header/Header';
-import Footer from '@pagopa/selfcare-common-frontend/lib/components/Footer/Footer';
+import { Footer } from '../Footer/Footer';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -32,7 +32,7 @@ const Layout = ({ children, hasSubHeader = true, hasPadding = true }: LayoutProp
         <Header hasSubHeader={hasSubHeader} />
       </Box>
 
-      <Box component="main" gridArea="body" flexGrow={1} minHeight={0}>
+      <Box component="main" gridArea="body" display='flex' flexGrow={1} minHeight={0}>
         <Box
           flexGrow={1}
           p={hasPadding ? 3 : 0}
@@ -44,7 +44,7 @@ const Layout = ({ children, hasSubHeader = true, hasPadding = true }: LayoutProp
       </Box>
 
       <Box gridArea="footer" id="footerBox">
-        <Footer loggedUser />
+        <Footer />
       </Box>
     </Box>
   );

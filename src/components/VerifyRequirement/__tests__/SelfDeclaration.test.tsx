@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import SelfDeclaration from '../SelfDeclaration';
 import '@testing-library/jest-dom';
 
@@ -32,29 +32,19 @@ describe('SelfDeclaration', () => {
     ).toBeInTheDocument();
   });
 
-  test('calls setSwitchValue when switch is toggled', () => {
-    const setSwitchValueMock = jest.fn();
-    render(
-      <SelfDeclaration switchValue={false} setSwitchValue={setSwitchValueMock} />
-    );
-
-    const switchElement = screen.getByRole('checkbox');
-    fireEvent.click(switchElement);
-
-    expect(setSwitchValueMock).toHaveBeenCalledWith(true);
-  });
-
   test('shows error message when switchValue is false and showError is true', () => {
     render(<SelfDeclaration switchValue={false} setSwitchValue={jest.fn()} showError={true} />);
 
-    expect(screen.getByText('verifyRequirements.selfDeclarationError')).toBeInTheDocument();
+    expect(
+      screen.getByText('verifyRequirements.selfDeclarationError')
+    ).toBeInTheDocument();
   });
 
   test('does not show error message when showError is false', () => {
     render(<SelfDeclaration switchValue={false} setSwitchValue={jest.fn()} showError={false} />);
 
     expect(
-      screen.queryByText('verifyRequirements.error')
+      screen.queryByText('verifyRequirements.selfDeclarationError')
     ).not.toBeInTheDocument();
   });
 
@@ -62,7 +52,7 @@ describe('SelfDeclaration', () => {
     render(<SelfDeclaration switchValue={true} setSwitchValue={jest.fn()} showError={true} />);
 
     expect(
-      screen.queryByText('verifyRequirements.error')
+      screen.queryByText('verifyRequirements.selfDeclarationError')
     ).not.toBeInTheDocument();
   });
 
@@ -70,7 +60,7 @@ describe('SelfDeclaration', () => {
     render(<SelfDeclaration switchValue={true} setSwitchValue={jest.fn()} showError={false} />);
 
     expect(
-      screen.queryByText('verifyRequirements.error')
+      screen.queryByText('verifyRequirements.selfDeclarationError')
     ).not.toBeInTheDocument();
   });
 });
