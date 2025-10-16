@@ -23,6 +23,7 @@ const getFooterPostLoginProps = () => {
 describe('Footer', () => {
     beforeEach(() => {
         jest.clearAllMocks();
+        window.open = jest.fn();
     });
 
     it('renders FooterPostLogin and FooterLegal', () => {
@@ -74,5 +75,12 @@ describe('Footer', () => {
         const legal = screen.getByTestId('FooterLegal');
         expect(legal).toHaveTextContent('commons.footer.PagoPA');
         expect(legal).toHaveTextContent('commons.footer.legalInfo');
+    });
+
+    it('calls window.open with company link onClick', () => {
+        render(<Footer />);
+        const { companyLink } = getFooterPostLoginProps();
+        companyLink.onClick();
+        expect(window.open).toHaveBeenCalledWith('https://www.pagopa.it/it/', '_blank');
     });
 });
