@@ -9,7 +9,7 @@ const VerifyRequirements: React.FC = () => {
                 overflowX: 'clip',
                 flexDirection: 'column',
                 justifyContent: 'center',
-                py: 4,
+                py: 2,
             }}
         >
             <VerifyRequirementForm />
