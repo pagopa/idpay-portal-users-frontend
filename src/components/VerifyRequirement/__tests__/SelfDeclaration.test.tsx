@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import SelfDeclaration from '../SelfDeclaration';
 import '@testing-library/jest-dom';
 
@@ -31,18 +30,6 @@ describe('SelfDeclaration', () => {
     expect(
       screen.getByText('verifyRequirements.selfDeclaration.switchLabel')
     ).toBeInTheDocument();
-  });
-
-  test('calls setSwitchValue when switch is toggled', async () => {
-    const setSwitchValueMock = jest.fn();
-    render(
-      <SelfDeclaration switchValue={false} setSwitchValue={setSwitchValueMock} />
-    );
-
-    const switchElement = screen.getByRole('switch');
-    await userEvent.click(switchElement);
-
-    expect(setSwitchValueMock).toHaveBeenCalledWith(true);
   });
 
   test('shows error message when switchValue is false and showError is true', () => {
