@@ -32,7 +32,6 @@ const YourBonus = ({
 }: Props) => {
   const { t } = useTranslation();
 
-  // Replace the key used for onboarding label with translated text here
   const normalizedTimeline = timelineData.map(item =>
     item.label === 'dashboard.operationsSection.onboardingInitiative'
       ? { ...item, label: t('dashboard.operationsSection.onboardingInitiative') }
