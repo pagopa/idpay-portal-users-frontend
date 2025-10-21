@@ -40,21 +40,30 @@ export default function SelfDeclaration(props: SelfDeclarationProps) {
                                         alignItems: 'center',
                                     }}
                                 >
-                                    <Switch checked={switchValue} onChange={(_, checked) => setSwitchValue(checked)} sx={{
-                                        mr: 2,
-                                        '& .MuiSwitch-switchBase': {
-                                            color: theme.palette.primary.contrastText,
-                                            '&.Mui-checked': {
+                                    <Switch
+                                        id="self-declaration-switch"
+                                        checked={switchValue}
+                                        onChange={(_, checked) => setSwitchValue(checked)}
+                                        slotProps={{
+                                            input: {
+                                                'aria-label': t('verifyRequirements.selfDeclaration.switchLabel')
+                                            }
+                                        }}
+                                        sx={{
+                                            mr: 2,
+                                            '& .MuiSwitch-switchBase': {
                                                 color: theme.palette.primary.contrastText,
-                                                '& .MuiSwitch-track': {
-                                                    backgroundColor: theme.palette.primary.main,
+                                                '&.Mui-checked': {
+                                                    color: theme.palette.primary.contrastText,
+                                                    '& .MuiSwitch-track': {
+                                                        backgroundColor: theme.palette.primary.main,
+                                                    },
                                                 },
                                             },
-                                        },
-                                        '& .MuiSwitch-track': {
-                                            backgroundColor: props.showError ? theme.palette.error.dark : null,
-                                        },
-                                    }} />
+                                            '& .MuiSwitch-track': {
+                                                backgroundColor: props.showError ? theme.palette.error.dark : null,
+                                            },
+                                        }} />
                                     <Typography variant='body2' sx={{ fontWeight: theme.typography.fontWeightMedium, color: theme.palette.text.secondary }}>
                                         {t('verifyRequirements.selfDeclaration.switchLabel')}
                                     </Typography>

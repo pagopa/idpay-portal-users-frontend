@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import SelfDeclaration from '../SelfDeclaration';
 import '@testing-library/jest-dom';
 
@@ -62,5 +63,26 @@ describe('SelfDeclaration', () => {
     expect(
       screen.queryByText('verifyRequirements.selfDeclarationError')
     ).not.toBeInTheDocument();
+  });
+
+  test('propagates the aria-label to the switch via slotProps.input', () => {
+    render(<SelfDeclaration switchValue={false} setSwitchValue={jest.fn()} />);
+    const sw = screen.getByRole('checkbox', {
+      name: 'verifyRequirements.selfDeclaration.switchLabel',
+    });
+    expect(sw).toBeInTheDocument();
+  });
+
+  test('calls setSwitchValue with the correct value when the switch is clicked', async () => {
+    const user = userEvent.setup();
+    const setSwitchValue = jest.fn();
+    render(<SelfDeclaration switchValue={false} setSwitchValue={setSwitchValue} />);
+
+    const sw = screen.getByRole('checkbox', {
+      name: 'verifyRequirements.selfDeclaration.switchLabel',
+    });
+
+    await user.click(sw);
+    expect(setSwitchValue).toHaveBeenCalledWith(true);
   });
 });

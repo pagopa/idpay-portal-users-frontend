@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { IllusUmbrella, IllusUserDenied, IllusAlarmClock } from '../../assets/Icons';
+import { IllusAlarmClock, IllusUmbrella, IllusUserUnauthorized } from '@pagopa/mui-italia';
 
 export type ErrorState = {
   icon: ReactNode;
@@ -23,7 +23,7 @@ export const errorState: Record<ErrorStateKey, ErrorState> = {
     buttonRedirect: '__LOGOUT__',
   },
   AGE_RESTRICTION: {
-    icon: <IllusUserDenied />,
+    icon: <IllusUserUnauthorized />,
     title: "feedbackStates.ageRestriction.title",
     description: 'feedbackStates.ageRestriction.description',
     buttonLabel: 'commons.exit',
