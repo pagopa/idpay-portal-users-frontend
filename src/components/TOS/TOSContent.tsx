@@ -102,12 +102,12 @@ export const TOSContent = ({ sectionRefs }: Props) => {
             />
             <Typography variant="body1">
               <Trans
-              i18nKey="tos.sideMenu.element2.listItem2"
-              components={{
-                bold: <Box component="span" sx={{ fontWeight: theme.typography.fontWeightBold }} />,
-                br: <br />
-              }}
-            />
+                i18nKey="tos.sideMenu.element2.listItem2"
+                components={{
+                  bold: <Box component="span" sx={{ fontWeight: theme.typography.fontWeightBold }} />,
+                  br: <br />
+                }}
+              />
             </Typography>
           </ListItem>
         </List>
@@ -170,13 +170,20 @@ export const TOSContent = ({ sectionRefs }: Props) => {
         <Box mt={5} display="flex" alignItems="center">
           <FormControl sx={{ mr: isMobile ? 2 : 0 }}>
             <Checkbox
+              id="tos-checkbox"
               checked={checked}
               onChange={(e) => {
                 setTosAccepted(e.target.checked)
                 setChecked(e.target.checked);
                 if (e.target.checked) setError(false);
               }}
-              color="primary" />
+              color="primary"
+              slotProps={{
+                input: {
+                  'aria-label': t('tos.privacy_part1') + ' ' + t('tos.privacy_terms') + ' ' + t('tos.privacy_part2') + ' ' + t('tos.privacy_policy')
+                }
+              }}
+            />
           </FormControl>
 
           <Box display="flex" flexWrap="wrap" alignItems="center">
