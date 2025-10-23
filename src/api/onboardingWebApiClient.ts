@@ -66,6 +66,7 @@ export const OnboardingWebApi = {
     if (isRight(result)) {
       const { status, value } = result.right;
       if (status === 200) return { status: 200, data: value as OnboardingStatusDTO };
+      if (status === 400) return { status: 400, data: value as OnboardingErrorDTO };
       if (status === 404) return { status: 404, data: value as OnboardingErrorDTO };
       throw new Error(`Unexpected status: ${status}`);
     } else {

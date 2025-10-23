@@ -14,6 +14,7 @@ import GatewayPage from './pages/GatewayPage/GatewayPage';
 import ErrorPage from './pages/ErrorPage/ErrorPage';
 import WaitingPage from './pages/WaitingPage/WaitingPage';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
+import UpcomingInitiative from "./pages/UpcomingInitiative/UpcomingInitiative.tsx";
 
 const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <Layout hasSubHeader={false} hasPadding={false} >
@@ -47,6 +48,9 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
 
     {/* error page */}
     <Route path={ROUTES.ERROR_PAGE} element={<PublicLayout ><ErrorPage /></PublicLayout>} />
+
+    {/* upcoming initiative */}
+    <Route path={ROUTES.UPCOMING_INITIATIVE} element={<PublicLayout ><UpcomingInitiative /></PublicLayout>} />
 
     {/* private route */}
     <Route

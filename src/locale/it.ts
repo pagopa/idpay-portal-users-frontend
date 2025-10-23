@@ -74,7 +74,15 @@ const it = {
     "descriptionWithIO": "Gestisci tutto in un posto: richiedi il bonus, ricevi l’esito della richiesta e usa il bonus. Più veloce, più comodo.",
     "downloadIO": "Scarica IO",
   },
-
+  "upcomingInitiative": {
+    "title": "Ci siamo quasi!",
+    "preSubtitle": "Il portale ",
+    "boldSubtitle": "Bonus Elettrodomestici ",
+    "postSubtitle": "sarà presto disponibile: ancora un po’ di pazienza e potrai accedere al servizio.",
+    "withIO": "Con IO è tutto più semplice",
+    "descriptionWithIO": "Gestisci tutto in un posto: richiedi il bonus, ricevi l’esito della richiesta e usa il bonus. Più veloce, più comodo.",
+    "downloadIO": "Scarica l'app"
+  },
   "bonus": "Bonus Elettrodomestici",
   "exit": "Esci",
   "tos": {
