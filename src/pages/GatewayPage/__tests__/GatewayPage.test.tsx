@@ -15,7 +15,7 @@ jest.mock('../../../components/Overlay/Overlay', () => () => (
 ));
 
 jest.mock('../../../routes', () => {
-  const routes = { FEEDBACK: '/esito', TOS: '/tos', ERROR_PAGE: '/esito', DASHBOARD: '/dashboard' };
+  const routes = { FEEDBACK: '/esito', TOS: '/tos', ERROR_PAGE: '/esito', DASHBOARD: '/dashboard', UPCOMING_INITIATIVE: '/iniziativa-in-arrivo' };
   return {
     __esModule: true,
     default: routes,
@@ -23,6 +23,7 @@ jest.mock('../../../routes', () => {
     TOS: routes.TOS,
     ERROR_PAGE: routes.ERROR_PAGE,
     DASHBOARD: routes.DASHBOARD,
+    UPCOMING_INITIATIVES: routes.UPCOMING_INITIATIVE,
     ROUTES: routes,
     routes,
   };
@@ -40,6 +41,9 @@ jest.mock('../../../api/generated/onboarding-web/OnboardingStatusDTO', () => ({
 jest.mock('../../../api/generated/onboarding-web/OnboardingErrorDTO', () => ({
   CodeEnum: {
     ONBOARDING_USER_NOT_ONBOARDED: 'ONBOARDING_USER_NOT_ONBOARDED',
+    ONBOARDING_INITIATIVE_NOT_STARTED: 'ONBOARDING_INITIATIVE_NOT_STARTED',
+    ONBOARDING_INITIATIVE_NOT_FOUND: 'ONBOARDING_INITIATIVE_NOT_FOUND',
+    ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED: 'ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED'
   },
 }));
 
@@ -440,6 +444,66 @@ describe('GatewayPage', () => {
       });
 
       expect(mockedUsedNavigate).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('API Status Responses - 400 Cases', () => {
+    test('navigates to UPCOMING_INITIATIVE when status 400 with ONBOARDING_INITIATIVE_NOT_STARTED', async () => {
+      mockUser = { attributes: {} };
+      mockGetStatus.mockResolvedValue({
+        status: 400,
+        data: { code: 'ONBOARDING_INITIATIVE_NOT_STARTED' },
+      });
+
+      render(<GatewayPage />);
+
+      await waitFor(() => {
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/iniziativa-in-arrivo');
+      });
+    });
+
+    test('navigates to UPCOMING_INITIATIVE when status 400 with ONBOARDING_INITIATIVE_NOT_FOUND', async () => {
+      mockUser = { attributes: {} };
+      mockGetStatus.mockResolvedValue({
+        status: 400,
+        data: { code: 'ONBOARDING_INITIATIVE_NOT_FOUND' },
+      });
+
+      render(<GatewayPage />);
+
+      await waitFor(() => {
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/iniziativa-in-arrivo');
+      });
+    });
+
+    test('navigates to UPCOMING_INITIATIVE when status 400 with ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED', async () => {
+      mockUser = { attributes: {} };
+      mockGetStatus.mockResolvedValue({
+        status: 400,
+        data: { code: 'ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED' },
+      });
+
+      render(<GatewayPage />);
+
+      await waitFor(() => {
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/iniziativa-in-arrivo');
+      });
+    });
+
+    test('does not navigate when status 400 but different error code', async () => {
+      mockUser = { attributes: {} };
+      mockGetStatus.mockResolvedValue({
+        status: 400,
+        data: { code: 'SOME_OTHER_ERROR' },
+      });
+
+      render(<GatewayPage />);
+
+      await waitFor(() => {
+        expect(mockGetStatus).toHaveBeenCalled();
+      });
+
+      expect(mockedUsedNavigate).not.toHaveBeenCalledWith('/upcoming-initiative');
     });
   });
 

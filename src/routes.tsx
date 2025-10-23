@@ -8,7 +8,8 @@ const ROUTES = {
     INSERT_EMAIL: "/inserisci-email",
     FEEDBACK: "/esito",
     ERROR_PAGE: "/error",
-    WAITING_PAGE: "/waiting"
+    WAITING_PAGE: "/waiting",
+    UPCOMING_INITIATIVE: "/iniziativa-in-arrivo",
 };
 
 export default ROUTES;
