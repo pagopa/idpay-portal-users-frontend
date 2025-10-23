@@ -458,7 +458,7 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockedUsedNavigate).toHaveBeenCalledWith('/upcoming-initiative');
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/iniziativa-in-arrivo');
       });
     });
 
@@ -472,7 +472,7 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockedUsedNavigate).toHaveBeenCalledWith('/upcoming-initiative');
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/iniziativa-in-arrivo');
       });
     });
 
@@ -486,7 +486,7 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockedUsedNavigate).toHaveBeenCalledWith('/upcoming-initiative');
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/iniziativa-in-arrivo');
       });
     });
 
