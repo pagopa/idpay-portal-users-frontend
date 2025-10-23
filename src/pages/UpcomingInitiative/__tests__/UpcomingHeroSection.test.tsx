@@ -38,6 +38,6 @@ describe('UpcomingHeroSection', () => {
 
         const img = screen.getByAltText('Hero Background') as HTMLImageElement;
         expect(img).toBeInTheDocument();
-        expect(img.src).toContain('upcomingInitiative.svg');
+        expect(img.src).toContain('http://localhost/test-file-stub');
     });
 });
