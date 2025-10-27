@@ -15,7 +15,7 @@ jest.mock('../../../components/Overlay/Overlay', () => () => (
 ));
 
 jest.mock('../../../routes', () => {
-  const routes = { FEEDBACK: '/esito', TOS: '/tos', ERROR_PAGE: '/esito', DASHBOARD: '/dashboard', UPCOMING_INITIATIVE: '/iniziativa-in-arrivo' };
+  const routes = { FEEDBACK: '/esito', TOS: '/tos', ERROR_PAGE: '/errore', DASHBOARD: '/dashboard', UPCOMING_INITIATIVE: '/iniziativa-in-arrivo' };
   return {
     __esModule: true,
     default: routes,
@@ -31,10 +31,10 @@ jest.mock('../../../routes', () => {
 
 jest.mock('../../../api/generated/onboarding-web/OnboardingStatusDTO', () => ({
   StatusEnum: {
-    COMPLETED: 'COMPLETED',
-    PENDING: 'PENDING',
     ONBOARDING_OK: 'ONBOARDING_OK',
     ONBOARDING_KO: 'ONBOARDING_KO',
+    REQUEST_SUBMITTED: 'REQUEST_SUBMITTED',
+    ON_EVALUATION: 'ON_EVALUATION',
   },
 }));
 
@@ -44,6 +44,28 @@ jest.mock('../../../api/generated/onboarding-web/OnboardingErrorDTO', () => ({
     ONBOARDING_INITIATIVE_NOT_STARTED: 'ONBOARDING_INITIATIVE_NOT_STARTED',
     ONBOARDING_INITIATIVE_NOT_FOUND: 'ONBOARDING_INITIATIVE_NOT_FOUND',
     ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED: 'ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED'
+  },
+}));
+
+jest.mock('../../../pages/ErrorPage/errorStates', () => ({
+  errorState: {
+    UNKNOWN_ERROR: {},
+    TECHNICAL_ERROR: {},
+    SESSION_EXPIRED: {},
+    INVALID_ACCESS_TOKEN: {},
+    AGE_RESTRICTION: {},
+    TOO_MANY_REQUESTS: {},
+  },
+}));
+
+jest.mock('../../../pages/FeedbackPage/feedbackStates', () => ({
+  feedbackStates: {
+    REQUEST_SUBMITTED: {},
+    ON_EVALUATION: {},
+    ONBOARDING_FAMILY_UNIT_ALREADY_JOINED: {},
+    WAITING_LIST: {},
+    ONBOARDING_INITIATIVE_ENDED: {},
+    ONBOARDING_BUDGET_EXHAUSTED: {},
   },
 }));
 
@@ -121,7 +143,7 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/errore', {
           state: { status: 'SESSION_EXPIRED' },
         });
       });
@@ -132,7 +154,7 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/errore', {
           state: { status: 'INVALID_ACCESS_TOKEN' },
         });
       });
@@ -143,7 +165,7 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/errore', {
           state: { status: 'INVALID_ACCESS_TOKEN' },
         });
       });
@@ -164,7 +186,7 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/errore', {
           state: { status: 'AGE_RESTRICTION' },
         });
       });
@@ -182,14 +204,14 @@ describe('GatewayPage', () => {
 
       mockGetStatus.mockResolvedValue({
         status: 200,
-        data: { status: 'COMPLETED' },
+        data: { status: 'REQUEST_SUBMITTED' },
       });
 
       render(<GatewayPage />);
 
       await waitFor(() => {
         expect(mockGetStatus).toHaveBeenCalled();
-        expect(mockedUsedNavigate).not.toHaveBeenCalledWith('/esito', {
+        expect(mockedUsedNavigate).not.toHaveBeenCalledWith('/errore', {
           state: { status: 'AGE_RESTRICTION' },
         });
       });
@@ -207,7 +229,7 @@ describe('GatewayPage', () => {
 
       mockGetStatus.mockResolvedValue({
         status: 200,
-        data: { status: 'COMPLETED' },
+        data: { status: 'REQUEST_SUBMITTED' },
       });
 
       render(<GatewayPage />);
@@ -224,7 +246,7 @@ describe('GatewayPage', () => {
 
       mockGetStatus.mockResolvedValue({
         status: 200,
-        data: { status: 'COMPLETED' },
+        data: { status: 'REQUEST_SUBMITTED' },
       });
 
       render(<GatewayPage />);
@@ -243,7 +265,7 @@ describe('GatewayPage', () => {
 
       mockGetStatus.mockResolvedValue({
         status: 200,
-        data: { status: 'COMPLETED' },
+        data: { status: 'REQUEST_SUBMITTED' },
       });
 
       render(<GatewayPage />);
@@ -262,7 +284,7 @@ describe('GatewayPage', () => {
 
       mockGetStatus.mockResolvedValue({
         status: 200,
-        data: { status: 'COMPLETED' },
+        data: { status: 'REQUEST_SUBMITTED' },
       });
 
       render(<GatewayPage />);
@@ -277,7 +299,7 @@ describe('GatewayPage', () => {
 
       mockGetStatus.mockResolvedValue({
         status: 200,
-        data: { status: 'COMPLETED' },
+        data: { status: 'REQUEST_SUBMITTED' },
       });
 
       render(<GatewayPage />);
@@ -297,7 +319,7 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/errore', {
           state: { status: 'UNKNOWN_ERROR' },
         });
       });
@@ -333,7 +355,7 @@ describe('GatewayPage', () => {
       });
     });
 
-    test('navigates to ERROR_PAGE with UNKNOWN_ERROR when status 200 with ONBOARDING_KO status', async () => {
+    test('navigates to ERROR_PAGE with UNKNOWN_ERROR when status 200 with ONBOARDING_KO (unknown status)', async () => {
       mockUser = { attributes: {} };
       mockGetStatus.mockResolvedValue({
         status: 200,
@@ -343,56 +365,40 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/errore', {
           state: { status: 'UNKNOWN_ERROR' },
         });
       });
     });
 
-    test('navigates to ERROR_PAGE with UNKNOWN_ERROR when status 200 with ONBOARDING_KO code', async () => {
+    test('navigates to FEEDBACK when status 200 with REQUEST_SUBMITTED (known feedback status)', async () => {
       mockUser = { attributes: {} };
       mockGetStatus.mockResolvedValue({
         status: 200,
-        data: { code: 'ONBOARDING_KO' },
+        data: { status: 'REQUEST_SUBMITTED' },
       });
 
       render(<GatewayPage />);
 
       await waitFor(() => {
         expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
-          state: { status: 'UNKNOWN_ERROR' },
+          state: { status: 'REQUEST_SUBMITTED' },
         });
       });
     });
 
-    test('navigates to FEEDBACK when status 200 with other valid status', async () => {
+    test('navigates to FEEDBACK when status 200 with ON_EVALUATION (known feedback status)', async () => {
       mockUser = { attributes: {} };
       mockGetStatus.mockResolvedValue({
         status: 200,
-        data: { status: 'COMPLETED' },
+        data: { status: 'ON_EVALUATION' },
       });
 
       render(<GatewayPage />);
 
       await waitFor(() => {
         expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
-          state: { status: 'COMPLETED' },
-        });
-      });
-    });
-
-    test('navigates to FEEDBACK when status 200 with PENDING status', async () => {
-      mockUser = { attributes: {} };
-      mockGetStatus.mockResolvedValue({
-        status: 200,
-        data: { status: 'PENDING' },
-      });
-
-      render(<GatewayPage />);
-
-      await waitFor(() => {
-        expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
-          state: { status: 'PENDING' },
+          state: { status: 'ON_EVALUATION' },
         });
       });
     });
@@ -414,7 +420,7 @@ describe('GatewayPage', () => {
       });
     });
 
-    test('does not navigate when status 404 but wrong error code', async () => {
+    test('navigates to UNKNOWN_ERROR when status 404 with unknown error code', async () => {
       mockUser = { attributes: {} };
       mockGetStatus.mockResolvedValue({
         status: 404,
@@ -424,13 +430,13 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockGetStatus).toHaveBeenCalled();
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/errore', {
+          state: { status: 'UNKNOWN_ERROR' },
+        });
       });
-
-      expect(mockedUsedNavigate).not.toHaveBeenCalled();
     });
 
-    test('does not navigate when status 404 but no error code', async () => {
+    test('navigates to UNKNOWN_ERROR when status 404 but no error code', async () => {
       mockUser = { attributes: {} };
       mockGetStatus.mockResolvedValue({
         status: 404,
@@ -440,10 +446,10 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockGetStatus).toHaveBeenCalled();
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/errore', {
+          state: { status: 'UNKNOWN_ERROR' },
+        });
       });
-
-      expect(mockedUsedNavigate).not.toHaveBeenCalled();
     });
   });
 
@@ -490,25 +496,41 @@ describe('GatewayPage', () => {
       });
     });
 
-    test('does not navigate when status 400 but different error code', async () => {
+    test('navigates to FEEDBACK when status 400 with known feedback status (ONBOARDING_BUDGET_EXHAUSTED)', async () => {
       mockUser = { attributes: {} };
       mockGetStatus.mockResolvedValue({
         status: 400,
-        data: { code: 'SOME_OTHER_ERROR' },
+        data: { code: 'ONBOARDING_BUDGET_EXHAUSTED' },
       });
 
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockGetStatus).toHaveBeenCalled();
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+          state: { status: 'ONBOARDING_BUDGET_EXHAUSTED' },
+        });
+      });
+    });
+
+    test('navigates to UNKNOWN_ERROR when status 400 with completely unknown error code', async () => {
+      mockUser = { attributes: {} };
+      mockGetStatus.mockResolvedValue({
+        status: 400,
+        data: { code: 'SOME_RANDOM_NEW_ERROR' },
       });
 
-      expect(mockedUsedNavigate).not.toHaveBeenCalledWith('/upcoming-initiative');
+      render(<GatewayPage />);
+
+      await waitFor(() => {
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/errore', {
+          state: { status: 'UNKNOWN_ERROR' },
+        });
+      });
     });
   });
 
   describe('API Status Responses - Invalid Data Cases', () => {
-    test('does not navigate when status 200 but invalid data structure', async () => {
+    test('navigates to UNKNOWN_ERROR when status 200 but missing status/code', async () => {
       mockUser = { attributes: {} };
       mockGetStatus.mockResolvedValue({
         status: 200,
@@ -518,13 +540,13 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockGetStatus).toHaveBeenCalled();
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/errore', {
+          state: { status: 'UNKNOWN_ERROR' },
+        });
       });
-
-      expect(mockedUsedNavigate).not.toHaveBeenCalled();
     });
 
-    test('does not navigate when status 200 but data is null', async () => {
+    test('navigates to UNKNOWN_ERROR when status 200 but data is null', async () => {
       mockUser = { attributes: {} };
       mockGetStatus.mockResolvedValue({
         status: 200,
@@ -534,29 +556,29 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockGetStatus).toHaveBeenCalled();
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/errore', {
+          state: { status: 'UNKNOWN_ERROR' },
+        });
       });
-
-      expect(mockedUsedNavigate).not.toHaveBeenCalled();
     });
 
-    test('does not navigate when status 200 but status field has invalid value', async () => {
+    test('navigates to UNKNOWN_ERROR when status code is not a string', async () => {
       mockUser = { attributes: {} };
       mockGetStatus.mockResolvedValue({
         status: 200,
-        data: { status: 'INVALID_STATUS' },
+        data: { status: 123 },
       });
 
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockGetStatus).toHaveBeenCalled();
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/errore', {
+          state: { status: 'UNKNOWN_ERROR' },
+        });
       });
-
-      expect(mockedUsedNavigate).not.toHaveBeenCalled();
     });
 
-    test('does not navigate for unexpected status code', async () => {
+    test('navigates to UNKNOWN_ERROR for unexpected HTTP status code', async () => {
       mockUser = { attributes: {} };
       mockGetStatus.mockResolvedValue({
         status: 418,
@@ -566,10 +588,10 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockGetStatus).toHaveBeenCalled();
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/errore', {
+          state: { status: 'UNKNOWN_ERROR' },
+        });
       });
-
-      expect(mockedUsedNavigate).not.toHaveBeenCalled();
     });
   });
 
@@ -582,7 +604,7 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/errore', {
           state: { status: 'UNKNOWN_ERROR' },
         });
       });
@@ -597,7 +619,7 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/errore', {
           state: { status: 'TOO_MANY_REQUESTS' },
         });
       });
@@ -612,7 +634,7 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/errore', {
           state: { status: 'UNKNOWN_ERROR' },
         });
       });
@@ -627,7 +649,7 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/errore', {
           state: { status: 'UNKNOWN_ERROR' },
         });
       });
@@ -639,7 +661,7 @@ describe('GatewayPage', () => {
       mockUser = { attributes: {} };
       mockGetStatus.mockResolvedValue({
         status: 200,
-        data: { status: 'COMPLETED' },
+        data: { status: 'REQUEST_SUBMITTED' },
       });
 
       render(<GatewayPage />);
@@ -659,50 +681,14 @@ describe('GatewayPage', () => {
       mockUser = { attributes: {} };
       mockGetStatus.mockResolvedValue({
         status: 200,
-        data: { status: 'COMPLETED' },
+        data: { status: 'REQUEST_SUBMITTED' },
       });
 
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockGetStatus).toHaveBeenCalledWith('68dd003ccce8c534d1da22bc', {"showLoader": false});
+        expect(mockGetStatus).toHaveBeenCalledWith('68dd003ccce8c534d1da22bc', { "showLoader": false });
       });
-    });
-  });
-
-  describe('Type Guards', () => {
-    test('correctly identifies ErrorDTO with code field', async () => {
-      mockUser = { attributes: {} };
-      mockGetStatus.mockResolvedValue({
-        status: 200,
-        data: { code: 'SOME_ERROR_CODE' },
-      });
-
-      render(<GatewayPage />);
-
-      await waitFor(() => {
-        expect(mockGetStatus).toHaveBeenCalled();
-      });
-
-      expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
-        state: { status: 'SOME_ERROR_CODE' },
-      });
-    });
-
-    test('handles data object without code or status fields', async () => {
-      mockUser = { attributes: {} };
-      mockGetStatus.mockResolvedValue({
-        status: 200,
-        data: { someOtherField: 'value' },
-      });
-
-      render(<GatewayPage />);
-
-      await waitFor(() => {
-        expect(mockGetStatus).toHaveBeenCalled();
-      });
-
-      expect(mockedUsedNavigate).not.toHaveBeenCalled();
     });
   });
 
@@ -716,7 +702,7 @@ describe('GatewayPage', () => {
 
       mockGetStatus.mockResolvedValue({
         status: 200,
-        data: { status: 'COMPLETED' },
+        data: { status: 'REQUEST_SUBMITTED' },
       });
 
       render(<GatewayPage />);
@@ -743,8 +729,40 @@ describe('GatewayPage', () => {
       render(<GatewayPage />);
 
       await waitFor(() => {
-        expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/errore', {
           state: { status: 'AGE_RESTRICTION' },
+        });
+      });
+    });
+
+    test('handles lowercase status codes correctly', async () => {
+      mockUser = { attributes: {} };
+      mockGetStatus.mockResolvedValue({
+        status: 200,
+        data: { status: 'request_submitted' },
+      });
+
+      render(<GatewayPage />);
+
+      await waitFor(() => {
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+          state: { status: 'REQUEST_SUBMITTED' },
+        });
+      });
+    });
+
+    test('handles status codes with extra whitespace', async () => {
+      mockUser = { attributes: {} };
+      mockGetStatus.mockResolvedValue({
+        status: 200,
+        data: { status: '  REQUEST_SUBMITTED  ' },
+      });
+
+      render(<GatewayPage />);
+
+      await waitFor(() => {
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/esito', {
+          state: { status: 'REQUEST_SUBMITTED' },
         });
       });
     });
