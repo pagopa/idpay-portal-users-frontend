@@ -53,11 +53,11 @@ const CustomHeroSection = ({
         />
       )}
 
-      <Box sx={{ position: 'relative', zIndex: 1, display: "flex", justifyContent: "center", alignItems: "start", flexDirection: "column", px: {md: 10, sm: 6, xs: 6}, py: {md: 15, sm: 6, xs: 6}, }}>
+      <Box sx={{ position: 'relative', zIndex: 1, display: "flex", justifyContent: "center", alignItems: "start", flexDirection: "column", px: { md: 10, sm: 6, xs: 6 }, py: { md: 15, sm: 6, xs: 6 }, }}>
         <Typography
           variant="h3"
           fontWeight="bold"
-          sx={{ mb: 2, lineHeight: 1.2, color: theme.palette.background.paper, textAlign: "left"}}
+          sx={{ mb: 2, lineHeight: 1.2, color: theme.palette.background.paper, textAlign: "left" }}
         >
           {title}
         </Typography>
@@ -71,6 +71,8 @@ const CustomHeroSection = ({
 
         <Button
           variant="contained"
+          disableRipple
+          disableElevation
           onClick={onButtonClick}
           sx={{
             backgroundColor: theme.palette.common.white,
@@ -80,9 +82,30 @@ const CustomHeroSection = ({
             fontWeight: 600,
             borderRadius: 2,
             boxShadow: theme.shadows[1],
-            "&:hover":{
-                backgroundColor: '#f0f0f0',
-            }
+            transition: "background-color 0.25s, transform 0.2s, box-shadow 0.2s",
+            "&:hover": {
+              backgroundColor: "#f0f0f0 !important",
+              boxShadow: theme.shadows[2],
+            },
+            "&:active": {
+              backgroundColor: "#e0e0e0 !important",
+              transform: "scale(0.98)",
+              boxShadow: theme.shadows[1],
+            },
+            "&:focusVisible": {
+              outline: "none",
+              boxShadow: `0 0 0 3px rgba(25, 118, 210, 0.3)`,
+            },
+            "&.MuiButton-containedPrimary": {
+              backgroundColor: theme.palette.common.white,
+              color: theme.palette.primary.main,
+            },
+            "&.MuiButton-containedPrimary:hover": {
+              backgroundColor: "#f0f0f0",
+            },
+            "&.MuiButton-containedPrimary:active": {
+              backgroundColor: "#e0e0e0",
+            },
           }}
         >
           {buttonLabel}

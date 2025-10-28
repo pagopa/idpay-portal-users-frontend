@@ -29,6 +29,7 @@ variables:
     react_app_url_storage: '$(UAT_REACT_APP_URL_STORAGE)'
     vite_url_api_portal_users: '$(UAT_VITE_URL_API_PORTAL_USERS)'
     vite_initiative_id: '$(UAT_VITE_INITIATIVE_ID)'
+    vite_base_url: '$(UAT_VITE_BASE_URL)'
 
     #KEYCLOAK UAT
     vite_keycloak_url: '$(UAT_VITE_KEYCLOAK_URL)' 
@@ -76,6 +77,7 @@ variables:
 
     vite_url_api_portal_users: '$(PROD_VITE_URL_API_PORTAL_USERS)'
     vite_initiative_id: '$(PROD_VITE_INITIATIVE_ID)'
+    vite_base_url: '$(PROD_VITE_BASE_URL)'
     # react_app_one_trust_base_url: '$(PROD_REACT_APP_URL_CDN)/ot'
     # react_app_analytics_enabled: '$(PROD_ANALYTICS_ENABLED)'
     # react_app_analytics_mocked: '$(PROD_ANALYTICS_MOCKED)'
@@ -117,6 +119,7 @@ variables:
     react_app_url_fe_assistance: '$(DEV_REACT_APP_URL_FE_ASSISTANCE_PORTAL)'
     vite_url_api_portal_users: '$(DEV_VITE_URL_API_PORTAL_USERS)'
     vite_initiative_id: '$(DEV_VITE_INITIATIVE_ID)'
+    vite_base_url: '$(DEV_VITE_BASE_URL)'
 
     # react_app_one_trust_base_url: '$(DEV_REACT_APP_URL_CDN)/ot/test'
     # react_app_analytics_enabled: '$(DEV_ANALYTICS_ENABLED)'
@@ -222,6 +225,7 @@ stages:
 
               VITE_URL_API_PORTAL_USERS: '$(vite_url_api_portal_users)'
               VITE_INITIATIVE_ID: '$(vite_initiative_id)'
+              VITE_BASE_URL: '$(vite_base_url)'
 
               REACT_APP_ONE_TRUST_OTNOTICE_CDN_URL: $(react_app_one_trust_otnotice_cdn_url)
               REACT_APP_ONE_TRUST_OTNOTICE_CDN_SETTINGS: $(react_app_one_trust_otnotice_cdn_settings)

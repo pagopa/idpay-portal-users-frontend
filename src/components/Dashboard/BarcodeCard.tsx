@@ -8,7 +8,7 @@ import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
 import { useState } from 'react';
 import { downloadFileFromBase64 } from '../../commons/decode';
 import { BARCODE_BREAKPOINTS, getBarcodeWidth } from '../../utils/barcodeResponsiveUtils';
-import { getInitiativeId } from '../../utils/env';
+import { getBaseUrl, getInitiativeId } from '../../utils/env';
 
 interface BarcodeCardProps {
   trxCode: string;
@@ -63,10 +63,10 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
             fontOptions="bold"
             width={getBarcodeWidth(isLargeScreen, isMediumScreen, isSmallScreen)}
           /> : (
-          <>
-          <Typography mt={2} textAlign={"center"}>Stiamo preparando il tuo barcode.</Typography>
-          <Typography mt={4} mb={2} textAlign={"center"}>Puoi provare ad aggiornarne lo stato tra qualche istante.</Typography>
-          </>
+            <>
+              <Typography mt={2} textAlign={"center"}>Stiamo preparando il tuo barcode.</Typography>
+              <Typography mt={4} mb={2} textAlign={"center"}>Puoi provare ad aggiornarne lo stato tra qualche istante.</Typography>
+            </>
           )
           }
         </Box>
@@ -83,7 +83,7 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
               endIcon={<OpenInNewIcon />}
               color='primary'
               size='medium'
-              onClick={() => window.open('https://google.com', '_blank')}
+              onClick={() => window.open(`${getBaseUrl()}/lista-punti-vendita`, '_blank')}
             >
               {t('dashboard.barcodeSection.showMerchants')}
             </ButtonNaked>
