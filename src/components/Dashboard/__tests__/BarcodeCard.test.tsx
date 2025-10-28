@@ -128,7 +128,7 @@ describe('BarcodeCard', () => {
     const showMerchantsButton = screen.getByRole('button', { name: /dashboard.barcodeSection.showMerchants/i });
     fireEvent.click(showMerchantsButton);
 
-    expect(mockWindowOpen).toHaveBeenCalledWith('https://www.google.com/lista-punti-vendita/', '_blank');
+    expect(mockWindowOpen).toHaveBeenCalledWith('https://www.google.com/lista-punti-vendita', '_blank');
   });
 
   test('renders with different trxCode values', () => {

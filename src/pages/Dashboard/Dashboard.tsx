@@ -141,7 +141,8 @@ const Dashboard = () => {
           onSectionChange={handleSectionChange}
         />
       }
-      <Box display="flex" height="100%">
+      <Box display={{ xs: 'block', md: 'flex' }}
+        height={{ xs: 'auto', md: '100%' }}>
         {!isMobile &&
           <Box
             width={collapsed ? 64 : 320}
@@ -154,7 +155,11 @@ const Dashboard = () => {
           </Box>
         }
 
-        <Box flexGrow={1} p={3} overflow="auto">
+        <Box flexGrow={1} p={3} sx={{
+          overflowY: { md: 'auto' },
+          overflowX: 'hidden',
+          height: { md: '100%' },
+        }}>
           {activeSection === 'bonus' ? (
             <YourBonus
               bonusData={bonusData}

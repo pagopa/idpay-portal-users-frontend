@@ -107,7 +107,7 @@ export const TOSContent = ({ sectionRefs }: Props) => {
         <Typography sx={{ color: theme.palette.primary.main, fontWeight: theme.typography.fontWeightMedium, mb: 4, cursor: "pointer" }}>
           <Link
             onClick={() => {
-              const fullUrl = `${getBaseUrl()}/elenco-informatico-elettrodomestici/`;
+              const fullUrl = `${getBaseUrl()}/elenco-informatico-elettrodomestici`;
               window.open(fullUrl, '_blank')?.focus();
             }}
             underline="always"
@@ -150,7 +150,7 @@ export const TOSContent = ({ sectionRefs }: Props) => {
         <Typography sx={{ color: theme.palette.primary.main, fontWeight: theme.typography.fontWeightMedium, mb: 4, mt: 2, cursor: "pointer" }}>
           <Link
             onClick={() => {
-              const fullUrl = `${getBaseUrl()}/lista-punti-vendita/`;
+              const fullUrl = `${getBaseUrl()}/lista-punti-vendita`;
               window.open(fullUrl, '_blank')?.focus();
             }}
             underline="always"

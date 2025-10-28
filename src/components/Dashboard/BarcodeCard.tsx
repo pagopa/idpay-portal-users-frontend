@@ -83,7 +83,7 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
               endIcon={<OpenInNewIcon />}
               color='primary'
               size='medium'
-              onClick={() => window.open(`${getBaseUrl()}/lista-punti-vendita/`, '_blank')}
+              onClick={() => window.open(`${getBaseUrl()}/lista-punti-vendita`, '_blank')}
             >
               {t('dashboard.barcodeSection.showMerchants')}
             </ButtonNaked>

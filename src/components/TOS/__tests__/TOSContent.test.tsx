@@ -127,7 +127,7 @@ describe('TOSContent', () => {
     link.click();
 
     expect(windowOpenSpy).toHaveBeenCalledWith(
-      'https://www.google.com/elenco-informatico-elettrodomestici/',
+      'https://www.google.com/elenco-informatico-elettrodomestici',
       '_blank'
     );
 
