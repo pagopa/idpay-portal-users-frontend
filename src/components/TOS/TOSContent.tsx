@@ -1,12 +1,11 @@
-import { Box, Container, Typography, List, ListItem, Link, Button, Checkbox, FormControl } from '@mui/material';
+import { Box, Container, Typography, List, ListItem, Link, Button } from '@mui/material';
 import { Trans, useTranslation } from 'react-i18next';
 import { theme } from '@pagopa/mui-italia';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
-import { useEffect, useState } from 'react';
-import { useIsMobile } from '../../hooks/useIsMobile';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTOSCheckboxStore } from '../../hooks/useTOSCheckboxStore';
+import { getBaseUrl } from '../../utils/env';
 
 interface Props {
   sectionRefs: React.RefObject<HTMLDivElement>[];
@@ -15,23 +14,12 @@ interface Props {
 export const TOSContent = ({ sectionRefs }: Props) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [checked, setChecked] = useState(false);
-  const [error, setError] = useState(false);
-  const isMobile = useIsMobile();
-  const { tosAccepted, setTosAccepted } = useTOSCheckboxStore();
+  const { setTosAccepted } = useTOSCheckboxStore();
   const { logout } = useAuth();
 
-  useEffect(() => {
-    setChecked(tosAccepted);
-  }, [])
-
   const handleContinue = () => {
-    if (!checked) {
-      setError(true);
-    } else {
-      //TODO call API
-      navigate(ROUTES.INSERT_EMAIL);
-    }
+    setTosAccepted(true);
+    navigate(ROUTES.INSERT_EMAIL);
   }
 
   const handleLogout = () => {
@@ -117,7 +105,14 @@ export const TOSContent = ({ sectionRefs }: Props) => {
         </Typography>
 
         <Typography sx={{ color: theme.palette.primary.main, fontWeight: theme.typography.fontWeightMedium, mb: 4, cursor: "pointer" }}>
-          <Link onClick={() => { }} underline="always" target="_blank">
+          <Link
+            onClick={() => {
+              const fullUrl = `${getBaseUrl()}/elenco-informatico-elettrodomestici`;
+              window.open(fullUrl, '_blank')?.focus();
+            }}
+            underline="always"
+            sx={{ cursor: 'pointer' }}
+          >
             {t('tos.sideMenu.element2.link')}
           </Link>
         </Typography>
@@ -153,7 +148,14 @@ export const TOSContent = ({ sectionRefs }: Props) => {
         </Typography>
 
         <Typography sx={{ color: theme.palette.primary.main, fontWeight: theme.typography.fontWeightMedium, mb: 4, mt: 2, cursor: "pointer" }}>
-          <Link onClick={() => { }} underline="always" target="_blank">
+          <Link
+            onClick={() => {
+              const fullUrl = `${getBaseUrl()}/lista-punti-vendita`;
+              window.open(fullUrl, '_blank')?.focus();
+            }}
+            underline="always"
+            sx={{ cursor: 'pointer' }}
+          >
             {t('tos.sideMenu.element4.link')}
           </Link>
         </Typography>
@@ -167,96 +169,50 @@ export const TOSContent = ({ sectionRefs }: Props) => {
           />
         </Typography>
 
-        <Box mt={5} display="flex" alignItems="center">
-          <FormControl sx={{ mr: isMobile ? 2 : 0 }}>
-            <Checkbox
-              id="tos-checkbox"
-              checked={checked}
-              onChange={(e) => {
-                setTosAccepted(e.target.checked)
-                setChecked(e.target.checked);
-                if (e.target.checked) setError(false);
-              }}
-              color="primary"
-              slotProps={{
-                input: {
-                  'aria-label': t('tos.privacy_part1') + ' ' + t('tos.privacy_terms') + ' ' + t('tos.privacy_part2') + ' ' + t('tos.privacy_policy')
-                }
-              }}
-            />
-          </FormControl>
-
-          <Box display="flex" flexWrap="wrap" alignItems="center">
-            <Typography
-              variant='body1'
-              sx={{
-                lineHeight: '24px',
-                color: theme.palette.text.secondary,
-              }}
-            >
-              {t('tos.privacy_part1')}
-            </Typography>
-
+        <Box mt={5} mb={4}>
+          <Typography
+            component="div"
+            variant='body1'
+            sx={{
+              lineHeight: '24px',
+              color: theme.palette.text.primary,
+              '& a': {
+                display: 'inline',
+                margin: 0,
+                padding: 0,
+              }
+            }}
+          >
+            {t('tos.privacy_part1')}{' '}
             <Link
               onClick={() => { }}
-              underline="hover"
-              component="button"
+              underline="always"
+              component="span"
               sx={{
-                lineHeight: '24px',
-                mx: 0.5,
+                fontWeight: theme.typography.fontWeightMedium,
+                color: theme.palette.primary.main,
+                cursor: "pointer",
               }}
             >
-              <Typography
-                variant='body1'
-                sx={{
-                  lineHeight: '24px',
-                  color: theme.palette.primary.main
-                }}
-              >
-                {t('tos.privacy_terms')}
-              </Typography>
+              {t('tos.privacy_terms')}
             </Link>
-
-            <Typography
-              variant='body1'
-              sx={{
-                lineHeight: '24px',
-                color: theme.palette.text.secondary,
-              }}
-            >
-              {t('tos.privacy_part2')}
-            </Typography>
-
+            {' '}{t('tos.privacy_part2')}{' '}
             <Link
-              component="button"
+              component="span"
               onClick={() => { }}
-              underline="hover"
+              underline="always"
               sx={{
-                lineHeight: '24px',
-                mx: 0,
+                color: theme.palette.primary.main,
+                fontWeight: theme.typography.fontWeightMedium,
+                cursor: "pointer",
               }}
             >
-              <Typography
-                variant='body1'
-                sx={{
-                  lineHeight: '24px',
-                  color: theme.palette.primary.main
-                }}
-              >
-                {t('tos.privacy_policy')}
-              </Typography>
+              {t('tos.privacy_policy')}
             </Link>
-          </Box>
+            {' '}{t('tos.privacy_part3')}
+          </Typography>
         </Box>
 
-        {error && (
-          <Typography
-            variant="caption"
-            sx={{ color: theme.palette.error.main, display: "block", mt: 0.5 }}
-          >
-            {t('commons.mandatoryField')}
-          </Typography>
-        )}
       </Box>
       <Box sx={{ py: 6 }}>
         <Button variant="outlined" onClick={handleLogout} sx={{ mr: { md: 2, sm: 1, xs: 1 } }}>{t('exit')}</Button>

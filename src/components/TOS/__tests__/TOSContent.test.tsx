@@ -25,6 +25,10 @@ jest.mock('../../../hooks/useIsMobile', () => ({
   useIsMobile: () => false,
 }));
 
+jest.mock('../../../utils/env', () => ({
+  getBaseUrl: () => 'https://www.google.com',
+}));
+
 const makeRefs = () =>
   [...Array(4)].map(() => ({ current: document.createElement('div') }));
 
@@ -50,10 +54,11 @@ describe('TOSContent', () => {
     expect(screen.getByText('tos.sideMenu.element3.description')).toBeInTheDocument();
     expect(screen.getByText('tos.sideMenu.element4.description')).toBeInTheDocument();
     expect(screen.getByText('tos.postDescription')).toBeInTheDocument();
-    expect(screen.getByText('tos.privacy_part1')).toBeInTheDocument();
+    expect(screen.getByText(/tos\.privacy_part1/)).toBeInTheDocument();
     expect(screen.getByText('tos.privacy_terms')).toBeInTheDocument();
-    expect(screen.getByText('tos.privacy_part2')).toBeInTheDocument();
+    expect(screen.getByText(/tos\.privacy_part2/)).toBeInTheDocument();
     expect(screen.getByText('tos.privacy_policy')).toBeInTheDocument();
+    expect(screen.getByText(/tos\.privacy_part3/)).toBeInTheDocument();
   });
 
   test('renders list items and links', async () => {
@@ -72,27 +77,13 @@ describe('TOSContent', () => {
     expect(screen.getByText('tos.continue')).toBeInTheDocument();
   });
 
-  test('shows error when continue is clicked without accepting terms', async () => {
-    const user = userEvent.setup();
-    const { TOSContent } = await import('../TOSContent');
-    render(<TOSContent sectionRefs={makeRefs()} />);
-    await user.click(screen.getByRole('button', { name: /tos.continue/i }));
-    expect(screen.getByText('commons.mandatoryField')).toBeInTheDocument();
-    expect(mockNavigate).not.toHaveBeenCalled();
-  });
-
-  test('error disappears after checking, then navigate is called', async () => {
+  test('clicking continue sets tosAccepted and navigates', async () => {
     const user = userEvent.setup();
     const { TOSContent } = await import('../TOSContent');
     render(<TOSContent sectionRefs={makeRefs()} />);
 
     await user.click(screen.getByRole('button', { name: /tos.continue/i }));
-    expect(screen.getByText('commons.mandatoryField')).toBeInTheDocument();
 
-    await user.click(screen.getByRole('checkbox'));
-    expect(screen.queryByText('commons.mandatoryField')).not.toBeInTheDocument();
-
-    await user.click(screen.getByRole('button', { name: /tos.continue/i }));
     expect(mockNavigate).toHaveBeenCalledWith('/inserisci-email');
   });
 
@@ -104,37 +95,42 @@ describe('TOSContent', () => {
     expect(mockLogout).toHaveBeenCalledTimes(1);
   });
 
-  test('mobile branch is executed (useIsMobile = true)', async () => {
-    jest.isolateModules(async () => {
-      jest.doMock('../../../hooks/useIsMobile', () => ({ useIsMobile: () => true }));
-      const { TOSContent } = await import('../TOSContent');
-      render(<TOSContent sectionRefs={makeRefs()} />);
-      expect(screen.getByRole('checkbox')).toBeInTheDocument();
-    });
-  });
-
-  it('hydrates checkbox from persisted store when mounting', () => {
+  test('hydrates from persisted store when mounting', () => {
     renderHook(() => {
       const store = useTOSCheckboxStore();
       store.setTosAccepted(true);
     });
 
     render(<TOSContent sectionRefs={makeRefs()} />);
-    const cb = screen.getByRole('checkbox') as HTMLInputElement;
-    expect(cb.checked).toBe(true);
+    expect(screen.getByRole('button', { name: /tos.continue/i })).toBeInTheDocument();
   });
 
-  it('accepting terms then continuing navigates without showing error after remount', async () => {
+  test('setTosAccepted is called when continue button is clicked', async () => {
     const user = userEvent.setup();
+    const { result } = renderHook(() => useTOSCheckboxStore());
 
-    renderHook(() => {
-      const store = useTOSCheckboxStore();
-      store.setTosAccepted(true);
-    });
-
+    const { TOSContent } = await import('../TOSContent');
     render(<TOSContent sectionRefs={makeRefs()} />);
+
     await user.click(screen.getByRole('button', { name: /tos.continue/i }));
 
+    expect(result.current.tosAccepted).toBe(true);
     expect(mockNavigate).toHaveBeenCalledWith('/inserisci-email');
+  });
+
+  test('external links open in new tab', () => {
+    const windowOpenSpy = jest.spyOn(window, 'open').mockImplementation(() => null);
+
+    render(<TOSContent sectionRefs={makeRefs()} />);
+
+    const link = screen.getByText('tos.sideMenu.element2.link');
+    link.click();
+
+    expect(windowOpenSpy).toHaveBeenCalledWith(
+      'https://www.google.com/elenco-informatico-elettrodomestici',
+      '_blank'
+    );
+
+    windowOpenSpy.mockRestore();
   });
 });

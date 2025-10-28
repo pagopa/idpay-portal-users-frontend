@@ -52,6 +52,8 @@ const CustomLandingSection = () => {
               px: 4,
               py: 1.5,
               borderRadius: 2,
+              whiteSpace: 'nowrap',
+              minWidth: isMobile ? 220 : 180,
               boxShadow: theme.shadows[3],
             }}
             onClick={handleContinue}

@@ -9,10 +9,12 @@ import { useEmailStore } from '../../hooks/useEmailStore';
 import { validateEmail } from '../../utils/validateEmail';
 import { useTOSCheckboxStore } from '../../hooks/useTOSCheckboxStore';
 import { ArrowBack } from '@mui/icons-material';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 const InsertEmail = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const isMobile = useIsMobile();
 
   const { email, confirmEmail, setEmail, setConfirmEmail } = useEmailStore();
   const [emailInput, setEmailInput] = useState(email);
@@ -67,7 +69,12 @@ const InsertEmail = () => {
         </Typography>
       </Box>
 
-      <Card sx={{ borderRadius: 3, boxShadow: 3, mb: 4 }}>
+      <Card sx={{ borderRadius: 3, 
+        boxShadow: `0px 6px 30px 5px rgba(0, 43, 85, 0.10),
+        0px 16px 24px 2px rgba(0, 43, 85, 0.05),
+        0px 8px 10px -5px rgba(0, 43, 85, 0.10)`, 
+        mb: 4,
+      }}>
         <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           <EmailInputBox
             value={emailInput}
@@ -101,14 +108,32 @@ const InsertEmail = () => {
 
       <Box
         display="flex"
-        flexDirection={{ xs: 'column', sm: 'row' }}
+        flexDirection='row'
         gap={2}
         justifyContent="center"
       >
-        <Button variant="outlined" size='medium' startIcon={<ArrowBack sx={{ color: theme.palette.primary.main }} />} onClick={handleBack}>
+        <Button
+          variant="outlined"
+          size="medium"
+          fullWidth={isMobile}
+          sx={{
+            flex: isMobile ? 1 : null,
+          }}
+          startIcon={<ArrowBack sx={{ color: theme.palette.primary.main }} />}
+          onClick={handleBack}
+        >
           {t('commons.back')}
         </Button>
-        <Button variant="contained" onClick={handleContinue}>
+
+        <Button
+          variant="contained"
+          size="medium"
+          fullWidth={isMobile}
+          sx={{
+            flex: isMobile ? 1 : null,
+          }}
+          onClick={handleContinue}
+        >
           {t('commons.continue')}
         </Button>
       </Box>

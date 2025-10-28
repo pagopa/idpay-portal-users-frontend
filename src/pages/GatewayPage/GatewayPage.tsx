@@ -1,24 +1,24 @@
-import {Box} from '@mui/material';
-import {useEffect} from 'react';
-import {theme} from '@pagopa/mui-italia';
-import {OnboardingWebApi} from '../../api/onboardingWebApiClient';
-import {CodeEnum, OnboardingErrorDTO} from '../../api/generated/onboarding-web/OnboardingErrorDTO';
-import {useNavigate} from 'react-router-dom';
+import { Box } from '@mui/material';
+import { useEffect } from 'react';
+import { theme } from '@pagopa/mui-italia';
+import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
+import { CodeEnum, OnboardingErrorDTO } from '../../api/generated/onboarding-web/OnboardingErrorDTO';
+import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
-import {StatusEnum} from '../../api/generated/onboarding-web/OnboardingStatusDTO';
-import {useAuth} from '../../contexts/AuthContext';
+import { StatusEnum } from '../../api/generated/onboarding-web/OnboardingStatusDTO';
+import { useAuth } from '../../contexts/AuthContext';
 import Overlay from '../../components/Overlay/Overlay';
-import {UserProfile} from '../../types/auth';
-import {isStorageTokenExpired} from '../../utils/tokenManager';
-import {ErrorStateKey} from '../ErrorPage/errorStates';
-import {useCanAccessTOSStore} from '../../hooks/useCanAccessTOSStore';
-import {extractErrorResponse} from '../../utils/api';
-import {getInitiativeId} from '../../utils/env';
+import { UserProfile } from '../../types/auth';
+import { isStorageTokenExpired } from '../../utils/tokenManager';
+import { useCanAccessTOSStore } from '../../hooks/useCanAccessTOSStore';
+import { extractErrorResponse } from '../../utils/api';
+import { getInitiativeId } from '../../utils/env';
+import { getStatusDestination } from '../../utils/statusChecker';
 
 const GatewayPage = () => {
-    const {loading, token, user} = useAuth();
+    const { loading, token, user } = useAuth();
     const navigate = useNavigate();
-    const {setCanAccessTOS} = useCanAccessTOSStore();
+    const { setCanAccessTOS } = useCanAccessTOSStore();
 
     const isErrorDTO = (data: OnboardingErrorDTO | unknown): data is OnboardingErrorDTO =>
         typeof data === 'object' && data !== null && 'code' in data;
@@ -33,15 +33,6 @@ const GatewayPage = () => {
 
     const isUserNotOnboardedError = (data: OnboardingErrorDTO | unknown): boolean =>
         isErrorDTO(data) && data.code === CodeEnum.ONBOARDING_USER_NOT_ONBOARDED;
-
-    const isValidStatus = (status: any): status is StatusEnum =>
-        Object.values(StatusEnum).includes(status);
-
-    const isStatusData = (data: any): data is { status: StatusEnum } =>
-        typeof data === 'object' &&
-        data !== null &&
-        'status' in data &&
-        isValidStatus(data.status);
 
     const getDateOfBirth = (user: UserProfile): string | null => {
         if (!user?.attributes?.dateOfBirth || !Array.isArray(user.attributes.dateOfBirth)) {
@@ -63,7 +54,7 @@ const GatewayPage = () => {
     useEffect(() => {
         if (loading) return;
 
-        let statusKey: ErrorStateKey | null = null;
+        let statusKey: string | null = null;
         if (isStorageTokenExpired()) {
             statusKey = 'SESSION_EXPIRED';
         } else if (token == null) {
@@ -78,50 +69,64 @@ const GatewayPage = () => {
         }
 
         if (statusKey) {
-            navigate(ROUTES.ERROR_PAGE, {state: {status: statusKey}});
+            navigate(ROUTES.ERROR_PAGE, { state: { status: statusKey } });
             return;
         }
 
         const initiativeId = getInitiativeId();
         const fetchData = async () => {
             try {
-                const statusResponse = await OnboardingWebApi.getStatus(initiativeId, {showLoader: false});
-                const {status, data: statusData} = statusResponse;
+                const statusResponse = await OnboardingWebApi.getStatus(initiativeId, { showLoader: false });
+                const { status: httpStatus, data: statusData } = statusResponse;
+                const statusCode = (statusData as any).status || (statusData as any).code;
 
-                if (status === 200 && (isStatusData(statusData) || isErrorDTO(statusData))) {
-                    const statusString = (statusData as any).status || (statusData as any).code;
-                    if (statusString === StatusEnum.ONBOARDING_OK) {
-                        navigate(ROUTES.DASHBOARD);
-                        return;
-                    }
-                    if (statusString === StatusEnum.ONBOARDING_KO) {
-                        navigate(ROUTES.ERROR_PAGE, {state: {status: 'UNKNOWN_ERROR'}});
-                        return;
-                    }
-                    navigate(ROUTES.FEEDBACK, {state: {status: statusString}});
+                if (!statusCode || typeof statusCode !== 'string') {
+                    navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
                     return;
                 }
 
-                if (status === 400 && (isInitiativeNotStarted(statusData))) {
+                if (httpStatus === 200 && statusCode === StatusEnum.ONBOARDING_OK) {
+                    navigate(ROUTES.DASHBOARD);
+                    return;
+                }
+
+                if (httpStatus === 400 && isInitiativeNotStarted(statusData)) {
                     navigate(ROUTES.UPCOMING_INITIATIVE);
                     return;
                 }
-                if (status === 404 && isUserNotOnboardedError(statusData)) {
+
+                if (httpStatus === 404 && isUserNotOnboardedError(statusData)) {
                     setCanAccessTOS(true);
                     navigate(ROUTES.TOS);
                     return;
                 }
+
+                if (httpStatus === 200 || httpStatus === 400 || httpStatus === 404) {
+                    const destination = getStatusDestination(statusCode);
+
+                    if (destination.type === 'error') {
+                        navigate(ROUTES.ERROR_PAGE, { state: { status: destination.status } });
+                        return;
+                    }
+
+                    if (destination.type === 'feedback') {
+                        navigate(ROUTES.FEEDBACK, { state: { status: destination.status } });
+                        return;
+                    }
+                    navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
+                    return;
+                }
+                navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
+
             } catch (error: any) {
                 if (extractErrorResponse(error)) {
                     if (error?.status === 429) {
-                        navigate(ROUTES.ERROR_PAGE, {state: {status: 'TOO_MANY_REQUESTS'}});
+                        navigate(ROUTES.ERROR_PAGE, { state: { status: 'TOO_MANY_REQUESTS' } });
                         return;
                     }
                 }
-                navigate(ROUTES.ERROR_PAGE, {state: {status: 'UNKNOWN_ERROR'}});
-                return;
+                navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
             }
-            ;
         };
 
         fetchData();
@@ -136,7 +141,7 @@ const GatewayPage = () => {
                 backgroundColor: theme.palette.background.paper
             }}
         >
-            <Overlay/>
+            <Overlay />
         </Box>
     );
 };

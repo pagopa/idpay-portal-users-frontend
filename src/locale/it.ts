@@ -95,7 +95,7 @@ const it = {
       },
       "element2": {
         "title": "Cosa offre?",
-        "description": "Uno sconto del 30% sul prezzo d’acquisto di un solo elettrodomestico, nuovo e ad alta efficienza, di una di queste categorie: lavatrici e lavasciuga, forni, cappe da cucina, lavastoviglie, asciugabiancheria, frigoriferi, congelatori e piani cottura. Lo sconto massimo che puoi ottenere è:",
+        "description": "Uno sconto del 30% sul prezzo d’acquisto di un solo elettrodomestico, nuovo e ad alta efficienza, di una di queste categorie:<br/> lavatrici e lavasciuga, forni, cappe da cucina, lavastoviglie, asciugabiancheria, frigoriferi, congelatori e piani cottura.<br/> Lo sconto massimo che puoi ottenere è:",
         "listItem1": "<bold>Fino a 100 euro</bold>",
         "listItem2": "<bold>Fino a 200 euro</bold> se il tuo ISEE è inferiore a 25.000 €",
         "subDescription": "Lo sconto non è cumulabile con altre agevolazioni, anche di tipo fiscale.",
@@ -107,16 +107,17 @@ const it = {
       },
       "element4": {
         "title": "Come si usa?",
-        "description": "Puoi usare il bonus entro 10 giorni da quando ricevi il messaggio di conferma dell’attivazione, e comunque entro il 31/12/2025.<br/>Nei negozi fisici: accedi a IO e mostra il codice a barre.<br/>Online: usa l’app per generare e usare lo sconto",
+        "description": "Puoi usare il bonus <bold>entro 15 giorni</bold> da quando ricevi il messaggio di conferma dell’attivazione, e comunque entro il 31/12/2025.<br/>Nei negozi fisici: accedi a IO e mostra il codice a barre.<br/> Online: usa l’app per generare e usare lo sconto.",
         "link": "Mostra l’elenco dei negozi"
       }
     },
 
     "postDescription": "<bold>Ricorda:</bold> quando acquisti, chiedi al venditore come smaltire il vecchio elettrodomestico. Lo smaltimento deve essere gestito gratuitamente dal venditore.",
-    "privacy_part1": "Accetto i",
+    "privacy_part1": "Puoi leggere",
     "privacy_terms": "Termini e condizioni d’uso",
-    "privacy_part2": "e confermo di avere letto l’",
+    "privacy_part2": "e",
     "privacy_policy": "Informativa Privacy",
+    "privacy_part3": "per conoscere le modalità di utilizzo e trattamento dei dati.",
     "continue": "Continua",
   },
 
