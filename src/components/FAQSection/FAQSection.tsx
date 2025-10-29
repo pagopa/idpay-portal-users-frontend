@@ -59,7 +59,7 @@ const FAQSection: React.FC = () => {
             links: [
                 {
                     text: 'bonuselettrodomestici.it',
-                    href: 'http://bonuselettrodomestici.it'
+                    href: getBaseUrl()
                 }
             ]
         },
