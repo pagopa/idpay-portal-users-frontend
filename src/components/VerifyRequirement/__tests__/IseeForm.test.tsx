@@ -71,4 +71,20 @@ describe('IseeForm', () => {
       screen.queryByText('verifyRequirements.error')
     ).not.toBeInTheDocument();
   });
+
+  test('opens the correct URL in a new tab when description link is clicked', () => {
+    const openSpy = jest.spyOn(window, 'open').mockImplementation(() => null);
+
+    render(<IseeForm iseeValue="" setIseeValue={jest.fn()} />);
+
+    const link = screen.getByText('verifyRequirements.isee.description');
+    fireEvent.click(link);
+
+    expect(openSpy).toHaveBeenCalledWith(
+      'https://assistenza.ioapp.it/hc/it/articles/39322689789713-Requisiti-ISEE-per-accedere-a-bonus-e-iniziative',
+      '_blank'
+    );
+
+    openSpy.mockRestore();
+  });
 });
