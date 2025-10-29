@@ -1,6 +1,7 @@
 
 const ROUTES = {
 	HOME: "/",
+    ASSISTANCE: "/assistenza",
     GATEWAY: "/gateway",
 	DASHBOARD: "/dashboard",
     TOS: "/termini-di-servizio",
