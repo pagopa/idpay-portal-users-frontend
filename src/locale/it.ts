@@ -267,18 +267,49 @@ const it = {
   "FAQSection": {
     "title": "Domande frequenti",
     "firstAccordion": {
-      "title": "Cos’è Bonus Elettrodomestici",
-      "description": "Descrizione primo Accordion"
+      "title": "È obbligatorio smaltire un elettrodomestico?",
+      "description": "Sì, puoi usare il Bonus per acquistare un elettrodomestico nuovo solo se sostituisci un vecchio elettrodomestico della stessa tipologia e di classe energetica inferiore. Lo smaltimento è gratuito ed è a carico del venditore."
     },
     "secondAccordion": {
-      "title": "Chi può richiederlo?",
-      "description": "Descrizione secondo Accordion"
+      "title": "Se uso il Bonus Elettrodomestici posso usare anche altri sconti o benefici?",
+      "description": "No. Il bonus non è cumulabile con altre agevolazioni o altri benefici, anche di tipo fiscale."
     },
     "thirdAccordion": {
-      "title": "Cosa offre?",
-      "description": "Descrizione terzo Accordion"
+      "title": "Quali elettrodomestici posso acquistare con il contributo?",
+      "description": "Puoi acquistare un elettrodomestico di una di queste categorie: lavatrici e lavasciuga, forni, cappe da cucina, lavastoviglie, asciugabiancheria, frigoriferi, congelatori e piani cottura, come previsto nel dettaglio dall’articolo 3, comma 1, lettera a), del Decreto interministeriale. Puoi consultare l’elenco degli elettrodomestici che fanno parte dell’iniziativa in questa lista."
+    },
+     "fourthAccordion": {
+      "title": "Ho usato il bonus per acquistare un elettrodomestico, ma vorrei effettuare un reso, cosa devo fare?",
+      "description": "Contatta il punto vendita presso il quale hai effettuato l’acquisto con il bonus per richiedere informazioni."
+    },
+    "fifthAccordion": {
+      "title": "Quando riceverò l’esito della richiesta?",
+      "description": "Solitamente nel giro di poche ore, ma i tempi possono variare in base al volume delle richieste."
+    },
+    "sixthAccordion": {
+      "title": "Devo presentare qualche documento al momento dell'acquisto?",
+      "description": "Solo se hai richiesto il bonus tramite sito web, il venditore è tenuto a verificare il tuo codice fiscale."
+    },
+    "seventhAccordion": {
+      "title": "Cosa devo fare con l’elettrodomestico da smaltire?",
+      "description": "Concorda con il venditore come smaltire il vecchio elettrodomestico. Il ritiro e lo smaltimento sono gratuiti."
+    },
+    "eighthAccordion": {
+      "title": "Entro quanto tempo posso usare il Bonus Elettrodomestici?",
+      "description": "Entro 15 giorni solari dalla data di emissione. Il tuo bonus scade automaticamente alle 23:59 del quindicesimo giorno dall’emissione. Una volta scaduto, se saranno ancora disponibili i fondi, puoi comunque inviare una nuova richiesta, che seguirà l’ordine cronologico di arrivo."
+    },
+    "ninthAccordion": {
+      "title": "Come faccio a sapere se l’elettrodomestico da sostituire è di classe inferiore?",
+      "description": "Se hai acquistato dal 2021 in poi, puoi cercare il tuo elettrodomestico sul sito EPREL e verificare la classe energetica.\nSe il tuo modello non è presente su EPREL, significa che è stato prodotto prima dell’obbligo di registrazione (2021). In questo caso puoi chiedere informazioni al venditore."
+    },
+    "tenthAccordion": {
+      "title": "Come posso verificare lo stato della richiesta?",
+      "description": "Se hai l’app IO, puoi controllare lo stato dalla sezione “Servizi”. Se hai fatto richiesta dal sito bonuselettrodomestici.it, trovi lo stato del bonus nella sezione “Il tuo bonus”."
+    },
+    "eleventhAccordion": {
+      "title": "Mi è scaduto il Bonus, posso chiederlo di nuovo?",
+      "description": "Sì, puoi inviare una nuova richiesta, a condizione che nessun altro membro della tua famiglia anagrafica l'abbia già fatto."
     }
-
   }
 }
 
