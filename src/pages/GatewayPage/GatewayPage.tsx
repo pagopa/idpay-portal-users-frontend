@@ -14,11 +14,13 @@ import { useCanAccessTOSStore } from '../../hooks/useCanAccessTOSStore';
 import { extractErrorResponse } from '../../utils/api';
 import { getInitiativeId } from '../../utils/env';
 import { getStatusDestination } from '../../utils/statusChecker';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 const GatewayPage = () => {
     const { loading, token, user } = useAuth();
     const navigate = useNavigate();
     const { setCanAccessTOS } = useCanAccessTOSStore();
+    const isMobile = useIsMobile();
 
     const isErrorDTO = (data: OnboardingErrorDTO | unknown): data is OnboardingErrorDTO =>
         typeof data === 'object' && data !== null && 'code' in data;
@@ -138,7 +140,8 @@ const GatewayPage = () => {
                 overflowX: 'clip',
                 flexDirection: 'column',
                 justifyContent: 'center',
-                backgroundColor: theme.palette.background.paper
+                backgroundColor: theme.palette.background.paper,
+                minHeight: isMobile ? "80vh" : ""
             }}
         >
             <Overlay />

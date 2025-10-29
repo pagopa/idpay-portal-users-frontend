@@ -121,7 +121,7 @@ const Dashboard = () => {
     fetchData();
   }, [navigate]);
 
-  if (isLoading) return <Overlay />;
+  if (isLoading) return <Box sx={{minHeight: isMobile ? '60vh' : ''}}><Overlay /></Box>;
 
   if (!bonusData || !timelineData) {
     navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });

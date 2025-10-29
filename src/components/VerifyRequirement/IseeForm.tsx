@@ -20,7 +20,7 @@ export default function IseeForm(props: IseeFormProps) {
                     <TitleCard title='verifyRequirements.isee.title' />
                     <Box my={1}>
                         <Typography sx={{ color: theme.palette.primary.main, fontWeight: theme.typography.fontWeightMedium, cursor: "pointer" }}>
-                            <Link onClick={() => { }} underline="always" target="_blank">
+                            <Link onClick={() => window.open('https://assistenza.ioapp.it/hc/it/articles/39322689789713-Requisiti-ISEE-per-accedere-a-bonus-e-iniziative', '_blank')} underline="always" target="_blank">
                                 {t('verifyRequirements.isee.description')}
                             </Link>
                         </Typography>
