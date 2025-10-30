@@ -308,7 +308,11 @@ const it = {
     },
     "eleventhAccordion": {
       "title": "Mi è scaduto il Bonus, posso chiederlo di nuovo?",
-      "description": "Sì, puoi inviare una nuova richiesta, a condizione che nessun altro membro della tua famiglia anagrafica l'abbia già fatto."
+      "description": "Sì, puoi inviare una nuova richiesta, a condizione che nessun altro membro della tua famiglia anagrafica l'abbia già fatto.\nLa richiesta verrà presa in carico in base all'ordine di arrivo, compatibilmente con i fondi disponibili."
+    },
+    "twelfthAccordion": {
+      "title": "Posso usufruire del Bonus per un acquisto effettuato prima dell’uscita del bonus?",
+      "description": "No, il Bonus Elettrodomestici vale solo per acquisti futuri. Non è retroattivo."
     }
   }
 }

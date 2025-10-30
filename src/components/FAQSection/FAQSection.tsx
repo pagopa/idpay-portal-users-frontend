@@ -63,7 +63,8 @@ const FAQSection: React.FC = () => {
                 }
             ]
         },
-        { key: 'eleventhAccordion' }
+        { key: 'eleventhAccordion' },
+        { key: 'twelfthAccordion' }
     ];
 
     const renderDescription = (text: string, links?: FaqLink[]): React.ReactNode => {
