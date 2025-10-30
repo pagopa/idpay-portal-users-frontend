@@ -29,6 +29,6 @@ jobs:
             -Dsonar.projectKey=${{ vars.SONARCLOUD_PROJECT_KEY }}
             -Dsonar.projectName="${{ vars.SONARCLOUD_PROJECT_NAME }}"
             -Dsonar.javascript.lcov.reportPaths='./coverage/lcov.info'
-            -Dsonar.exclusions=**/__mocks__/**,**/*.js,**/*.cjs,**/src/api/**,**/src/contexts/**,**/src/utils/**,**/src/config/**,**/src/types/**,**/src/services/**,**/jest.setup.ts,**/jest.config.ts*,*/src/locale/**
+            -Dsonar.exclusions=**/__mocks__/**,**/*.js,**/*.cjs,**/src/api/**,**/src/contexts/**,**/src/utils/**,**/src/config/**,**/src/types/**,**/src/services/**,**/jest.setup.ts,**/jest.config.ts,**/src/locale/**
             -Dsonar.test.inclusions=**/__tests__/**
             -Dsonar.typescript.tsconfigPath=tsconfig.json
