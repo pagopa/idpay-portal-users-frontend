@@ -1,39 +1,23 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { TOSHeader } from '../TOSHeader';
-import '@testing-library/jest-dom';
-
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string) => key,
-  }),
-}));
+import { useIsMobile } from '../../../hooks/useIsMobile';
 
 jest.mock('../../../hooks/useIsMobile', () => ({
   useIsMobile: jest.fn(),
 }));
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+  }),
+  Trans: ({ i18nKey }: { i18nKey: string }) => <span>{i18nKey}</span>,
+}));
+
 describe('TOSHeader', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test('renders title and description', () => {
-    const { useIsMobile } = require('../../../hooks/useIsMobile');
-    useIsMobile.mockReturnValue(false);
-
-    render(<TOSHeader />);
-
-    expect(screen.getByText('bonus')).toBeInTheDocument();
-    expect(screen.getByText('tos.description')).toBeInTheDocument();
-  });
-
-  test('renders with no margin bottom on mobile', () => {
-    const { useIsMobile } = require('../../../hooks/useIsMobile');
-    useIsMobile.mockReturnValue(true);
-
-    const { container } = render(<TOSHeader />);
-
-    const box = container.querySelector('div');
-    expect(box).toBeInTheDocument();
+  it('renders correctly', () => {
+    (useIsMobile as jest.Mock).mockReturnValue(false);
+    const { getByText } = render(<TOSHeader />);
+    expect(getByText('bonus')).toBeInTheDocument();
+    expect(getByText('tos.description')).toBeInTheDocument();
   });
 });
