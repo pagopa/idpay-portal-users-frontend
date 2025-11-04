@@ -196,7 +196,7 @@ export const TOSContent = ({ sectionRefs }: Props) => {
             >
               {t('tos.privacy_terms')}
             </Link>
-            {' '}{t('tos.privacy_part2')}{' '}
+            {' '}{t('tos.privacy_part2')}
             <Link
               component="span"
               onClick={() => { }}
