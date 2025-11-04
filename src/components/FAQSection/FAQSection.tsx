@@ -105,13 +105,13 @@ const FAQSection: React.FC = () => {
 
     return (
         <>
-            <Box mb={4}>
+            <Box>
                 <Typography variant="h4" gutterBottom>
                     {t('FAQSection.title')}
                 </Typography>
             </Box>
 
-            <Box mt={4}>
+            <Box mt={2}>
                 {faqs.map(({ key, links }) => {
                     const title = t(`FAQSection.${key}.title`);
                     const description = t(`FAQSection.${key}.description`);
