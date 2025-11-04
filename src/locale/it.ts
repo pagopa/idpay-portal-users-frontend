@@ -86,7 +86,7 @@ const it = {
   "bonus": "Bonus Elettrodomestici",
   "exit": "Esci",
   "tos": {
-    "description": "È il contributo, erogato dal Ministero delle Imprese e del Made in Italy, per incentivare la sostituzione di un elettrodomestico con un modello ad alta efficienza energetica e promuovere la sostenibilità e la transizione energetica.",
+    "description": "È il contributo, erogato dal Ministero delle Imprese e del Made in Italy, per incentivare la <b>sostituzione di un elettrodomestico</b> con un modello ad alta efficienza energetica e promuovere la sostenibilità e la transizione energetica.",
 
     "sideMenu": {
       "element1": {
@@ -115,7 +115,7 @@ const it = {
     "postDescription": "<bold>Ricorda:</bold> quando acquisti, chiedi al venditore come smaltire il vecchio elettrodomestico. Lo smaltimento deve essere gestito gratuitamente dal venditore.",
     "privacy_part1": "Puoi leggere",
     "privacy_terms": "Termini e condizioni d’uso",
-    "privacy_part2": "e",
+    "privacy_part2": "e l'",
     "privacy_policy": "Informativa Privacy",
     "privacy_part3": "per conoscere le modalità di utilizzo e trattamento dei dati.",
     "continue": "Continua",
