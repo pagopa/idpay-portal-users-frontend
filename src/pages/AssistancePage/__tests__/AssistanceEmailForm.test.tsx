@@ -28,7 +28,7 @@ jest.mock('../../../utils/functions.ts', () => ({
 }));
 
 jest.mock('../../../utils/validateEmail.ts', () => ({
-    validateEmail: jest.fn((email: string) => /\S+@\S+\.\S+/.test(email)),
+    isValidEmail: jest.fn((email: string) => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/.test(email)),
 }));
 
 jest.mock('@pagopa/selfcare-common-frontend/lib/utils/storage', () => ({
@@ -98,7 +98,6 @@ describe('AssistanceEmailForm', () => {
     test('previene il paste nei campi email', () => {
         renderWithRouter(<AssistanceEmailForm />);
         const email = getEmailField();
-        const confirm = getConfirmEmailField();
 
         const preventDefaultEmail = jest.fn();
         fireEvent.paste(email, { preventDefault: preventDefaultEmail });
