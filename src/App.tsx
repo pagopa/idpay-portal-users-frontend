@@ -34,7 +34,7 @@ const PrivateLayout: React.FC<{
   </ProtectedRoute>
 );
 
-const LocalRoutes: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
+const LocalRoutes: React.FC<{ isMobile: boolean }> = () => (
   <Routes>
     {/* fallback */}
     <Route path="*" element={<PublicLayout ><LandingPage /></PublicLayout>} />
@@ -63,7 +63,7 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
     />
     <Route
       path={ROUTES.TOS}
-      element={<PrivateLayout hasSubHeader={isMobile} hasPadding={false}><TOS /></PrivateLayout>}
+      element={<PrivateLayout hasPadding={false}><TOS /></PrivateLayout>}
     />
     <Route
       path={ROUTES.INSERT_EMAIL}

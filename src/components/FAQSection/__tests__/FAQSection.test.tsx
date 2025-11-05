@@ -3,104 +3,108 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import FAQSection from '../FAQSection';
 
+jest.mock('../../../utils/env', () => ({
+    getBaseUrl: () => 'https://www.google.com'
+}));
+
 jest.mock('react-i18next', () => ({
     useTranslation: () => ({
-        t: (key: string) => key
-    })
+        t: (key: string) => key,
+    }),
 }));
 
 describe('FAQSection', () => {
+    const user = userEvent.setup();
+
     test('renders the FAQ title', () => {
         render(<FAQSection />);
-
         expect(screen.getByText('FAQSection.title')).toBeInTheDocument();
     });
 
-    test('renders all three accordion sections', () => {
+    test('renders all 11 accordion sections', () => {
         render(<FAQSection />);
 
-        expect(screen.getByText('FAQSection.firstAccordion.title')).toBeInTheDocument();
-        expect(screen.getByText('FAQSection.secondAccordion.title')).toBeInTheDocument();
-        expect(screen.getByText('FAQSection.thirdAccordion.title')).toBeInTheDocument();
+        const accordionKeys = [
+            'firstAccordion',
+            'secondAccordion',
+            'thirdAccordion',
+            'fourthAccordion',
+            'fifthAccordion',
+            'sixthAccordion',
+            'seventhAccordion',
+            'eighthAccordion',
+            'ninthAccordion',
+            'tenthAccordion',
+            'eleventhAccordion',
+        ];
+
+        accordionKeys.forEach((key) => {
+            expect(screen.getByText(`FAQSection.${key}.title`)).toBeInTheDocument();
+        });
     });
 
-    test('expands first accordion when clicked', async () => {
-        const user = userEvent.setup();
+    test('expands and shows description for a single accordion', async () => {
         render(<FAQSection />);
 
-        const firstAccordionButton = screen.getByText('FAQSection.firstAccordion.title').closest('button');
+        const firstAccordionButton = screen
+            .getByText('FAQSection.firstAccordion.title')
+            .closest('button');
 
         expect(firstAccordionButton).toBeInTheDocument();
 
         await user.click(firstAccordionButton!);
 
         await waitFor(() => {
-            const firstDescription = screen.getByText('FAQSection.firstAccordion.description');
-            expect(firstDescription).toBeVisible();
+            const desc = screen.getByText('FAQSection.firstAccordion.description');
+            expect(desc).toBeVisible();
         });
     });
 
-    test('expands second accordion when clicked', async () => {
-        const user = userEvent.setup();
+    test('expands multiple accordions independently', async () => {
         render(<FAQSection />);
 
-        const secondAccordionButton = screen.getByText('FAQSection.secondAccordion.title').closest('button');
+        const keys = ['firstAccordion', 'secondAccordion', 'thirdAccordion'];
 
-        expect(secondAccordionButton).toBeInTheDocument();
-
-        await user.click(secondAccordionButton!);
+        for (const key of keys) {
+            const button = screen.getByText(`FAQSection.${key}.title`).closest('button');
+            expect(button).toBeInTheDocument();
+            await user.click(button!);
+        }
 
         await waitFor(() => {
-            const secondDescription = screen.getByText('FAQSection.secondAccordion.description');
-            expect(secondDescription).toBeVisible();
+            keys.forEach((key) => {
+                const desc = screen.getByText(`FAQSection.${key}.description`);
+                expect(desc).toBeVisible();
+            });
         });
     });
 
-    test('expands third accordion when clicked', async () => {
-        const user = userEvent.setup();
-        render(<FAQSection />);
+    test('renders link elements in accordions that have them', async () => {
+        jest.mocked(require('react-i18next')).useTranslation = () => ({
+            t: (key: string) => {
+                if (key === 'FAQSection.thirdAccordion.description') {
+                    return 'Puoi acquistare... come previsto dal Decreto interministeriale. Puoi consultare in questa lista.';
+                }
+                return key;
+            },
+        });
 
-        const thirdAccordionButton = screen.getByText('FAQSection.thirdAccordion.title').closest('button');
+        const { unmount } = render(<FAQSection />);
 
-        expect(thirdAccordionButton).toBeInTheDocument();
-
+        const thirdAccordionButton = screen
+            .getByText('FAQSection.thirdAccordion.title')
+            .closest('button');
         await user.click(thirdAccordionButton!);
 
         await waitFor(() => {
-            const thirdDescription = screen.getByText('FAQSection.thirdAccordion.description');
-            expect(thirdDescription).toBeVisible();
-        });
-    });
-
-    test('multiple accordions can be open at the same time', async () => {
-        const user = userEvent.setup();
-        render(<FAQSection />);
-
-        const firstAccordionButton = screen.getByText('FAQSection.firstAccordion.title').closest('button');
-        await user.click(firstAccordionButton!);
-
-        await waitFor(() => {
-            expect(screen.getByText('FAQSection.firstAccordion.description')).toBeVisible();
+            const links = screen.getAllByRole('link');
+            expect(links.length).toBe(2);
+            links.forEach((link) => {
+                expect(link).toHaveAttribute('target', '_blank');
+                expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+            });
         });
 
-        const secondAccordionButton = screen.getByText('FAQSection.secondAccordion.title').closest('button');
-        await user.click(secondAccordionButton!);
-
-        await waitFor(() => {
-            expect(screen.getByText('FAQSection.secondAccordion.description')).toBeVisible();
-        });
-
-        expect(screen.getByText('FAQSection.firstAccordion.description')).toBeVisible();
-
-        const thirdAccordionButton = screen.getByText('FAQSection.thirdAccordion.title').closest('button');
-        await user.click(thirdAccordionButton!);
-
-        await waitFor(() => {
-            expect(screen.getByText('FAQSection.thirdAccordion.description')).toBeVisible();
-        });
-
-        expect(screen.getByText('FAQSection.firstAccordion.description')).toBeVisible();
-        expect(screen.getByText('FAQSection.secondAccordion.description')).toBeVisible();
-        expect(screen.getByText('FAQSection.thirdAccordion.description')).toBeVisible();
+        unmount();
     });
 });

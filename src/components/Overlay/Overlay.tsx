@@ -13,6 +13,10 @@ const Overlay = () => (
     justifyContent="center"
     bgcolor={theme.palette.action.disabledBackground}
     zIndex={9999}
+    sx={{
+      pointerEvents: "auto",
+      touchAction: "none",
+    }}
   >
     <CircularProgress />
   </Box>

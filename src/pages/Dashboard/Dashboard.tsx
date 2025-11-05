@@ -121,7 +121,7 @@ const Dashboard = () => {
     fetchData();
   }, [navigate]);
 
-  if (isLoading) return <Overlay />;
+  if (isLoading) return <Box sx={{ minHeight: isMobile ? '60vh' : '' }}><Overlay /></Box>;
 
   if (!bonusData || !timelineData) {
     navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
@@ -141,8 +141,12 @@ const Dashboard = () => {
           onSectionChange={handleSectionChange}
         />
       }
-      <Box display={{ xs: 'block', md: 'flex' }}
-        height={{ xs: 'auto', md: '100%' }}>
+      <Box
+        display={{ xs: 'block', sm: 'flex' }}
+        flexDirection={{ xs: 'column', sm: 'row' }}
+        height={{ xs: 'auto', sm: '100%' }}
+        width="100%"
+      >
         {!isMobile &&
           <Box
             width={collapsed ? 64 : 320}
@@ -173,7 +177,17 @@ const Dashboard = () => {
               onCloseDrawer={handleDrawerClose}
             />
           ) : (
-            <Box >
+            <Box
+              sx={{
+                flexGrow: 1,
+                flexBasis: 0,
+                minWidth: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
+                maxWidth: '100%',
+              }}
+            >
               <FAQSection />
             </Box>
           )}
