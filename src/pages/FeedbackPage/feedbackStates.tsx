@@ -5,6 +5,7 @@ export type FeedbackState = {
   icon: ReactNode;
   title: string;
   description: string;
+  subDescription?: string;
   buttonLabel?: string;
   buttonRedirect?: string;
   supportLinkLabel?: string;
@@ -19,6 +20,7 @@ export const feedbackStates: Record<FeedbackStateKey, FeedbackState> = {
     icon: <IllusCompleted />,
     title: "feedbackStates.requestSubmitted.title",
     description: 'feedbackStates.requestSubmitted.description',
+    subDescription: 'feedbackStates.requestSubmitted.subDescription',
     buttonLabel: 'commons.exit',
     buttonRedirect: '__LOGOUT__'
   },
