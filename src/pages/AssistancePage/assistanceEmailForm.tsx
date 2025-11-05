@@ -1,19 +1,26 @@
-import { Box, Button, TextField, Typography } from '@mui/material';
-import { theme } from '@pagopa/mui-italia';
-import { Fragment, useState } from 'react';
-import { useTranslation } from "react-i18next";
-import { validateEmail } from "../../utils/validateEmail.ts";
-import { ArrowBack } from "@mui/icons-material";
-import { Link, useNavigate } from "react-router-dom";
+import {Box, Button, TextField, Typography} from '@mui/material';
+import {theme} from '@pagopa/mui-italia';
+import {Fragment, useEffect, useState} from 'react';
+import {useTranslation} from "react-i18next";
+import {validateEmail} from "../../utils/validateEmail.ts";
+import {ArrowBack} from "@mui/icons-material";
+import {Link, useNavigate} from "react-router-dom";
+import {getInitiativeId} from "../../utils/env.ts";
+import {OnboardingWebApi} from "../../api/onboardingWebApiClient.ts";
+import {storageTokenOps} from "@pagopa/selfcare-common-frontend/lib/utils/storage";
+import {parseJwt} from "../../utils/functions.ts";
+import {SupportResponseDTO} from "../../api/generated/onboarding-web/SupportResponseDTO.ts";
 
 const AssistanceEmailForm = () => {
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     const navigate = useNavigate();
+    const initiativeId = getInitiativeId();
+    const token = storageTokenOps.read();
 
     const [emailInput, setEmailInput] = useState("");
     const [confirmEmailInput, setConfirmEmailInput] = useState("");
     const [showErrors, setShowErrors] = useState(false);
-    const [touched, setTouched] = useState({ email: false, confirm: false });
+    const [touched, setTouched] = useState({email: false, confirm: false});
 
     const isEmailValid = validateEmail(emailInput);
     const isConfirmEmailValid = validateEmail(confirmEmailInput);
@@ -23,6 +30,7 @@ const AssistanceEmailForm = () => {
     const showEmailError = (touched.email || showErrors) && !isEmailValid;
     const shouldShowConfirm = touched.confirm || showErrors;
     const showConfirmError = shouldShowConfirm && (!isConfirmEmailValid || !emailsMatch);
+    const [zendeskAuthData, setZendeskAuthData] = useState<SupportResponseDTO>();
 
     const getConfirmHelperText = () => {
         if (!shouldShowConfirm) return ' ';
@@ -31,15 +39,53 @@ const AssistanceEmailForm = () => {
         return ' ';
     };
 
-    const handleContinue = () => {
+    useEffect(() => {
+        if (zendeskAuthData) {
+            const form = document.getElementById('jwtForm') as HTMLFormElement;
+            if (form) {
+                form.submit();
+            }
+        }
+    }, [zendeskAuthData]);
+
+    function buildPayload(token: string | null, jwtUser: any, email: string, productId: string) {
+        const payload: any = {
+            email,
+            productId
+        };
+
+        if (token && jwtUser) {
+            payload.firstName = jwtUser.given_name;
+            payload.lastName = jwtUser.family_name;
+            payload.fiscalCode = jwtUser.fiscalNumber;
+        }
+
+        return payload;
+    }
+
+    const handleContinue = async () => {
         setShowErrors(true);
         if (isFormValid) {
-            // TODO integration with Zendesk
+            try {
+                const jwtUser = parseJwt(token);
+                const payload = buildPayload(token, jwtUser, emailInput, initiativeId);
+                console.log(payload)
+                const response = await OnboardingWebApi.support(payload);
+
+                if (response.status === 200 && 'jwt' in response.data && 'returnTo' in response.data) {
+                    setZendeskAuthData({ jwt: response.data.jwt, returnTo: response.data.returnTo });
+                    console.log("Support request sent successfully", response.data);
+                } else {
+                    console.error("Support request error", response.data);
+                }
+            } catch (error) {
+                console.error("Unexpected error", error);
+            }
         }
     };
 
     const handleBlur = (field: 'email' | 'confirm') => {
-        setTouched(prev => ({ ...prev, [field]: true }));
+        setTouched(prev => ({...prev, [field]: true}));
     };
 
     return (
@@ -57,6 +103,15 @@ const AssistanceEmailForm = () => {
                     backgroundColor: theme.palette.background.paper
                 }}
             >
+                <form id="jwtForm" method="POST" target="_blank" action={'https://pagopa.zendesk.com/access/jwt'}>
+                    <input id="jwtString" type="hidden" name="jwt" value={zendeskAuthData?.jwt} />
+                    <input
+                        id="returnTo"
+                        type="hidden"
+                        name="return_to"
+                        value={zendeskAuthData?.returnTo}
+                    />
+                </form>
                 <TextField
                     label={t("assistance.emailPlaceholder")}
                     variant="outlined"
@@ -109,7 +164,7 @@ const AssistanceEmailForm = () => {
                 <Button
                     variant="outlined"
                     size="medium"
-                    startIcon={<ArrowBack sx={{ color: theme.palette.primary.main }} />}
+                    startIcon={<ArrowBack sx={{color: theme.palette.primary.main}}/>}
                     onClick={() => navigate(-1)}
                 >
                     {t('commons.back')}
