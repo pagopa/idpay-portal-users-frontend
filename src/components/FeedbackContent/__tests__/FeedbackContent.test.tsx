@@ -569,4 +569,40 @@ describe('FeedbackContent Component', () => {
             expect(mockNavigate).toHaveBeenCalledWith(ROUTES.HOME);
         });
     });
+    
+    describe('SubDescription Rendering', () => {
+        test('renders multi-line subDescription correctly', () => {
+            const multiLineSubDesc = 'Sub line 1\nSub line 2\nSub line 3';
+            render(
+                <FeedbackContent
+                    icon={<div data-testid="test-icon">ICON</div>}
+                    title="Title"
+                    description="Desc"
+                    subDescription={multiLineSubDesc}
+                />,
+                { wrapper: MemoryRouter }
+            );
+
+            expect(screen.getByText('Sub line 1')).toBeInTheDocument();
+            expect(screen.getByText('Sub line 2')).toBeInTheDocument();
+            expect(screen.getByText('Sub line 3')).toBeInTheDocument();
+        });
+
+        test('renders single-line subDescription correctly', () => {
+            const singleSubDesc = 'Only one sub line';
+            render(
+                <FeedbackContent
+                    icon={<div data-testid="test-icon">ICON</div>}
+                    title="Title"
+                    description="Desc"
+                    subDescription={singleSubDesc}
+                />,
+                { wrapper: MemoryRouter }
+            );
+
+            const subText = screen.getByText('Only one sub line');
+            expect(subText).toBeInTheDocument();
+            expect(subText.tagName).toBe('P');
+        });
+    });
 });
