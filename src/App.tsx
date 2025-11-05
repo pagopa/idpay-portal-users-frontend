@@ -9,6 +9,7 @@ import FeedbackPage from './pages/FeedbackPage/FeedbackPage';
 import ROUTES from './routes';
 import { useIsMobile } from './hooks/useIsMobile';
 import LandingPage from './pages/LandingPage/LandingPage';
+import AssistancePage from './pages/AssistancePage/AssistancePage';
 import ProtectedRoute from './config/ProtectedRoute';
 import GatewayPage from './pages/GatewayPage/GatewayPage';
 import ErrorPage from './pages/ErrorPage/ErrorPage';
@@ -41,6 +42,9 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = () => (
 
     {/* public route */}
     <Route path={ROUTES.HOME} element={<PublicLayout ><LandingPage /></PublicLayout>} />
+
+    {/* assistance route */}
+    <Route path={ROUTES.ASSISTANCE} element={<PublicLayout ><AssistancePage /></PublicLayout>} />
 
     {/* gateway route */}
     <Route path={ROUTES.GATEWAY}

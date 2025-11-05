@@ -7,6 +7,8 @@ import {
 } from '@pagopa/mui-italia';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import ROUTES from '../../routes';
 
 export type HeaderProps = {
   onAssistanceClick?: () => void;
@@ -15,8 +17,9 @@ export type HeaderProps = {
 
 export const Header = (props: HeaderProps) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { isAuthenticated, logout, user } = useAuth();
-  const { onAssistanceClick = () => null, hasSubHeader } = props;
+  const { onAssistanceClick = () => navigate(ROUTES.ASSISTANCE), hasSubHeader } = props;
 
 
   const product: ProductEntity = {
