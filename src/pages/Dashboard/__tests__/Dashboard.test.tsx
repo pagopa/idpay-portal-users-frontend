@@ -12,6 +12,7 @@ jest.mock('react-i18next', () => ({
 
 jest.mock('../../../utils/env', () => ({
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
+  getBaseUrl: () => 'https://www.google.com'
 }));
 
 const mockedUsedNavigate = jest.fn();
