@@ -2,7 +2,7 @@ import {Box, Button, TextField, Typography} from '@mui/material';
 import {theme} from '@pagopa/mui-italia';
 import {Fragment, useEffect, useState} from 'react';
 import {useTranslation} from "react-i18next";
-import {validateEmail} from "../../utils/validateEmail.ts";
+import {isValidEmail} from "../../utils/validateEmail.ts";
 import {ArrowBack} from "@mui/icons-material";
 import {Link, useNavigate} from "react-router-dom";
 import {getInitiativeId} from "../../utils/env.ts";
@@ -22,10 +22,10 @@ const AssistanceEmailForm = () => {
     const [showErrors, setShowErrors] = useState(false);
     const [touched, setTouched] = useState({email: false, confirm: false});
 
-    const isEmailValid = validateEmail(emailInput);
-    const isConfirmEmailValid = validateEmail(confirmEmailInput);
+    const isEmailValid = isValidEmail(emailInput);
+    const isConfirmEmailValid = isValidEmail(confirmEmailInput);
     const emailsMatch = emailInput === confirmEmailInput;
-    const isFormValid = isEmailValid && isConfirmEmailValid && emailsMatch && validateEmail(emailInput);
+    const isFormValid = isEmailValid && isConfirmEmailValid && emailsMatch && isValidEmail(emailInput);
 
     const showEmailError = (touched.email || showErrors) && !isEmailValid;
     const shouldShowConfirm = touched.confirm || showErrors;
