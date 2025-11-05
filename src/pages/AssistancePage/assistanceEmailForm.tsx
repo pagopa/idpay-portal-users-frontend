@@ -25,7 +25,7 @@ const AssistanceEmailForm = () => {
     const isEmailValid = validateEmail(emailInput);
     const isConfirmEmailValid = validateEmail(confirmEmailInput);
     const emailsMatch = emailInput === confirmEmailInput;
-    const isFormValid = isEmailValid && isConfirmEmailValid && emailsMatch;
+    const isFormValid = isEmailValid && isConfirmEmailValid && emailsMatch && validateEmail(emailInput);
 
     const showEmailError = (touched.email || showErrors) && !isEmailValid;
     const shouldShowConfirm = touched.confirm || showErrors;
