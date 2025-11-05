@@ -10,6 +10,11 @@ jest.mock('react-i18next', () => ({
     useTranslation: () => ({ t: (k: string) => k }),
 }));
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: jest.fn(),
+}));
+
 jest.mock('@pagopa/mui-italia', () => ({
     HeaderAccount: (props: any) => (
         <div
