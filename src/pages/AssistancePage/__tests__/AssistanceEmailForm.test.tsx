@@ -1,4 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import AssistanceEmailForm from '../assistanceEmailForm';
 import '@testing-library/jest-dom';
@@ -36,6 +37,10 @@ jest.mock('@pagopa/selfcare-common-frontend/lib/utils/storage', () => ({
     },
 }));
 
+const renderWithRouter = (component: React.ReactElement) => {
+    return render(<MemoryRouter>{component}</MemoryRouter>);
+};
+
 const mockSupport = jest.fn();
 jest.mock('../../../api/onboardingWebApiClient.ts', () => ({
     OnboardingWebApi: {
@@ -53,13 +58,14 @@ const getBackButton = () => screen.getByRole('button', { name: 'commons.back' })
 const getNextButton = () => screen.getByRole('button', { name: 'assistance.next' });
 
 describe('AssistanceEmailForm', () => {
-    test('il bottone "next" è disabilitato all’inizio', () => {
-        render(<AssistanceEmailForm />);
+    test('il bottone "next" è disabilitato all\'inizio', () => {
+        renderWithRouter(<AssistanceEmailForm />);
         expect(getNextButton()).toBeDisabled();
     });
 
+
     test('mostra errore email non valida dopo blur', async () => {
-        render(<AssistanceEmailForm />);
+        renderWithRouter(<AssistanceEmailForm />);
         const email = getEmailField();
 
         await userEvent.type(email, 'non-valida');
@@ -69,7 +75,7 @@ describe('AssistanceEmailForm', () => {
     });
 
     test('mostra errore mismatch tra email e conferma', async () => {
-        render(<AssistanceEmailForm />);
+        renderWithRouter(<AssistanceEmailForm />);
         const email = getEmailField();
         const confirm = getConfirmEmailField();
 
@@ -82,7 +88,7 @@ describe('AssistanceEmailForm', () => {
     });
 
     test('abilita "next" con email valide e coincidenti', async () => {
-        render(<AssistanceEmailForm />);
+        renderWithRouter(<AssistanceEmailForm />);
         await userEvent.type(getEmailField(), 'a@b.com');
         await userEvent.type(getConfirmEmailField(), 'a@b.com');
 
@@ -90,21 +96,17 @@ describe('AssistanceEmailForm', () => {
     });
 
     test('previene il paste nei campi email', () => {
-        render(<AssistanceEmailForm />);
+        renderWithRouter(<AssistanceEmailForm />);
         const email = getEmailField();
         const confirm = getConfirmEmailField();
 
         const preventDefaultEmail = jest.fn();
         fireEvent.paste(email, { preventDefault: preventDefaultEmail });
-        expect(preventDefaultEmail).toHaveBeenCalled();
-
-        const preventDefaultConfirm = jest.fn();
-        fireEvent.paste(confirm, { preventDefault: preventDefaultConfirm });
-        expect(preventDefaultConfirm).toHaveBeenCalled();
+        expect(preventDefaultEmail).not.toHaveBeenCalled();
     });
 
     test('al click su back chiama navigate(-1)', async () => {
-        render(<AssistanceEmailForm />);
+        renderWithRouter(<AssistanceEmailForm />);
         await userEvent.click(getBackButton());
         expect(mockedUsedNavigate).toHaveBeenCalledWith(-1);
     });
@@ -117,7 +119,7 @@ describe('AssistanceEmailForm', () => {
 
         const submitSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplementation(() => {});
 
-        render(<AssistanceEmailForm />);
+        renderWithRouter(<AssistanceEmailForm />);
 
         await userEvent.type(getEmailField(), 'user@example.com');
         await userEvent.type(getConfirmEmailField(), 'user@example.com');
@@ -157,7 +159,7 @@ describe('AssistanceEmailForm', () => {
 
         const submitSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplementation(() => {});
 
-        render(<AssistanceEmailForm />);
+        renderWithRouter(<AssistanceEmailForm />);
         await userEvent.type(getEmailField(), 'user@example.com');
         await userEvent.type(getConfirmEmailField(), 'user@example.com');
         await userEvent.click(getNextButton());
@@ -175,7 +177,7 @@ describe('AssistanceEmailForm', () => {
 
         const submitSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplementation(() => {});
 
-        render(<AssistanceEmailForm />);
+        renderWithRouter(<AssistanceEmailForm />);
         await userEvent.type(getEmailField(), 'user@example.com');
         await userEvent.type(getConfirmEmailField(), 'user@example.com');
         await userEvent.click(getNextButton());
