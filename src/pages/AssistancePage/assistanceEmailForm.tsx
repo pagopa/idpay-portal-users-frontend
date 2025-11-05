@@ -69,12 +69,10 @@ const AssistanceEmailForm = () => {
             try {
                 const jwtUser = parseJwt(token);
                 const payload = buildPayload(token, jwtUser, emailInput, initiativeId);
-                console.log(payload)
                 const response = await OnboardingWebApi.support(payload);
 
                 if (response.status === 200 && 'jwt' in response.data && 'returnTo' in response.data) {
                     setZendeskAuthData({ jwt: response.data.jwt, returnTo: response.data.returnTo });
-                    console.log("Support request sent successfully", response.data);
                 } else {
                     console.error("Support request error", response.data);
                 }
