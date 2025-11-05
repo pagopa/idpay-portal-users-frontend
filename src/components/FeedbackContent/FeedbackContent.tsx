@@ -109,6 +109,8 @@ const FeedbackContent: React.FC<FeedbackState> = ({
           component={RouterLink}
           to={supportLinkUrl!}
           variant="body2"
+          sx={{fontWeight: 600}}
+          underline='hover'
         >
           {supportLinkLabel}
         </Link>
