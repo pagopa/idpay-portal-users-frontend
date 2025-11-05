@@ -102,18 +102,18 @@ const AssistanceEmailForm = () => {
                 }}
             >
                 <form id="jwtForm" method="POST" target="_blank" action={'https://pagopa.zendesk.com/access/jwt'}>
-                    <input id="jwtString" type="hidden" name="jwt" value={zendeskAuthData?.jwt} />
+                    <input id="jwtString" type="hidden" name="jwt" value={zendeskAuthData?.jwt ?? ''} />
                     <input
                         id="returnTo"
                         type="hidden"
                         name="return_to"
-                        value={zendeskAuthData?.returnTo}
+                        value={zendeskAuthData?.returnTo ?? ''}
                     />
                 </form>
                 <TextField
                     label={t("assistance.emailPlaceholder")}
                     variant="outlined"
-                    value={emailInput}
+                    value={emailInput ?? ''}
                     onChange={(e) => setEmailInput(e.target.value)}
                     onBlur={() => handleBlur('email')}
                     onPaste={(e) => e.preventDefault()}
@@ -126,7 +126,7 @@ const AssistanceEmailForm = () => {
                 <TextField
                     label={t("assistance.confirmEmailPlaceholder")}
                     variant="outlined"
-                    value={confirmEmailInput}
+                    value={confirmEmailInput ?? ''}
                     onChange={(e) => setConfirmEmailInput(e.target.value)}
                     onBlur={() => handleBlur('confirm')}
                     onPaste={(e) => e.preventDefault()}
