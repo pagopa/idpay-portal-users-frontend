@@ -10,6 +10,7 @@ export type FeedbackDef = {
   icon: ReactNode;
   title: string;
   description: string;
+  subDescription?: string;
   buttonLabel?: string;
   buttonRedirect?: string;
   supportLinkLabel?: string;
@@ -44,6 +45,7 @@ export function makeStatusPage<T extends Record<string, FeedbackDef>>(states: T)
           icon={feedback.icon}
           title={t(feedback.title)}
           description={t(feedback.description)}
+          subDescription={feedback.subDescription && t(feedback.subDescription)}
           buttonLabel={feedback.buttonLabel && t(feedback.buttonLabel)}
           buttonRedirect={feedback.buttonRedirect}
           supportLinkLabel={feedback.supportLinkLabel && t(feedback.supportLinkLabel)}

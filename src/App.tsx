@@ -18,18 +18,17 @@ import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import UpcomingInitiative from "./pages/UpcomingInitiative/UpcomingInitiative.tsx";
 
 const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <Layout hasSubHeader={false} hasPadding={false} >
+  <Layout hasPadding={false} >
     {children}
   </Layout>
 );
 
 const PrivateLayout: React.FC<{
   children: React.ReactNode;
-  hasSubHeader?: boolean;
   hasPadding?: boolean;
-}> = ({ children, hasSubHeader = false, hasPadding = undefined }) => (
+}> = ({ children, hasPadding = undefined }) => (
   <ProtectedRoute>
-    <Layout hasSubHeader={hasSubHeader} hasPadding={hasPadding}>
+    <Layout hasPadding={hasPadding}>
       {children}
     </Layout>
   </ProtectedRoute>
@@ -59,7 +58,7 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = () => (
     {/* private route */}
     <Route
       path={ROUTES.DASHBOARD}
-      element={<PrivateLayout hasPadding={false} hasSubHeader><Dashboard /></PrivateLayout>}
+      element={<PrivateLayout hasPadding={false} ><Dashboard /></PrivateLayout>}
     />
     <Route
       path={ROUTES.VERIFY_REQUIREMENTS}

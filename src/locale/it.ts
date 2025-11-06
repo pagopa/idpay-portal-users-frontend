@@ -181,7 +181,8 @@ const it = {
   "feedbackStates": {
     "requestSubmitted": {
       "title": "La tua richiesta è stata inviata!",
-      "description": "Controlla periodicamente la tua casella di posta.\nRiceverai tutti gli aggiornamenti all’indirizzo email che hai indicato."
+      "description": "Controlla periodicamente la tua casella di posta.\nRiceverai tutti gli aggiornamenti all’indirizzo email che hai indicato.",
+      "subDescription": "Puoi verificare lo stato della tua richiesta da\nquesto sito o, se usi IO, dalla sezione Servizi dell’app."
     },
     "onEvaluation": {
       "title": "La tua richiesta è in fase di valutazione",

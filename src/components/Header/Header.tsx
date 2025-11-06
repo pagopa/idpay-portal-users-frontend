@@ -12,14 +12,13 @@ import ROUTES from '../../routes';
 
 export type HeaderProps = {
   onAssistanceClick?: () => void;
-  hasSubHeader: boolean;
 };
 
 export const Header = (props: HeaderProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { isAuthenticated, logout, user } = useAuth();
-  const { onAssistanceClick = () => navigate(ROUTES.ASSISTANCE), hasSubHeader } = props;
+  const { onAssistanceClick = () => navigate(ROUTES.ASSISTANCE) } = props;
 
 
   const product: ProductEntity = {
@@ -52,11 +51,9 @@ export const Header = (props: HeaderProps) => {
         onAssistanceClick={onAssistanceClick}
         onLogout={logout}
       />
-      {hasSubHeader &&
-        <HeaderProduct
-          productsList={[product]}
-        />
-      }
+      <HeaderProduct
+        productsList={[product]}
+      />
     </>
   );
 };

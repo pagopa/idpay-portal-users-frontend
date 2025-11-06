@@ -4,9 +4,9 @@ import Layout from '../Layout';
 import { loadingRef } from '../../../utils/loadingOverlay';
 
 jest.mock('../../Header/Header', () => {
-  return function MockHeader({ hasSubHeader }: any) {
+  return function MockHeader() {
     return (
-      <div data-testid="header" data-has-subheader={hasSubHeader ? 'true' : 'false'}>
+      <div data-testid="header" >
         Header
       </div>
     );
@@ -42,26 +42,6 @@ describe('Layout', () => {
     expect(screen.getByTestId('header')).toBeInTheDocument();
     expect(screen.getByTestId('content')).toBeInTheDocument();
     expect(screen.getByTestId('footer')).toBeInTheDocument();
-  });
-
-  test('renders header with subheader by default', () => {
-    render(
-      <Layout>
-        <div>Content</div>
-      </Layout>
-    );
-
-    expect(screen.getByTestId('header')).toHaveAttribute('data-has-subheader', 'true');
-  });
-
-  test('renders header without subheader when hasSubHeader is false', () => {
-    render(
-      <Layout hasSubHeader={false}>
-        <div>Content</div>
-      </Layout>
-    );
-
-    expect(screen.getByTestId('header')).toHaveAttribute('data-has-subheader', 'false');
   });
 
   test('renders overlay when loading is true', async () => {
@@ -108,12 +88,11 @@ describe('Layout', () => {
 
   test('applies layout props correctly', () => {
     render(
-      <Layout hasSubHeader={false} hasPadding={false}>
+      <Layout hasPadding={false}>
         <div data-testid="content">Content</div>
       </Layout>
     );
 
-    expect(screen.getByTestId('header')).toHaveAttribute('data-has-subheader', 'false');
     expect(screen.getByTestId('content')).toBeInTheDocument();
   });
 });
