@@ -16,9 +16,10 @@ const AssistanceEmailForm = () => {
     const navigate = useNavigate();
     const initiativeId = getInitiativeId();
     const token = storageTokenOps.read();
+    const jwtUser = parseJwt(token);
 
-    const [emailInput, setEmailInput] = useState("");
-    const [confirmEmailInput, setConfirmEmailInput] = useState("");
+    const [emailInput, setEmailInput] = useState(jwtUser?.email || '');
+    const [confirmEmailInput, setConfirmEmailInput] = useState(jwtUser?.email || '');
     const [showErrors, setShowErrors] = useState(false);
     const [touched, setTouched] = useState({email: false, confirm: false});
 
@@ -67,7 +68,6 @@ const AssistanceEmailForm = () => {
         setShowErrors(true);
         if (isFormValid) {
             try {
-                const jwtUser = parseJwt(token);
                 const payload = buildPayload(token, jwtUser, emailInput, initiativeId);
                 const response = await OnboardingWebApi.support(payload);
 
