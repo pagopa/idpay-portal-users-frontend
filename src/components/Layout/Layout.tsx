@@ -7,11 +7,10 @@ import { Footer } from '../Footer/Footer';
 
 type LayoutProps = {
   children: React.ReactNode;
-  hasSubHeader?: boolean;
   hasPadding?: boolean;
 };
 
-const Layout = ({ children, hasSubHeader = true, hasPadding = true }: LayoutProps) => {
+const Layout = ({ children, hasPadding = true }: LayoutProps) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -29,7 +28,7 @@ const Layout = ({ children, hasSubHeader = true, hasPadding = true }: LayoutProp
       {loading && <Overlay />}
 
       <Box component="header" gridArea="header">
-        <Header hasSubHeader={hasSubHeader} />
+        <Header />
       </Box>
 
       <Box component="main" gridArea="body" display='flex' flexGrow={1} minHeight={0}>

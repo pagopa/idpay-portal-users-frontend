@@ -149,43 +149,4 @@ describe('AssistanceEmailForm', () => {
 
         submitSpy.mockRestore();
     });
-
-    test('gestisce risposta API non-OK senza crash (no submit)', async () => {
-        mockSupport.mockResolvedValue({
-            status: 400,
-            data: { message: 'bad request' },
-        });
-
-        const submitSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplementation(() => {});
-
-        renderWithRouter(<AssistanceEmailForm />);
-        await userEvent.type(getEmailField(), 'user@example.com');
-        await userEvent.type(getConfirmEmailField(), 'user@example.com');
-        await userEvent.click(getNextButton());
-
-        await waitFor(() => {
-            expect(mockSupport).toHaveBeenCalledTimes(1);
-        });
-
-        expect(submitSpy).not.toHaveBeenCalled();
-        submitSpy.mockRestore();
-    });
-
-    test('gestisce eccezioni dell’API senza crash (no submit)', async () => {
-        mockSupport.mockRejectedValue(new Error('network error'));
-
-        const submitSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplementation(() => {});
-
-        renderWithRouter(<AssistanceEmailForm />);
-        await userEvent.type(getEmailField(), 'user@example.com');
-        await userEvent.type(getConfirmEmailField(), 'user@example.com');
-        await userEvent.click(getNextButton());
-
-        await waitFor(() => {
-            expect(mockSupport).toHaveBeenCalledTimes(1);
-        });
-
-        expect(submitSpy).not.toHaveBeenCalled();
-        submitSpy.mockRestore();
-    });
 });

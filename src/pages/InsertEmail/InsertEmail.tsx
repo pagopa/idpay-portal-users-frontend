@@ -6,7 +6,7 @@ import { theme } from '@pagopa/mui-italia';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
 import { useEmailStore } from '../../hooks/useEmailStore';
-import { validateEmail } from '../../utils/validateEmail';
+import { isValidEmail } from '../../utils/validateEmail';
 import { useTOSCheckboxStore } from '../../hooks/useTOSCheckboxStore';
 import { ArrowBack } from '@mui/icons-material';
 import { useIsMobile } from '../../hooks/useIsMobile';
@@ -35,7 +35,7 @@ const InsertEmail = () => {
     return null;
   }
 
-  const isEmailValid = validateEmail(emailInput);
+  const isEmailValid = isValidEmail(emailInput);
   const emailsMatch =
     emailInput !== '' &&
     confirmEmailInput !== '' &&

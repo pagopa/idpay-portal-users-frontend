@@ -14,7 +14,6 @@ jest.mock('react-router-dom', () => {
 jest.mock('../components/Layout/Layout', () => (props: any) => (
   <div
     data-testid="layout"
-    data-subheader={String(props.hasSubHeader)}
     data-padding={String(props.hasPadding)}
   >
     {props.children}
@@ -71,36 +70,33 @@ beforeAll(() => {
 });
 
 describe('App Routing and Layout props', () => {
-  test('PublicLayout props are passed (no subheader, no padding)', () => {
+  test('PublicLayout props are passed (no padding)', () => {
     render(
       <MemoryRouter initialEntries={[ROUTES.HOME]}>
         <App />
       </MemoryRouter>
     );
     const layout = screen.getByTestId('layout');
-    expect(layout).toHaveAttribute('data-subheader', 'false');
     expect(layout).toHaveAttribute('data-padding', 'false');
   });
 
-  test('PrivateLayout default props are applied (subheader=false, padding=undefined)', () => {
+  test('PrivateLayout default props are applied (padding=undefined)', () => {
     render(
       <MemoryRouter initialEntries={[ROUTES.VERIFY_REQUIREMENTS]}>
         <App />
       </MemoryRouter>
     );
     const layout = screen.getByTestId('layout');
-    expect(layout).toHaveAttribute('data-subheader', 'false');
     expect(layout).toHaveAttribute('data-padding', 'undefined');
   });
 
-  test('PrivateLayout passes explicit props (hasSubHeader=true, hasPadding=false)', () => {
+  test('PrivateLayout passes explicit props (hasPadding=false)', () => {
     render(
       <MemoryRouter initialEntries={[ROUTES.DASHBOARD]}>
         <App />
       </MemoryRouter>
     );
     const layout = screen.getByTestId('layout');
-    expect(layout).toHaveAttribute('data-subheader', 'true');
     expect(layout).toHaveAttribute('data-padding', 'false');
   });
 });

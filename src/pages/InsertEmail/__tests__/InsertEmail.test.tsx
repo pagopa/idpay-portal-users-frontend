@@ -38,7 +38,7 @@ jest.mock('../../../hooks/useEmailStore', () => ({
 }));
 
 jest.mock('../../../utils/validateEmail', () => ({
-  validateEmail: (email: string) => {
+  isValidEmail: (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   }
