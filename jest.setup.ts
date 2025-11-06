@@ -16,7 +16,7 @@ beforeEach(() => {
     ) {
       return;
     }
-    originalError.call(console, ...args);
+    // originalError.call(console, ...args);
   };
 });
 
