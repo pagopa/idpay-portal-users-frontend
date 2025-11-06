@@ -19,7 +19,7 @@ const AssistanceEmailForm = () => {
     const jwtUser = parseJwt(token);
 
     const [emailInput, setEmailInput] = useState(jwtUser?.email || '');
-    const [confirmEmailInput, setConfirmEmailInput] = useState(jwtUser?.email || '');
+    const [confirmEmailInput, setConfirmEmailInput] = useState('');
     const [showErrors, setShowErrors] = useState(false);
     const [touched, setTouched] = useState({email: false, confirm: false});
 
