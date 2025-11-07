@@ -50,7 +50,7 @@ export const initializeCookieOneTrust = (): Promise<void> => {
     const cookieScript = document.createElement('script');
     cookieScript.src = `${import.meta.env.VITE_COOKIE_ONE_TRUST_BASE_URL}scripttemplates/otSDKStub.js`;
     cookieScript.type = 'text/javascript';
-    cookieScript.setAttribute('data-domain-script', import.meta.env.VITE_COOKIE_ONETRUST_DOMAIN_ID);
+    cookieScript.setAttribute('data-domain-script', import.meta.env.VITE_COOKIE_ONE_TRUST_DOMAIN_ID);
 
     cookieScript.onload = () => {
       cookieInitialized = true;
