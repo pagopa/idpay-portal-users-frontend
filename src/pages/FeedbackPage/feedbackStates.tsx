@@ -12,7 +12,7 @@ export type FeedbackState = {
   supportLinkUrl?: string;
 };
 
-export type FeedbackStateKey = 'REQUEST_SUBMITTED' | 'ON_EVALUATION' | 'ONBOARDING_FAMILY_UNIT_ALREADY_JOINED' | 'WAITING_LIST' | 'ONBOARDING_INITIATIVE_ENDED' | 'ONBOARDING_BUDGET_EXHAUSTED';
+export type FeedbackStateKey = 'REQUEST_SUBMITTED' | 'ON_EVALUATION' | 'ONBOARDING_FAMILY_UNIT_ALREADY_JOINED' | 'ONBOARDING_WAITING_LIST' | 'ONBOARDING_INITIATIVE_ENDED' | 'ONBOARDING_BUDGET_EXHAUSTED';
 
 export const feedbackStates: Record<FeedbackStateKey, FeedbackState> = {
 
@@ -38,7 +38,7 @@ export const feedbackStates: Record<FeedbackStateKey, FeedbackState> = {
     buttonLabel: 'commons.exit',
     buttonRedirect: '__LOGOUT__'
   },
-  WAITING_LIST: {
+  ONBOARDING_WAITING_LIST: {
     icon: <IllusHistoryDoc />,
     title: "feedbackStates.waitingList.title",
     description: 'feedbackStates.waitingList.description',

@@ -94,7 +94,7 @@ const AssistanceEmailForm = () => {
                 borderRadius="4px"
                 sx={{
                     width: '100%',
-                    pt: 4,
+                    pt: 2,
                     pb: 2,
                     px: 3,
                     gap: 2,

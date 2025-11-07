@@ -63,21 +63,21 @@ describe('FeedbackPage', () => {
         );
     });
 
-    it('renders feedback for WAITING_LIST', () => {
+    it('renders feedback for ONBOARDING_WAITING_LIST', () => {
         (useLocation as jest.Mock).mockReturnValue({
-            state: { status: 'WAITING_LIST' },
+            state: { status: 'ONBOARDING_WAITING_LIST' },
         });
 
         render(<FeedbackPage />);
 
         expect(screen.getByTestId('feedback-title')).toHaveTextContent(
-            feedbackStates.WAITING_LIST.title
+            feedbackStates.ONBOARDING_WAITING_LIST.title
         );
         expect(screen.getByTestId('feedback-description')).toHaveTextContent(
-            feedbackStates.WAITING_LIST.description
+            feedbackStates.ONBOARDING_WAITING_LIST.description
         );
         expect(screen.getByTestId('feedback-button')).toHaveTextContent(
-            feedbackStates.WAITING_LIST.buttonLabel!
+            feedbackStates.ONBOARDING_WAITING_LIST.buttonLabel!
         );
     });
 

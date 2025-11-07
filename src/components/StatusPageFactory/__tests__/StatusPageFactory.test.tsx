@@ -52,7 +52,7 @@ const states = {
     buttonLabel: 'feedback.requestSubmitted.cta',
     buttonRedirect: '/foo',
   },
-  WAITING_LIST: {
+  ONBOARDING_WAITING_LIST: {
     icon: <span>icon</span>,
     title: 'feedback.waitingList.title',
     description: 'feedback.waitingList.description',
@@ -85,14 +85,14 @@ describe('makeStatusPage', () => {
   });
 
   it('does not render a button when buttonLabel is missing', () => {
-    mockUseLocation.mockReturnValue({ state: { status: 'WAITING_LIST' } });
+    mockUseLocation.mockReturnValue({ state: { status: 'ONBOARDING_WAITING_LIST' } });
     const Page = makeStatusPage(states);
 
     render(<Page />);
 
-    expect(screen.getByTestId('feedback-title')).toHaveTextContent(states.WAITING_LIST.title);
+    expect(screen.getByTestId('feedback-title')).toHaveTextContent(states.ONBOARDING_WAITING_LIST.title);
     expect(screen.getByTestId('feedback-description')).toHaveTextContent(
-      states.WAITING_LIST.description
+      states.ONBOARDING_WAITING_LIST.description
     );
     expect(screen.queryByTestId('feedback-button')).toBeNull();
     expect(mockNavigate).not.toHaveBeenCalled();
