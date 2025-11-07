@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { IllusAlarmClock, IllusUmbrella, IllusUserUnauthorized } from '@pagopa/mui-italia';
+import ROUTES from '../../routes';
 
 export type ErrorState = {
   icon: ReactNode;
@@ -48,7 +49,9 @@ export const errorState: Record<ErrorStateKey, ErrorState> = {
     title: "feedbackStates.technicalError.title",
     description: 'feedbackStates.technicalError.description',
     buttonLabel: 'commons.exit',
-    buttonRedirect: '__LOGOUT__'
+    buttonRedirect: '__LOGOUT__',
+    supportLinkUrl: ROUTES.ASSISTANCE,
+    supportLinkLabel: "Contatta l'assistenza"
   },
   TOO_MANY_REQUESTS: {
     icon: <IllusAlarmClock />,

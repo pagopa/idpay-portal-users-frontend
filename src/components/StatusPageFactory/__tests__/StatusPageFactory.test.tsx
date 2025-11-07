@@ -48,6 +48,7 @@ const states = {
     icon: <span>icon</span>,
     title: 'feedback.requestSubmitted.title',
     description: 'feedback.requestSubmitted.description',
+    subDescription: 'feedbackStates.requestSubmitted.description',
     buttonLabel: 'feedback.requestSubmitted.cta',
     buttonRedirect: '/foo',
   },

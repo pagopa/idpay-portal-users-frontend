@@ -74,6 +74,14 @@ const it = {
     "descriptionWithIO": "Gestisci tutto in un posto: richiedi il bonus, ricevi l’esito della richiesta e usa il bonus. Più veloce, più comodo.",
     "downloadIO": "Scarica IO",
   },
+  "assistance": {
+    "title": "Hai bisogno di aiuto per Bonus Elettrodomestici?",
+    "subtitle": "Indica l’indirizzo email in cui desideri ricevere le risposte dell’assistenza. ",
+    "emailPlaceholder": "Inserisci l’indirizzo email",
+    "confirmEmailPlaceholder": "Conferma l’indirizzo email",
+    "prePolicy": "Proseguendo dichiari di avere letto la ",
+    "next": "Avanti"
+  },
   "upcomingInitiative": {
     "title": "Ci siamo quasi!",
     "preSubtitle": "Il portale ",
@@ -173,7 +181,8 @@ const it = {
   "feedbackStates": {
     "requestSubmitted": {
       "title": "La tua richiesta è stata inviata!",
-      "description": "Controlla periodicamente la tua casella di posta.\nRiceverai tutti gli aggiornamenti all’indirizzo email che hai indicato."
+      "description": "Controlla periodicamente la tua casella di posta.\nRiceverai tutti gli aggiornamenti all’indirizzo email che hai indicato.",
+      "subDescription": "Puoi verificare lo stato della tua richiesta da\nquesto sito o, se usi IO, dalla sezione Servizi dell’app."
     },
     "onEvaluation": {
       "title": "La tua richiesta è in fase di valutazione",

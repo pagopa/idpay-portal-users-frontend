@@ -10,6 +10,11 @@ jest.mock('react-i18next', () => ({
     useTranslation: () => ({ t: (k: string) => k }),
 }));
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: jest.fn(),
+}));
+
 jest.mock('@pagopa/mui-italia', () => ({
     HeaderAccount: (props: any) => (
         <div
@@ -43,12 +48,9 @@ describe('Header', () => {
             user: undefined,
         });
 
-        const { rerender } = render(<Header hasSubHeader={true} />);
+        render(<Header/>);
         expect(screen.getByTestId('HeaderAccount')).toBeInTheDocument();
         expect(screen.getByTestId('HeaderProduct')).toBeInTheDocument();
-
-        rerender(<Header hasSubHeader={false} />);
-        expect(screen.queryByTestId('HeaderProduct')).not.toBeInTheDocument();
     });
 
     it('passes correct props to HeaderAccount when authenticated', () => {
@@ -59,7 +61,7 @@ describe('Header', () => {
             user: { id: '1', firstName: 'Name', lastName: 'LastName', email: 'email@test.com' },
         });
 
-        render(<Header hasSubHeader={false} />);
+        render(<Header/>);
 
         const el = screen.getByTestId('HeaderAccount');
         expect(el).toHaveAttribute('data-enable-login', 'true');
@@ -75,7 +77,7 @@ describe('Header', () => {
             user: undefined,
         });
 
-        render(<Header hasSubHeader={false} />);
+        render(<Header />);
 
         const el = screen.getByTestId('HeaderAccount');
         expect(el).toHaveAttribute('data-rootlabel', 'commons.header.pagopaLinkLabel');
@@ -90,7 +92,7 @@ describe('Header', () => {
             user: undefined,
         });
 
-        render(<Header hasSubHeader={true} />);
+        render(<Header />);
 
         const sub = screen.getByTestId('HeaderProduct');
         expect(sub).toHaveAttribute('data-first-product-title', 'commons.header.productTitle');

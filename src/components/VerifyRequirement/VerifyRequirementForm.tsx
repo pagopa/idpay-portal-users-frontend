@@ -56,7 +56,7 @@ export default function VerifyRequirementForm() {
                 {
                     _type: 'multi_consent',
                     code: 'isee',
-                    value: iseeValue
+                    value: iseeValue === '3' ? '2' : iseeValue
                 },
                 {
                     _type: 'boolean',

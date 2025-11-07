@@ -9,6 +9,7 @@ const FeedbackContent: React.FC<FeedbackState> = ({
   icon,
   title,
   description,
+  subDescription,
   buttonLabel,
   buttonRedirect,
   supportLinkLabel,
@@ -44,7 +45,7 @@ const FeedbackContent: React.FC<FeedbackState> = ({
           <Typography
             key={i}
             variant="h4"
-            mb={i < title.split('\n').length-1 ? 0 : 3 }
+            mb={i < title.split('\n').length - 1 ? 0 : 3}
           >
             {line}
           </Typography>
@@ -70,6 +71,27 @@ const FeedbackContent: React.FC<FeedbackState> = ({
           </Typography>
         )}
 
+      {subDescription ? subDescription.includes('\n') ?
+        (
+          <Box mt={3}>
+            {subDescription.split('\n').map((line, i) => (
+              <Typography
+                key={i}
+                variant="body1"
+              >
+                {line}
+              </Typography>
+            ))}
+          </Box>
+        )
+        : (
+          <Typography variant="body1" mt={3}>
+            {subDescription}
+          </Typography>
+        )
+        : null
+      }
+
       {showButton && (
         <Button
           variant="contained"
@@ -87,6 +109,8 @@ const FeedbackContent: React.FC<FeedbackState> = ({
           component={RouterLink}
           to={supportLinkUrl!}
           variant="body2"
+          sx={{fontWeight: 600}}
+          underline='hover'
         >
           {supportLinkLabel}
         </Link>

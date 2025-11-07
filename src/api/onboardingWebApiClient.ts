@@ -15,6 +15,9 @@ import { ReportDTO } from './generated/onboarding-web/ReportDTO';
 import { TimelineDTO } from './generated/onboarding-web/TimelineDTO';
 import { TimelineErrorDTO } from './generated/onboarding-web/TimelineErrorDTO';
 import { OperationDTO } from './generated/onboarding-web/OperationDTO';
+import { SupportRequestDTO } from './generated/onboarding-web/SupportRequestDTO';
+import { SupportResponseDTO } from './generated/onboarding-web/SupportResponseDTO';
+import { SupportErrorDTO } from './generated/onboarding-web/SupportErrorDTO';
 
 export const commonHeaders = {
   'X-Api-Version': 'v1',
@@ -247,6 +250,29 @@ export const OnboardingWebApi = {
       );
 
       if (valid?.actual) return { status: 200, data: valid?.actual as OperationDTO };
+      throw result.left;
+    }
+  },
+  support: async (
+      body: SupportRequestDTO,
+      opts?: SaveNoLoader
+  ): Promise<{ status: number; data: SupportResponseDTO | SupportErrorDTO }> => {
+    const client = opts?.showLoader === false ? onboardingClientNoLoader : onboardingClient;
+
+    const result = await client.buildZendeskJwt({
+      body,
+      ...commonHeaders,
+    });
+
+    if (isRight(result)) {
+      const { status, value } = result.right;
+      if (status === 200) return { status: 200, data: value as SupportResponseDTO };
+      if (status === 400) return { status: 400, data: value as SupportErrorDTO };
+      if (status === 401) return { status: 401, data: value as SupportErrorDTO };
+      if (status === 429) return { status: 429, data: value as SupportErrorDTO };
+      if (status === 500) return { status: 500, data: value as SupportErrorDTO };
+      throw new Error(`Unexpected status: ${status}`);
+    } else {
       throw result.left;
     }
   },
