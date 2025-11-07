@@ -63,7 +63,7 @@ jest.mock('../../../pages/FeedbackPage/feedbackStates', () => ({
     REQUEST_SUBMITTED: {},
     ON_EVALUATION: {},
     ONBOARDING_FAMILY_UNIT_ALREADY_JOINED: {},
-    WAITING_LIST: {},
+    ONBOARDING_WAITING_LIST: {},
     ONBOARDING_INITIATIVE_ENDED: {},
     ONBOARDING_BUDGET_EXHAUSTED: {},
   },

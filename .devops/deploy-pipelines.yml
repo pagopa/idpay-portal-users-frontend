@@ -31,17 +31,15 @@ variables:
     vite_initiative_id: '$(UAT_VITE_INITIATIVE_ID)'
     vite_base_url: '$(UAT_VITE_BASE_URL)'
 
+    #COOKIE UAT
+    vite_cookie_one_trust_base_url: '$(UAT_VITE_COOKIE_ONE_TRUST_BASE_URL)'
+    vite_cookie_one_trust_domain_id: '$(UAT_VITE_COOKIE_ONE_TRUST_DOMAIN_ID)'
+
     #KEYCLOAK UAT
     vite_keycloak_url: '$(UAT_VITE_KEYCLOAK_URL)' 
     vite_keycloak_realm: '$(UAT_VITE_KEYCLOAK_REALM)'
     vite_keycloak_client_id: '$(UAT_VITE_KEYCLOAK_CLIENT_ID)'
     vite_keycloak_redirect_uri: '$(UAT_VITE_KEYCLOAK_REDIRECT_URI)'
-
-    # react_app_one_trust_base_url: '$(UAT_REACT_APP_URL_CDN)/ot'
-    # react_app_analytics_enabled: '$(UAT_ANALYTICS_ENABLED)'
-    # react_app_analytics_mocked: '$(UAT_ANALYTICS_MOCKED)'
-    # react_app_mixpanel_token: '$(UAT_MIXPANEL_TOKEN)'
-    # react_app_onetrust_domain_id: '$(UAT_ONETRUST_DOMAIN_ID)'
 
     react_app_one_trust_otnotice_cdn_url: $(UAT_REACT_APP_ONE_TRUST_OTNOTICE_CDN_URL)
     react_app_one_trust_otnotice_cdn_settings: $(UAT_REACT_APP_ONE_TRUST_OTNOTICE_CDN_SETTINGS)
@@ -75,14 +73,13 @@ variables:
     vite_keycloak_client_id: '$(PROD_VITE_KEYCLOAK_CLIENT_ID)'
     vite_keycloak_redirect_uri: '$(PROD_VITE_KEYCLOAK_REDIRECT_URI)'
 
+    #COOKIE PROD
+    vite_cookie_one_trust_base_url: '$(PROD_VITE_COOKIE_ONE_TRUST_BASE_URL)'
+    vite_cookie_one_trust_domain_id: '$(PROD_VITE_COOKIE_ONE_TRUST_DOMAIN_ID)'
+
     vite_url_api_portal_users: '$(PROD_VITE_URL_API_PORTAL_USERS)'
     vite_initiative_id: '$(PROD_VITE_INITIATIVE_ID)'
     vite_base_url: '$(PROD_VITE_BASE_URL)'
-    # react_app_one_trust_base_url: '$(PROD_REACT_APP_URL_CDN)/ot'
-    # react_app_analytics_enabled: '$(PROD_ANALYTICS_ENABLED)'
-    # react_app_analytics_mocked: '$(PROD_ANALYTICS_MOCKED)'
-    # react_app_mixpanel_token: '$(PROD_MIXPANEL_TOKEN)'
-    # react_app_onetrust_domain_id: '$(PROD_ONETRUST_DOMAIN_ID)'
 
     react_app_one_trust_otnotice_cdn_url: $(PROD_REACT_APP_ONE_TRUST_OTNOTICE_CDN_URL)
     react_app_one_trust_otnotice_cdn_settings: $(PROD_REACT_APP_ONE_TRUST_OTNOTICE_CDN_SETTINGS)
@@ -112,6 +109,10 @@ variables:
     vite_keycloak_realm: '$(DEV_VITE_KEYCLOAK_REALM)'
     vite_keycloak_client_id: '$(DEV_VITE_KEYCLOAK_CLIENT_ID)'
     vite_keycloak_redirect_uri: '$(DEV_VITE_KEYCLOAK_REDIRECT_URI)'
+    
+    #COOKIE ENV
+    vite_cookie_one_trust_base_url: '$(DEV_VITE_COOKIE_ONE_TRUST_BASE_URL)'
+    vite_cookie_one_trust_domain_id: '$(DEV_VITE_COOKIE_ONE_TRUST_DOMAIN_ID)'
 
     react_app_url_fe_pre_login: '$(DEV_REACT_APP_URL_FE_PRE_LOGIN)'
     react_app_url_fe_auth: '$(DEV_REACT_APP_URL_FE_LOGIN)'
@@ -120,12 +121,6 @@ variables:
     vite_url_api_portal_users: '$(DEV_VITE_URL_API_PORTAL_USERS)'
     vite_initiative_id: '$(DEV_VITE_INITIATIVE_ID)'
     vite_base_url: '$(DEV_VITE_BASE_URL)'
-
-    # react_app_one_trust_base_url: '$(DEV_REACT_APP_URL_CDN)/ot/test'
-    # react_app_analytics_enabled: '$(DEV_ANALYTICS_ENABLED)'
-    # react_app_analytics_mocked: '$(DEV_ANALYTICS_MOCKED)'
-    # react_app_mixpanel_token: '$(DEV_MIXPANEL_TOKEN)'
-    # react_app_onetrust_domain_id: '$(DEV_ONETRUST_DOMAIN_ID)'
 
     react_app_one_trust_otnotice_cdn_url: $(DEV_REACT_APP_ONE_TRUST_OTNOTICE_CDN_URL)
     react_app_one_trust_otnotice_cdn_settings: $(DEV_REACT_APP_ONE_TRUST_OTNOTICE_CDN_SETTINGS)
@@ -238,6 +233,9 @@ stages:
               VITE_KEYCLOAK_REALM: '$(vite_keycloak_realm)'
               VITE_KEYCLOAK_CLIENT_ID: '$(vite_keycloak_client_id)'
               VITE_KEYCLOAK_REDIRECT_URI: '$(vite_keycloak_redirect_uri)'
+
+              VITE_COOKIE_ONE_TRUST_BASE_URL: '$(vite_cookie_one_trust_base_url)'
+              VITE_COOKIE_ONE_TRUST_DOMAIN_ID: '$(vite_cookie_one_trust_domain_id)'
 
           - bash: |
               printf "$EXECUTION_ID\n$(git name-rev --name-only FETCH_HEAD) $(git rev-parse HEAD)" > $(System.DefaultWorkingDirectory)/dist/build.info
