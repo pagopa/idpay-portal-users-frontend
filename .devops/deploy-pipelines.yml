@@ -33,7 +33,7 @@ variables:
 
     #COOKIE UAT
     vite_cookie_one_trust_base_url: '$(UAT_VITE_COOKIE_ONE_TRUST_BASE_URL)'
-    vite_cookie_one_trust_domain_id: '$(UAT_VITE_COOKIE_ONETRUST_DOMAIN_ID)'
+    vite_cookie_one_trust_domain_id: '$(UAT_VITE_COOKIE_ONE_TRUST_DOMAIN_ID)'
 
     #KEYCLOAK UAT
     vite_keycloak_url: '$(UAT_VITE_KEYCLOAK_URL)' 
@@ -75,7 +75,7 @@ variables:
 
     #COOKIE PROD
     vite_cookie_one_trust_base_url: '$(PROD_VITE_COOKIE_ONE_TRUST_BASE_URL)'
-    vite_cookie_one_trust_domain_id: '$(PROD_VITE_COOKIE_ONETRUST_DOMAIN_ID)'
+    vite_cookie_one_trust_domain_id: '$(PROD_VITE_COOKIE_ONE_TRUST_DOMAIN_ID)'
 
     vite_url_api_portal_users: '$(PROD_VITE_URL_API_PORTAL_USERS)'
     vite_initiative_id: '$(PROD_VITE_INITIATIVE_ID)'
@@ -112,7 +112,7 @@ variables:
     
     #COOKIE ENV
     vite_cookie_one_trust_base_url: '$(DEV_VITE_COOKIE_ONE_TRUST_BASE_URL)'
-    vite_cookie_one_trust_domain_id: '$(DEV_VITE_COOKIE_ONETRUST_DOMAIN_ID)'
+    vite_cookie_one_trust_domain_id: '$(DEV_VITE_COOKIE_ONE_TRUST_DOMAIN_ID)'
 
     react_app_url_fe_pre_login: '$(DEV_REACT_APP_URL_FE_PRE_LOGIN)'
     react_app_url_fe_auth: '$(DEV_REACT_APP_URL_FE_LOGIN)'
