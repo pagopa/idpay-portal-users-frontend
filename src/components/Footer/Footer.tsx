@@ -6,7 +6,7 @@ const FOOTER_LINKS = {
     PRIVACY: '',
     PERSONAL_DATA: 'https://privacyportal-de.onetrust.com/webform/77f17844-04c3-4969-a11d-462ee77acbe1/9ab6533d-be4a-482e-929a-0d8d2ab29df8',
     TERMS_AND_CONDITIONS: '',
-    A11Y: 'https://form.agid.gov.it/view/c74d0770-9799-11f0-b583-8b5f76942354'
+    A11Y: 'https://form.agid.gov.it/view/9b5c6ed0-bbbb-11f0-a7e5-9bac06d781c9'
 } as const;
 
 const openExternalLink = (url: string) => window.open(url, '_blank')?.focus();

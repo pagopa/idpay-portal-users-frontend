@@ -19,9 +19,9 @@ const AssistancePage = () => {
             <Box
                 sx={{
                     flex: 1,
-                    px: {md: 16, sm: 8, xs: 8},
-                    py: {md: 16, sm: 8, xs: 8},
-                    mx: {md: 24, sm: 8, xs: 8},
+                    px: {md: "23%", sm: 2, xs: 2},
+                    py: {md: 8, sm: 6, xs: 2},
+                    mx: {md: 0, sm: 1, xs: 0},
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
