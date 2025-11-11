@@ -10,6 +10,7 @@ import {OnboardingWebApi} from "../../api/onboardingWebApiClient.ts";
 import {storageTokenOps} from "@pagopa/selfcare-common-frontend/lib/utils/storage";
 import {parseJwt} from "../../utils/functions.ts";
 import {SupportResponseDTO} from "../../api/generated/onboarding-web/SupportResponseDTO.ts";
+import { useEmailAssistanceStore } from '../../hooks/useEmailAssistanceStore.tsx';
 
 const AssistanceEmailForm = () => {
     const {t} = useTranslation();
@@ -17,8 +18,9 @@ const AssistanceEmailForm = () => {
     const initiativeId = getInitiativeId();
     const token = storageTokenOps.read();
     const jwtUser = parseJwt(token);
+    const { email } = useEmailAssistanceStore()
 
-    const [emailInput, setEmailInput] = useState(jwtUser?.email || '');
+    const [emailInput, setEmailInput] = useState(email || '');
     const [confirmEmailInput, setConfirmEmailInput] = useState('');
     const [showErrors, setShowErrors] = useState(false);
     const [touched, setTouched] = useState({email: false, confirm: false});
