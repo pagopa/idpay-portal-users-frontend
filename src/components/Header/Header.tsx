@@ -49,6 +49,7 @@ export const Header = (props: HeaderProps) => {
         enableLogin={isAuthenticated}
         loggedUser={isAuthenticated ? authUser : undefined}
         onAssistanceClick={onAssistanceClick}
+        enableAssistanceButton={isAuthenticated}
         onLogout={logout}
       />
       <HeaderProduct
