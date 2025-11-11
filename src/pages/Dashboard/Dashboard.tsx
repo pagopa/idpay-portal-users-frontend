@@ -16,12 +16,14 @@ import { getInitiativeId } from '../../utils/env';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import DashboardDropdownMenu from '../../components/Dashboard/DashboardDropdownMenu';
 import FAQSection from '../../components/FAQSection/FAQSection';
+import { useEmailAssistanceStore } from '../../hooks/useEmailAssistanceStore';
 
 interface BonusDetail {
   voucherStatus: VoucherStatusEnum;
   voucherStartDate: string;
   voucherEndDate: string;
   amountCents: number;
+  userMail: string;
 }
 
 interface TimelineItem {
@@ -40,7 +42,8 @@ const Dashboard = () => {
   const [trxCode, setTrxCode] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [collapsed, setCollapsed] = useState(false);
-  const isMobile = useIsMobile()
+  const isMobile = useIsMobile();
+  const { setEmail } = useEmailAssistanceStore();
 
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -71,7 +74,8 @@ const Dashboard = () => {
         const detailResponse = await OnboardingWebApi.getBonusDetail(initiativeId);
         const detailData = detailResponse.data as unknown as BonusDetail;
         setBonusData(detailData);
-
+        setEmail(detailData?.userMail || "")
+        
         if (
           detailData?.voucherStatus === VoucherStatusEnum.ACTIVE ||
           detailData?.voucherStatus === VoucherStatusEnum.EXPIRING
