@@ -44,15 +44,18 @@ const UpcomingInitiative = () => {
             sx={{
               width: '100%',
               textAlign: 'center',
+              mb: 4,
             }}
             gutterBottom
           >
             {t('upcomingInitiative.title')}
           </Typography>
-          <Typography variant="body1" mb={3}>
+          <Typography variant="body1" mb={3} sx={{whiteSpace: "pre-line"}}>
             {t('upcomingInitiative.preSubtitle')}
             <strong>{t('upcomingInitiative.boldSubtitle')}</strong>
             {t('upcomingInitiative.postSubtitle')}
+            <strong>{t('upcomingInitiative.secondBold')}</strong>
+            {t('upcomingInitiative.thirdSubtitle')}
           </Typography>
         </Box>
 
