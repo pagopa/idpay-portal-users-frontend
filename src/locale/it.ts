@@ -84,9 +84,11 @@ const it = {
   },
   "upcomingInitiative": {
     "title": "Ci siamo quasi!",
-    "preSubtitle": "Il portale ",
+    "preSubtitle": "Potrai richiedere il ",
     "boldSubtitle": "Bonus Elettrodomestici ",
-    "postSubtitle": "sarà presto disponibile: ancora un po’ di pazienza e potrai accedere al servizio.",
+    "postSubtitle": "a partire dalle ",
+    "secondBold": "ore 7:00 del 18 novembre 2025. ",
+    "thirdSubtitle": "\nAncora un po’ di pazienza!",
     "withIO": "Con IO è tutto più semplice",
     "descriptionWithIO": "Gestisci tutto in un posto: richiedi il bonus, ricevi l’esito della richiesta e usa il bonus. Più veloce, più comodo.",
     "downloadIO": "Scarica l'app"
@@ -115,7 +117,7 @@ const it = {
       },
       "element4": {
         "title": "Come si usa?",
-        "description": "Puoi usare il bonus <bold>entro 15 giorni</bold> da quando ricevi il messaggio di conferma dell’attivazione, e comunque entro il 31/12/2025.<br/>Nei negozi fisici: accedi a IO e mostra il codice a barre.<br/> Online: usa l’app per generare e usare lo sconto.",
+        "description": "Puoi usare il bonus <bold>entro 15 giorni</bold> da quando ricevi il messaggio di conferma dell’attivazione.<br/><bold>Nei negozi fisici:</bold> Scarica il codice a barre in questo sito o genera il codice dall’app IO.<br/> <bold>Online:</bold> inserisci il codice generato in questo sito o usa l’app IO per generare e usare lo sconto.",
         "link": "Mostra l’elenco dei negozi"
       }
     },
