@@ -48,6 +48,7 @@ export const Header = (props: HeaderProps) => {
         rootLink={pagopaLink}
         enableLogin={isAuthenticated}
         loggedUser={isAuthenticated ? authUser : undefined}
+        enableAssistanceButton={isAuthenticated}
         onAssistanceClick={onAssistanceClick}
         onLogout={logout}
       />
