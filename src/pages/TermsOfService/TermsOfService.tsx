@@ -1,16 +1,8 @@
-import { useEffect, useState } from 'react';
 import { PrivacyAndTosLayout } from '../../components/PrivacyAndTosLayout/PrivacyAndTosLayout';
+import tos from './tos.json'
 
 const TOS = () => {
-  const [html, setHtml] = useState('');
-
-  useEffect(() => {
-    fetch('/utente/tos.html')
-      .then((res) => res.text())
-      .then((text) => setHtml(text));
-  }, []);
-
-  return <PrivacyAndTosLayout text={html} />
+  return <PrivacyAndTosLayout text={tos.html} />
 };
 
 export default TOS

@@ -1,16 +1,8 @@
-import { useEffect, useState } from 'react';
 import { PrivacyAndTosLayout } from '../../components/PrivacyAndTosLayout/PrivacyAndTosLayout';
+import privacyPolicy from './privacyPolicy.json'
 
 const PrivacyPolicy = () => {
-   const [html, setHtml] = useState('');
-    
-    useEffect(() => {
-      fetch('/utente/privacyPolicy.html')
-        .then((res) => res.text())
-        .then((text) => setHtml(text));
-    }, []);
-
-  return <PrivacyAndTosLayout text={html} />
+  return <PrivacyAndTosLayout text={privacyPolicy.html} />
 };
 
 export default PrivacyPolicy
