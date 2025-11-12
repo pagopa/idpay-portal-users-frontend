@@ -58,10 +58,10 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = () => (
     <Route path={ROUTES.UPCOMING_INITIATIVE} element={<PublicLayout ><UpcomingInitiative /></PublicLayout>} />
 
     {/* terms of service */}
-    <Route path={ROUTES.TERMS_OF_SERVICE} element={<TermsOfService />} />
+    <Route path={ROUTES.TERMS_OF_SERVICE} element={<PublicLayout ><TermsOfService /></PublicLayout>} />
 
     {/* privacy policy */}
-    <Route path={ROUTES.PRIVACY_POLICY} element={<PrivacyPolicy />} />
+    <Route path={ROUTES.PRIVACY_POLICY} element={<PublicLayout ><PrivacyPolicy /></PublicLayout>} />
 
     {/* private route */}
     <Route
@@ -97,7 +97,7 @@ function App() {
   return (
     <>
       <ScrollToTop />
-      <LocalRoutes isMobile={isMobile}/>
+      <LocalRoutes isMobile={isMobile} />
     </>
   );
 }
