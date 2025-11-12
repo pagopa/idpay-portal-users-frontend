@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { PrivacyAndTosLayout } from '../../components/PrivacyAndTosLayout/PrivacyAndTosLayout';
 
