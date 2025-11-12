@@ -206,7 +206,7 @@ stages:
               nodeVersion: $(NODE_VERSION)
           - bash: |
               yarn generate
-              yarn build
+              yarn build --mode $(environment)
             displayName: 'Build files'
             env:
               INLINE_RUNTIME_CHUNK: 'false'
