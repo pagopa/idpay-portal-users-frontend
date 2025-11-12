@@ -16,6 +16,8 @@ import ErrorPage from './pages/ErrorPage/ErrorPage';
 import WaitingPage from './pages/WaitingPage/WaitingPage';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import UpcomingInitiative from "./pages/UpcomingInitiative/UpcomingInitiative.tsx";
+import TermsOfService from './pages/TermsOfService/TermsOfService.tsx';
+import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy.tsx';
 
 const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <Layout hasPadding={false} >
@@ -55,6 +57,12 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = () => (
     {/* upcoming initiative */}
     <Route path={ROUTES.UPCOMING_INITIATIVE} element={<PublicLayout ><UpcomingInitiative /></PublicLayout>} />
 
+    {/* terms of service */}
+    <Route path={ROUTES.TERMS_OF_SERVICE} element={<PublicLayout ><TermsOfService /></PublicLayout>} />
+
+    {/* privacy policy */}
+    <Route path={ROUTES.PRIVACY_POLICY} element={<PublicLayout ><PrivacyPolicy /></PublicLayout>} />
+
     {/* private route */}
     <Route
       path={ROUTES.DASHBOARD}
@@ -89,7 +97,7 @@ function App() {
   return (
     <>
       <ScrollToTop />
-      <LocalRoutes isMobile={isMobile}/>
+      <LocalRoutes isMobile={isMobile} />
     </>
   );
 }
