@@ -18,22 +18,26 @@ let cookieInitializationPromise: Promise<void> | null = null;
 
 const fixOneTrustLinks = () => {
   const linkMap: Record<string, string> = {
-    'informativa-privacy': '/utente/#', //TODO add link
-    'termini-servizio': '/utente/terms-of-service' //TODO add link
+    '/utente/privacy-policy': '/utente/privacy-policy',
+    '/utente/terms-of-service': '/utente/terms-of-service'
   };
 
   const cookiePolicyLinks = document.querySelectorAll('.ot-cookie-policy-link, .privacy-notice-link');
 
   cookiePolicyLinks.forEach((link) => {
     const href = link.getAttribute('href');
-    if (href?.startsWith('https:///')) {
-      const path = href.replace('https:///', '');
-      const fixedHref = linkMap[path] || `/${path}`;
+    if (!href) return;
+
+    try {
+      const url = new URL(href);
+      const path = url.pathname;
+
+      const fixedHref = linkMap[path] || path;
+
       link.setAttribute('href', fixedHref);
-      link.addEventListener('click', (e) => e.preventDefault()); //TODO remove tmp disable click
       link.removeAttribute('target');
       link.removeAttribute('rel');
-    }
+    } catch { }
   });
 };
 
