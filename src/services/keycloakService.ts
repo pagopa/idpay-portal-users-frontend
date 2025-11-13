@@ -40,7 +40,6 @@ export function createKeycloakService(
         onLoad: 'check-sso',
         pkceMethod: 'S256',
         checkLoginIframe: false,
-        silentCheckSsoFallback: false,
         silentCheckSsoRedirectUri: buildFullUrl('/silent-check-sso.html'),
         ...(useBootstrap && savedToken ? { token: savedToken } : {}),
       });
