@@ -185,7 +185,10 @@ export const TOSContent = ({ sectionRefs }: Props) => {
           >
             {t('tos.privacy_part1')}{' '}
             <Link
-              onClick={() => { }}
+              onClick={() => { 
+                const fullUrl = `${getBaseUrl()}/utente${ROUTES.TERMS_OF_SERVICE}`;
+                window.open(fullUrl, '_blank')?.focus();
+              }}
               underline="always"
               component="span"
               sx={{
@@ -199,7 +202,10 @@ export const TOSContent = ({ sectionRefs }: Props) => {
             {' '}{t('tos.privacy_part2')}
             <Link
               component="span"
-              onClick={() => { }}
+              onClick={() => { 
+                const fullUrl = `${getBaseUrl()}/utente${ROUTES.PRIVACY_POLICY}`;
+                window.open(fullUrl, '_blank')?.focus();
+              }}
               underline="always"
               sx={{
                 color: theme.palette.primary.main,
