@@ -31,7 +31,7 @@ const UpcomingInitiative = () => {
         <Box
           sx={{
             flex: 1,
-            width: { md: '25%', sm: '75%', xs: '75%' },
+            width: { xl:'30%', lg:'30%', md: '40%', sm: '60%', xs: '75%' },
             py: {md: 12, sm: 8, xs: 8},
             display: 'flex',
             flexDirection: 'column',
