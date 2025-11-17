@@ -295,7 +295,7 @@ const it = {
     },
     "fifthAccordion": {
       "title": "Quando riceverò l’esito della richiesta?",
-      "description": "Solitamente nel giro di poche ore, ma i tempi possono variare in base al volume delle richieste."
+      "description": "I tempi possono variare da qualche ora a qualche giorno, in base al volume delle richieste."
     },
     "sixthAccordion": {
       "title": "Devo presentare qualche documento al momento dell'acquisto?",
