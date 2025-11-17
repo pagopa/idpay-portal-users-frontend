@@ -1,5 +1,5 @@
 import { Box, Typography, Button } from '@mui/material';
-import HeroBackground from '../../assets/upcomingInitiative.svg';
+import HeroBackground from '../../assets/upcomingInitiative.png';
 
 interface UpcomingHeroSectionProps {
     title: string;
@@ -85,6 +85,7 @@ const UpcomingHeroSection = ({
                     justifyContent: 'center',
                     alignItems: 'flex-end',
                     px: { md: 4, sm: 2, xs: 2 },
+                    pt: {md: 2, sm: 2, xs: 0}
                 }}
             >
                 <Box

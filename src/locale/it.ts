@@ -71,7 +71,7 @@ const it = {
     "loginMethods": "Accedi con SPID o CIE per richiedere il tuo bonus.",
     "continueOnWeb": "Continua sul sito",
     "withIO": "Con IO è tutto più semplice",
-    "descriptionWithIO": "Gestisci tutto in un posto: richiedi il bonus, ricevi l’esito della richiesta e usa il bonus. Più veloce, più comodo.",
+    "descriptionWithIO": "Gestisci tutto in un unico posto: richiedi il bonus, ricevi l’esito della richiesta e usa il bonus. Più veloce, più comodo.",
     "downloadIO": "Scarica IO",
   },
   "assistance": {
@@ -90,7 +90,7 @@ const it = {
     "secondBold": "ore 7:00 del 18 novembre 2025. ",
     "thirdSubtitle": "\nAncora un po’ di pazienza!",
     "withIO": "Con IO è tutto più semplice",
-    "descriptionWithIO": "Gestisci tutto in un posto: richiedi il bonus, ricevi l’esito della richiesta e usa il bonus. Più veloce, più comodo.",
+    "descriptionWithIO": "Gestisci tutto in un unico posto: richiedi il bonus, ricevi l’esito della richiesta e usa il bonus. Più veloce, più comodo.",
     "downloadIO": "Scarica l'app"
   },
   "bonus": "Bonus Elettrodomestici",
@@ -188,7 +188,7 @@ const it = {
     },
     "onEvaluation": {
       "title": "La tua richiesta è in fase di valutazione",
-      "description": "Quando pronto, riceverai l’esito all’indirizzo email  indicato."
+      "description": "Quando pronto, riceverai l’esito all’indirizzo email indicato."
     },
     "familyMember": {
       "title": "Un'altra persona della tua\nfamiglia ha inviato la\nrichiesta",
@@ -295,7 +295,7 @@ const it = {
     },
     "fifthAccordion": {
       "title": "Quando riceverò l’esito della richiesta?",
-      "description": "Solitamente nel giro di poche ore, ma i tempi possono variare in base al volume delle richieste."
+      "description": "I tempi possono variare da qualche ora a qualche giorno, in base al volume delle richieste."
     },
     "sixthAccordion": {
       "title": "Devo presentare qualche documento al momento dell'acquisto?",
