@@ -68,7 +68,9 @@ const it = {
   "landing": {
     "requestBonus": "Richiedi il Bonus Elettrodomestici online",
     "requestBonusMobile": "Accedi al sito Bonus Elettrodomestici",
-    "loginMethods": "Accedi con SPID o CIE per richiedere il tuo bonus.",
+    "loginMethods": "Scegli come accedere per richiedere il tuo bonus.",
+    "continueWithSpidCie": "Continua con SPID o CIE",
+    "continueWithItWallet": "Continua con IT Wallet",
     "continueOnWeb": "Continua sul sito",
     "withIO": "Con IO è tutto più semplice",
     "descriptionWithIO": "Gestisci tutto in un unico posto: richiedi il bonus, ricevi l’esito della richiesta e usa il bonus. Più veloce, più comodo.",

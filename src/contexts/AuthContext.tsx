@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback, useMemo, useRef, type ReactNode } from 'react';
-import { AuthContextType, UserProfile } from '../types/auth';
+import { AuthContextType, LoginMethod, UserProfile } from '../types/auth';
 import { createKeycloakService, type KeycloakService } from '../services/keycloakService';
+import { isMockAuthEnabled } from '../utils/env';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -12,7 +13,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const keycloakServiceRef = useRef<KeycloakService | null>(null);
   const hasInitialized = useRef(false);
-  const isMockMode = import.meta.env.VITE_KEYCLOAK_MOCK_AUTH === 'true';
+  const isMockMode = isMockAuthEnabled();
 
   useEffect(() => {
     const handleTokenUpdate = (newToken: string | null) => {
@@ -73,7 +74,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   }, [setupAuthenticatedState, isMockMode]);
 
-  const login = useCallback(() => {
+  const login = useCallback((method: LoginMethod = 'spid-cie') => {
     if (isMockMode) {
       setIsAuthenticated(true);
       setUser({ name: 'Mock User', email: 'test@test.it' });
@@ -81,7 +82,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       return;
     }
 
-    keycloakServiceRef.current?.login();
+    keycloakServiceRef.current?.login(method);
   }, [isMockMode]);
 
   const logout = useCallback(() => {
