@@ -239,6 +239,7 @@ const it = {
     "barcodeSection": {
       "barcodeDescription": "codice a barre",
       "downloadBarcode": "Scarica codice",
+      "addToWallet": "Aggiungi al wallet",
       "showMerchants": "Mostra esercenti"
     },
     "detailBonusSection": {

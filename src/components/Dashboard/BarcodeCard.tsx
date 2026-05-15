@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { downloadFileFromBase64 } from '../../commons/decode';
 import { BARCODE_BREAKPOINTS, getBarcodeWidth } from '../../utils/barcodeResponsiveUtils';
 import { getBaseUrl, getInitiativeId } from '../../utils/env';
+import walletIcon from '../../assets/wallet-icon.svg';
 
 interface BarcodeCardProps {
   trxCode: string;
@@ -71,8 +72,16 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
           }
         </Box>
         <Box mt='auto'>
-          {trxCode && <Box py={1} display='flex' justifyContent='center'>
-            <Button disabled={isDownloading} endIcon={<DownloadIcon />} variant='contained' onClick={() => downloadPDF()}>
+          {trxCode && <Box py={1} display='flex' flexDirection='column' alignItems='center'>
+            <Button
+              variant='contained'
+              sx={{ width: 220 }}
+              startIcon={<Box component='img' src={walletIcon} alt='' sx={{ width: 20, height: 20 }} />}
+              onClick={() => console.log('Aggiungi al wallet')}
+            >
+              {t('dashboard.barcodeSection.addToWallet')}
+            </Button>
+            <Button sx={{ mt: 2, width: 220 }} disabled={isDownloading} endIcon={<DownloadIcon />} variant='outlined' onClick={() => downloadPDF()}>
               {t('dashboard.barcodeSection.downloadBarcode')}
             </Button>
           </Box>
