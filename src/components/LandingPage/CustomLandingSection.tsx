@@ -1,5 +1,5 @@
 import { Box, Typography, Button, Card, CardContent, Stack } from '@mui/material';
-import { AccountBalanceWalletOutlined, LanguageOutlined } from '@mui/icons-material';
+import { LanguageOutlined } from '@mui/icons-material';
 import { theme } from '@pagopa/mui-italia';
 import { useTranslation } from 'react-i18next';
 import { useIsMobile } from '../../hooks/useIsMobile';
@@ -7,6 +7,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
 import type { LoginMethod } from '../../types/auth';
+import itWalletIcon from '../../assets/it-wallet-icon.svg';
 
 const CustomLandingSection = () => {
   const { t } = useTranslation();
@@ -67,7 +68,7 @@ const CustomLandingSection = () => {
               {t('landing.continueWithSpidCie')}
             </Button>
             <Button
-              startIcon={<AccountBalanceWalletOutlined />}
+              startIcon={<Box component="img" src={itWalletIcon} alt="" sx={{ width: 20, height: 20 }} />}
               variant="contained"
               fullWidth
               sx={buttonSx}
