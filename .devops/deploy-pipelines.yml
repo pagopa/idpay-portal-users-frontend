@@ -13,6 +13,8 @@ variables:
 
   ${{ if or(startsWith(variables['Build.SourceBranch'], 'refs/heads/uat'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix')) }}:
     environment: 'UAT'
+    # IT Wallet buttons visibility flag
+    vite_it_wallet_enabled: 'true'
     azure_subscription: $(UAT_AZURE_SUBSCRIPTION)
     cdn_endpoint: '$(UAT_CDN_ENDPOINT)'
     cdn_profile: '$(UAT_CDN_PROFILE)'
@@ -52,6 +54,8 @@ variables:
 
   ${{ elseif eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
     environment: 'PROD'
+    # IT Wallet buttons visibility flag
+    vite_it_wallet_enabled: 'true'
     azure_subscription: $(PROD_AZURE_SUBSCRIPTION)
     cdn_endpoint: '$(PROD_CDN_ENDPOINT)'
     cdn_profile: '$(PROD_CDN_PROFILE)'
@@ -94,6 +98,8 @@ variables:
   #  ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/release-dev') }}:
   ${{ else }}:
     environment: 'DEV'
+    # IT Wallet buttons visibility flag
+    vite_it_wallet_enabled: 'false'
     azure_subscription: $(DEV_AZURE_SUBSCRIPTION)
     cdn_endpoint: '$(DEV_CDN_ENDPOINT)'
     cdn_profile: '$(DEV_CDN_PROFILE)'
@@ -221,6 +227,7 @@ stages:
               VITE_URL_API_PORTAL_USERS: '$(vite_url_api_portal_users)'
               VITE_INITIATIVE_ID: '$(vite_initiative_id)'
               VITE_BASE_URL: '$(vite_base_url)'
+              VITE_IT_WALLET_ENABLED: '$(vite_it_wallet_enabled)'
 
               REACT_APP_ONE_TRUST_OTNOTICE_CDN_URL: $(react_app_one_trust_otnotice_cdn_url)
               REACT_APP_ONE_TRUST_OTNOTICE_CDN_SETTINGS: $(react_app_one_trust_otnotice_cdn_settings)

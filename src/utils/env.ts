@@ -25,6 +25,10 @@ const keycloakIdpHints: Record<LoginMethod, { envKey: keyof ImportMetaEnv; fallb
 export const isMockAuthEnabled = (): boolean =>
   getEnvValue('VITE_KEYCLOAK_MOCK_AUTH') === 'true';
 
+// Feature flag to show/hide IT Wallet buttons.
+export const isItWalletEnabled = (): boolean =>
+  getEnvValue('VITE_IT_WALLET_ENABLED') === 'true';
+
 export const getKeycloakIdpHint = (method: LoginMethod): string => {
   const { envKey, fallback } = keycloakIdpHints[method];
   return getEnvValue(envKey) ?? fallback;
