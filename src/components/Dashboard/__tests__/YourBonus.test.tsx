@@ -12,6 +12,7 @@ jest.mock('../../../api/onboardingWebApiClient', () => ({
 jest.mock('../../../utils/env', () => ({
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
   isMockAuthEnabled: () => false,
+  isItWalletEnabled: () => true
 }));
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({

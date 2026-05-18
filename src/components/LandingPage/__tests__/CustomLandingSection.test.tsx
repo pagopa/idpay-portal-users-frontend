@@ -25,6 +25,10 @@ jest.mock('../../../hooks/useIsMobile', () => ({
   useIsMobile: jest.fn(),
 }));
 
+jest.mock('../../../utils/env', () => ({
+  isItWalletEnabled: () => true
+}));
+
 jest.mock('react-router-dom', () => {
   const actual = jest.requireActual('react-router-dom');
   return {

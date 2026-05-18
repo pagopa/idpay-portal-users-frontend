@@ -58,6 +58,7 @@ jest.mock('../hooks/useIsMobile', () => ({
 jest.mock('../utils/env', () => ({
   isMockAuthEnabled: () => false,
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
+  isItWalletEnabled: () => true
 }));
 
 const mockScrollTo = jest.fn();
