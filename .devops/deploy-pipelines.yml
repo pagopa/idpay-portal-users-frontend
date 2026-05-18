@@ -99,7 +99,7 @@ variables:
   ${{ else }}:
     environment: 'DEV'
     # IT Wallet buttons visibility flag
-    vite_it_wallet_enabled: 'false'
+    vite_it_wallet_enabled: 'true'
     azure_subscription: $(DEV_AZURE_SUBSCRIPTION)
     cdn_endpoint: '$(DEV_CDN_ENDPOINT)'
     cdn_profile: '$(DEV_CDN_PROFILE)'
