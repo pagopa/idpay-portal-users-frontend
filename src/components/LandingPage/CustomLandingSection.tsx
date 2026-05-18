@@ -8,12 +8,14 @@ import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
 import type { LoginMethod } from '../../types/auth';
 import itWalletIcon from '../../assets/it-wallet-icon.svg';
+import { isItWalletEnabled } from '../../utils/env';
 
 const CustomLandingSection = () => {
   const { t } = useTranslation();
   const isMobile = useIsMobile();
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const showItWalletButton = isItWalletEnabled();
 
   const handleContinue = (method: LoginMethod) => {
     if (isAuthenticated) {
@@ -67,15 +69,17 @@ const CustomLandingSection = () => {
             >
               {t('landing.continueWithSpidCie')}
             </Button>
-            <Button
-              startIcon={<Box component="img" src={itWalletIcon} alt="" sx={{ width: 20, height: 20 }} />}
-              variant="contained"
-              fullWidth
-              sx={buttonSx}
-              onClick={() => handleContinue('it-wallet')}
-            >
-              {t('landing.continueWithItWallet')}
-            </Button>
+            {showItWalletButton && (
+              <Button
+                startIcon={<Box component="img" src={itWalletIcon} alt="" sx={{ width: 20, height: 20 }} />}
+                variant="contained"
+                fullWidth
+                sx={buttonSx}
+                onClick={() => handleContinue('it-wallet')}
+              >
+                {t('landing.continueWithItWallet')}
+              </Button>
+            )}
           </Stack>
         </CardContent>
       </Card>

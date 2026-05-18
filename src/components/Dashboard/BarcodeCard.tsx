@@ -8,7 +8,7 @@ import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
 import { useState } from 'react';
 import { downloadFileFromBase64 } from '../../commons/decode';
 import { BARCODE_BREAKPOINTS, getBarcodeWidth } from '../../utils/barcodeResponsiveUtils';
-import { getBaseUrl, getInitiativeId } from '../../utils/env';
+import { getBaseUrl, getInitiativeId, isItWalletEnabled } from '../../utils/env';
 import walletIcon from '../../assets/wallet-icon.svg';
 
 interface BarcodeCardProps {
@@ -22,6 +22,7 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
   const isLargeScreen = useMediaQuery(BARCODE_BREAKPOINTS.large);
   const isMediumScreen = useMediaQuery(BARCODE_BREAKPOINTS.medium);
   const isSmallScreen = useMediaQuery(BARCODE_BREAKPOINTS.small);
+  const showItWalletButton = isItWalletEnabled();
 
   const downloadPDF = async () => {
     const initiativeId = getInitiativeId();
@@ -73,15 +74,17 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
         </Box>
         <Box mt='auto'>
           {trxCode && <Box py={1} display='flex' flexDirection='column' alignItems='center'>
-            <Button
-              variant='contained'
-              sx={{ width: 220 }}
-              startIcon={<Box component='img' src={walletIcon} alt='' sx={{ width: 20, height: 20 }} />}
-              onClick={() => console.log('Aggiungi al wallet')}
-            >
-              {t('dashboard.barcodeSection.addToWallet')}
-            </Button>
-            <Button sx={{ mt: 2, width: 220 }} disabled={isDownloading} endIcon={<DownloadIcon />} variant='outlined' onClick={() => downloadPDF()}>
+            {showItWalletButton && (
+              <Button
+                variant='contained'
+                sx={{ width: 220 }}
+                startIcon={<Box component='img' src={walletIcon} alt='' sx={{ width: 20, height: 20 }} />}
+                onClick={() => console.log('Aggiungi al wallet')}
+              >
+                {t('dashboard.barcodeSection.addToWallet')}
+              </Button>
+            )}
+            <Button sx={{ mt: showItWalletButton ? 2 : 0, width: 220 }} disabled={isDownloading} endIcon={<DownloadIcon />} variant='outlined' onClick={() => downloadPDF()}>
               {t('dashboard.barcodeSection.downloadBarcode')}
             </Button>
           </Box>
