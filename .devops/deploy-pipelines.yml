@@ -14,7 +14,7 @@ variables:
   ${{ if or(startsWith(variables['Build.SourceBranch'], 'refs/heads/uat'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix')) }}:
     environment: 'UAT'
     # IT Wallet buttons visibility flag
-    vite_it_wallet_enabled: 'true'
+    vite_it_wallet_enabled: 'false'
     azure_subscription: $(UAT_AZURE_SUBSCRIPTION)
     cdn_endpoint: '$(UAT_CDN_ENDPOINT)'
     cdn_profile: '$(UAT_CDN_PROFILE)'
@@ -55,7 +55,7 @@ variables:
   ${{ elseif eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
     environment: 'PROD'
     # IT Wallet buttons visibility flag
-    vite_it_wallet_enabled: 'true'
+    vite_it_wallet_enabled: 'false'
     azure_subscription: $(PROD_AZURE_SUBSCRIPTION)
     cdn_endpoint: '$(PROD_CDN_ENDPOINT)'
     cdn_profile: '$(PROD_CDN_PROFILE)'
@@ -99,7 +99,7 @@ variables:
   ${{ else }}:
     environment: 'DEV'
     # IT Wallet buttons visibility flag
-    vite_it_wallet_enabled: 'false'
+    vite_it_wallet_enabled: 'true'
     azure_subscription: $(DEV_AZURE_SUBSCRIPTION)
     cdn_endpoint: '$(DEV_CDN_ENDPOINT)'
     cdn_profile: '$(DEV_CDN_PROFILE)'

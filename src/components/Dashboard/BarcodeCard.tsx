@@ -84,7 +84,13 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
                 {t('dashboard.barcodeSection.addToWallet')}
               </Button>
             )}
-            <Button sx={{ mt: showItWalletButton ? 2 : 0, width: 220 }} disabled={isDownloading} endIcon={<DownloadIcon />} variant='outlined' onClick={() => downloadPDF()}>
+            <Button
+              sx={{ mt: showItWalletButton ? 2 : 0, width: 220 }}
+              disabled={isDownloading}
+              endIcon={<DownloadIcon />}
+              variant={showItWalletButton ? 'outlined' : 'contained'}
+              onClick={() => downloadPDF()}
+            >
               {t('dashboard.barcodeSection.downloadBarcode')}
             </Button>
           </Box>
