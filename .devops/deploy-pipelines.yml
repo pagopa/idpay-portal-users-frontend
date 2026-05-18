@@ -11,7 +11,7 @@ variables:
   # global variables
   react_app_pagopa_help_email: '$(REACT_APP_ASSISTANCE_EMAIL)'
   # IT Wallet buttons visibility flag
-  DEV_VITE_IT_WALLET_ENABLED: 'true'
+  DEV_VITE_IT_WALLET_ENABLED: 'false'
   UAT_VITE_IT_WALLET_ENABLED: 'false'
   PROD_VITE_IT_WALLET_ENABLED: 'false'
 
