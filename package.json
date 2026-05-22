@@ -48,6 +48,7 @@
     "react-dropzone": "^14.3.8",
     "react-i18next": "11",
     "react-oidc-context": "^3.3.0",
+    "react-qr-code": "^2.0.21",
     "react-router-dom": "^7.6.3",
     "react-scripts": "5.0.0",
     "ts-jest": "^29.4.0",
