@@ -14,10 +14,15 @@ variables:
   DEV_VITE_IT_WALLET_ENABLED: 'true'
   UAT_VITE_IT_WALLET_ENABLED: 'false'
   PROD_VITE_IT_WALLET_ENABLED: 'false'
+  # IT Wallet deep link
+  DEV_IT_WALLET_DEEPLINK: 'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fio-d-itn-wallet-issuer-func-01.azurewebsites.net%22%2C%22credential_configuration_ids%22%3A%5B%22dc_sd_jwt_PariBonus%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%22scope%22%3A%22PariBonus%22%7D%7D%7D'
+  UAT_IT_WALLET_DEEPLINK: 'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fio-d-itn-wallet-issuer-func-01.azurewebsites.net%22%2C%22credential_configuration_ids%22%3A%5B%22dc_sd_jwt_PariBonus%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%22scope%22%3A%22PariBonus%22%7D%7D%7D'
+  PROD_IT_WALLET_DEEPLINK: 'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fio-d-itn-wallet-issuer-func-01.azurewebsites.net%22%2C%22credential_configuration_ids%22%3A%5B%22dc_sd_jwt_PariBonus%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%22scope%22%3A%22PariBonus%22%7D%7D%7D'
 
   ${{ if or(startsWith(variables['Build.SourceBranch'], 'refs/heads/uat'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix')) }}:
     environment: 'UAT'
     vite_it_wallet_enabled: '$(UAT_VITE_IT_WALLET_ENABLED)'
+    vite_it_wallet_deeplink: '$(UAT_IT_WALLET_DEEPLINK)'
     azure_subscription: $(UAT_AZURE_SUBSCRIPTION)
     cdn_endpoint: '$(UAT_CDN_ENDPOINT)'
     cdn_profile: '$(UAT_CDN_PROFILE)'
@@ -58,6 +63,7 @@ variables:
   ${{ elseif eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
     environment: 'PROD'
     vite_it_wallet_enabled: '$(PROD_VITE_IT_WALLET_ENABLED)'
+    vite_it_wallet_deeplink: '$(PROD_IT_WALLET_DEEPLINK)'
     azure_subscription: $(PROD_AZURE_SUBSCRIPTION)
     cdn_endpoint: '$(PROD_CDN_ENDPOINT)'
     cdn_profile: '$(PROD_CDN_PROFILE)'
@@ -101,6 +107,7 @@ variables:
   ${{ else }}:
     environment: 'DEV'
     vite_it_wallet_enabled: '$(DEV_VITE_IT_WALLET_ENABLED)'
+    vite_it_wallet_deeplink: '$(DEV_IT_WALLET_DEEPLINK)'
     azure_subscription: $(DEV_AZURE_SUBSCRIPTION)
     cdn_endpoint: '$(DEV_CDN_ENDPOINT)'
     cdn_profile: '$(DEV_CDN_PROFILE)'
@@ -229,6 +236,7 @@ stages:
               VITE_INITIATIVE_ID: '$(vite_initiative_id)'
               VITE_BASE_URL: '$(vite_base_url)'
               VITE_IT_WALLET_ENABLED: '$(vite_it_wallet_enabled)'
+              VITE_IT_WALLET_DEEPLINK: '$(vite_it_wallet_deeplink)'
 
               REACT_APP_ONE_TRUST_OTNOTICE_CDN_URL: $(react_app_one_trust_otnotice_cdn_url)
               REACT_APP_ONE_TRUST_OTNOTICE_CDN_SETTINGS: $(react_app_one_trust_otnotice_cdn_settings)

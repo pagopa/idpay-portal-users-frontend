@@ -2,6 +2,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_BASE_URL?: string;
+  readonly VITE_IT_WALLET_DEEPLINK?: string;
   readonly VITE_IT_WALLET_ENABLED?: string;
   readonly VITE_INITIATIVE_ID?: string;
   readonly VITE_KEYCLOAK_CLIENT_ID: string;

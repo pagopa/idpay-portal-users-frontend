@@ -39,3 +39,6 @@ export const getInitiativeId = (): string =>
 
 export const getBaseUrl = (): string =>
   import.meta.env.VITE_BASE_URL as string;
+
+export const getItWalletDeepLink = (): string =>
+  getEnvValue('VITE_IT_WALLET_DEEPLINK') ?? '';
