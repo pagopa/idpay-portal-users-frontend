@@ -8,8 +8,9 @@ import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
 import { useState } from 'react';
 import { downloadFileFromBase64 } from '../../commons/decode';
 import { BARCODE_BREAKPOINTS, getBarcodeWidth } from '../../utils/barcodeResponsiveUtils';
-import { getBaseUrl, getInitiativeId, isItWalletEnabled } from '../../utils/env';
+import { getBaseUrl, getInitiativeId, getItWalletDeepLink, isItWalletEnabled } from '../../utils/env';
 import walletIcon from '../../assets/wallet-icon.svg';
+import ItWalletQrModal from './ItWalletQrModal';
 
 interface BarcodeCardProps {
   trxCode: string;
@@ -18,11 +19,23 @@ interface BarcodeCardProps {
 const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
   const { t } = useTranslation();
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isWalletQrModalOpen, setIsWalletQrModalOpen] = useState(false);
 
   const isLargeScreen = useMediaQuery(BARCODE_BREAKPOINTS.large);
   const isMediumScreen = useMediaQuery(BARCODE_BREAKPOINTS.medium);
   const isSmallScreen = useMediaQuery(BARCODE_BREAKPOINTS.small);
   const showItWalletButton = isItWalletEnabled();
+  const walletDeepLink = getItWalletDeepLink();
+  const isMobileDevice = /android|iphone|ipad|ipod/i.test(navigator.userAgent || navigator.vendor || '');
+
+  const handleAddToWallet = () => {
+    if (isMobileDevice) {
+      window.location.href = walletDeepLink;
+      return;
+    }
+
+    setIsWalletQrModalOpen(true);
+  };
 
   const downloadPDF = async () => {
     const initiativeId = getInitiativeId();
@@ -79,7 +92,7 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
                 variant='contained'
                 sx={{ width: 220 }}
                 startIcon={<Box component='img' src={walletIcon} alt='' sx={{ width: 20, height: 20 }} />}
-                onClick={() => console.log('Aggiungi al wallet')}
+                onClick={handleAddToWallet}
               >
                 {t('dashboard.barcodeSection.addToWallet')}
               </Button>
@@ -108,6 +121,11 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
           </Box>
         </Box>
       </CardContent>
+      <ItWalletQrModal
+        open={isWalletQrModalOpen}
+        onClose={() => setIsWalletQrModalOpen(false)}
+        deepLink={walletDeepLink}
+      />
     </Card>
   );
 };
