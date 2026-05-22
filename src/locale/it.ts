@@ -240,7 +240,9 @@ const it = {
       "barcodeDescription": "codice a barre",
       "downloadBarcode": "Scarica codice",
       "addToWallet": "Aggiungi al wallet",
-      "showMerchants": "Mostra esercenti"
+      "showMerchants": "Mostra esercenti",
+      "walletModalTitle": "Entra con IT-Wallet",
+      "walletModalDescription": "Usa la sezione ‘Inquadra’ di app <bold>IO - l’app dei servizi pubblici</bold>, oppure la fotocamera del tuo dispositivo, per scansionare il QR Code e accedere ai servizi.",
     },
     "detailBonusSection": {
       "bonusDetail": "dettagli del Bonus",
