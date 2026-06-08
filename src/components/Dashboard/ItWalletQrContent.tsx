@@ -1,13 +1,15 @@
 import { Box, Typography } from '@mui/material';
 import QRCode from 'react-qr-code';
+import type { ReactNode } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import walletIconBlue from '../../assets/wallet-icon-blue.svg';
 
 type Props = {
   deepLink: string;
+  actionSlot?: ReactNode;
 };
 
-const ItWalletQrContent = ({ deepLink }: Props) => {
+const ItWalletQrContent = ({ deepLink, actionSlot }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -21,6 +23,8 @@ const ItWalletQrContent = ({ deepLink }: Props) => {
           components={{ bold: <Box component='span' fontWeight={700} /> }}
         />
       </Typography>
+
+      {actionSlot && <Box mb={3}>{actionSlot}</Box>}
 
       <Box sx={{ width: 220, height: 220, mx: 'auto', bgcolor: 'white', p: 1, position: 'relative' }}>
         <QRCode

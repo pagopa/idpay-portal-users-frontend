@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { downloadFileFromBase64 } from '../../commons/decode';
 import { BARCODE_BREAKPOINTS, getBarcodeWidth } from '../../utils/barcodeResponsiveUtils';
 import { getBaseUrl, getInitiativeId, getItWalletDeepLink, isItWalletEnabled } from '../../utils/env';
+import { openUrlWithStoreFallback } from '../../utils/itWallet';
 import walletIcon from '../../assets/wallet-icon.svg';
 import ItWalletQrModal from './ItWalletQrModal';
 
@@ -30,7 +31,7 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
 
   const handleAddToWallet = () => {
     if (isMobileDevice) {
-      window.location.href = walletDeepLink;
+      openUrlWithStoreFallback(walletDeepLink);
       return;
     }
 
@@ -54,7 +55,7 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
   }
 
   return (
-    <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}>
       <CardContent>
         <Typography variant='overline'>
           {t('dashboard.barcodeSection.barcodeDescription')}
