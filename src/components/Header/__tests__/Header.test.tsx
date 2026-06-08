@@ -111,7 +111,7 @@ describe('Header', () => {
         expect(el).toHaveAttribute('data-enable-login', 'false');
         expect(el).toHaveAttribute('data-has-logged-user', 'false');
         expect(el).toHaveAttribute('data-has-onlogout', 'false');
-        expect(el).toHaveAttribute('data-has-onassistance', 'false');
+        expect(el).toHaveAttribute('data-has-onassistance', 'true');
         expect(screen.queryByTestId('HeaderProduct')).not.toBeInTheDocument();
     });
 });

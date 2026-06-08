@@ -5,7 +5,7 @@ import BarcodeCard from '../BarcodeCard';
 jest.mock('../../../utils/env', () => ({
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
   getBaseUrl: () => 'https://www.google.com',
-  isItWalletEnabled: () => true,
+  isItWalletEnabled: jest.fn(() => true),
   getItWalletDeepLink: () => 'openid4vp://test'
 }));
 
@@ -40,6 +40,12 @@ const mockDownloadFileFromBase64 = jest.fn();
 jest.mock('../../../commons/decode', () => ({
   downloadFileFromBase64: (...args: any[]) => mockDownloadFileFromBase64(...args),
 }));
+
+jest.mock('../ItWalletQrModal', () => {
+  return function MockItWalletQrModal({ open, deepLink }: { open: boolean; deepLink: string }) {
+    return open ? <div data-testid="wallet-modal">{deepLink}</div> : null;
+  };
+});
 
 describe('BarcodeCard – download flow', () => {
   beforeEach(() => {
@@ -151,6 +157,18 @@ describe('BarcodeCard', () => {
     expect(mockWindowOpen).toHaveBeenCalledWith('https://www.google.com/lista-punti-vendita', '_blank');
   });
 
+  test('desktop add to wallet opens the modal', () => {
+    const trxCode = '2lezemi4';
+    setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126.0 Safari/537.36');
+
+    render(<BarcodeCard trxCode={trxCode} />);
+
+    const addToWalletButton = screen.getByRole('button', { name: /dashboard.barcodeSection.addToWallet/i });
+    fireEvent.click(addToWalletButton);
+
+    expect(screen.getByTestId('wallet-modal')).toHaveTextContent('openid4vp://test');
+  });
+
   test('add to wallet on mobile opens the deep link with fallback', () => {
     const { openUrlWithStoreFallback } = jest.requireMock('../../../utils/itWallet');
     const trxCode = '2lezemi4';
@@ -162,6 +180,23 @@ describe('BarcodeCard', () => {
     fireEvent.click(addToWalletButton);
 
     expect(openUrlWithStoreFallback).toHaveBeenCalledWith('openid4vp://test');
+  });
+
+  test('does not render add to wallet button when it wallet is disabled', () => {
+    const { isItWalletEnabled } = jest.requireMock('../../../utils/env');
+    isItWalletEnabled.mockReturnValue(false);
+
+    render(<BarcodeCard trxCode='2lezemi4' />);
+
+    expect(screen.queryByRole('button', { name: /dashboard.barcodeSection.addToWallet/i })).not.toBeInTheDocument();
+  });
+
+  test('renders preparing state when trxCode is missing', () => {
+    render(<BarcodeCard trxCode='' />);
+
+    expect(screen.getByText('Stiamo preparando il tuo barcode.')).toBeInTheDocument();
+    expect(screen.getByText('Puoi provare ad aggiornarne lo stato tra qualche istante.')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /dashboard.barcodeSection.addToWallet/i })).not.toBeInTheDocument();
   });
 
   test('renders with different trxCode values', () => {
