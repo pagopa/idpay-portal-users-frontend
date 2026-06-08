@@ -13,6 +13,7 @@ const ROUTES = {
     UPCOMING_INITIATIVE: "/iniziativa-in-arrivo",
     TERMS_OF_SERVICE: "/terms-of-service",
     PRIVACY_POLICY: "/privacy-policy",
+    IT_WALLET_ACCESS: "/it-wallet-access"
 };
 
 export default ROUTES;

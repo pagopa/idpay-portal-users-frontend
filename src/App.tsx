@@ -18,9 +18,22 @@ import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import UpcomingInitiative from "./pages/UpcomingInitiative/UpcomingInitiative.tsx";
 import TermsOfService from './pages/TermsOfService/TermsOfService.tsx';
 import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy.tsx';
+import ItWalletQrPage from './pages/ItWalletQrPage/ItWalletQrPage.tsx';
 
 const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <Layout hasPadding={false} >
+    {children}
+  </Layout>
+);
+
+const ItWalletLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <Layout
+    hasPadding={false}
+    showFooter={false}
+    showHeaderProduct={false}
+    showUserActions={false}
+    bodyOverflow="hidden"
+  >
     {children}
   </Layout>
 );
@@ -62,6 +75,9 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = () => (
 
     {/* privacy policy */}
     <Route path={ROUTES.PRIVACY_POLICY} element={<PublicLayout ><PrivacyPolicy /></PublicLayout>} />
+
+    {/* IT Wallet access public page */}
+    <Route path={ROUTES.IT_WALLET_ACCESS} element={<ItWalletLayout><ItWalletQrPage /></ItWalletLayout>} />
 
     {/* private route */}
     <Route
