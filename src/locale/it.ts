@@ -241,6 +241,8 @@ const it = {
       "downloadBarcode": "Scarica codice",
       "addToWallet": "Aggiungi al wallet",
       "showMerchants": "Mostra esercenti",
+      "walletAccessOpenApp": "Apri l'app",
+      "walletAccessOr": "oppure",
       "walletModalTitle": "Entra con IT-Wallet",
       "walletModalDescription": "Usa la sezione ‘Inquadra’ di app <bold>IO - l’app dei servizi pubblici</bold>, oppure la fotocamera del tuo dispositivo, per scansionare il QR Code e accedere ai servizi.",
     },
