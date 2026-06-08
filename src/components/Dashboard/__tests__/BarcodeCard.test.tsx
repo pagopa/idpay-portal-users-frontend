@@ -9,6 +9,10 @@ jest.mock('../../../utils/env', () => ({
   getItWalletDeepLink: () => 'openid4vp://test'
 }));
 
+jest.mock('../../../utils/itWallet', () => ({
+  openUrlWithStoreFallback: jest.fn(),
+}));
+
 jest.mock('react-barcode', () => {
   return function MockBarcode({ value }: { value: string }) {
     return <div data-testid="barcode" data-value={value}>Mock Barcode: {value}</div>;
@@ -91,8 +95,22 @@ describe('BarcodeCard – download flow', () => {
 });
 
 describe('BarcodeCard', () => {
+  const originalUserAgent = window.navigator.userAgent;
+
+  const setUserAgent = (ua: string) => {
+    Object.defineProperty(window.navigator, 'userAgent', {
+      value: ua,
+      configurable: true,
+    });
+  };
+
   beforeEach(() => {
     jest.clearAllMocks();
+    setUserAgent(originalUserAgent);
+  });
+
+  afterAll(() => {
+    setUserAgent(originalUserAgent);
   });
 
   test('renders barcode when trxCode is provided', () => {
@@ -131,6 +149,19 @@ describe('BarcodeCard', () => {
     fireEvent.click(showMerchantsButton);
 
     expect(mockWindowOpen).toHaveBeenCalledWith('https://www.google.com/lista-punti-vendita', '_blank');
+  });
+
+  test('add to wallet on mobile opens the deep link with fallback', () => {
+    const { openUrlWithStoreFallback } = jest.requireMock('../../../utils/itWallet');
+    const trxCode = '2lezemi4';
+    setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 Version/16.0 Mobile/15E148 Safari/604.1');
+
+    render(<BarcodeCard trxCode={trxCode} />);
+
+    const addToWalletButton = screen.getByRole('button', { name: /dashboard.barcodeSection.addToWallet/i });
+    fireEvent.click(addToWalletButton);
+
+    expect(openUrlWithStoreFallback).toHaveBeenCalledWith('openid4vp://test');
   });
 
   test('renders with different trxCode values', () => {

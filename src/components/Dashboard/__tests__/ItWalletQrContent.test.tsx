@@ -23,4 +23,15 @@ describe('ItWalletQrContent', () => {
     expect(screen.getByText('dashboard.barcodeSection.walletModalDescription')).toBeInTheDocument();
     expect(screen.getByTestId('qr-code')).toHaveAttribute('data-value', 'openid4vp://test');
   });
+
+  test('renders action slot before the qr code when provided', () => {
+    render(
+      <ItWalletQrContent
+        deepLink='openid4vp://test'
+        actionSlot={<button type='button'>Apri l'app</button>}
+      />
+    );
+
+    expect(screen.getByRole('button', { name: "Apri l'app" })).toBeInTheDocument();
+  });
 });
