@@ -12,13 +12,19 @@ import ROUTES from '../../routes';
 
 export type HeaderProps = {
   onAssistanceClick?: () => void;
+  showProduct?: boolean;
+  showUserActions?: boolean;
 };
 
 export const Header = (props: HeaderProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { isAuthenticated, logout, user } = useAuth();
-  const { onAssistanceClick = () => navigate(ROUTES.ASSISTANCE) } = props;
+  const {
+    onAssistanceClick = () => navigate(ROUTES.ASSISTANCE),
+    showProduct = true,
+    showUserActions = true,
+  } = props;
 
 
   const product: ProductEntity = {
@@ -46,15 +52,13 @@ export const Header = (props: HeaderProps) => {
     <>
       <HeaderAccount
         rootLink={pagopaLink}
-        enableLogin={isAuthenticated}
-        loggedUser={isAuthenticated ? authUser : undefined}
-        onAssistanceClick={onAssistanceClick}
-        enableAssistanceButton={isAuthenticated}
-        onLogout={logout}
+        enableLogin={showUserActions && isAuthenticated}
+        loggedUser={showUserActions && isAuthenticated ? authUser : undefined}
+        onAssistanceClick={showUserActions ? onAssistanceClick : () => undefined}
+        enableAssistanceButton={showUserActions && isAuthenticated}
+        onLogout={showUserActions ? logout : undefined}
       />
-      <HeaderProduct
-        productsList={[product]}
-      />
+      {showProduct && <HeaderProduct productsList={[product]} />}
     </>
   );
 };
