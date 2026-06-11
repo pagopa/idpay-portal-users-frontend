@@ -14,6 +14,7 @@ jest.mock('../../../utils/env', () => ({
 }));
 
 jest.mock('../../../utils/itWallet', () => ({
+  getItWalletStoreUrl: jest.fn(() => 'https://apps.apple.com/it/app/io/id1501681835'),
   navigateToUrl: jest.fn(),
 }));
 
@@ -44,6 +45,10 @@ describe('ItWalletQrPage', () => {
     setUserAgent(originalUserAgent);
   });
 
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   afterAll(() => {
     setUserAgent(originalUserAgent);
   });
@@ -53,11 +58,19 @@ describe('ItWalletQrPage', () => {
     const { navigateToUrl } = jest.requireMock('../../../utils/itWallet');
     getItWalletDeepLink.mockReturnValue('openid-credential-offer://?credential_offer=test');
     setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126.0 Safari/537.36');
+    jest.useFakeTimers();
 
     render(<ItWalletQrPage />);
 
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
+
+    act(() => {
+      jest.advanceTimersByTime(250);
+    });
+
     expect(screen.getByTestId('it-wallet-qr-content')).toBeInTheDocument();
     expect(navigateToUrl).not.toHaveBeenCalled();
+    jest.useRealTimers();
   });
 
   test('on mobile it tries to open the deep link immediately', () => {
@@ -72,7 +85,7 @@ describe('ItWalletQrPage', () => {
     expect(navigateToUrl).toHaveBeenCalledWith('openid-credential-offer://?credential_offer=test');
   });
 
-  test('on mobile it hides the loader after 5 seconds even without a deep link', async () => {
+  test('on mobile it falls back to the store after 6 seconds even without a deep link', async () => {
     const { getItWalletDeepLink } = jest.requireMock('../../../utils/env');
     const { navigateToUrl } = jest.requireMock('../../../utils/itWallet');
     getItWalletDeepLink.mockReturnValue('');
@@ -86,9 +99,10 @@ describe('ItWalletQrPage', () => {
     expect(navigateToUrl).not.toHaveBeenCalled();
 
     await act(async () => {
-      jest.advanceTimersByTime(5000);
+      jest.advanceTimersByTime(6000);
     });
 
     expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+    expect(navigateToUrl).toHaveBeenCalledWith('https://apps.apple.com/it/app/io/id1501681835');
   });
 });
