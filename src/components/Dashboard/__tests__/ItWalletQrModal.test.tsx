@@ -10,14 +10,14 @@ jest.mock('../ItWalletQrContent', () => {
 
 describe('ItWalletQrModal', () => {
   test('renders content when open', () => {
-    render(<ItWalletQrModal open onClose={jest.fn()} deepLink='openid4vp://test' />);
+    render(<ItWalletQrModal open onClose={jest.fn()} deepLink='openid-credential-offer://?credential_offer=test' />);
 
-    expect(screen.getByTestId('it-wallet-qr-content')).toHaveAttribute('data-deeplink', 'openid4vp://test');
+    expect(screen.getByTestId('it-wallet-qr-content')).toHaveAttribute('data-deeplink', 'openid-credential-offer://?credential_offer=test');
   });
 
   test('calls onClose when close button is clicked', () => {
     const onClose = jest.fn();
-    render(<ItWalletQrModal open onClose={onClose} deepLink='openid4vp://test' />);
+    render(<ItWalletQrModal open onClose={onClose} deepLink='openid-credential-offer://?credential_offer=test' />);
 
     fireEvent.click(screen.getByRole('button'));
     expect(onClose).toHaveBeenCalledTimes(1);

@@ -13,7 +13,7 @@ jest.mock('../../../utils/env', () => ({
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
   isMockAuthEnabled: () => false,
   isItWalletEnabled: () => true,
-  getItWalletDeepLink: () => 'openid4vp://test'
+  getItWalletDeepLink: () => 'openid-credential-offer://?credential_offer=test'
 }));
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({

@@ -17,17 +17,17 @@ jest.mock('react-qr-code', () => {
 
 describe('ItWalletQrContent', () => {
   test('renders title, description and qr code', () => {
-    render(<ItWalletQrContent deepLink='openid4vp://test' />);
+    render(<ItWalletQrContent deepLink='openid-credential-offer://?credential_offer=test' />);
 
     expect(screen.getByText('dashboard.barcodeSection.walletModalTitle')).toBeInTheDocument();
     expect(screen.getByText('dashboard.barcodeSection.walletModalDescription')).toBeInTheDocument();
-    expect(screen.getByTestId('qr-code')).toHaveAttribute('data-value', 'openid4vp://test');
+    expect(screen.getByTestId('qr-code')).toHaveAttribute('data-value', 'openid-credential-offer://?credential_offer=test');
   });
 
   test('renders action slot before the qr code when provided', () => {
     render(
       <ItWalletQrContent
-        deepLink='openid4vp://test'
+        deepLink='openid-credential-offer://?credential_offer=test'
         actionSlot={<button type='button'>Apri l'app</button>}
       />
     );

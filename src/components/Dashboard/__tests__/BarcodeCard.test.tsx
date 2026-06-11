@@ -6,7 +6,7 @@ jest.mock('../../../utils/env', () => ({
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
   getBaseUrl: () => 'https://www.google.com',
   isItWalletEnabled: jest.fn(() => true),
-  getItWalletDeepLink: () => 'openid4vp://test'
+  getItWalletDeepLink: () => 'openid-credential-offer://?credential_offer=test'
 }));
 
 jest.mock('../../../utils/itWallet', () => ({
@@ -166,7 +166,7 @@ describe('BarcodeCard', () => {
     const addToWalletButton = screen.getByRole('button', { name: /dashboard.barcodeSection.addToWallet/i });
     fireEvent.click(addToWalletButton);
 
-    expect(screen.getByTestId('wallet-modal')).toHaveTextContent('openid4vp://test');
+    expect(screen.getByTestId('wallet-modal')).toHaveTextContent('openid-credential-offer://?credential_offer=test');
   });
 
   test('add to wallet on mobile opens the deep link with fallback', () => {
@@ -179,7 +179,7 @@ describe('BarcodeCard', () => {
     const addToWalletButton = screen.getByRole('button', { name: /dashboard.barcodeSection.addToWallet/i });
     fireEvent.click(addToWalletButton);
 
-    expect(openUrlWithStoreFallback).toHaveBeenCalledWith('openid4vp://test');
+    expect(openUrlWithStoreFallback).toHaveBeenCalledWith('openid-credential-offer://?credential_offer=test');
   });
 
   test('does not render add to wallet button when it wallet is disabled', () => {

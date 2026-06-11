@@ -90,7 +90,7 @@ describe('openUrlWithStoreFallback', () => {
   });
 
   test('opens the fallback store url with window.open when the timeout expires', () => {
-    openUrlWithStoreFallback('openid4vp://test', 'https://apps.apple.com/it/app/io/id1501681835');
+    openUrlWithStoreFallback('openid-credential-offer://?credential_offer=test', 'https://apps.apple.com/it/app/io/id1501681835');
 
     jest.advanceTimersByTime(1800);
 
