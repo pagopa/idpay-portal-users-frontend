@@ -15,8 +15,7 @@ variables:
   UAT_VITE_IT_WALLET_ENABLED: 'false'
   PROD_VITE_IT_WALLET_ENABLED: 'false'
   # IT Wallet deep link
-  #DEV_IT_WALLET_DEEPLINK: 'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fio-d-itn-wallet-issuer-func-01.azurewebsites.net%22%2C%22credential_configuration_ids%22%3A%5B%22dc_sd_jwt_PariBonus%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%22scope%22%3A%22PariBonus%22%7D%7D%7D'
-  DEV_IT_WALLET_DEEPLINK: 'geo:38.1157,13.3615?q=Palermo'
+  DEV_IT_WALLET_DEEPLINK: 'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fio-d-itn-wallet-issuer-func-01.azurewebsites.net%22%2C%22credential_configuration_ids%22%3A%5B%22dc_sd_jwt_PariBonus%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%22scope%22%3A%22PariBonus%22%7D%7D%7D'
   UAT_IT_WALLET_DEEPLINK: 'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fio-d-itn-wallet-issuer-func-01.azurewebsites.net%22%2C%22credential_configuration_ids%22%3A%5B%22dc_sd_jwt_PariBonus%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%22scope%22%3A%22PariBonus%22%7D%7D%7D'
   PROD_IT_WALLET_DEEPLINK: 'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fio-d-itn-wallet-issuer-func-01.azurewebsites.net%22%2C%22credential_configuration_ids%22%3A%5B%22dc_sd_jwt_PariBonus%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%22scope%22%3A%22PariBonus%22%7D%7D%7D'
 
