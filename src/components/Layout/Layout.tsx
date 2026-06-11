@@ -8,6 +8,7 @@ import { Footer } from '../Footer/Footer';
 type LayoutProps = {
   children: React.ReactNode;
   hasPadding?: boolean;
+  showHeader?: boolean;
   showFooter?: boolean;
   showHeaderProduct?: boolean;
   showUserActions?: boolean;
@@ -17,6 +18,7 @@ type LayoutProps = {
 const Layout = ({
   children,
   hasPadding = true,
+  showHeader = true,
   showFooter = true,
   showHeaderProduct = true,
   showUserActions = true,
@@ -38,9 +40,11 @@ const Layout = ({
     >
       {loading && <Overlay />}
 
-      <Box component="header" gridArea="header">
-        <Header showProduct={showHeaderProduct} showUserActions={showUserActions} />
-      </Box>
+      {showHeader && (
+        <Box component="header" gridArea="header">
+          <Header showProduct={showHeaderProduct} showUserActions={showUserActions} />
+        </Box>
+      )}
 
       <Box component="main" gridArea="body" display='flex' flexGrow={1} minHeight={0}>
         <Box

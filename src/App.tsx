@@ -26,9 +26,10 @@ const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   </Layout>
 );
 
-const ItWalletLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+const ItWalletLayout: React.FC<{ children: React.ReactNode; showHeader: boolean }> = ({ children, showHeader }) => (
   <Layout
     hasPadding={false}
+    showHeader={showHeader}
     showFooter={false}
     showHeaderProduct={false}
     showUserActions={false}
@@ -49,7 +50,7 @@ const PrivateLayout: React.FC<{
   </ProtectedRoute>
 );
 
-const LocalRoutes: React.FC<{ isMobile: boolean }> = () => (
+const LocalRoutes: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
   <Routes>
     {/* fallback */}
     <Route path="*" element={<PublicLayout ><LandingPage /></PublicLayout>} />
@@ -77,7 +78,10 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = () => (
     <Route path={ROUTES.PRIVACY_POLICY} element={<PublicLayout ><PrivacyPolicy /></PublicLayout>} />
 
     {/* IT Wallet access public page */}
-    <Route path={ROUTES.IT_WALLET_ACCESS} element={<ItWalletLayout><ItWalletQrPage /></ItWalletLayout>} />
+    <Route
+      path={ROUTES.IT_WALLET_ACCESS}
+      element={<ItWalletLayout showHeader={!isMobile}><ItWalletQrPage /></ItWalletLayout>}
+    />
 
     {/* private route */}
     <Route
