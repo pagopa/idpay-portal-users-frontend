@@ -8,10 +8,17 @@ import './locale/i18n.ts'
 import './locale';
 import { AuthProvider } from "./contexts/AuthContext";
 import { initializeCookieOneTrust } from './utils/oneTrustLoader.ts';
+import ROUTES from './routes';
 
-initializeCookieOneTrust().catch(err => {
-  console.log('Failed to initialize Cookie OneTrust: ', err);
-});
+const shouldSkipCookieBanner =
+  window.location.pathname.endsWith(ROUTES.IT_WALLET_ACCESS) ||
+  window.location.pathname.endsWith(`/utente${ROUTES.IT_WALLET_ACCESS}`);
+
+if (!shouldSkipCookieBanner) {
+  initializeCookieOneTrust().catch(err => {
+    console.log('Failed to initialize Cookie OneTrust: ', err);
+  });
+}
 
 createRoot(document.getElementById('root')!).render(
   <AuthProvider>
