@@ -14,7 +14,6 @@ jest.mock('../../../utils/env', () => ({
 }));
 
 jest.mock('../../../utils/itWallet', () => ({
-  getItWalletStoreUrl: jest.fn(() => 'https://apps.apple.com/it/app/io/id1501681835'),
   navigateToUrl: jest.fn(),
 }));
 
@@ -91,7 +90,7 @@ describe('ItWalletQrPage', () => {
     expect(navigateToUrl).not.toHaveBeenCalled();
   });
 
-  test('on mobile it opens the deep link and falls back to the store after 2 seconds', async () => {
+  test('on mobile it opens the deep link without store fallback', async () => {
     const { getItWalletDeepLink } = jest.requireMock('../../../utils/env');
     const { navigateToUrl } = jest.requireMock('../../../utils/itWallet');
     getItWalletDeepLink.mockReturnValue('openid-credential-offer://?credential_offer=test');
@@ -112,11 +111,5 @@ describe('ItWalletQrPage', () => {
 
     expect(navigateToUrl).toHaveBeenCalledWith('openid-credential-offer://?credential_offer=test');
     expect(screen.getByRole('progressbar')).toBeInTheDocument();
-
-    await act(async () => {
-      jest.advanceTimersByTime(2000);
-    });
-
-    expect(navigateToUrl).toHaveBeenLastCalledWith('https://apps.apple.com/it/app/io/id1501681835');
   });
 });

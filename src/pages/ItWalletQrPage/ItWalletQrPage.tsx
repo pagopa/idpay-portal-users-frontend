@@ -2,10 +2,9 @@ import { Box, Button, Card, CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import ItWalletQrContent from '../../components/Dashboard/ItWalletQrContent';
 import { getItWalletDeepLink } from '../../utils/env';
-import { getItWalletStoreUrl, navigateToUrl } from '../../utils/itWallet';
+import { navigateToUrl } from '../../utils/itWallet';
 
 const INITIAL_LOADER_DELAY_MS = 250;
-const MOBILE_FALLBACK_DELAY_MS = 1500;
 
 const isMobileDevice = (): boolean =>
   /android|iphone|ipad|ipod/i.test(navigator.userAgent || navigator.vendor || '');
@@ -91,35 +90,9 @@ const ItWalletQrPage = () => {
   const handleOpenAppClick = () => {
     setIsOpeningApp(true);
 
-    const storeUrl = getItWalletStoreUrl();
-
     if (!deepLink) {
-      navigateToUrl(storeUrl);
       return;
     }
-
-    const fallbackTimer = window.setTimeout(() => {
-      if (document.visibilityState === 'visible') {
-        navigateToUrl(storeUrl);
-      }
-    }, MOBILE_FALLBACK_DELAY_MS);
-
-    const onVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
-        window.clearTimeout(fallbackTimer);
-        document.removeEventListener('visibilitychange', onVisibilityChange);
-        window.removeEventListener('pagehide', onPageHide);
-      }
-    };
-
-    const onPageHide = () => {
-      window.clearTimeout(fallbackTimer);
-      document.removeEventListener('visibilitychange', onVisibilityChange);
-      window.removeEventListener('pagehide', onPageHide);
-    };
-
-    document.addEventListener('visibilitychange', onVisibilityChange);
-    window.addEventListener('pagehide', onPageHide);
 
     navigateToUrl(deepLink);
   };
