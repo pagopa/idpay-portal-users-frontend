@@ -13,7 +13,7 @@ export const isAndroidDevice = (): boolean =>
 export const isIosDevice = (): boolean =>
   /iphone|ipad|ipod/i.test(navigator.userAgent || navigator.vendor || '');
 
-export const buildAndroidIntentUrl = (deepLink: string, packageName = 'it.pagopa.io.app'): string => {
+export const buildAndroidIntentUrl = (deepLink: string, packageName = 'it.pagopa.io.app.poc.eudiw'): string => {
   if (!deepLink) {
     return '';
   }

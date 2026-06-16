@@ -68,7 +68,7 @@ describe('getItWalletStoreUrl', () => {
 describe('buildAndroidIntentUrl', () => {
   test('builds the intent url for Android from the deep link', () => {
     expect(buildAndroidIntentUrl('openid-credential-offer://?credential_offer=test')).toBe(
-      'intent://?credential_offer=test#Intent;scheme=openid-credential-offer;package=it.pagopa.io.app;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dit.pagopa.io.app;end'
+      'intent://?credential_offer=test#Intent;scheme=openid-credential-offer;package=it.pagopa.io.app.poc.eudiw;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dit.pagopa.io.app;end'
     );
   });
 
@@ -155,7 +155,7 @@ describe('openItWalletDeepLink', () => {
     openItWalletDeepLink('openid-credential-offer://?credential_offer=test');
 
     expect(anchor.href).toBe(
-      'intent://?credential_offer=test#Intent;scheme=openid-credential-offer;package=it.pagopa.io.app;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dit.pagopa.io.app;end'
+      'intent://?credential_offer=test#Intent;scheme=openid-credential-offer;package=it.pagopa.io.app.poc.eudiw;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dit.pagopa.io.app;end'
     );
     expect(anchor.click).toHaveBeenCalled();
   });
