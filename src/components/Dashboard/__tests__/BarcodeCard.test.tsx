@@ -10,7 +10,8 @@ jest.mock('../../../utils/env', () => ({
 }));
 
 jest.mock('../../../utils/itWallet', () => ({
-  openUrlWithStoreFallback: jest.fn(),
+  isMobileDevice: jest.fn(() => false),
+  openItWalletDeepLink: jest.fn(),
 }));
 
 jest.mock('react-barcode', () => {
@@ -113,6 +114,8 @@ describe('BarcodeCard', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     setUserAgent(originalUserAgent);
+    const { isMobileDevice } = jest.requireMock('../../../utils/itWallet');
+    isMobileDevice.mockReturnValue(false);
   });
 
   afterAll(() => {
@@ -170,16 +173,17 @@ describe('BarcodeCard', () => {
   });
 
   test('add to wallet on mobile opens the deep link with fallback', () => {
-    const { openUrlWithStoreFallback } = jest.requireMock('../../../utils/itWallet');
+    const { isMobileDevice, openItWalletDeepLink } = jest.requireMock('../../../utils/itWallet');
     const trxCode = '2lezemi4';
     setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 Version/16.0 Mobile/15E148 Safari/604.1');
+    isMobileDevice.mockReturnValue(true);
 
     render(<BarcodeCard trxCode={trxCode} />);
 
     const addToWalletButton = screen.getByRole('button', { name: /dashboard.barcodeSection.addToWallet/i });
     fireEvent.click(addToWalletButton);
 
-    expect(openUrlWithStoreFallback).toHaveBeenCalledWith('openid-credential-offer://?credential_offer=test');
+    expect(openItWalletDeepLink).toHaveBeenCalledWith('openid-credential-offer://?credential_offer=test');
   });
 
   test('does not render add to wallet button when it wallet is disabled', () => {

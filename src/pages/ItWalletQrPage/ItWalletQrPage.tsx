@@ -1,13 +1,11 @@
-import { Box, Button, Card, CircularProgress } from '@mui/material';
+import { Box, Card, CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import ItWalletQrContent from '../../components/Dashboard/ItWalletQrContent';
 import { getItWalletDeepLink } from '../../utils/env';
-import { navigateToUrl } from '../../utils/itWallet';
+import { isMobileDevice, openItWalletDeepLink } from '../../utils/itWallet';
 
 const INITIAL_LOADER_DELAY_MS = 250;
-
-const isMobileDevice = (): boolean =>
-  /android|iphone|ipad|ipod/i.test(navigator.userAgent || navigator.vendor || '');
+const MOBILE_APP_OPEN_LOADER_MS = 6000;
 
 type LoaderProps = {
   isMobile: boolean;
@@ -31,10 +29,9 @@ const InitialLoader = ({ isMobile }: LoaderProps) => (
 
 type MobileFlowProps = {
   isOpeningApp: boolean;
-  onOpenAppClick: () => void;
 };
 
-const MobileFlow = ({ isOpeningApp, onOpenAppClick }: MobileFlowProps) => (
+const MobileFlow = ({ isOpeningApp }: MobileFlowProps) => (
   <Box
     sx={{
       position: 'fixed',
@@ -46,28 +43,7 @@ const MobileFlow = ({ isOpeningApp, onOpenAppClick }: MobileFlowProps) => (
       pt: '10vh',
     }}
   >
-    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-      <Button variant='contained' onClick={onOpenAppClick} disabled={isOpeningApp}>
-        Apri l'app
-      </Button>
-
-      {isOpeningApp && (
-        <Box
-          sx={{
-            position: 'absolute',
-            inset: 0,
-            bgcolor: 'rgba(255,255,255,0.86)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1,
-            pointerEvents: 'all',
-          }}
-        >
-          <CircularProgress size={24} />
-        </Box>
-      )}
-    </Box>
+    {isOpeningApp && <CircularProgress size={24} />}
   </Box>
 );
 
@@ -87,15 +63,23 @@ const ItWalletQrPage = () => {
     };
   }, []);
 
-  const handleOpenAppClick = () => {
-    setIsOpeningApp(true);
-
-    if (!deepLink) {
+  useEffect(() => {
+    if (isInitialLoading || !isMobile) {
       return;
     }
 
-    navigateToUrl(deepLink);
-  };
+    setIsOpeningApp(true);
+
+    const loaderTimer = window.setTimeout(() => {
+      setIsOpeningApp(false);
+    }, MOBILE_APP_OPEN_LOADER_MS);
+    const cleanup = deepLink ? openItWalletDeepLink(deepLink) : undefined;
+
+    return () => {
+      window.clearTimeout(loaderTimer);
+      cleanup?.();
+    };
+  }, [deepLink, isInitialLoading, isMobile]);
 
   return (
     <Box
@@ -112,12 +96,7 @@ const ItWalletQrPage = () => {
     >
       {isInitialLoading && <InitialLoader isMobile={isMobile} />}
 
-      {!isInitialLoading && isMobile && (
-        <MobileFlow
-          isOpeningApp={isOpeningApp}
-          onOpenAppClick={handleOpenAppClick}
-        />
-      )}
+      {!isInitialLoading && isMobile && <MobileFlow isOpeningApp={isOpeningApp} />}
 
       {!isInitialLoading && !isMobile && (
         <Card
