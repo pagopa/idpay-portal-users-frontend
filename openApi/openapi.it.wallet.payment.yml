@@ -247,7 +247,6 @@ components:
           type: integer
           format: int32
           minimum: 0
-          maximum: 10
           description: 'ENG: Number of total elements - IT: Numero totali di elementi'
         totalPages:
           type: integer
