@@ -132,7 +132,7 @@ const ItWalletTimelinePage = () => {
 
         const items: TimelineItem[] = operationList.map(operation => ({
           label: operation.businessName ?? operation.operationType ?? '-',
-          date: formatDateTime(operation.operationDate),
+          date: formatDateTime(operation.operationDate.toString()),
           cents: operation.accruedCents,
           id: operation.operationId,
         }));
@@ -149,7 +149,7 @@ const ItWalletTimelinePage = () => {
         console.error('Timeline page error', error);
 
         navigate(ROUTES.ERROR_PAGE, {
-          state: { status: 'UNKNOWN_ERROR' },
+          state: { status: 'UNKNOWN_ERROR_RETRYABLE', },
         });
       } finally {
         setLoading(false);
@@ -237,14 +237,6 @@ const ItWalletTimelinePage = () => {
             mt: 2,
           }}
         >
-          {loading && (
-            <Typography
-              variant="body2"
-              color={theme.palette.text.secondary}
-            >
-              Caricamento...
-            </Typography>
-          )}
         </Box>
       </Box>
     </Box>

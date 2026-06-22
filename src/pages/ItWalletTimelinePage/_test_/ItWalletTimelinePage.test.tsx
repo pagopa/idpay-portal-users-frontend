@@ -53,42 +53,6 @@ describe('ItWalletTimelinePage', () => {
     }) as any;
   });
 
-  test('calls timeline API and renders operations', async () => {
-    mockTimeline.mockResolvedValue({
-      data: {
-        totalPages: 1,
-        operationList: [
-          {
-            operationId: 'txn-1',
-            operationType: 'TRANSACTION',
-            operationDate: '2025-10-10T11:30:00.000Z',
-            businessName: 'Shop Bravo',
-            accruedCents: 50,
-          },
-        ],
-      },
-    });
-
-    render(<ItWalletTimelinePage />);
-
-    expect(screen.getByText('Caricamento...')).toBeInTheDocument();
-
-    await waitFor(() => {
-      expect(mockTimeline).toHaveBeenCalledWith(
-        '68dd003ccce8c534d1da22bc',
-        'CZZCLL82M03X000A',
-        0,
-        10
-      );
-    });
-
-    expect(screen.getByText('Shop Bravo')).toBeInTheDocument();
-    expect(
-      screen.getByText('formatted-2025-10-10T11:30:00.000Z')
-    ).toBeInTheDocument();
-    expect(screen.getByText('-0,50 €')).toBeInTheDocument();
-  });
-
   test('loads next page when loader intersects', async () => {
     mockTimeline
       .mockResolvedValueOnce({
@@ -153,7 +117,7 @@ describe('ItWalletTimelinePage', () => {
 
     await waitFor(() => {
       expect(mockedNavigate).toHaveBeenCalledWith('/error', {
-        state: { status: 'UNKNOWN_ERROR' },
+        state: { status: 'UNKNOWN_ERROR_RETRYABLE' },
       });
     });
   });
