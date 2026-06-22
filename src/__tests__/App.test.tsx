@@ -69,6 +69,12 @@ jest.mock('../utils/env', () => ({
   getItWalletDeepLink: () => ''
 }));
 
+jest.mock('../api/itWalletPaymentApiClient', () => ({
+  ItWalletPaymentApi: {
+    timeline: jest.fn(),
+  },
+}));
+
 const mockScrollTo = jest.fn();
 
 beforeAll(() => {

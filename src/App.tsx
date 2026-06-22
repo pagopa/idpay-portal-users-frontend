@@ -19,6 +19,8 @@ import UpcomingInitiative from "./pages/UpcomingInitiative/UpcomingInitiative.ts
 import TermsOfService from './pages/TermsOfService/TermsOfService.tsx';
 import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy.tsx';
 import ItWalletQrPage from './pages/ItWalletQrPage/ItWalletQrPage.tsx';
+import ItWalletTimelinePage from './pages/ItWalletTimelinePage/ItWalletTimelinePage';
+
 
 const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <Layout hasPadding={false} >
@@ -81,6 +83,10 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
     <Route
       path={ROUTES.IT_WALLET_ACCESS}
       element={<ItWalletLayout showHeader={!isMobile}><ItWalletQrPage /></ItWalletLayout>}
+    />
+    <Route
+      path={ROUTES.IT_WALLET_TIMELINE}
+      element={<ItWalletLayout showHeader={!isMobile}><ItWalletTimelinePage /></ItWalletLayout>}
     />
 
     {/* private route */}
