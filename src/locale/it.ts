@@ -262,6 +262,7 @@ const it = {
     },
     "operationsSection": {
       "title": "Le tue operazioni",
+      "empty": "Al momento non sono state effettuate operazioni.",
       "onboardingInitiative": "Adesione iniziativa"
     },
     "faq": "Domande frequenti",
