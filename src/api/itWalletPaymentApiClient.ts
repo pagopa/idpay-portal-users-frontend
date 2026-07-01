@@ -2,6 +2,7 @@ import { isRight } from 'fp-ts/Either';
 
 import { createClient } from './generated/it-wallet-payment/client';
 import { TimelineDTO } from './generated/it-wallet-payment/TimelineDTO';
+import { TimelineErrorDTO } from './generated/it-wallet-payment/TimelineErrorDTO';
 import { buildFetchApiWithLoading } from './buildFetchApiWithLoading';
 
 const baseUrl = import.meta.env.VITE_URL_API_PORTAL_USERS;
@@ -37,6 +38,13 @@ export const ItWalletPaymentApi = {
 
       if (status === 200) {
         return { status, data: value as TimelineDTO };
+      }
+
+      if (status === 404) {
+        throw Object.assign(new Error(`Unexpected status: ${status}`), {
+          status,
+          data: value as TimelineErrorDTO,
+        });
       }
 
       throw new Error(`Unexpected status: ${status}`);
