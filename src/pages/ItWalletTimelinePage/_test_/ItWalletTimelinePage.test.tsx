@@ -122,6 +122,29 @@ describe('ItWalletTimelinePage', () => {
     });
   });
 
+  test('shows empty operations message when timeline is not found', async () => {
+    mockTimeline.mockRejectedValue(
+      Object.assign(new Error('not found'), {
+        status: 404,
+        data: {
+          code: 'TIMELINE_USER_NOT_FOUND',
+          message:
+            'Timeline for the current user and initiative [68dd003ccce8c534d1da22bc] was not found',
+        },
+      })
+    );
+
+    render(<ItWalletTimelinePage />);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('dashboard.operationsSection.empty')
+      ).toBeInTheDocument();
+    });
+
+    expect(mockedNavigate).not.toHaveBeenCalled();
+  });
+
   test('does not call API when fiscalCode is missing', async () => {
     mockFiscalCode = undefined;
 
