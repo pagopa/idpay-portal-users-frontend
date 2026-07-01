@@ -7,6 +7,7 @@ import { theme } from '@pagopa/mui-italia';
 
 import { getInitiativeId } from '../../utils/env';
 import { ItWalletPaymentApi } from '../../api/itWalletPaymentApiClient';
+import { CodeEnum as TimelineErrorCodeEnum } from '../../api/generated/it-wallet-payment/TimelineErrorDTO';
 import { formatDateTime } from '../../utils/formatUtils';
 
 import ROUTES from '../../routes';
@@ -20,11 +21,15 @@ interface TimelineItem {
 
 interface OperationsCardProps {
   timelineData: TimelineItem[];
+  showEmptyMessage: boolean;
 }
 
 const PAGE_SIZE = 10;
 
-const OperationsCard: React.FC<OperationsCardProps> = ({ timelineData }) => {
+const OperationsCard: React.FC<OperationsCardProps> = ({
+  timelineData,
+  showEmptyMessage,
+}) => {
   const { t } = useTranslation();
 
   const formatCurrency = (value: number) => {
@@ -46,7 +51,17 @@ const OperationsCard: React.FC<OperationsCardProps> = ({ timelineData }) => {
           {t('dashboard.operationsSection.title')}
         </Typography>
 
-        {timelineData.map((item, index) => (
+        {showEmptyMessage && (
+          <Typography
+            variant="body2"
+            color={theme.palette.text.secondary}
+            sx={{ mt: 2 }}
+          >
+            {t('dashboard.operationsSection.empty')}
+          </Typography>
+        )}
+
+        {!showEmptyMessage && timelineData.map((item, index) => (
           <Box
             key={item.id ?? index}
             sx={{
@@ -102,6 +117,7 @@ const ItWalletTimelinePage = () => {
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [showEmptyMessage, setShowEmptyMessage] = useState(false);
 
   const normalizedTimeline = timelineData.map(item =>
     item.label === 'dashboard.operationsSection.onboardingInitiative'
@@ -143,10 +159,23 @@ const ItWalletTimelinePage = () => {
 
         const totalPages = timelineResponse.data.totalPages ?? 0;
 
+        setShowEmptyMessage(false);
         setHasMore(pageToLoad + 1 < totalPages);
         setPage(pageToLoad);
       } catch (error) {
-        console.error('Timeline page error', error);
+        if (
+          typeof error === 'object' &&
+          error !== null &&
+          (error as { status?: number }).status === 404 &&
+          (error as { data?: { code?: string } }).data?.code ===
+            TimelineErrorCodeEnum.TIMELINE_USER_NOT_FOUND
+        ) {
+          setTimelineData([]);
+          setShowEmptyMessage(true);
+          setHasMore(false);
+          setPage(pageToLoad);
+          return;
+        }
 
         navigate(ROUTES.ERROR_PAGE, {
           state: { status: 'UNKNOWN_ERROR_RETRYABLE', },
@@ -166,6 +195,7 @@ const ItWalletTimelinePage = () => {
     setTimelineData([]);
     setPage(0);
     setHasMore(true);
+    setShowEmptyMessage(false);
 
     void loadTimeline(0);
   }, [fiscalCode]);
@@ -225,7 +255,10 @@ const ItWalletTimelinePage = () => {
           mx: 'auto',
         }}
       >
-        <OperationsCard timelineData={normalizedTimeline} />
+        <OperationsCard
+          timelineData={normalizedTimeline}
+          showEmptyMessage={showEmptyMessage}
+        />
 
         <Box
           ref={loaderRef}
