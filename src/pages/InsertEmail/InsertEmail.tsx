@@ -85,6 +85,7 @@ const InsertEmail = () => {
             placeholderLabel={t('commons.email')}
             showSubmitError={showErrors && !isEmailValid}
             errorMessage={t('commons.invalidEmail')}
+            onPaste={(e) => e.preventDefault()}
           />
           <EmailInputBox
             value={confirmEmailInput}

@@ -29,12 +29,22 @@ const CustomLandingSection = () => {
   const buttonSx = {
     backgroundColor: theme.palette.primary.main,
     textTransform: 'none',
-    px: 4,
+    px: 2,
     py: 1.5,
     borderRadius: 2,
     whiteSpace: 'nowrap',
     minWidth: isMobile ? 240 : 280,
     boxShadow: theme.shadows[3],
+    justifyContent: 'flex-start',
+  };
+
+  const buttonIconSx = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 30,
+    height: 30,
+    flexShrink: 0,
   };
 
   return (
@@ -50,39 +60,68 @@ const CustomLandingSection = () => {
         textAlign: 'center',
       }}
     >
-      <Typography variant="h3" fontWeight="bold" gutterBottom>
-        {isMobile ? t('landing.requestBonusMobile') : t('landing.requestBonus')}
-      </Typography>
-      <Typography variant="body1" mb={3}>
-        {t('landing.loginMethods')}
-      </Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: isMobile ? 'center' : 'flex-start',
+          textAlign: isMobile ? 'center' : 'left',
+          maxWidth: '100%',
+        }}
+      >
+        <Typography variant="h3" fontWeight="bold" gutterBottom>
+          {isMobile ? t('landing.requestBonusMobile') : t('landing.requestBonus')}
+        </Typography>
+        <Typography variant="body1" mb={3}>
+          {t('landing.loginMethods')}
+        </Typography>
 
-      <Card raised>
-        <CardContent>
-          <Stack spacing={2}>
-            <Button
-              startIcon={<LanguageOutlined />}
-              variant="contained"
-              fullWidth
-              sx={buttonSx}
-              onClick={() => handleContinue('spid-cie')}
-            >
-              {t('landing.continueWithSpidCie')}
-            </Button>
-            {showItWalletButton && (
+        <Card raised sx={{ alignSelf: 'center', mt: 3 }}>
+          <CardContent>
+            <Stack spacing={2}>
               <Button
-                startIcon={<Box component="img" src={itWalletIcon} alt="" sx={{ width: 20, height: 20 }} />}
+                size='large'
+                startIcon={
+                  <Box component="span" sx={buttonIconSx}>
+                    <LanguageOutlined sx={{ width: 30, height: 30 }} />
+                  </Box>
+                }
                 variant="contained"
                 fullWidth
                 sx={buttonSx}
-                onClick={() => handleContinue('it-wallet')}
+                onClick={() => handleContinue('spid-cie')}
               >
-                {t('landing.continueWithItWallet')}
+                <Box component="span" fontWeight={500}>
+                  {t('landing.continueWithSpidCie')}
+                </Box>
               </Button>
-            )}
-          </Stack>
-        </CardContent>
-      </Card>
+              {showItWalletButton && (
+                <Button
+                  size='large'
+                  startIcon={
+                    <Box component="span" sx={buttonIconSx}>
+                      <Box
+                        component="img"
+                        src={itWalletIcon}
+                        alt=""
+                        sx={{ width: 25, height: 25, objectFit: 'contain' }}
+                      />
+                    </Box>
+                  }
+                  variant="contained"
+                  fullWidth
+                  sx={buttonSx}
+                  onClick={() => handleContinue('it-wallet')}
+                >
+                  <Box component="span" fontWeight={500}>
+                    {t('landing.continueWithItWallet')}
+                  </Box>
+                </Button>
+              )}
+            </Stack>
+          </CardContent>
+        </Card>
+      </Box>
     </Box>
   );
 };

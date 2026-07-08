@@ -36,7 +36,7 @@ export default function SelfDeclaration(props: SelfDeclarationProps) {
                                 <Box
                                     sx={{
                                         display: 'flex',
-                                        justifyContent: 'space-between',
+                                        justifyContent: 'flex-start',
                                         alignItems: 'center',
                                     }}
                                 >
@@ -64,7 +64,7 @@ export default function SelfDeclaration(props: SelfDeclarationProps) {
                                                 backgroundColor: props.showError ? theme.palette.error.dark : null,
                                             },
                                         }} />
-                                    <Typography variant='body2' sx={{ fontWeight: theme.typography.fontWeightMedium, color: theme.palette.text.secondary }}>
+                                    <Typography variant='body2'>
                                         {t('verifyRequirements.selfDeclaration.switchLabel')}
                                     </Typography>
                                 </Box>
