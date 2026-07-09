@@ -15,9 +15,15 @@ jest.mock('../components/Layout/Layout', () => (props: any) => (
   <div
     data-testid="layout"
     data-padding={String(props.hasPadding)}
+    data-show-footer={String(props.showFooter)}
+    data-show-header-product={String(props.showHeaderProduct)}
   >
     {props.children}
   </div>
+));
+
+jest.mock('../components/Dashboard/ItWalletQrContent', () => () => (
+  <div data-testid="it-wallet-qr-content" />
 ));
 
 jest.mock('../config/ProtectedRoute', () => (props: any) => <>{props.children}</>);
@@ -38,6 +44,7 @@ jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
   }),
+  Trans: ({ i18nKey }: { i18nKey: string }) => <>{i18nKey}</>,
 }));
 
 jest.mock('../contexts/AuthContext', () => {
@@ -58,6 +65,14 @@ jest.mock('../hooks/useIsMobile', () => ({
 jest.mock('../utils/env', () => ({
   isMockAuthEnabled: () => false,
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
+  isItWalletEnabled: () => true,
+  getItWalletDeepLink: () => ''
+}));
+
+jest.mock('../api/itWalletPaymentApiClient', () => ({
+  ItWalletPaymentApi: {
+    timeline: jest.fn(),
+  },
 }));
 
 const mockScrollTo = jest.fn();
@@ -78,6 +93,18 @@ describe('App Routing and Layout props', () => {
     );
     const layout = screen.getByTestId('layout');
     expect(layout).toHaveAttribute('data-padding', 'false');
+  });
+
+  test('It Wallet route uses layout', () => {
+    render(
+      <MemoryRouter initialEntries={[ROUTES.IT_WALLET_ACCESS]}>
+        <App />
+      </MemoryRouter>
+    );
+    const layout = screen.getByTestId('layout');
+    expect(layout).toHaveAttribute('data-padding', 'false');
+    expect(layout).toHaveAttribute('data-show-footer', 'false');
+    expect(layout).toHaveAttribute('data-show-header-product', 'false');
   });
 
   test('PrivateLayout default props are applied (padding=undefined)', () => {

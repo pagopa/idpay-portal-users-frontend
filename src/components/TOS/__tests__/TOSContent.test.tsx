@@ -53,7 +53,7 @@ describe('TOSContent', () => {
     expect(screen.getByText('tos.sideMenu.element2.description')).toBeInTheDocument();
     expect(screen.getByText('tos.sideMenu.element3.description')).toBeInTheDocument();
     expect(screen.getByText('tos.sideMenu.element4.description')).toBeInTheDocument();
-    expect(screen.getByText('tos.postDescription')).toBeInTheDocument();
+    // expect(screen.getByText('tos.postDescription')).toBeInTheDocument();
     expect(screen.getByText(/tos\.privacy_part1/)).toBeInTheDocument();
     expect(screen.getByText('tos.privacy_terms')).toBeInTheDocument();
     expect(screen.getByText(/tos\.privacy_part2/)).toBeInTheDocument();

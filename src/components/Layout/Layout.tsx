@@ -8,9 +8,22 @@ import { Footer } from '../Footer/Footer';
 type LayoutProps = {
   children: React.ReactNode;
   hasPadding?: boolean;
+  showHeader?: boolean;
+  showFooter?: boolean;
+  showHeaderProduct?: boolean;
+  showUserActions?: boolean;
+  bodyOverflow?: 'auto' | 'hidden';
 };
 
-const Layout = ({ children, hasPadding = true }: LayoutProps) => {
+const Layout = ({
+  children,
+  hasPadding = true,
+  showHeader = true,
+  showFooter = true,
+  showHeaderProduct = true,
+  showUserActions = true,
+  bodyOverflow = 'auto',
+}: LayoutProps) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -21,30 +34,34 @@ const Layout = ({ children, hasPadding = true }: LayoutProps) => {
     <Box
       display="grid"
       gridTemplateColumns="1fr"
-      gridTemplateRows="auto 1fr auto"
-      gridTemplateAreas={`"header" "body" "footer"`}
+      gridTemplateRows={showFooter ? 'auto 1fr auto' : 'auto 1fr'}
+      gridTemplateAreas={showFooter ? `"header" "body" "footer"` : `"header" "body"`}
       minHeight="100vh"
     >
       {loading && <Overlay />}
 
-      <Box component="header" gridArea="header">
-        <Header />
-      </Box>
+      {showHeader && (
+        <Box component="header" gridArea="header">
+          <Header showProduct={showHeaderProduct} showUserActions={showUserActions} />
+        </Box>
+      )}
 
       <Box component="main" gridArea="body" display='flex' flexGrow={1} minHeight={0}>
         <Box
           flexGrow={1}
           p={hasPadding ? 3 : 0}
-          overflow="auto"
+          overflow={bodyOverflow}
           minHeight="100%"
         >
           {children}
         </Box>
       </Box>
 
-      <Box gridArea="footer" id="footerBox">
-        <Footer />
-      </Box>
+      {showFooter && (
+        <Box gridArea="footer" id="footerBox">
+          <Footer />
+        </Box>
+      )}
     </Box>
   );
 };

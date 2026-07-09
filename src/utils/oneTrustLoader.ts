@@ -18,8 +18,8 @@ let cookieInitializationPromise: Promise<void> | null = null;
 
 const fixOneTrustLinks = () => {
   const linkMap: Record<string, string> = {
-    '/utente/privacy-policy': '/utente/privacy-policy',
-    '/utente/terms-of-service': '/utente/terms-of-service'
+    '/utente/privacy-policy': '/utente/',
+    '/utente/terms-of-service': '/utente/'
   };
 
   const cookiePolicyLinks = document.querySelectorAll('.ot-cookie-policy-link, .privacy-notice-link');

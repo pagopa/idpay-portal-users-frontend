@@ -160,14 +160,14 @@ export const TOSContent = ({ sectionRefs }: Props) => {
           </Link>
         </Typography>
 
-        <Typography sx={{ color: theme.palette.text.primary }} my={5}>
+        {/* <Typography sx={{ color: theme.palette.text.primary }} my={5}>
           <Trans
             i18nKey="tos.postDescription"
             components={{
               bold: <Box component="span" sx={{ fontWeight: theme.typography.fontWeightBold }} />,
             }}
           />
-        </Typography>
+        </Typography> */}
 
         <Box mt={5} mb={4}>
           <Typography

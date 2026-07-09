@@ -10,7 +10,7 @@ import {
 import { theme } from '@pagopa/mui-italia';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useTranslation } from 'react-i18next';
-import { ConfirmationNumberRounded, HelpRounded } from '@mui/icons-material';
+import { ConfirmationNumberRounded } from '@mui/icons-material';
 
 type SidebarProps = {
   collapsed: boolean;
@@ -62,7 +62,7 @@ const Sidebar = ({ collapsed, toggleSidebar, onSectionChange }: SidebarProps) =>
           }} />}
         </ListItemButton>
 
-        <ListItemButton
+        {/* <ListItemButton
           selected={selectedIndex === 1}
           onClick={() => handleListItemClick(1, 'faq')}
           sx={{
@@ -80,7 +80,7 @@ const Sidebar = ({ collapsed, toggleSidebar, onSectionChange }: SidebarProps) =>
               sx: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
             },
           }} />}
-        </ListItemButton>
+        </ListItemButton> */}
       </List>
 
       <Box sx={{ p: 1, mt: 'auto' }}>

@@ -1,12 +1,13 @@
 import keycloak from '../config/keycloak';
 import ROUTES from '../routes';
-import { UserProfile } from '../types/auth';
+import { LoginMethod, UserProfile } from '../types/auth';
+import { getKeycloakIdpHint, isMockAuthEnabled } from '../utils/env';
 import { createTokenManager } from '../utils/tokenManager';
 
 export type KeycloakService = {
   initialize: () => Promise<boolean>;
   loadUserProfile: () => Promise<UserProfile | null>;
-  login: () => void;
+  login: (method?: LoginMethod) => void;
   logout: () => void;
   getCurrentToken: () => string | null;
   getValidToken: () => Promise<string | null>;
@@ -20,7 +21,7 @@ export function createKeycloakService(
   onTokenUpdate: (token: string | null) => void,
   onAuthError: () => void
 ): KeycloakService {
-  const isMockMode = import.meta.env.VITE_KEYCLOAK_MOCK_AUTH === 'true';
+  const isMockMode = isMockAuthEnabled();
 
   const basePath =
     ((import.meta.env.BASE_URL || '/').replace(/\/+$/, '') as string) || '/';
@@ -64,10 +65,11 @@ export function createKeycloakService(
     }
   };
 
-  const login = (): void => {
+  const login = (method: LoginMethod = 'spid-cie'): void => {
     if (isMockMode) return;
-    keycloak.login({
-      idpHint: 'oneid-keycloak',
+
+    void keycloak.login({
+      idpHint: getKeycloakIdpHint(method),
       redirectUri: buildFullUrl(ROUTES.GATEWAY),
     });
   };

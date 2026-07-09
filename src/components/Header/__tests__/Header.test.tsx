@@ -97,4 +97,21 @@ describe('Header', () => {
         const sub = screen.getByTestId('HeaderProduct');
         expect(sub).toHaveAttribute('data-first-product-title', 'commons.header.productTitle');
     });
+
+    it('renders a minimal header when showUserActions=false', () => {
+        (useAuth as jest.Mock).mockReturnValue({
+            isAuthenticated: true,
+            logout: jest.fn(),
+            user: { id: '1', firstName: 'Name', lastName: 'LastName', email: 'email@test.com' },
+        });
+
+        render(<Header showUserActions={false} showProduct={false} />);
+
+        const el = screen.getByTestId('HeaderAccount');
+        expect(el).toHaveAttribute('data-enable-login', 'false');
+        expect(el).toHaveAttribute('data-has-logged-user', 'false');
+        expect(el).toHaveAttribute('data-has-onlogout', 'false');
+        expect(el).toHaveAttribute('data-has-onassistance', 'true');
+        expect(screen.queryByTestId('HeaderProduct')).not.toBeInTheDocument();
+    });
 });

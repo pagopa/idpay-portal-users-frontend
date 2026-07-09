@@ -1,3 +1,5 @@
+export type LoginMethod = 'spid-cie' | 'it-wallet';
+
 export interface UserProfile {
   id?: string;
   name?: string;
@@ -8,7 +10,7 @@ export interface UserProfile {
   attributes?: {
     dateOfBirth?: string[];
     fiscalNumber?: string[];
-  }
+  };
 }
 
 export interface AuthContextType {
@@ -17,7 +19,7 @@ export interface AuthContextType {
   token: string | null;
   loading: boolean;
   initAuth: () => Promise<void>;
-  login: () => void;
+  login: (method?: LoginMethod) => void;
   logout: () => void;
   getToken: () => Promise<string | null>;
 }

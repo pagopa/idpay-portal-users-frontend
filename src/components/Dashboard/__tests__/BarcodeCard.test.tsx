@@ -4,7 +4,14 @@ import BarcodeCard from '../BarcodeCard';
 
 jest.mock('../../../utils/env', () => ({
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
-  getBaseUrl: () => 'https://www.google.com'
+  getBaseUrl: () => 'https://www.google.com',
+  isItWalletEnabled: jest.fn(() => true),
+  getItWalletDeepLink: () => 'openid-credential-offer://?credential_offer=test'
+}));
+
+jest.mock('../../../utils/itWallet', () => ({
+  isMobileDevice: jest.fn(() => false),
+  openItWalletDeepLink: jest.fn(),
 }));
 
 jest.mock('react-barcode', () => {
@@ -34,6 +41,12 @@ const mockDownloadFileFromBase64 = jest.fn();
 jest.mock('../../../commons/decode', () => ({
   downloadFileFromBase64: (...args: any[]) => mockDownloadFileFromBase64(...args),
 }));
+
+jest.mock('../ItWalletQrModal', () => {
+  return function MockItWalletQrModal({ open, deepLink }: { open: boolean; deepLink: string }) {
+    return open ? <div data-testid="wallet-modal">{deepLink}</div> : null;
+  };
+});
 
 describe('BarcodeCard – download flow', () => {
   beforeEach(() => {
@@ -89,8 +102,24 @@ describe('BarcodeCard – download flow', () => {
 });
 
 describe('BarcodeCard', () => {
+  const originalUserAgent = window.navigator.userAgent;
+
+  const setUserAgent = (ua: string) => {
+    Object.defineProperty(window.navigator, 'userAgent', {
+      value: ua,
+      configurable: true,
+    });
+  };
+
   beforeEach(() => {
     jest.clearAllMocks();
+    setUserAgent(originalUserAgent);
+    const { isMobileDevice } = jest.requireMock('../../../utils/itWallet');
+    isMobileDevice.mockReturnValue(false);
+  });
+
+  afterAll(() => {
+    setUserAgent(originalUserAgent);
   });
 
   test('renders barcode when trxCode is provided', () => {
@@ -129,6 +158,49 @@ describe('BarcodeCard', () => {
     fireEvent.click(showMerchantsButton);
 
     expect(mockWindowOpen).toHaveBeenCalledWith('https://www.google.com/lista-punti-vendita', '_blank');
+  });
+
+  test('desktop add to wallet opens the modal', () => {
+    const trxCode = '2lezemi4';
+    setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126.0 Safari/537.36');
+
+    render(<BarcodeCard trxCode={trxCode} />);
+
+    const addToWalletButton = screen.getByRole('button', { name: /dashboard.barcodeSection.addToWallet/i });
+    fireEvent.click(addToWalletButton);
+
+    expect(screen.getByTestId('wallet-modal')).toHaveTextContent('openid-credential-offer://?credential_offer=test');
+  });
+
+  test('add to wallet on mobile opens the deep link with fallback', () => {
+    const { isMobileDevice, openItWalletDeepLink } = jest.requireMock('../../../utils/itWallet');
+    const trxCode = '2lezemi4';
+    setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 Version/16.0 Mobile/15E148 Safari/604.1');
+    isMobileDevice.mockReturnValue(true);
+
+    render(<BarcodeCard trxCode={trxCode} />);
+
+    const addToWalletButton = screen.getByRole('button', { name: /dashboard.barcodeSection.addToWallet/i });
+    fireEvent.click(addToWalletButton);
+
+    expect(openItWalletDeepLink).toHaveBeenCalledWith('openid-credential-offer://?credential_offer=test');
+  });
+
+  test('does not render add to wallet button when it wallet is disabled', () => {
+    const { isItWalletEnabled } = jest.requireMock('../../../utils/env');
+    isItWalletEnabled.mockReturnValue(false);
+
+    render(<BarcodeCard trxCode='2lezemi4' />);
+
+    expect(screen.queryByRole('button', { name: /dashboard.barcodeSection.addToWallet/i })).not.toBeInTheDocument();
+  });
+
+  test('renders preparing state when trxCode is missing', () => {
+    render(<BarcodeCard trxCode='' />);
+
+    expect(screen.getByText('Stiamo preparando il tuo barcode.')).toBeInTheDocument();
+    expect(screen.getByText('Puoi provare ad aggiornarne lo stato tra qualche istante.')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /dashboard.barcodeSection.addToWallet/i })).not.toBeInTheDocument();
   });
 
   test('renders with different trxCode values', () => {

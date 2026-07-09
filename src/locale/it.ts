@@ -59,23 +59,25 @@ const it = {
       "pagopaLinkLabel": "PagoPA S.p.A.",
       "pagopaLinkAriaLabel": "Link: vai al sito di PagoPA S.p.A.",
       "pagopaLinkTitle": "Sito di PagoPA S.p.A.",
-      "productTitle": "Bonus Elettrodomestici",
+      "productTitle": "Bonus",
     },
     "retry": "Riprova",
     "login": "Accedi",
   },
 
   "landing": {
-    "requestBonus": "Richiedi il Bonus Elettrodomestici online",
-    "requestBonusMobile": "Accedi al sito Bonus Elettrodomestici",
-    "loginMethods": "Accedi con SPID o CIE per richiedere il tuo bonus.",
+    "requestBonus": "Richiedi il Bonus",
+    "requestBonusMobile": "Accedi al sito Bonus",
+    "loginMethods": "Effettua la richiesta del bonus accedendo tramite SPID, CIE o IT-Wallet.",
+    "continueWithSpidCie": "Continua con SPID e CIE",
+    "continueWithItWallet": "Entra con IT-Wallet",
     "continueOnWeb": "Continua sul sito",
     "withIO": "Con IO è tutto più semplice",
     "descriptionWithIO": "Gestisci tutto in un unico posto: richiedi il bonus, ricevi l’esito della richiesta e usa il bonus. Più veloce, più comodo.",
     "downloadIO": "Scarica IO",
   },
   "assistance": {
-    "title": "Hai bisogno di aiuto per Bonus Elettrodomestici?",
+    "title": "Hai bisogno di aiuto per Bonus?",
     "subtitle": "Indica l’indirizzo email in cui desideri ricevere le risposte dell’assistenza. ",
     "emailPlaceholder": "Inserisci l’indirizzo email",
     "confirmEmailPlaceholder": "Conferma l’indirizzo email",
@@ -85,7 +87,7 @@ const it = {
   "upcomingInitiative": {
     "title": "Ci siamo quasi!",
     "preSubtitle": "Potrai richiedere il ",
-    "boldSubtitle": "Bonus Elettrodomestici ",
+    "boldSubtitle": "Bonus",
     "postSubtitle": "a partire dalle ",
     "secondBold": "ore 7:00 del 18 novembre 2025. ",
     "thirdSubtitle": "\nAncora un po’ di pazienza!",
@@ -93,23 +95,23 @@ const it = {
     "descriptionWithIO": "Gestisci tutto in un unico posto: richiedi il bonus, ricevi l’esito della richiesta e usa il bonus. Più veloce, più comodo.",
     "downloadIO": "Scarica l'app"
   },
-  "bonus": "Bonus Elettrodomestici",
+  "bonus": "Bonus",
   "exit": "Esci",
   "tos": {
-    "description": "È il contributo, erogato dal Ministero delle Imprese e del Made in Italy, per incentivare la <b>sostituzione di un elettrodomestico</b> con un modello ad alta efficienza energetica e promuovere la sostenibilità e la transizione energetica.",
+    "description": "È il contributo erogato da un ente istituzionale per sostenere l’accesso a determinati beni o servizi, favorire comportamenti virtuosi e promuovere obiettivi di interesse pubblico.",
 
     "sideMenu": {
       "element1": {
         "title": "Chi può richiederlo?",
-        "description": "Tutti i <bold>maggiorenni residenti in Italia</bold> che acquistano un elettrodomestico nuovo e smaltiscono quello vecchio dello stesso tipo.<br/>Si può richiedere <bold>un solo bonus per ogni famiglia anagrafica</bold>."
+        "description": "Tutti i cittadini che rispettano i requisiti previsti dal bando o dalla misura di riferimento possono presentare domanda.<br/>Il contributo può essere richiesto da un solo nucleo familiare per ogni pratica anagrafica."
       },
       "element2": {
         "title": "Cosa offre?",
-        "description": "Uno sconto del 30% sul prezzo d’acquisto di un solo elettrodomestico, nuovo e ad alta efficienza, di una di queste categorie:<br/> lavatrici e lavasciuga, forni, cappe da cucina, lavastoviglie, asciugabiancheria, frigoriferi, congelatori e piani cottura.<br/> Lo sconto massimo che puoi ottenere è:",
+        "description": "Un’agevolazione economica sul costo di acquisto di un bene o servizio ammesso, secondo le condizioni previste dalla misura.",
         "listItem1": "<bold>Fino a 100 euro</bold>",
         "listItem2": "<bold>Fino a 200 euro</bold> se il tuo ISEE è inferiore a 25.000 €",
         "subDescription": "Lo sconto non è cumulabile con altre agevolazioni, anche di tipo fiscale.",
-        "link": "Mostra prodotti compatibili",
+        "link": "",
       },
       "element3": {
         "title": "Come richiederlo?",
@@ -117,8 +119,8 @@ const it = {
       },
       "element4": {
         "title": "Come si usa?",
-        "description": "Puoi usare il bonus <bold>entro 15 giorni</bold> da quando ricevi il messaggio di conferma dell’attivazione.<br/><bold>Nei negozi fisici:</bold> Scarica il codice a barre in questo sito o genera il codice dall’app IO.<br/> <bold>Online:</bold> inserisci il codice generato in questo sito o usa l’app IO per generare e usare lo sconto.",
-        "link": "Mostra l’elenco dei negozi"
+        "description": "Puoi usare il bonus <bold>entro 15 giorni</bold> da quando ricevi il messaggio di conferma dell’attivazione.<br/><bold>Nei punti fisici aderenti:</bold> Scarica il codice a barre in questo sito o genera il codice dall’app IO.<br/> <bold>Online:</bold> inserisci il codice generato in questo sito o usa l’app IO per generare e usare lo sconto.",
+        "link": "Mostra l’elenco degli aderenti"
       }
     },
 
@@ -135,12 +137,12 @@ const it = {
     "exit": "Esci",
     "title": "Verifica dei requisiti",
     "description":
-      "Per accedere al Bonus Elettrodomestici, consulteremo altri enti per verificare se hai i requisiti previsti.",
+      "Per accedere al Bonus, consulteremo altri enti per verificare se hai i requisiti previsti.",
 
     "family": {
       "title": "Famiglia anagrafica",
       "description1":
-        "Per accedere all’iniziativa, comunichiamo direttamente con il Ministero dell’Interno per verificare questa informazione.",
+        "Per accedere all’iniziativa, comunichiamo direttamente con l’ente erogatore per verificare questa informazione.",
       "description2":
         "In questo modo non devi produrre nessuna autocertificazione.",
     },
@@ -150,7 +152,7 @@ const it = {
       "description":
         "Dichiaro che, ai sensi del D.P.R. 28 dicembre 2000, n. 445",
       "switchLabel":
-        "Userò il bonus per l’acquisto di un elettrodomestico di classe energetica superiore destinato a sostituire un altro della stessa tipologia.",
+        "Userò il bonus esclusivamente per le finalità previste dal bando",
     },
 
     "isee": {
@@ -172,7 +174,7 @@ const it = {
 
   "insertEmail": {
     "title": "Inserisci il tuo indirizzo email",
-    "description": "Ci servirà per comunicarti tutti gli aggiornamenti sul Bonus Elettrodomestici."
+    "description": "Ci servirà per comunicarti tutti gli aggiornamenti sul Bonus."
   },
 
   "click-day": {
@@ -237,7 +239,12 @@ const it = {
     "barcodeSection": {
       "barcodeDescription": "codice a barre",
       "downloadBarcode": "Scarica codice",
-      "showMerchants": "Mostra esercenti"
+      "addToWallet": "Aggiungi al wallet",
+      "showMerchants": "Mostra esercenti",
+      "walletAccessOpenApp": "Apri l'app",
+      "walletAccessOr": "oppure",
+      "walletModalTitle": "Entra con IT-Wallet",
+      "walletModalDescription": "Usa la sezione ‘Inquadra’ di app <bold>IO - l’app dei servizi pubblici</bold>, oppure la fotocamera del tuo dispositivo, per scansionare il QR Code e accedere ai servizi.",
     },
     "detailBonusSection": {
       "bonusDetail": "dettagli del Bonus",
@@ -255,6 +262,7 @@ const it = {
     },
     "operationsSection": {
       "title": "Le tue operazioni",
+      "empty": "Al momento non sono state effettuate operazioni.",
       "onboardingInitiative": "Adesione iniziativa"
     },
     "faq": "Domande frequenti",

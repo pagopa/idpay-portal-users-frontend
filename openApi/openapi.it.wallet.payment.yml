@@ -1,0 +1,366 @@
+openapi: 3.0.3
+info:
+  title: IDPAY ITN It Wallet Payment API
+  description: IDPAY ITN It Wallet Payment API specification
+  version: '2.0'
+  contact:
+    name: PagoPA S.p.A.
+    email: cstar@pagopa.it
+servers:
+  - description: Development Test
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/it-wallet-payment
+    x-internal: true
+  - description: User Acceptance Test
+    url: https://api-io.uat.cstar.pagopa.it/idpay-itn/it-wallet-payment
+    x-internal: true
+paths:
+  '/timeline/{initiativeId}':
+    get:
+      tags:
+        - itWalletPaymentTimeline
+      summary: >-
+        ENG: Returns the list of transactions and operations of an initiative of a
+        citizen sorted by date (newest->oldest) - IT: Ritorna la lista ordinata di transazioni e operazioni di una iniziativa di un cittadino (nuove->vecchie)
+      description: Returns the list of transactions and operations of an initiative of a citizen sorted by date (newest->oldest)
+      operationId: getItWalletPaymentTimeline
+      parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
+        - $ref: '#/components/parameters/CodiceFiscaleHeader'
+        - name: Accept-Language
+          in: header
+          description: 'ENG: Language - IT: Lingua'
+          schema:
+            type: string
+            pattern: '^[ -~]{2,5}$'
+            minLength: 2
+            maxLength: 5
+            example: it-IT
+            default: it-IT
+          required: true
+        - name: initiativeId
+          in: path
+          description: 'ENG: The initiative ID - IT: Identificativo dell''iniziativa'
+          required: true
+          schema:
+            type: string
+            maxLength: 24
+            pattern: '^[a-zA-Z0-9]+$'
+        - name: page
+          in: query
+          description: 'ENG: The number of the page - IT: Numero della pagina'
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 240
+        - name: size
+          in: query
+          description: 'ENG: Number of items, default 3 - max 10 - IT: Numero di elementi, default 3 - max 10'
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 10
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimelineDTO'
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimelineErrorDTO'
+              example:
+                code: 'TIMELINE_INVALID_REQUEST'
+                message: 'Something went wrong handling request'
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+        '401':
+          description: Authentication failed
+          content:
+            application/json: {}
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+        '404':
+          description: The requested ID was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimelineErrorDTO'
+              example:
+                code: 'TIMELINE_USER_NOT_FOUND'
+                message: 'Timeline for the current user not found'
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+        '429':
+          description: Too many Request
+          content:
+            application/json: {}
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimelineErrorDTO'
+              example:
+                code: 'TIMELINE_GENERIC_ERROR'
+                message: 'Application error'
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+components:
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      in: header
+      description: 'ENG: Api Version - IT: Versione dell Api'
+      required: true
+      schema:
+        type: string
+        enum: [v1]
+        example: v1
+        default: v1
+    CodiceFiscaleHeader:
+      name: X-Fiscal-Code
+      in: header
+      description: 'ENG: User fiscal code - IT: Codice fiscale dell''utente (usare maiuscole, senza spazi)'
+      required: true
+      schema:
+        type: string
+        pattern: '^[A-Z0-9]{11,16}$'
+        minLength: 11
+        maxLength: 16
+        example: RSSMRA80A01H501U
+  headers:
+    Access-Control-Allow-Origin:
+      description: Indicates whether the response can be shared with requesting code from the given origin
+      schema:
+        type: string
+        pattern: '^[ -~]{1,2048}$'
+        minLength: 1
+        maxLength: 2048
+    RateLimit-Limit:
+      description: The number of allowed requests in the current period
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 240
+    RateLimit-Reset:
+      description: The number of seconds left in the current period
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 60
+    Retry-After:
+      description: The number of seconds to wait before allowing a follow-up request
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 240
+  schemas:
+    TimelineDTO:
+      type: object
+      required:
+        - lastUpdate
+        - operationList
+        - pageNo
+        - pageSize
+        - totalElements
+        - totalPages
+      properties:
+        lastUpdate:
+          type: string
+          description: 'ENG: Date of the last update - IT: Data dell''ultimo aggiornamento'
+          format: date-time
+        operationList:
+          type: array
+          minItems: 1
+          maxItems: 10
+          items:
+            $ref: '#/components/schemas/TransactionOperationDTO'
+          description: 'ENG: The list of transactions and operations of an initiative of a citizen - IT: La lista di transazioni e operazioni di una iniziativa di un cittadino'
+        pageNo:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 200
+          description: 'ENG: Number of pages - IT: Numero di pagine'
+        pageSize:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 50
+          description: 'ENG: Number of elements in the page - IT: Numero di elementi all''interno della pagina'
+        totalElements:
+          type: integer
+          format: int32
+          minimum: 0
+          description: 'ENG: Number of total elements - IT: Numero totali di elementi'
+        totalPages:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 200
+          description: 'ENG: Number of total pages - IT: Numero totali di pagine'
+    TransactionOperationDTO:
+      type: object
+      required:
+        - operationId
+        - operationType
+        - operationDate
+        - accruedCents
+        - status
+      properties:
+        operationId:
+          type: string
+          description: 'ENG: Id of the operation - IT: Identificativo dell''operazione'
+        operationType:
+          enum:
+            - TRANSACTION
+            - REVERSAL
+          type: string
+          description: 'ENG: Operation type - IT: Tipologia dell''operazione'
+        eventId:
+          type: string
+          description: 'ENG: Event ID - IT: Identificativo dell''evento'
+        operationDate:
+          type: string
+          format: date-time
+          description: 'ENG: Operation date - IT: Data dell''operazione'
+        brandLogo:
+          type: string
+          format: uri
+          description: 'ENG: Card''s brand logo URL - IT: URL del logo del marchio della carta'
+        brand:
+          type: string
+          description: 'ENG: Card''s brand as mastercard, visa, ecc. - IT: Marchio della carta come mastercard, visa, ecc...'
+        maskedPan:
+          type: string
+          example: '1234-****-****-5678'
+          description: 'ENG: Masked PAN - IT: Masked PAN'
+        amountCents:
+          type: integer
+          format: int64
+          description: 'ENG: Transaction amount - IT: Importo della transazione'
+        accruedCents:
+          type: integer
+          format: int64
+          description: 'ENG: Accrued amount - IT: Importo accumulato'
+        circuitType:
+          type: string
+          example: '00'
+          description: >-
+            ENG: Circuit type - IT: Tipologia di circuito
+            00-> Bancomat, 01->Visa, 02->Mastercard, 03->Amex, 04->JCB,
+            05->UnionPay, 06->Diners, 07->PostePay, 08->BancomatPay,
+            09->Satispay, 10->PrivateCircuit
+        status:
+          type: string
+          enum:
+            - AUTHORIZED
+            - REWARDED
+            - CANCELLED
+          example: 'CANCELLED'
+          description: 'ENG: Transaction status  - IT: Stato della transazione'
+        channel:
+          type: string
+          enum:
+            - RTD
+            - QRCODE
+            - IDPAYCODE
+            - BARCODE
+          example: 'BARCODE'
+          description: 'ENG: Channel from which the transaction takes place - IT: Canale da cui avviene la transazione'
+        businessName:
+          type: string
+    TimelineErrorDTO:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - TIMELINE_DETAIL_NOT_FOUND
+            - TIMELINE_USER_NOT_FOUND
+            - TIMELINE_REFUNDS_NOT_FOUND
+            - TIMELINE_INVALID_REQUEST
+            - TIMELINE_TOO_MANY_REQUESTS
+            - TIMELINE_GENERIC_ERROR
+          description: >-
+            'ENG: Error code: TIMELINE_DETAIL_NOT_FOUND: Detail of Timeline not found,
+             TIMELINE_USER_NOT_FOUND: Timeline for the current user not found,
+             TIMELINE_REFUNDS_NOT_FOUND: Refund for current initiative not found,
+             TIMELINE_INVALID_REQUEST: Something went wrong handling request,
+             TIMELINE_TOO_MANY_REQUESTS: Too many requests,
+             TIMELINE_GENERIC_ERROR: Application Error - IT: Codice di errore:
+             TIMELINE_DETAIL_NOT_FOUND: Dettaglio della Timeline non trovato,
+             TIMELINE_USER_NOT_FOUND: Timeline per utente corrente non trovata,
+             TIMELINE_REFUNDS_NOT_FOUND:  Rimborso per la corrente iniziativa non trovato,
+             TIMELINE_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
+             TIMELINE_TOO_MANY_REQUESTS: Troppe richieste,
+             TIMELINE_GENERIC_ERROR: Errore generico'
+          example: 'TIMELINE_DETAIL_NOT_FOUND'
+        message:
+          type: string
+          description: 'ENG: Error message - IT: Messaggio di errore'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+tags:
+  - name: timeline
+    description: ''
