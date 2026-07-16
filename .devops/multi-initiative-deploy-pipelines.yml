@@ -99,7 +99,7 @@ stages:
           - download: current
             artifact: Bundle
 
-          - task: AzureCLI@1
+          - task: AzureCLI@2
             displayName: 'Sync checkout storage'
             inputs:
               azureSubscription: '$(AZURE_SUBSCRIPTION)'
@@ -111,6 +111,7 @@ stages:
             inputs:
               azureSubscription: '$(AZURE_SUBSCRIPTION)'
               scriptLocation: inlineScript
+              scriptType: bash
               inlineScript: |
                 az afd endpoint purge -g $(resource_group) \
                 --profile-name $(cdn_profile) \
