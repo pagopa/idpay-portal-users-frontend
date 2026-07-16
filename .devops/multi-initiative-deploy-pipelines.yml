@@ -36,7 +36,6 @@ parameters:
       - bonusdecoder
 
 stages:
-  -
   # Prepare Artifact with application bundle
   - stage: Prepare_artifact
     condition: or(eq(variables['environment'], 'DEV'), succeeded())
