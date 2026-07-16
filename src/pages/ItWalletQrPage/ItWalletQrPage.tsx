@@ -9,6 +9,7 @@ const MOBILE_APP_OPEN_LOADER_MS = 6000;
 
 type LoaderProps = {
   isMobile: boolean;
+  test?: boolean;
 };
 
 const InitialLoader = ({ isMobile }: LoaderProps) => (
