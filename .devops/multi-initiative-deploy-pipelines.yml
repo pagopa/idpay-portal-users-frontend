@@ -105,7 +105,7 @@ stages:
               azureSubscription: '$(AZURE_SUBSCRIPTION)'
               scriptLocation: inlineScript
               inlineScript: |
-                az storage blob sync --container '$(blob_container_name)' --account-name $(storage_account) -s "$(Pipeline.Workspace)/Bundle" --destination '$(INITIATIVE)/$(basePath)/'
+                az storage blob sync --container '$(blob_container_name)' --account-name $(storage_account) -s "$(Pipeline.Workspace)/Bundle" --destination '${{ parameters.INITIATIVE }}/$(basePath)/'
           - task: AzureCLI@2
             displayName: 'Purge Azure Front Door CDN endpoint'
             inputs:
