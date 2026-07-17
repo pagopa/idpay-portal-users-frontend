@@ -15,7 +15,7 @@ initializeCookieOneTrust().catch(err => {
 
 createRoot(document.getElementById('root')!).render(
   <AuthProvider>
-    <BrowserRouter basename='/bonusdecoder/utente'>
+    <BrowserRouter basename=/utente'>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <App />

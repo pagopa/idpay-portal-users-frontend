@@ -118,4 +118,4 @@ stages:
                 --profile-name $(cdn_profile) \
                 --endpoint-name $(cdn_endpoint) \
                 --domains $(cdn_domains) \
-                --content-paths "/$(INITIATIVE)/$(basePath)" "/$(INITIATIVE)/$(basePath)/*" "/"
+                --content-paths "/${{ parameters.INITIATIVE }}/$(basePath)" "/${{ parameters.INITIATIVE }}/$(basePath)/*" "/"
