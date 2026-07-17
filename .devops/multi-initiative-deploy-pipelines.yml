@@ -31,9 +31,11 @@ parameters:
   - name: 'INITIATIVE'
     displayName: 'Initiative to deploy'
     type: string
-    default: uat
+    default: bonusdecoder
     values:
       - bonusdecoder
+      - bonusvalore
+      - bonustest
 
 pr: none
 
