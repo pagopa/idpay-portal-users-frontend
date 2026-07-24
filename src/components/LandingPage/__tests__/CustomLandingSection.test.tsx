@@ -3,12 +3,15 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import CustomLandingSection from '../CustomLandingSection';
 
+const mockGetInitiative = jest.fn();
+
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => {
       const translations: Record<string, string> = {
         'landing.requestBonus': 'Request Bonus Desktop',
         'landing.requestBonusMobile': 'Request Bonus Mobile',
+        'landing.requestBonusTest': 'Richiedi il Bonus Test',
         'landing.loginMethods': 'Use SPID or CIE',
         'landing.continueOnWeb': 'Continue on Web',
       };
@@ -19,6 +22,10 @@ jest.mock('react-i18next', () => ({
 
 jest.mock('../../../hooks/useIsMobile', () => ({
   useIsMobile: jest.fn(),
+}));
+
+jest.mock('../../../utils/env', () => ({
+  getInitiative: () => mockGetInitiative(),
 }));
 
 jest.mock('react-router-dom', () => {
@@ -43,6 +50,7 @@ describe('CustomLandingSection', () => {
 
   beforeEach(() => {
     AuthCtxMock.loginMock.mockClear();
+    mockGetInitiative.mockReturnValue('bonusvalore');
   });
 
   afterEach(() => {
@@ -65,6 +73,15 @@ describe('CustomLandingSection', () => {
     render(<CustomLandingSection />);
 
     expect(screen.getByText('Request Bonus Mobile')).toBeInTheDocument();
+  });
+
+  it('renders the Bonus Test title for the bonustest initiative', () => {
+    useIsMobile.mockReturnValue(false);
+    mockGetInitiative.mockReturnValue('bonustest');
+
+    render(<CustomLandingSection />);
+
+    expect(screen.getByText('Richiedi il Bonus Test')).toBeInTheDocument();
   });
 
   it('calls login on button click', async () => {

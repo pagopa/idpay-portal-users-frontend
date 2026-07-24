@@ -75,6 +75,7 @@ stages:
 
               VITE_URL_API_PORTAL_USERS: '$(vite_url_api_portal_users)'
               VITE_INITIATIVE_ID: '$(vite_initiative_id)'
+              VITE_INITIATIVE: '${{ parameters.INITIATIVE }}'
               VITE_BASE_URL: '$(vite_base_url)'
 
               VITE_KEYCLOAK_URL: '$(vite_keycloak_url)'
