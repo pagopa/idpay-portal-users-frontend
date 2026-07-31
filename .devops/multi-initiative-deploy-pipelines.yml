@@ -19,11 +19,8 @@ variables:
     #KEYCLOAK UAT
     vite_keycloak_url: '$(UAT_VITE_KEYCLOAK_URL)'
     vite_keycloak_realm: '$(UAT_VITE_KEYCLOAK_REALM)'
-    vite_keycloak_client_id: '$(UAT_VITE_KEYCLOAK_CLIENT_ID)'
-    vite_keycloak_redirect_uri: '$(UAT_VITE_KEYCLOAK_REDIRECT_URI)'
 
     vite_url_api_portal_users: '$(UAT_VITE_URL_API_PORTAL_USERS)'
-    vite_initiative_id: '$(UAT_VITE_INITIATIVE_ID)'
     vite_base_url: '$(UAT_VITE_BASE_URL)'
 
     cdn_domains: '$(UAT_CDN_DOMAINS)'
@@ -39,11 +36,8 @@ variables:
     #KEYCLOAK PROD
     vite_keycloak_url: '$(PROD_VITE_KEYCLOAK_URL)'
     vite_keycloak_realm: '$(PROD_VITE_KEYCLOAK_REALM)'
-    vite_keycloak_client_id: '$(PROD_VITE_KEYCLOAK_CLIENT_ID)'
-    vite_keycloak_redirect_uri: '$(PROD_VITE_KEYCLOAK_REDIRECT_URI)'
 
     vite_url_api_portal_users: '$(PROD_VITE_URL_API_PORTAL_USERS)'
-    vite_initiative_id: '$(PROD_VITE_INITIATIVE_ID)'
     vite_base_url: '$(PROD_VITE_BASE_URL)'
 
     cdn_domains: '$(PROD_CDN_DOMAINS)'
@@ -59,14 +53,21 @@ variables:
     #KEYCLOAK DEV
     vite_keycloak_url: '$(DEV_VITE_KEYCLOAK_URL)'
     vite_keycloak_realm: '$(DEV_VITE_KEYCLOAK_REALM)'
-    vite_keycloak_client_id: '$(DEV_VITE_KEYCLOAK_CLIENT_ID)'
-    vite_keycloak_redirect_uri: '$(DEV_VITE_KEYCLOAK_REDIRECT_URI)'
 
     vite_url_api_portal_users: '$(DEV_VITE_URL_API_PORTAL_USERS)'
-    vite_initiative_id: '$(DEV_VITE_INITIATIVE_ID)'
     vite_base_url: '$(DEV_VITE_BASE_URL)'
 
     cdn_domains: '$(DEV_CDN_DOMAINS)'
+
+  ${{ if eq(parameters.INITIATIVE, 'bonusdecoder') }}:
+    vite_keycloak_client_id: 'frontend'
+    vite_initiative_id: '68dd003ccce8c534d1da22bc'
+  ${{ elseif eq(parameters.INITIATIVE, 'bonusvalore') }}:
+    vite_keycloak_client_id: 'frontend'
+    vite_initiative_id: '68dd003ccce8c534d1da22bc'
+  ${{ elseif eq(parameters.INITIATIVE, 'bonuselettrodomestici') }}:
+    vite_keycloak_client_id: 'frontend'
+    vite_initiative_id: '68dd003ccce8c534d1da22bc'
 
 parameters:
   - name: 'INITIATIVE'
@@ -122,7 +123,6 @@ stages:
               VITE_KEYCLOAK_URL: '$(vite_keycloak_url)'
               VITE_KEYCLOAK_REALM: '$(vite_keycloak_realm)'
               VITE_KEYCLOAK_CLIENT_ID: '$(vite_keycloak_client_id)'
-              VITE_KEYCLOAK_REDIRECT_URI: '$(vite_keycloak_redirect_uri)'
 
           - bash: |
               printf "$EXECUTION_ID\n$(git name-rev --name-only FETCH_HEAD) $(git rev-parse HEAD)" > $(System.DefaultWorkingDirectory)/dist/build.info
