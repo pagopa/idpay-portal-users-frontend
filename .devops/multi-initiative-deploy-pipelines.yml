@@ -8,24 +8,65 @@ variables:
 
   basePath: utente
 
-  environment: 'DEV'
-  azure_subscription: $(DEV_AZURE_SUBSCRIPTION)
-  cdn_endpoint: '$(DEV_CDN_ENDPOINT)'
-  cdn_profile: '$(DEV_CDN_PROFILE)'
-  resource_group: '$(DEV_RESOURCE_GROUP)'
-  storage_account: '$(DEV_STORAGE_ACCOUNT)'
+  ${{ if or(startsWith(variables['Build.SourceBranch'], 'refs/heads/uat'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix')) }}:
+    environment: 'UAT'
+    azure_subscription: $(UAT_AZURE_SUBSCRIPTION)
+    cdn_endpoint: '$(UAT_CDN_ENDPOINT)'
+    cdn_profile: '$(UAT_CDN_PROFILE)'
+    resource_group: '$(UAT_RESOURCE_GROUP)'
+    storage_account: '$(UAT_STORAGE_ACCOUNT)'
 
-  #KEYCLOAK ENV
-  vite_keycloak_url: '$(DEV_VITE_KEYCLOAK_URL)'
-  vite_keycloak_realm: '$(DEV_VITE_KEYCLOAK_REALM)'
-  vite_keycloak_client_id: '$(DEV_VITE_KEYCLOAK_CLIENT_ID)'
-  vite_keycloak_redirect_uri: '$(DEV_VITE_KEYCLOAK_REDIRECT_URI)'
+    #KEYCLOAK UAT
+    vite_keycloak_url: '$(UAT_VITE_KEYCLOAK_URL)'
+    vite_keycloak_realm: '$(UAT_VITE_KEYCLOAK_REALM)'
+    vite_keycloak_client_id: '$(UAT_VITE_KEYCLOAK_CLIENT_ID)'
+    vite_keycloak_redirect_uri: '$(UAT_VITE_KEYCLOAK_REDIRECT_URI)'
 
-  vite_url_api_portal_users: '$(DEV_VITE_URL_API_PORTAL_USERS)'
-  vite_initiative_id: '$(DEV_VITE_INITIATIVE_ID)'
-  vite_base_url: '$(DEV_VITE_BASE_URL)'
+    vite_url_api_portal_users: '$(UAT_VITE_URL_API_PORTAL_USERS)'
+    vite_initiative_id: '$(UAT_VITE_INITIATIVE_ID)'
+    vite_base_url: '$(UAT_VITE_BASE_URL)'
 
-  cdn_domains: '$(DEV_CDN_DOMAINS)'
+    cdn_domains: '$(UAT_CDN_DOMAINS)'
+
+  ${{ elseif eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+    environment: 'PROD'
+    azure_subscription: $(PROD_AZURE_SUBSCRIPTION)
+    cdn_endpoint: '$(PROD_CDN_ENDPOINT)'
+    cdn_profile: '$(PROD_CDN_PROFILE)'
+    resource_group: '$(PROD_RESOURCE_GROUP)'
+    storage_account: '$(PROD_STORAGE_ACCOUNT)'
+
+    #KEYCLOAK PROD
+    vite_keycloak_url: '$(PROD_VITE_KEYCLOAK_URL)'
+    vite_keycloak_realm: '$(PROD_VITE_KEYCLOAK_REALM)'
+    vite_keycloak_client_id: '$(PROD_VITE_KEYCLOAK_CLIENT_ID)'
+    vite_keycloak_redirect_uri: '$(PROD_VITE_KEYCLOAK_REDIRECT_URI)'
+
+    vite_url_api_portal_users: '$(PROD_VITE_URL_API_PORTAL_USERS)'
+    vite_initiative_id: '$(PROD_VITE_INITIATIVE_ID)'
+    vite_base_url: '$(PROD_VITE_BASE_URL)'
+
+    cdn_domains: '$(PROD_CDN_DOMAINS)'
+
+  ${{ else }}:
+    environment: 'DEV'
+    azure_subscription: $(DEV_AZURE_SUBSCRIPTION)
+    cdn_endpoint: '$(DEV_CDN_ENDPOINT)'
+    cdn_profile: '$(DEV_CDN_PROFILE)'
+    resource_group: '$(DEV_RESOURCE_GROUP)'
+    storage_account: '$(DEV_STORAGE_ACCOUNT)'
+
+    #KEYCLOAK DEV
+    vite_keycloak_url: '$(DEV_VITE_KEYCLOAK_URL)'
+    vite_keycloak_realm: '$(DEV_VITE_KEYCLOAK_REALM)'
+    vite_keycloak_client_id: '$(DEV_VITE_KEYCLOAK_CLIENT_ID)'
+    vite_keycloak_redirect_uri: '$(DEV_VITE_KEYCLOAK_REDIRECT_URI)'
+
+    vite_url_api_portal_users: '$(DEV_VITE_URL_API_PORTAL_USERS)'
+    vite_initiative_id: '$(DEV_VITE_INITIATIVE_ID)'
+    vite_base_url: '$(DEV_VITE_BASE_URL)'
+
+    cdn_domains: '$(DEV_CDN_DOMAINS)'
 
 parameters:
   - name: 'INITIATIVE'
@@ -35,7 +76,7 @@ parameters:
     values:
       - bonusdecoder
       - bonusvalore
-      - bonustest
+      - bonuselettrodomestici
 
 pr: none
 
