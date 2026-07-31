@@ -1,5 +1,12 @@
-# Azure DevOps pipeline to release a new version and deploy to production.
+# Automatically triggered on PR
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema%2Cparameter-schema#pr-trigger
+trigger:
+  branches:
+    include:
+      - develop
+      - uat
 
+# Azure DevOps pipeline to release a new version and deploy to production.
 variables:
   NODE_VERSION: '22.20.0'
   YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
