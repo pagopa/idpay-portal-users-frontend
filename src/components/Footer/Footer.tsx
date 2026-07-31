@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { FooterPostLogin, FooterLegal } from '@pagopa/mui-italia';
 import ROUTES from '../../routes';
-import { getBaseUrl } from '../../utils/env';
+import { getPortalUrl } from '../../utils/env';
 
 const FOOTER_LINKS = {
     COMPANY: 'https://www.pagopa.it/it/',
@@ -26,9 +26,9 @@ export const Footer = () => {
                     {
                         label: t('commons.footer.privacy'),
                         ariaLabel: t('commons.footer.privacy'),
-                        href: `${getBaseUrl()}/utente${ROUTES.PRIVACY_POLICY}`,
+                        href: getPortalUrl(ROUTES.PRIVACY_POLICY),
                         linkType: 'external',
-                        onClick: () => openExternalLink(`${getBaseUrl()}/utente${ROUTES.PRIVACY_POLICY}`)
+                        onClick: () => openExternalLink(getPortalUrl(ROUTES.PRIVACY_POLICY))
                     },
                     {
                         label: t('commons.footer.personalData'),
@@ -40,9 +40,9 @@ export const Footer = () => {
                     {
                         label: t('commons.footer.termsAndConditions'),
                         ariaLabel: t('commons.footer.termsAndConditions'),
-                        href: `${getBaseUrl()}/utente${ROUTES.TERMS_OF_SERVICE}`,
+                        href: getPortalUrl(ROUTES.TERMS_OF_SERVICE),
                         linkType: 'external',
-                        onClick: () => openExternalLink(`${getBaseUrl()}/utente${ROUTES.TERMS_OF_SERVICE}`)
+                        onClick: () => openExternalLink(getPortalUrl(ROUTES.TERMS_OF_SERVICE))
                     },
                     {
                         label: t('commons.footer.a11y'),

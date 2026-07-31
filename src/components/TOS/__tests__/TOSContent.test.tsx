@@ -27,6 +27,7 @@ jest.mock('../../../hooks/useIsMobile', () => ({
 
 jest.mock('../../../utils/env', () => ({
   getBaseUrl: () => 'https://www.google.com',
+  getPortalUrl: (path: string) => `https://www.google.com/bonusdecoder/utente${path}`,
 }));
 
 const makeRefs = () =>

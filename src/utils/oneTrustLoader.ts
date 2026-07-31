@@ -17,9 +17,10 @@ let cookieInitialized = false;
 let cookieInitializationPromise: Promise<void> | null = null;
 
 const fixOneTrustLinks = () => {
+  const basePath = (import.meta.env.BASE_URL || '/utente/').replace(/\/+$/, '');
   const linkMap: Record<string, string> = {
-    '/utente/privacy-policy': '/utente/privacy-policy',
-    '/utente/terms-of-service': '/utente/terms-of-service'
+    '/utente/privacy-policy': `${basePath}/privacy-policy`,
+    '/utente/terms-of-service': `${basePath}/terms-of-service`
   };
 
   const cookiePolicyLinks = document.querySelectorAll('.ot-cookie-policy-link, .privacy-notice-link');
