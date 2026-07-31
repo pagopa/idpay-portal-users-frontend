@@ -134,7 +134,16 @@ stages:
 
   # Deploy bundle
   - stage: 'Deploy_to_${{ variables.environment }}'
-    condition: or(eq(variables['environment'], 'DEV'), succeeded())
+    condition: |
+      and(
+        succeeded(),
+        not(
+          and(
+            eq(variables['environment'], 'PROD'),
+            eq('${{ parameters.INITIATIVE }}', 'bonuselettrodomestici')
+          )
+        )
+      )
     jobs:
       - job: 'Deploy_to_${{ variables.environment }}'
         steps:
