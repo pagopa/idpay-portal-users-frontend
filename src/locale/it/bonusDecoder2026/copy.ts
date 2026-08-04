@@ -68,7 +68,6 @@ const it = {
   "landing": {
     "requestBonus": "Richiedi il Bonus Decoder online",
     "requestBonusMobile": "Accedi al sito Bonus Decoder",
-    "requestBonusTest": "Richiedi il Bonus Test",
     "loginMethods": "Accedi con SPID o CIE per richiedere il tuo bonus.",
     "continueOnWeb": "Continua sul sito",
     "withIO": "Con IO è tutto più semplice",
@@ -95,7 +94,6 @@ const it = {
     "downloadIO": "Scarica l'app"
   },
   "bonus": "Bonus Decoder",
-  "exit": "Esci",
   "tos": {
     "description": "È il contributo, erogato dal Ministero delle Imprese e del Made in Italy, per incentivare la <bold>sostituzione del proprio decoder</bold> con un modello che rispetti il nuovo standard DVB-T2.",
 
@@ -174,156 +172,55 @@ const it = {
     "title": "Inserisci il tuo indirizzo email",
     "description": "Ci servirà per comunicarti tutti gli aggiornamenti sul Bonus Decoder."
   },
-
-  "click-day": {
-    "firstDescription": "Stiamo per collegarti.\nAttendi qualche secondo...",
-    "secondDescription": "Ancora un po’ di pazienza..."
-  },
-
-  "feedbackStates": {
-    "requestSubmitted": {
-      "title": "La tua richiesta è stata inviata!",
-      "description": "Controlla periodicamente la tua casella di posta.\nRiceverai tutti gli aggiornamenti all’indirizzo email che hai indicato.",
-      "subDescription": "Puoi verificare lo stato della tua richiesta da\nquesto sito o, se usi IO, dalla sezione Servizi dell’app."
-    },
-    "onEvaluation": {
-      "title": "La tua richiesta è in fase di valutazione",
-      "description": "Quando pronto, riceverai l’esito all’indirizzo email indicato."
-    },
-    "familyMember": {
-      "title": "Un'altra persona della tua\nfamiglia ha inviato la\nrichiesta",
-      "description": "È possibile inviare una sola richiesta per ogni\nfamiglia anagrafica."
-    },
-    "accessToken": {
-      "title": "Non è stato possibile accedere",
-      "description": "Si è verificato un problema durante l'accesso.\nRiprova tra qualche minuto.",
-    },
-    "ageRestriction": {
-      "title": "Non hai l’età minima richiesta",
-      "description": "Per richiedere il bonus, devi avere minimo 18 anni"
-    },
-    "waitingList": {
-      "title": "Sei in lista d’attesa",
-      "description": "La tua richiesta è in coda.\nTi contatteremo se saranno disponibili nuove\nrisorse."
-    },
-    "initiativeEnded": {
-      "title": "Le adesioni sono\nterminate",
-      "description": "Non è più possibile aderire all’iniziativa."
-    },
-    "budgetExhausted": {
-      "title": "I fondi messi a\ndisposizione dall’ente\nsono terminati",
-      "description": "Non è più possibile aderire all’iniziativa."
-    },
-    "sessionExpired": {
-      "title": "La tua sessione è scaduta",
-      "description": "Accedi per riprendere la sessione."
-    },
-    "unknownError": {
-      "title": "Qualcosa non ha funzionato",
-      "description": "Si è verificato un errore imprevisto.\nRiprova tra qualche minuto."
-    },
-    "technicalError": {
-      "title": "Non è possibile\ncompletare la richiesta\nper questa iniziativa",
-      "description": "Siamo già a lavoro per risolvere.\nRiprova tra un po’."
-    },
-    "tooManyRequests": {
-      "title": "Sembra che le cose\nvadano un po' a rilento",
-      "description": "Potreste essere in tanti in questo momento.\nRiprova tra qualche minuto."
-    }
-  },
-  "dashboard": {
-    "title": "Il tuo bonus",
-    "description": "Qui puoi visualizzare e scaricare il tuo bonus.",
-    "barcodeSection": {
-      "barcodeDescription": "codice a barre",
-      "downloadBarcode": "Scarica codice",
-      "showMerchants": "Mostra esercenti"
-    },
-    "detailBonusSection": {
-      "bonusDetail": "dettagli del Bonus",
-      "amount": "Importo disponibile",
-      "status": "Stato del bonus",
-      "voucherStartDate": "Valido fino al",
-      "voucherEndDate": "Bonus emesso il",
-      "fiscalNumber": "Codice Fiscale"
-    },
-    "voucherStatus": {
-      "ACTIVE": "Attivo",
-      "EXPIRING": "In scadenza",
-      "EXPIRED": "Scaduto",
-      "USED": "Utilizzato"
-    },
-    "operationsSection": {
-      "title": "Le tue operazioni",
-      "onboardingInitiative": "Adesione iniziativa"
-    },
-    "faq": "Domande frequenti",
-    "menu": "Menu"
-  },
-  "drawerDetail": {
-    "title": "Dettaglio dell’operazione",
-    "assetAmount": "Importo del bene",
-    "appliedDiscount": "Sconto riconosciuto",
-    "transactionInformation": "Informazioni sulla transazione",
-    "merchant": "Esercente",
-    "date": "Data",
-    "status": "Stato",
-    "idTransaction": "ID transazione",
-    "statusMap": {
-      "AUTHORIZED": "Autorizzata",
-      "CANCELLED": "Cancellata",
-      "REWARDED": "Assegnata"
-    }
-  },
   "FAQSection": {
-    "title": "Domande frequenti",
+    "title": "",
     "firstAccordion": {
-      "title": "È obbligatorio smaltire un elettrodomestico?",
-      "description": "Sì, puoi usare il Bonus per acquistare un elettrodomestico nuovo solo se sostituisci un vecchio elettrodomestico della stessa tipologia e di classe energetica inferiore. Lo smaltimento è gratuito ed è a carico del venditore."
+      "title": "",
+      "description": ""
     },
     "secondAccordion": {
-      "title": "Se uso il Bonus Elettrodomestici posso usare anche altri sconti o benefici?",
-      "description": "No. Il bonus non è cumulabile con altre agevolazioni o altri benefici, anche di tipo fiscale."
+      "title": "",
+      "description": ""
     },
     "thirdAccordion": {
-      "title": "Quali elettrodomestici posso acquistare con il contributo?",
-      "description": "Puoi acquistare un elettrodomestico di una di queste categorie: lavatrici e lavasciuga, forni, cappe da cucina, lavastoviglie, asciugabiancheria, frigoriferi, congelatori e piani cottura, come previsto nel dettaglio dall’articolo 3, comma 1, lettera a), del Decreto interministeriale. Puoi consultare l’elenco degli elettrodomestici che fanno parte dell’iniziativa in questa lista."
+      "title": "",
+      "description": ""
     },
      "fourthAccordion": {
-      "title": "Ho usato il bonus per acquistare un elettrodomestico, ma vorrei effettuare un reso, cosa devo fare?",
-      "description": "Contatta il punto vendita presso il quale hai effettuato l’acquisto con il bonus per richiedere informazioni."
+      "title": "",
+      "description": ""
     },
     "fifthAccordion": {
-      "title": "Quando riceverò l’esito della richiesta?",
-      "description": "I tempi possono variare da qualche ora a qualche giorno, in base al volume delle richieste."
+      "title": "",
+      "description": ""
     },
     "sixthAccordion": {
-      "title": "Devo presentare qualche documento al momento dell'acquisto?",
-      "description": "Solo se hai richiesto il bonus tramite sito web, il venditore è tenuto a verificare il tuo codice fiscale."
+      "title": "",
+      "description": ""
     },
     "seventhAccordion": {
-      "title": "Cosa devo fare con l’elettrodomestico da smaltire?",
-      "description": "Concorda con il venditore come smaltire il vecchio elettrodomestico. Il ritiro e lo smaltimento sono gratuiti."
+      "title": "",
+      "description": ""
     },
     "eighthAccordion": {
-      "title": "Entro quanto tempo posso usare il Bonus Elettrodomestici?",
-      "description": "Entro 15 giorni solari dalla data di emissione. Il tuo bonus scade automaticamente alle 23:59 del quindicesimo giorno dall’emissione. Una volta scaduto, se saranno ancora disponibili i fondi, puoi comunque inviare una nuova richiesta, che seguirà l’ordine cronologico di arrivo."
+      "title": "",
+      "description": ""
     },
     "ninthAccordion": {
-      "title": "Come faccio a sapere se l’elettrodomestico da sostituire è di classe inferiore?",
-      "description": "Se hai acquistato dal 2021 in poi, puoi cercare il tuo elettrodomestico sul sito EPREL e verificare la classe energetica.\nSe il tuo modello non è presente su EPREL, significa che è stato prodotto prima dell’obbligo di registrazione (2021). In questo caso puoi chiedere informazioni al venditore."
+      "title": "",
+      "description": ""
     },
     "tenthAccordion": {
-      "title": "Come posso verificare lo stato della richiesta?",
-      "description": "Se hai l’app IO, puoi controllare lo stato dalla sezione “Servizi”. Se hai fatto richiesta dal sito bonuselettrodomestici.it, trovi lo stato del bonus nella sezione “Il tuo bonus”."
+      "title": "",
+      "description": ""
     },
     "eleventhAccordion": {
-      "title": "Mi è scaduto il Bonus, posso chiederlo di nuovo?",
-      "description": "Sì, puoi inviare una nuova richiesta, a condizione che nessun altro membro della tua famiglia anagrafica l'abbia già fatto.\nLa richiesta verrà presa in carico in base all'ordine di arrivo, compatibilmente con i fondi disponibili."
+      "title": "",
+      "description": ""
     },
     "twelfthAccordion": {
-      "title": "Posso usufruire del Bonus per un acquisto effettuato prima dell’uscita del bonus?",
-      "description": "No, il Bonus Elettrodomestici vale solo per acquisti futuri. Non è retroattivo."
+      "title": "",
+      "description": ""
     }
   }
 }

@@ -1,4 +1,5 @@
 import { getInitiative } from '../utils/env';
+import common from './it/common';
 import bonusDecoder2026Copy from './it/bonusDecoder2026/copy';
 import bonusElettrodomestici2025Copy from './it/bonusElettrodomestici2025/copy';
 import defaultCopy from './it/default/copy';
@@ -14,4 +15,9 @@ type InitiativeCopy = keyof typeof initiativeCopies;
 
 const activeInitiative = getInitiative()?.toLocaleLowerCase() as InitiativeCopy;
 
-export default initiativeCopies[activeInitiative] ?? defaultCopy;
+const initiativeCopy = initiativeCopies[activeInitiative] ?? defaultCopy;
+
+export default {
+  common,
+  ...initiativeCopy,
+};

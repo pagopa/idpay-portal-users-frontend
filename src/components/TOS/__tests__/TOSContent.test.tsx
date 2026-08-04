@@ -74,7 +74,7 @@ describe('TOSContent', () => {
   test('renders exit and continue buttons', async () => {
     const { TOSContent } = await import('../TOSContent');
     render(<TOSContent sectionRefs={makeRefs()} />);
-    expect(screen.getByText('exit')).toBeInTheDocument();
+    expect(screen.getByText('common.exit')).toBeInTheDocument();
     expect(screen.getByText('tos.continue')).toBeInTheDocument();
   });
 

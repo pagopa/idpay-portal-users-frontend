@@ -49,8 +49,8 @@ describe('YourBonus', () => {
 
   test('renders title and description', () => {
     render(<YourBonus {...baseProps} />);
-    expect(screen.getByText('dashboard.title')).toBeInTheDocument();
-    expect(screen.getByText('dashboard.description')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.title')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.description')).toBeInTheDocument();
   });
 
   test('renders barcode when showBarcode=true and trxCode provided', () => {
