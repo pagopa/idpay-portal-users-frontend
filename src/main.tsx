@@ -13,9 +13,11 @@ initializeCookieOneTrust().catch(err => {
   console.log('Failed to initialize Cookie OneTrust: ', err);
 });
 
+const routerBasename = import.meta.env.BASE_URL.replace(/\/+$/, '') || '/';
+
 createRoot(document.getElementById('root')!).render(
   <AuthProvider>
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <BrowserRouter basename={routerBasename}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <App />
