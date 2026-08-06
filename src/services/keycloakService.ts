@@ -34,13 +34,22 @@ export function createKeycloakService(
 
     try {
       const savedToken = tokenManager.getSavedToken();
-      const useBootstrap = tokenManager.isTokenValid(savedToken);
+      const hasLocalSession = !!savedToken;
 
       const authenticated = await keycloak.init({
         pkceMethod: 'S256',
         checkLoginIframe: false,
-        ...(useBootstrap && savedToken ? { token: savedToken } : {}),
+        ...(hasLocalSession
+          ? {
+              onLoad: 'check-sso',
+              silentCheckSsoRedirectUri: buildFullUrl('/silent-check-sso.html'),
+            }
+          : {}),
       });
+
+      if (!authenticated && hasLocalSession) {
+        tokenManager.saveToken(null);
+      }
 
       return !!authenticated;
     } catch (error) {
