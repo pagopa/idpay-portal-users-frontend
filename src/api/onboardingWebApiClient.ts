@@ -1,5 +1,4 @@
 import { extractResponse } from '@pagopa/selfcare-common-frontend/lib/utils/api-utils';
-import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { createClient, WithDefaultsT } from './generated/onboarding-web/client';
 
 import { InitiativeDTO } from './generated/onboarding-web/InitiativeDTO';
@@ -9,6 +8,7 @@ import { OnboardingStatusDTO } from './generated/onboarding-web/OnboardingStatus
 import { CodeEnum, OnboardingErrorDTO } from './generated/onboarding-web/OnboardingErrorDTO';
 import { isRight } from 'fp-ts/Either';
 import { buildFetchApiWithLoading } from './buildFetchApiWithLoading';
+import { portalTokenStorage } from '../utils/tokenStorage';
 import { TransactionBarCodeResponse } from './generated/onboarding-web/TransactionBarCodeResponse';
 import { OnboardingInitiativeDTO } from './generated/onboarding-web/OnboardingInitiativeDTO';
 import { ReportDTO } from './generated/onboarding-web/ReportDTO';
@@ -29,7 +29,7 @@ type SaveNoLoader = { showLoader?: boolean };
 const onRedirectToLogin = () => '/'; // TODO: implement real redirect
 
 const withBearer: WithDefaultsT<'bearerAuth'> = (wrappedOperation) => (params: any) => {
-  const token = storageTokenOps.read();
+  const token = portalTokenStorage.read();
   return wrappedOperation({
     ...params,
     bearerAuth: `Bearer ${token}`

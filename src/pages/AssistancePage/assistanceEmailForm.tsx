@@ -7,7 +7,7 @@ import {ArrowBack} from "@mui/icons-material";
 import {Link, useNavigate} from "react-router-dom";
 import {getInitiativeId} from "../../utils/env.ts";
 import {OnboardingWebApi} from "../../api/onboardingWebApiClient.ts";
-import {storageTokenOps} from "@pagopa/selfcare-common-frontend/lib/utils/storage";
+import {portalTokenStorage} from "../../utils/tokenStorage.ts";
 import {parseJwt} from "../../utils/functions.ts";
 import {SupportResponseDTO} from "../../api/generated/onboarding-web/SupportResponseDTO.ts";
 import { useEmailAssistanceStore } from '../../hooks/useEmailAssistanceStore.tsx';
@@ -16,7 +16,7 @@ const AssistanceEmailForm = () => {
     const {t} = useTranslation();
     const navigate = useNavigate();
     const initiativeId = getInitiativeId();
-    const token = storageTokenOps.read();
+    const token = portalTokenStorage.read();
     const jwtUser = parseJwt(token);
     const { email } = useEmailAssistanceStore()
 

@@ -37,10 +37,8 @@ export function createKeycloakService(
       const useBootstrap = tokenManager.isTokenValid(savedToken);
 
       const authenticated = await keycloak.init({
-        onLoad: 'check-sso',
         pkceMethod: 'S256',
         checkLoginIframe: false,
-        silentCheckSsoRedirectUri: buildFullUrl('/silent-check-sso.html'),
         ...(useBootstrap && savedToken ? { token: savedToken } : {}),
       });
 
@@ -68,6 +66,7 @@ export function createKeycloakService(
     if (isMockMode) return;
     keycloak.login({
       idpHint: 'oneid-keycloak',
+      prompt: 'login',
       redirectUri: buildFullUrl(ROUTES.GATEWAY),
     });
   };
@@ -75,9 +74,8 @@ export function createKeycloakService(
   const logout = (): void => {
     tokenManager.cleanup();
     if (!isMockMode) {
-      keycloak.logout({
-        redirectUri: buildFullUrl(ROUTES.HOME),
-      });
+      keycloak.clearToken();
+      window.location.assign(buildFullUrl(ROUTES.HOME));
     }
   };
 

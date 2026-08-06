@@ -1,9 +1,9 @@
-import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
+import { portalTokenStorage } from './tokenStorage';
 
 const TOKEN_REFRESH_BEFORE_EXPIRY_SECONDS = 70;
 
 export const isStorageTokenExpired = () => {
-  const storageToken = storageTokenOps.read();
+  const storageToken = portalTokenStorage.read();
   if (!storageToken) return false;
   try {
     const [, payload] = storageToken.split('.');
@@ -35,14 +35,14 @@ export function createTokenManager(
 
   const saveToken = (token: string | null): void => {
     if (token) {
-      storageTokenOps.write(token);
+      portalTokenStorage.write(token);
     } else {
-      storageTokenOps.delete();
+      portalTokenStorage.delete();
     }
   };
 
   const getSavedToken = (): string | null => {
-    return storageTokenOps.read();
+    return portalTokenStorage.read();
   };
 
   const isTokenValid = (token?: string | null): boolean => {
