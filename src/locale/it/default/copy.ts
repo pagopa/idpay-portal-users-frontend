@@ -95,7 +95,7 @@ const it = {
   },
   "bonus": "Bonus Default",
   "tos": {
-    "description": "È il contributo, erogato dal Ministero delle Imprese e del Made in Italy, per incentivare la <bold>sostituzione del proprio decoder</bold> con un modello che rispetti il nuovo standard DVB-T2.",
+    "description": "È il contributo, erogato dal Ministero delle Imprese e del Made in Italy, per incentivare la <b>sostituzione del proprio decoder</b> con un modello che rispetti il nuovo standard DVB-T2.",
 
     "sideMenu": {
       "element1": {
