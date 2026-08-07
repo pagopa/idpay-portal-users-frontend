@@ -13,7 +13,7 @@ jest.mock('@pagopa/mui-italia', () => {
 });
 
 jest.mock('../../../utils/env', () => ({
-  getBaseUrl: () => 'https://www.google.com',
+  getPortalUrl: (path: string) => `https://www.google.com/bonusdecoder/utente${path}`,
 }));
 
 const getFooterPostLoginProps = () => {
@@ -50,7 +50,7 @@ describe('Footer', () => {
         expect(props.links).toHaveLength(4);
 
         expect(props.links[0].label).toBe('commons.footer.privacy');
-        expect(props.links[0].href).toBe('https://www.google.com/utente/privacy-policy');
+        expect(props.links[0].href).toBe('https://www.google.com/bonusdecoder/utente/privacy-policy');
         expect(props.links[0].linkType).toBe('external');
         expect(typeof props.links[0].onClick).toBe('function');
 
@@ -61,7 +61,7 @@ describe('Footer', () => {
         expect(typeof props.links[1].onClick).toBe('function');
 
         expect(props.links[2].label).toBe('commons.footer.termsAndConditions');
-        expect(props.links[2].href).toBe('https://www.google.com/utente/terms-of-service');
+        expect(props.links[2].href).toBe('https://www.google.com/bonusdecoder/utente/terms-of-service');
         expect(typeof props.links[2].onClick).toBe('function');
 
         expect(props.links[3].label).toBe('commons.footer.a11y');

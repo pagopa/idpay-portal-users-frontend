@@ -29,7 +29,7 @@ const WaitingContent: React.FC<WaitingContentProps> = ({payload}) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const [isFirstStep, setIsFirstStep] = useState(true);
-    const description = t('click-day.firstDescription')
+    const description = t('common.click-day.firstDescription')
 
     useEffect(() => {
         if(!payload) navigate(ROUTES.ERROR_PAGE)
@@ -97,7 +97,7 @@ const WaitingContent: React.FC<WaitingContentProps> = ({payload}) => {
                 ))
                 :
                 <Typography variant="h4" mt={2}>
-                    {t('click-day.secondDescription')}
+                    {t('common.click-day.secondDescription')}
                 </Typography>
             }
         </Box>

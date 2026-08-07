@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTOSCheckboxStore } from '../../hooks/useTOSCheckboxStore';
-import { getBaseUrl } from '../../utils/env';
+import { getBaseUrl, getPortalUrl } from '../../utils/env';
 
 interface Props {
   sectionRefs: React.RefObject<HTMLDivElement>[];
@@ -186,7 +186,7 @@ export const TOSContent = ({ sectionRefs }: Props) => {
             {t('tos.privacy_part1')}{' '}
             <Link
               onClick={() => { 
-                const fullUrl = `${getBaseUrl()}/utente${ROUTES.TERMS_OF_SERVICE}`;
+                const fullUrl = getPortalUrl(ROUTES.TERMS_OF_SERVICE);
                 window.open(fullUrl, '_blank')?.focus();
               }}
               underline="always"
@@ -203,7 +203,7 @@ export const TOSContent = ({ sectionRefs }: Props) => {
             <Link
               component="span"
               onClick={() => { 
-                const fullUrl = `${getBaseUrl()}/utente${ROUTES.PRIVACY_POLICY}`;
+                const fullUrl = getPortalUrl(ROUTES.PRIVACY_POLICY);
                 window.open(fullUrl, '_blank')?.focus();
               }}
               underline="always"
@@ -221,7 +221,7 @@ export const TOSContent = ({ sectionRefs }: Props) => {
 
       </Box>
       <Box sx={{ py: 6 }}>
-        <Button variant="outlined" onClick={handleLogout} sx={{ mr: { md: 2, sm: 1, xs: 1 } }}>{t('exit')}</Button>
+        <Button variant="outlined" onClick={handleLogout} sx={{ mr: { md: 2, sm: 1, xs: 1 } }}>{t('common.exit')}</Button>
         <Button variant="contained" onClick={handleContinue}>{t('tos.continue')}</Button>
       </Box>
     </Container>

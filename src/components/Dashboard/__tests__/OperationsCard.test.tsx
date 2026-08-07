@@ -32,7 +32,7 @@ describe('OperationsCard', () => {
     const onClick = jest.fn();
     render(<OperationsCard timelineData={timelineData as any} onClick={onClick} />);
 
-    expect(screen.getByText('dashboard.operationsSection.title')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.operationsSection.title')).toBeInTheDocument();
     expect(screen.getByText('Shop Alpha')).toBeInTheDocument();
     expect(screen.getByText('10/10/2025 12:00')).toBeInTheDocument();
     expect(screen.getByText('Shop Bravo')).toBeInTheDocument();

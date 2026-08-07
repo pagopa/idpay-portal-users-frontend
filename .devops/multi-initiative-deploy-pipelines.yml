@@ -1,0 +1,181 @@
+# Automatically triggered on PR
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema%2Cparameter-schema#pr-trigger
+trigger:
+  branches:
+    include:
+      - develop
+      - uat
+
+# Azure DevOps pipeline to release a new version and deploy to production.
+variables:
+  NODE_VERSION: '22.20.0'
+  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
+  # Execute agents (jobs) on latest Ubuntu version.
+  vmImageNameDefault: 'ubuntu-latest'
+
+  basePath: utente
+
+  ${{ if or(startsWith(variables['Build.SourceBranch'], 'refs/heads/uat'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix')) }}:
+    environment: 'UAT'
+    azure_subscription: $(UAT_AZURE_SUBSCRIPTION)
+    cdn_endpoint: '$(UAT_CDN_ENDPOINT)'
+    cdn_profile: '$(UAT_CDN_PROFILE)'
+    resource_group: '$(UAT_RESOURCE_GROUP)'
+    storage_account: '$(UAT_STORAGE_ACCOUNT)'
+
+    #KEYCLOAK UAT
+    vite_keycloak_url: '$(UAT_VITE_KEYCLOAK_URL)'
+    vite_keycloak_realm: '$(UAT_VITE_KEYCLOAK_REALM)'
+
+    vite_url_api_portal_users: '$(UAT_VITE_URL_API_PORTAL_USERS)'
+    vite_base_url: '$(UAT_VITE_BASE_URL)'
+
+    cdn_domains: '$(UAT_CDN_DOMAINS)'
+
+  ${{ elseif eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+    environment: 'PROD'
+    azure_subscription: $(PROD_AZURE_SUBSCRIPTION)
+    cdn_endpoint: '$(PROD_CDN_ENDPOINT)'
+    cdn_profile: '$(PROD_CDN_PROFILE)'
+    resource_group: '$(PROD_RESOURCE_GROUP)'
+    storage_account: '$(PROD_STORAGE_ACCOUNT)'
+
+    #KEYCLOAK PROD
+    vite_keycloak_url: '$(PROD_VITE_KEYCLOAK_URL)'
+    vite_keycloak_realm: '$(PROD_VITE_KEYCLOAK_REALM)'
+
+    vite_url_api_portal_users: '$(PROD_VITE_URL_API_PORTAL_USERS)'
+    vite_base_url: '$(PROD_VITE_BASE_URL)'
+
+    cdn_domains: '$(PROD_CDN_DOMAINS)'
+
+  ${{ else }}:
+    environment: 'DEV'
+    azure_subscription: $(DEV_AZURE_SUBSCRIPTION)
+    cdn_endpoint: '$(DEV_CDN_ENDPOINT)'
+    cdn_profile: '$(DEV_CDN_PROFILE)'
+    resource_group: '$(DEV_RESOURCE_GROUP)'
+    storage_account: '$(DEV_STORAGE_ACCOUNT)'
+
+    #KEYCLOAK DEV
+    vite_keycloak_url: '$(DEV_VITE_KEYCLOAK_URL)'
+    vite_keycloak_realm: '$(DEV_VITE_KEYCLOAK_REALM)'
+
+    vite_url_api_portal_users: '$(DEV_VITE_URL_API_PORTAL_USERS)'
+    vite_base_url: '$(DEV_VITE_BASE_URL)'
+
+    cdn_domains: '$(DEV_CDN_DOMAINS)'
+
+  ${{ if eq(parameters.INITIATIVE, 'bonusdecoder') }}:
+    vite_keycloak_client_id: 'frontend'
+    vite_initiative_id: '69e0fa95e21efa516c7b8dec'
+  ${{ elseif eq(parameters.INITIATIVE, 'bonusvalore') }}:
+    vite_keycloak_client_id: ''
+    vite_initiative_id: ''
+  ${{ elseif eq(parameters.INITIATIVE, 'bonuselettrodomestici') }}:
+    vite_keycloak_client_id: 'frontend'
+    vite_initiative_id: '68dd003ccce8c534d1da22bc'
+
+parameters:
+  - name: 'INITIATIVE'
+    displayName: 'Initiative to deploy'
+    type: string
+    default: bonusdecoder
+    values:
+      - bonusdecoder
+      - bonusvalore
+      - bonuselettrodomestici
+
+pr: none
+
+resources:
+  repositories:
+    - repository: pagopaCommons
+      type: github
+      name: pagopa/azure-pipeline-templates
+      ref: refs/tags/v18
+      endpoint: 'io-azure-devops-github-ro'
+    - repository: selfcareCommon
+      type: github
+      name: pagopa/selfcare-common-frontend
+      ref: refs/heads/main
+      endpoint: 'io-azure-devops-github-ro'
+
+pool:
+  vmImage: '$(vmImageNameDefault)'
+
+stages:
+  # Prepare Artifact with application bundle
+  - stage: Prepare_artifact
+    condition: or(eq(variables['environment'], 'DEV'), succeeded())
+    jobs:
+      - job: 'make_build'
+        steps:
+          - template: .devops/azure-templates/setup-yarn-cache.yml@selfcareCommon
+          - template: templates/node-job-setup/template.yaml@pagopaCommons
+            parameters:
+              nodeVersion: $(NODE_VERSION)
+          - bash: |
+              yarn generate
+              yarn build --mode $(environment)
+            displayName: 'Build files'
+            env:
+              INLINE_RUNTIME_CHUNK: 'false'
+
+              VITE_URL_API_PORTAL_USERS: '$(vite_url_api_portal_users)'
+              VITE_INITIATIVE_ID: '$(vite_initiative_id)'
+              VITE_INITIATIVE: '${{ parameters.INITIATIVE }}'
+              VITE_BASE_URL: '$(vite_base_url)'
+
+              VITE_KEYCLOAK_URL: '$(vite_keycloak_url)'
+              VITE_KEYCLOAK_REALM: '$(vite_keycloak_realm)'
+              VITE_KEYCLOAK_CLIENT_ID: '$(vite_keycloak_client_id)'
+
+          - bash: |
+              printf "$EXECUTION_ID\n$(git name-rev --name-only FETCH_HEAD) $(git rev-parse HEAD)" > $(System.DefaultWorkingDirectory)/dist/build.info
+            env:
+              EXECUTION_ID: '$(Build.BuildNumber) - $(Build.DefinitionName)($(Build.BuildId))'
+            displayName: 'Build info'
+          - publish: $(System.DefaultWorkingDirectory)/dist
+            artifact: Bundle
+
+  # Deploy bundle
+  - stage: 'Deploy_to_${{ variables.environment }}'
+    condition: |
+      and(
+        succeeded(),
+        not(
+          and(
+            eq(variables['environment'], 'PROD'),
+            eq('${{ parameters.INITIATIVE }}', 'bonuselettrodomestici')
+          )
+        )
+      )
+    jobs:
+      - job: 'Deploy_to_${{ variables.environment }}'
+        steps:
+          - checkout: none
+
+          - download: current
+            artifact: Bundle
+
+          - task: AzureCLI@2
+            displayName: 'Sync checkout storage'
+            inputs:
+              azureSubscription: '$(AZURE_SUBSCRIPTION)'
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |
+                az storage blob sync --container '$(blob_container_name)' --account-name $(storage_account) -s "$(Pipeline.Workspace)/Bundle" --destination '${{ parameters.INITIATIVE }}/$(basePath)/'
+          - task: AzureCLI@2
+            displayName: 'Purge Azure Front Door CDN endpoint'
+            inputs:
+              azureSubscription: '$(AZURE_SUBSCRIPTION)'
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |
+                az afd endpoint purge -g $(resource_group) \
+                --profile-name $(cdn_profile) \
+                --endpoint-name $(cdn_endpoint) \
+                --domains $(cdn_domains) \
+                --content-paths "/${{ parameters.INITIATIVE }}/$(basePath)" "/${{ parameters.INITIATIVE }}/$(basePath)/*" "/"

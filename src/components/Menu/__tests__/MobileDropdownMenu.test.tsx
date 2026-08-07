@@ -18,14 +18,14 @@ describe('MobileDropdownMenu (Drawer-based)', () => {
   test('renders menu button and not the drawer initially', () => {
     render(<MobileDropdownMenu selectedIndex={0} onItemClick={jest.fn()} items={items} />);
 
-    expect(screen.getByText('dashboard.menu')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.menu')).toBeInTheDocument();
     expect(screen.queryByTestId('menu-list')).not.toBeInTheDocument();
   });
 
   test('opens drawer when Menu is clicked', () => {
     render(<MobileDropdownMenu selectedIndex={0} onItemClick={jest.fn()} items={items} />);
 
-    fireEvent.click(screen.getByText('dashboard.menu'));
+    fireEvent.click(screen.getByText('common.dashboard.menu'));
     expect(screen.getByTestId('menu-list')).toBeInTheDocument();
     expect(screen.getByText(items[0])).toBeInTheDocument();
   });
@@ -33,7 +33,7 @@ describe('MobileDropdownMenu (Drawer-based)', () => {
   test('closes drawer when Close icon is clicked', async () => {
     render(<MobileDropdownMenu selectedIndex={0} onItemClick={jest.fn()} items={items} />);
 
-    fireEvent.click(screen.getByText('dashboard.menu'));
+    fireEvent.click(screen.getByText('common.dashboard.menu'));
 
     const closeButton = screen.getByRole('button', { name: '' });
     fireEvent.click(closeButton);
@@ -46,7 +46,7 @@ describe('MobileDropdownMenu (Drawer-based)', () => {
 
     render(<MobileDropdownMenu selectedIndex={1} onItemClick={onItemClickMock} items={items} />);
 
-    fireEvent.click(screen.getByText('dashboard.menu'));
+    fireEvent.click(screen.getByText('common.dashboard.menu'));
     fireEvent.click(screen.getByText(items[1]));
 
     expect(onItemClickMock).toHaveBeenCalledWith(1);
@@ -56,7 +56,7 @@ describe('MobileDropdownMenu (Drawer-based)', () => {
   test('applies selected style to the selected index', () => {
     render(<MobileDropdownMenu selectedIndex={2} onItemClick={jest.fn()} items={items} />);
 
-    fireEvent.click(screen.getByText('dashboard.menu'));
+    fireEvent.click(screen.getByText('common.dashboard.menu'));
 
     const selectedItem = screen.getByTestId('menu-item-2');
     expect(selectedItem).toHaveClass('Mui-selected');

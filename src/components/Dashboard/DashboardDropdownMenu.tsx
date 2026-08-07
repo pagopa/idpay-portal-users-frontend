@@ -24,8 +24,8 @@ const DashboardDropdownMenu = ({ selectedSection, onSectionChange }: DashboardDr
   const toggleDrawer = (value: boolean) => () => setOpen(value);
 
   const menuItems = [
-    { id: 'bonus', label: t('dashboard.title') },
-    { id: 'faq', label: t('dashboard.faq') },
+    { id: 'bonus', label: t('common.dashboard.title') },
+    { id: 'faq', label: t('common.dashboard.faq') },
   ];
 
   return (
@@ -41,7 +41,7 @@ const DashboardDropdownMenu = ({ selectedSection, onSectionChange }: DashboardDr
           backgroundColor: 'white',
         }}
       >
-        <ButtonNaked onClick={toggleDrawer(true)} startIcon={<MenuIcon sx={{ color: '#17324D' }} />} sx={{fontSize: "16px"}}>{t('dashboard.menu')}</ButtonNaked>
+        <ButtonNaked onClick={toggleDrawer(true)} startIcon={<MenuIcon sx={{ color: '#17324D' }} />} sx={{fontSize: "16px"}}>{t('common.dashboard.menu')}</ButtonNaked>
       </Box>
 
       <Drawer

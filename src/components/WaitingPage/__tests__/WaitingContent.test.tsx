@@ -10,7 +10,7 @@ jest.useFakeTimers();
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (k: string) =>
-      k === 'click-day.firstDescription' ? 'FIRST LINE\nSECOND LINE' : 'SECOND',
+      k === 'common.click-day.firstDescription' ? 'FIRST LINE\nSECOND LINE' : 'SECOND',
   }),
 }));
 

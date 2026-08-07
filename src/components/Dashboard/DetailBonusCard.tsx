@@ -19,10 +19,10 @@ interface DetailBonusCardProps {
 
 const getVoucherStatusLabel = (status: VoucherStatusEnum, t: any): string => {
   const labels: Record<VoucherStatusEnum, string> = {
-    [VoucherStatusEnum.ACTIVE]: t('dashboard.voucherStatus.ACTIVE'),
-    [VoucherStatusEnum.EXPIRING]: t('dashboard.voucherStatus.EXPIRING'),
-    [VoucherStatusEnum.EXPIRED]: t('dashboard.voucherStatus.EXPIRED'),
-    [VoucherStatusEnum.USED]: t('dashboard.voucherStatus.USED'),
+    [VoucherStatusEnum.ACTIVE]: t('common.dashboard.voucherStatus.ACTIVE'),
+    [VoucherStatusEnum.EXPIRING]: t('common.dashboard.voucherStatus.EXPIRING'),
+    [VoucherStatusEnum.EXPIRED]: t('common.dashboard.voucherStatus.EXPIRED'),
+    [VoucherStatusEnum.USED]: t('common.dashboard.voucherStatus.USED'),
   };
   return labels[status] || String(status);
 };
@@ -58,35 +58,35 @@ const DetailBonusCard: React.FC<DetailBonusCardProps> = ({ bonusData, fiscalNumb
     <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <CardContent>
         <Typography variant='overline' gutterBottom>
-          {t('dashboard.detailBonusSection.bonusDetail')}
+          {t('common.dashboard.detailBonusSection.bonusDetail')}
         </Typography>
 
-        <DetailRow label={t('dashboard.detailBonusSection.amount')}>
+        <DetailRow label={t('common.dashboard.detailBonusSection.amount')}>
           <Typography variant='h6' fontStyle='bold' fontWeight={700}>
             {formatCurrency(bonusData.amountCents)}
           </Typography>
         </DetailRow>
 
-        <DetailRow label={t('dashboard.detailBonusSection.status')}>
+        <DetailRow label={t('common.dashboard.detailBonusSection.status')}>
           <Chip
             label={getVoucherStatusLabel(bonusData.voucherStatus, t)}
             color={getStatusColor(bonusData.voucherStatus)}
           />
         </DetailRow>
 
-        <DetailRow label={t('dashboard.detailBonusSection.voucherStartDate')}>
+        <DetailRow label={t('common.dashboard.detailBonusSection.voucherStartDate')}>
           <Typography variant='body2' fontStyle='semibold' fontWeight={600}>
             {formatDate(bonusData.voucherEndDate)}
           </Typography>
         </DetailRow>
 
-        <DetailRow label={t('dashboard.detailBonusSection.voucherEndDate')}>
+        <DetailRow label={t('common.dashboard.detailBonusSection.voucherEndDate')}>
           <Typography variant='body2' fontStyle='semibold' fontWeight={600}>
             {formatDate(bonusData.voucherStartDate)}
           </Typography>
         </DetailRow>
 
-        <DetailRow label={t('dashboard.detailBonusSection.fiscalNumber')}>
+        <DetailRow label={t('common.dashboard.detailBonusSection.fiscalNumber')}>
           <Typography variant='body2' fontStyle='semibold' fontWeight={600}>
             {fiscalNumber}
           </Typography>

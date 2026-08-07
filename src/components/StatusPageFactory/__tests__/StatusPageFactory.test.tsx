@@ -20,8 +20,8 @@ jest.mock('../../../pages/ErrorPage/errorStates', () => ({
   errorState: {
     UNKNOWN_ERROR: {
       icon: null,
-      title: 'feedbackStates.unknownError.title',
-      description: 'feedbackStates.unknownError.description',
+      title: 'common.feedbackStates.unknownError.title',
+      description: 'common.feedbackStates.unknownError.description',
       buttonLabel: 'commons.exit',
       buttonRedirect: '__LOGOUT__',
     },
@@ -48,7 +48,7 @@ const states = {
     icon: <span>icon</span>,
     title: 'feedback.requestSubmitted.title',
     description: 'feedback.requestSubmitted.description',
-    subDescription: 'feedbackStates.requestSubmitted.description',
+    subDescription: 'common.feedbackStates.requestSubmitted.description',
     buttonLabel: 'feedback.requestSubmitted.cta',
     buttonRedirect: '/foo',
   },
@@ -106,10 +106,10 @@ describe('makeStatusPage', () => {
 
     expect(screen.getByTestId('feedback')).toBeInTheDocument();
     expect(screen.getByTestId('feedback-title')).toHaveTextContent(
-      'feedbackStates.unknownError.title'
+      'common.feedbackStates.unknownError.title'
     );
     expect(screen.getByTestId('feedback-description')).toHaveTextContent(
-      'feedbackStates.unknownError.description'
+      'common.feedbackStates.unknownError.description'
     );
     expect(screen.getByTestId('feedback-button')).toHaveTextContent('commons.exit');
     expect(screen.getByTestId('feedback-button-redirect')).toHaveTextContent('__LOGOUT__');
