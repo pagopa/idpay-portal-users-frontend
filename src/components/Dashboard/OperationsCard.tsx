@@ -31,7 +31,7 @@ const OperationsCard: React.FC<OperationsCardProps> = ({ timelineData, onClick }
     <Card>
       <CardContent>
         <Typography variant="overline" gutterBottom>
-          {t('dashboard.operationsSection.title')}
+          {t('common.dashboard.operationsSection.title')}
         </Typography>
 
         {timelineData.map((item, index) => (

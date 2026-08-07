@@ -55,7 +55,7 @@ export const MobileDropdownMenu = ({ selectedIndex, onItemClick, items }: Props)
           onClick={toggleDrawer(true)}
         >
           <Typography sx={{ fontWeight: theme.typography.fontWeightMedium }}>
-            {t('dashboard.menu')}
+            {t('common.dashboard.menu')}
           </Typography>
         </ButtonNaked>
       </Box>

@@ -7,15 +7,13 @@ import { BrowserRouter } from 'react-router-dom';
 import './locale/i18n.ts'
 import './locale';
 import { AuthProvider } from "./contexts/AuthContext";
-import { initializeCookieOneTrust } from './utils/oneTrustLoader.ts';
+import './utils/initializeOneTrust.ts';
 
-initializeCookieOneTrust().catch(err => {
-  console.log('Failed to initialize Cookie OneTrust: ', err);
-});
+const routerBasename = import.meta.env.BASE_URL.replace(/\/+$/, '') || '/';
 
 createRoot(document.getElementById('root')!).render(
   <AuthProvider>
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <BrowserRouter basename={routerBasename}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <App />

@@ -93,7 +93,7 @@ const Dashboard = () => {
 
           const onboarding = sortedOperations.find(e => e?.operationType === 'ONBOARDING');
           const onboardingItem: TimelineItem = {
-            label: 'dashboard.operationsSection.onboardingInitiative',
+            label: 'common.dashboard.operationsSection.onboardingInitiative',
             date: formatDateTime(onboarding?.operationDate!),
             id: onboarding?.operationId!
           };

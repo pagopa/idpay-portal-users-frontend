@@ -58,7 +58,7 @@ describe('CustomDrawer', () => {
                 />
             );
 
-            expect(screen.getByText('drawerDetail.title')).toBeInTheDocument();
+            expect(screen.getByText('common.drawerDetail.title')).toBeInTheDocument();
         });
 
         test('displays all transaction details correctly', () => {
@@ -70,22 +70,22 @@ describe('CustomDrawer', () => {
                 />
             );
 
-            expect(screen.getByText('drawerDetail.assetAmount')).toBeInTheDocument();
+            expect(screen.getByText('common.drawerDetail.assetAmount')).toBeInTheDocument();
             expect(screen.getByText('300.00 €')).toBeInTheDocument();
 
-            expect(screen.getByText('drawerDetail.appliedDiscount')).toBeInTheDocument();
+            expect(screen.getByText('common.drawerDetail.appliedDiscount')).toBeInTheDocument();
             expect(screen.getByText('90.00 €')).toBeInTheDocument();
 
-            expect(screen.getByText('drawerDetail.merchant')).toBeInTheDocument();
+            expect(screen.getByText('common.drawerDetail.merchant')).toBeInTheDocument();
             expect(screen.getByText('Esercente di test IdPay')).toBeInTheDocument();
 
-            expect(screen.getByText('drawerDetail.status')).toBeInTheDocument();
-            expect(screen.getByText('drawerDetail.statusMap.AUTHORIZED')).toBeInTheDocument();
+            expect(screen.getByText('common.drawerDetail.status')).toBeInTheDocument();
+            expect(screen.getByText('common.drawerDetail.statusMap.AUTHORIZED')).toBeInTheDocument();
 
-            expect(screen.getByText('drawerDetail.date')).toBeInTheDocument();
+            expect(screen.getByText('common.drawerDetail.date')).toBeInTheDocument();
             expect(screen.getByText(mockOperation.operationDate)).toBeInTheDocument();
 
-            expect(screen.getByText('drawerDetail.idTransaction')).toBeInTheDocument();
+            expect(screen.getByText('common.drawerDetail.idTransaction')).toBeInTheDocument();
             expect(screen.getByText(mockOperation.eventId!)).toBeInTheDocument();
         });
 
@@ -113,8 +113,8 @@ describe('CustomDrawer', () => {
                 />
             );
 
-            expect(screen.getByText('drawerDetail.title')).toBeInTheDocument();
-            expect(screen.queryByText('drawerDetail.assetAmount')).not.toBeInTheDocument();
+            expect(screen.getByText('common.drawerDetail.title')).toBeInTheDocument();
+            expect(screen.queryByText('common.drawerDetail.assetAmount')).not.toBeInTheDocument();
         });
     });
 
@@ -134,7 +134,7 @@ describe('CustomDrawer', () => {
                 />
             );
 
-            expect(screen.getByText('drawerDetail.title')).toBeInTheDocument();
+            expect(screen.getByText('common.drawerDetail.title')).toBeInTheDocument();
         });
 
         test('displays all transaction details in mobile mode', () => {

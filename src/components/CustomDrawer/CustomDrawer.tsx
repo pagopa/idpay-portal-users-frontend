@@ -66,7 +66,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
         fontStyle="bold"
         mt={4}
       >
-        {t('drawerDetail.title')}
+        {t('common.drawerDetail.title')}
       </Typography>
     </Box>
   );
@@ -79,7 +79,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
           color={theme.palette.action.active}
           gutterBottom
         >
-          {t('drawerDetail.assetAmount')}
+          {t('common.drawerDetail.assetAmount')}
         </Typography>
         <Typography variant="h6" fontWeight="bold">
           {formatCurrency(operation.amountCents || 0)}
@@ -94,7 +94,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
           color={theme.palette.action.active}
           gutterBottom
         >
-          {t('drawerDetail.appliedDiscount')}
+          {t('common.drawerDetail.appliedDiscount')}
         </Typography>
         <Typography variant="h6" fontWeight="bold">
           {formatCurrency(operation.accruedCents || 0)}
@@ -107,7 +107,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
         display="block"
         py={3}
       >
-        {t('drawerDetail.transactionInformation')}
+        {t('common.drawerDetail.transactionInformation')}
       </Typography>
 
       <Box mb={2}>
@@ -116,7 +116,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
           color={theme.palette.action.active}
           gutterBottom
         >
-          {t('drawerDetail.merchant')}
+          {t('common.drawerDetail.merchant')}
         </Typography>
         <Typography variant='body2' fontStyle='semibold' fontWeight={600}>
           {operation.businessName || '-'}
@@ -130,11 +130,11 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
           color={theme.palette.action.active}
           gutterBottom
         >
-          {t('drawerDetail.status')}
+          {t('common.drawerDetail.status')}
 
         </Typography>
         <Typography variant='body2' fontStyle='semibold' fontWeight={600}>
-          {t(`drawerDetail.statusMap.${operation.status}`)}
+          {t(`common.drawerDetail.statusMap.${operation.status}`)}
         </Typography>
       </Box>
       <Divider sx={{ my: 2 }} />
@@ -145,7 +145,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
           color={theme.palette.action.active}
           gutterBottom
         >
-          {t('drawerDetail.date')}
+          {t('common.drawerDetail.date')}
         </Typography>
         <Typography variant='body2' fontStyle='semibold' fontWeight={600}>
           {formatDateTime(operation.operationDate) || '-'}
@@ -159,7 +159,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
           color={theme.palette.action.active}
           gutterBottom
         >
-          {t('drawerDetail.idTransaction')}
+          {t('common.drawerDetail.idTransaction')}
         </Typography>
         <Box display="flex" alignItems="center" gap={1}>
           <Typography variant='body2' fontStyle='semibold' fontWeight={600} color={theme.palette.primary.main}>

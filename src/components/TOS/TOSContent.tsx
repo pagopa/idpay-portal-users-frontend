@@ -221,7 +221,7 @@ export const TOSContent = ({ sectionRefs }: Props) => {
 
       </Box>
       <Box sx={{ py: 6 }}>
-        <Button variant="outlined" onClick={handleLogout} sx={{ mr: { md: 2, sm: 1, xs: 1 } }}>{t('exit')}</Button>
+        <Button variant="outlined" onClick={handleLogout} sx={{ mr: { md: 2, sm: 1, xs: 1 } }}>{t('common.exit')}</Button>
         <Button variant="contained" onClick={handleContinue}>{t('tos.continue')}</Button>
       </Box>
     </Container>

@@ -6,14 +6,12 @@ import { useIsMobile } from '../../hooks/useIsMobile';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
-import { getInitiative } from '../../utils/env';
 
 const CustomLandingSection = () => {
   const { t } = useTranslation();
   const isMobile = useIsMobile();
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const isBonusTest = getInitiative() === 'bonustest'; //TEST
 
   const handleContinue = () => {
   if (isAuthenticated) {
@@ -37,11 +35,7 @@ const CustomLandingSection = () => {
       }}
     >
       <Typography variant="h3" fontWeight="bold" gutterBottom>
-        {isBonusTest
-          ? t('landing.requestBonusTest')
-          : isMobile
-            ? t('landing.requestBonusMobile')
-            : t('landing.requestBonus')}
+        {t('landing.requestBonus')}
       </Typography>
       <Typography variant="body1" mb={3}>
         {t('landing.loginMethods')}

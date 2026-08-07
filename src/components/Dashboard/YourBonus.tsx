@@ -33,8 +33,8 @@ const YourBonus = ({
   const { t } = useTranslation();
 
   const normalizedTimeline = timelineData.map(item =>
-    item.label === 'dashboard.operationsSection.onboardingInitiative'
-      ? { ...item, label: t('dashboard.operationsSection.onboardingInitiative') }
+    item.label === 'common.dashboard.operationsSection.onboardingInitiative'
+      ? { ...item, label: t('common.dashboard.operationsSection.onboardingInitiative') }
       : item
   );
 
@@ -42,10 +42,10 @@ const YourBonus = ({
     <>
       <Box>
         <Typography variant="h4" gutterBottom>
-          {t('dashboard.title')}
+          {t('common.dashboard.title')}
         </Typography>
         <Typography variant="body1" gutterBottom mt={2}>
-          {t('dashboard.description')}
+          {t('common.dashboard.description')}
         </Typography>
       </Box>
 

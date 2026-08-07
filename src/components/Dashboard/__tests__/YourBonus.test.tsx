@@ -15,7 +15,10 @@ jest.mock('../../../utils/env', () => ({
 }));
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => key,
+    t: (key: string) =>
+      key === 'common.dashboard.operationsSection.onboardingInitiative'
+        ? 'Translated onboarding'
+        : key,
   }),
 }));
 jest.mock('react-barcode', () => {
@@ -49,8 +52,8 @@ describe('YourBonus', () => {
 
   test('renders title and description', () => {
     render(<YourBonus {...baseProps} />);
-    expect(screen.getByText('dashboard.title')).toBeInTheDocument();
-    expect(screen.getByText('dashboard.description')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.title')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.description')).toBeInTheDocument();
   });
 
   test('renders barcode when showBarcode=true and trxCode provided', () => {
@@ -66,5 +69,28 @@ describe('YourBonus', () => {
   test('renders "-" when no fiscal number', () => {
     render(<YourBonus {...baseProps} fiscalNumber="-" />);
     expect(screen.getByText('-')).toBeInTheDocument();
+  });
+
+  test('translates only the onboarding timeline label', () => {
+    render(
+      <YourBonus
+        {...baseProps}
+        timelineData={[
+          {
+            id: 'onboarding',
+            date: '01/01/2026',
+            label: 'common.dashboard.operationsSection.onboardingInitiative',
+          },
+          {
+            id: 'transaction',
+            date: '02/01/2026',
+            label: 'Merchant name',
+          },
+        ]}
+      />
+    );
+
+    expect(screen.getByText('Translated onboarding')).toBeInTheDocument();
+    expect(screen.getByText('Merchant name')).toBeInTheDocument();
   });
 });

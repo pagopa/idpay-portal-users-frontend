@@ -42,7 +42,7 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
     <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <CardContent>
         <Typography variant='overline'>
-          {t('dashboard.barcodeSection.barcodeDescription')}
+          {t('common.dashboard.barcodeSection.barcodeDescription')}
         </Typography>
         <Box
           border={1}
@@ -73,7 +73,7 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
         <Box mt='auto'>
           {trxCode && <Box py={1} display='flex' justifyContent='center'>
             <Button disabled={isDownloading} endIcon={<DownloadIcon />} variant='contained' onClick={() => downloadPDF()}>
-              {t('dashboard.barcodeSection.downloadBarcode')}
+              {t('common.dashboard.barcodeSection.downloadBarcode')}
             </Button>
           </Box>
           }
@@ -85,7 +85,7 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
               size='medium'
               onClick={() => window.open(`${getBaseUrl()}/lista-punti-vendita`, '_blank')}
             >
-              {t('dashboard.barcodeSection.showMerchants')}
+              {t('common.dashboard.barcodeSection.showMerchants')}
             </ButtonNaked>
           </Box>
         </Box>
