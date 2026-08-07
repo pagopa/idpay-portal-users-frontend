@@ -1,15 +1,18 @@
 import { render, screen } from '@testing-library/react';
 import PrivacyPolicy from '../PrivacyPolicy';
 
-jest.mock('../../../components/PrivacyAndTosLayout/PrivacyAndTosLayout', () => ({
-  PrivacyAndTosLayout: ({ text }: { text: string }) => (
-    <div data-testid="layout" data-text={text}></div>
+jest.mock('../../../components/OneTrustNotice/OneTrustNotice', () => ({
+  OneTrustNotice: ({ noticeId }: { noticeId: string }) => (
+    <div data-testid="notice" data-notice-id={noticeId} />
   ),
 }));
 
 describe('PrivacyPolicy', () => {
-  it('renders the PrivacyAndTosLayout component', () => {
+  it('renders the users privacy notice', () => {
     render(<PrivacyPolicy />);
-    expect(screen.getByTestId('layout')).toBeInTheDocument();
+    expect(screen.getByTestId('notice')).toHaveAttribute(
+      'data-notice-id',
+      'afaba862-cf80-48de-9d82-26314e3c1bf6'
+    );
   });
 });

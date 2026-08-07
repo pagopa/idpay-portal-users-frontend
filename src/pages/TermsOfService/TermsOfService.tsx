@@ -1,8 +1,7 @@
-import { PrivacyAndTosLayout } from '../../components/PrivacyAndTosLayout/PrivacyAndTosLayout';
-import tos from './tos.json'
+import { OneTrustNotice } from '../../components/OneTrustNotice/OneTrustNotice';
 
 const TOS = () => {
-  return <PrivacyAndTosLayout text={tos.html} />
+  return <OneTrustNotice noticeId="570a78af-0f77-4459-8f72-b7e5f714336d" />;
 };
 
-export default TOS
+export default TOS;

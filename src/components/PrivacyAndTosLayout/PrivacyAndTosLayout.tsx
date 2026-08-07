@@ -1,7 +1,12 @@
 import { Box, Grid, Paper } from '@mui/material';
 import DOMPurify from 'dompurify';
+import { type ReactNode } from 'react';
 
-export const PrivacyAndTosLayout = ({ text }: { text: string }) => {
+type Props =
+  | { text: string; children?: never }
+  | { text?: never; children: ReactNode };
+
+export const PrivacyAndTosLayout = ({ text, children }: Props) => {
 
   return (
     <>
@@ -10,10 +15,14 @@ export const PrivacyAndTosLayout = ({ text }: { text: string }) => {
           <Box px={4} pt={2} pb={4}>
             <Grid container>
               <Grid size={{ xs: 12 }}>
-                <div
-                  className="content"
-                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(text) }}
-                />
+                {text ? (
+                  <div
+                    className="content"
+                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(text) }}
+                  />
+                ) : (
+                  children
+                )}
               </Grid>
             </Grid>
           </Box>

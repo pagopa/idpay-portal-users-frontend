@@ -1,15 +1,18 @@
 import { render, screen } from '@testing-library/react';
 import TOS from '../TermsOfService';
 
-jest.mock('../../../components/PrivacyAndTosLayout/PrivacyAndTosLayout', () => ({
-  PrivacyAndTosLayout: ({ text }: { text: string }) => (
-    <div data-testid="layout" data-text={text}></div>
+jest.mock('../../../components/OneTrustNotice/OneTrustNotice', () => ({
+  OneTrustNotice: ({ noticeId }: { noticeId: string }) => (
+    <div data-testid="notice" data-notice-id={noticeId} />
   ),
 }));
 
 describe('TOS', () => {
-  it('renders the PrivacyAndTosLayout component', () => {
+  it('renders the users terms notice', () => {
     render(<TOS />);
-    expect(screen.getByTestId('layout')).toBeInTheDocument();
+    expect(screen.getByTestId('notice')).toHaveAttribute(
+      'data-notice-id',
+      '570a78af-0f77-4459-8f72-b7e5f714336d'
+    );
   });
 });
