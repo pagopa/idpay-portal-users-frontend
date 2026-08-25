@@ -1,0 +1,183 @@
+.otnotice-menu-mobile {
+    display: none;
+}
+
+@media only screen and (max-width: 767px) {
+    .otnotice-menu {
+        display: none !important;
+    }
+
+    .otnotice-menu-mobile {
+        display: flex;
+        flex-direction: column;
+        width: 70%;
+        margin-right: auto;
+        margin-bottom: 1rem;
+        margin-left: auto;
+        background: #f8f8f8;
+        border: 1px solid #eeeeee;
+        position: relative;
+    }
+
+    .otnotice-menu-mobile .otnotice-menu-selected-container {
+        margin: 0 1rem;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #696969;
+        font-weight: bold;
+    }
+
+    .otnotice-menu-mobile .otnotice-menu-selected-container .otnotice-menu-selected {
+        padding: 1rem;
+        width: 100%;
+    }
+
+    .otnotice-menu-mobile .otnotice-menu-selected-container .otnotice-menu-display {
+        pointer-events: none;
+        text-align: center;
+    }
+
+    .otnotice-menu-mobile .otnotice-menu-selected-container .otnotice-menu-display__expand::after {
+        content: '+';
+    }
+
+    .otnotice-menu-mobile .otnotice-menu-selected-container .otnotice-menu-display__collapse::after {
+        content: '-';
+    }
+
+    .otnotice-menu-mobile .otnotice-menu-mobile-container {
+        display: none;
+        background: #f8f8f8;
+        list-style-type: none;
+        padding-right: 0;
+        padding-left: 0;
+        margin-top: 0;
+    }
+
+    .otnotice-menu-mobile .otnotice-menu-mobile-container a {
+        display: block;
+        padding: 0.5rem;
+        text-decoration: none;
+        text-align: center;
+        color: #696969;
+    }
+
+    .otnotice-menu-display__expand::after,
+    .otnotice-menu-display__collapse::after {
+        pointer-events: all;
+        font-weight: bolder;
+        font-size: x-large;
+        float: right;
+        margin-left: 1rem;
+        cursor: pointer;
+    }
+}
+
+@media only screen and (max-width: 300px) {
+    .otnotice-menu-mobile {
+        width: 90%;
+    }
+}
+
+.otnotice-menu {
+    width: 310px;
+    height: min(60vh, 480px);
+    box-sizing: border-box;
+    overflow-y: scroll;
+    background: #f8f8f8;
+    border: 1px solid #eeeeee;
+    -moz-box-shadow: 0 7px 10px 0 rgba(124, 124, 124, 0.2);
+    box-shadow: 0 7px 10px 0 rgba(124, 124, 124, 0.2);
+    margin-left: 50px;
+    margin-bottom: 32px;
+    padding-top: 39px;
+    padding-right: 19px;
+    padding-bottom: 49px;
+    padding-left: 28px;
+    display: block;
+    position: sticky;
+    top: 24px;
+    float: left;
+}
+
+.otnotice-content {
+    display: flow-root;
+    padding-bottom: 32px;
+}
+
+.otnotice-menu>.otnotice-menu-section {
+    margin-bottom: 30px;
+    list-style: none !important;
+    width: 225px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 19px;
+}
+
+.otnotice-menu>.otnotice-menu-section a {
+    text-decoration: none !important;
+    color: #696969 !important;
+    margin-bottom: 10px;
+}
+
+.otnotice-sections {
+    margin-right: 50px;
+    margin-left: 400px;
+}
+
+.otnotice-sections>.otnotice-section {
+    position: relative;
+}
+
+.otnotice-sections>.otnotice-section>h2.otnotice-section-header {
+    color: #696969;
+    font-size: 16px;
+    font-weight: bolder;
+    line-height: 19px;
+    margin-bottom: 20px;
+    margin-left: 40px;
+}
+
+.otnotice-sections>.otnotice-section>.otnotice-section-content {
+    margin-left: 40px;
+}
+
+.otnotice-sections>.otnotice-section>.otnotice-icon {
+    position: absolute;
+    top: -5px;
+    font-size: 30px;
+    color: #b4b4b4;
+}
+
+.otnotice-version {
+    float: right;
+    margin-right: 50px;
+    margin-bottom: 50px;
+}
+
+.otnotice-version>.otnotice-timestamp::before {
+    content: ' ';
+}
+
+@media only screen and (max-width: 767px) {
+    .otnotice-sections {
+        margin-right: 0.25rem;
+        margin-left: 0.25rem;
+    }
+
+    .otnotice-sections>.otnotice-section>h2.otnotice-section-header {
+        margin-right: 3rem;
+        margin-left: 3rem;
+    }
+
+    .otnotice-sections>.otnotice-section>.otnotice-section-content {
+        margin-right: 3rem;
+        margin-left: 3rem;
+    }
+
+    .otnotice-content {
+        padding-right: 0.25rem;
+        padding-left: 0.25rem;
+    }
+}
