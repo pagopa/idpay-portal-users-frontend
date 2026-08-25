@@ -1,11 +1,8 @@
 import { useEffect } from 'react';
+import { oneTrustConfig } from '../../config/oneTrust';
 import { PrivacyAndTosLayout } from '../PrivacyAndTosLayout/PrivacyAndTosLayout';
 
 const SCRIPT_ID = 'otprivacy-notice-script';
-const SCRIPT_URL =
-  'https://privacyportalde-cdn.onetrust.com/privacy-notice-scripts/otnotice-1.0.min.js';
-const SCRIPT_SETTINGS =
-  'eyJjYWxsYmFja1VybCI6Imh0dHBzOi8vcHJpdmFjeXBvcnRhbC1kZS5vbmV0cnVzdC5jb20vcmVxdWVzdC92MS9wcml2YWN5Tm90aWNlcy9zdGF0cy92aWV3cyIsImNvbnRlbnRBcGlVcmwiOiJodHRwczovL3ByaXZhY3lwb3J0YWwtZGUub25ldHJ1c3QuY29tL3JlcXVlc3QvdjEvZW50ZXJwcmlzZXBvbGljeS9kaWdpdGFscG9saWN5L2NvbnRlbnQiLCJtZXRhZGF0YUFwaVVybCI6Imh0dHBzOi8vcHJpdmFjeXBvcnRhbC1kZS5vbmV0cnVzdC5jb20vcmVxdWVzdC92MS9lbnRlcnByaXNlcG9saWN5L2RpZ2l0YWxwb2xpY3kvbWV0YS1kYXRhIn0=';
 
 type OneTrustApi = {
   NoticeApi: {
@@ -16,12 +13,12 @@ type OneTrustApi = {
 
 type Props = {
   noticeId: string;
+  noticeUrl: string;
 };
 
-export const OneTrustNotice = ({ noticeId }: Props) => {
+export const OneTrustNotice = ({ noticeId, noticeUrl }: Props) => {
   useEffect(() => {
     let active = true;
-    const noticeUrl = `https://privacyportalde-cdn.onetrust.com/storage-container/77f17844-04c3-4969-a11d-462ee77acbe1/privacy-notices/${noticeId}/published/privacynotice.json`;
 
     const loadNotice = () => {
       const oneTrust = (window as typeof window & { OneTrust?: OneTrustApi })
@@ -44,10 +41,10 @@ export const OneTrustNotice = ({ noticeId }: Props) => {
     } else {
       const script = document.createElement('script');
       script.id = SCRIPT_ID;
-      script.src = SCRIPT_URL;
+      script.src = oneTrustConfig.noticeScriptUrl;
       script.type = 'text/javascript';
       script.charset = 'UTF-8';
-      script.setAttribute('settings', SCRIPT_SETTINGS);
+      script.setAttribute('settings', oneTrustConfig.noticeScriptSettings);
       script.addEventListener('load', loadNotice);
       document.head.appendChild(script);
     }
@@ -58,7 +55,7 @@ export const OneTrustNotice = ({ noticeId }: Props) => {
         .getElementById(SCRIPT_ID)
         ?.removeEventListener('load', loadNotice);
     };
-  }, [noticeId]);
+  }, [noticeUrl]);
 
   return (
     <PrivacyAndTosLayout>

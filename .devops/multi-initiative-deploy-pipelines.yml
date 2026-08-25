@@ -15,6 +15,15 @@ variables:
 
   basePath: utente
 
+  # global variables
+  VITE_ONE_TRUST_BASE_URL: https://cdn.cookielaw.org
+  VITE_ONE_TRUST_OTNOTICE_CDN_URL: https://privacyportalde-cdn.onetrust.com/privacy-notice-scripts/otnotice-1.0.min.js
+  VITE_ONE_TRUST_OTNOTICE_CDN_SETTINGS: eyJjYWxsYmFja1VybCI6Imh0dHBzOi8vcHJpdmFjeXBvcnRhbC1kZS5vbmV0cnVzdC5jb20vcmVxdWVzdC92MS9wcml2YWN5Tm90aWNlcy9zdGF0cy92aWV3cyJ9
+  VITE_ONE_TRUST_TOS_ID: 570a78af-0f77-4459-8f72-b7e5f714336d
+  VITE_ONE_TRUST_TOS_JSON_URL: https://privacyportalde-cdn.onetrust.com/storage-container/77f17844-04c3-4969-a11d-462ee77acbe1/privacy-notices/570a78af-0f77-4459-8f72-b7e5f714336d/published/privacynotice.json
+  VITE_ONE_TRUST_PRIVACY_POLICY_ID: afaba862-cf80-48de-9d82-26314e3c1bf6
+  VITE_ONE_TRUST_PRIVACY_POLICY_JSON_URL: https://privacyportalde-cdn.onetrust.com/storage-container/77f17844-04c3-4969-a11d-462ee77acbe1/privacy-notices/afaba862-cf80-48de-9d82-26314e3c1bf6/published/privacynotice.json
+
   ${{ if or(startsWith(variables['Build.SourceBranch'], 'refs/heads/uat'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix')) }}:
     environment: 'UAT'
     azure_subscription: $(UAT_AZURE_SUBSCRIPTION)
@@ -130,6 +139,13 @@ stages:
               VITE_KEYCLOAK_URL: '$(vite_keycloak_url)'
               VITE_KEYCLOAK_REALM: '$(vite_keycloak_realm)'
               VITE_KEYCLOAK_CLIENT_ID: '$(vite_keycloak_client_id)'
+
+              VITE_ONE_TRUST_TOS_ID: '$(vite_one_trust_tos_id)'
+              VITE_ONE_TRUST_TOS_JSON_URL: '$(vite_one_trust_tos_json_url)'
+              VITE_ONE_TRUST_PRIVACY_POLICY_ID: '$(vite_one_trust_privacy_policy_id)'
+              VITE_ONE_TRUST_PRIVACY_POLICY_JSON_URL: '$(vite_one_trust_privacy_policy_json_url)'
+              VITE_ONE_TRUST_OTNOTICE_CDN_URL: '$(VITE_ONE_TRUST_OTNOTICE_CDN_URL)'
+              VITE_ONE_TRUST_OTNOTICE_CDN_SETTINGS: '$(VITE_ONE_TRUST_OTNOTICE_CDN_SETTINGS)'
 
           - bash: |
               printf "$EXECUTION_ID\n$(git name-rev --name-only FETCH_HEAD) $(git rev-parse HEAD)" > $(System.DefaultWorkingDirectory)/dist/build.info

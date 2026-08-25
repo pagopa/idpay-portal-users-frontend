@@ -1,9 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import TOS from '../TermsOfService';
 
+jest.mock('../../../config/oneTrust', () => ({
+  oneTrustConfig: {
+    tosId: 'tos-id',
+    tosJsonUrl: 'https://example.test/tos.json',
+  },
+}));
+
 jest.mock('../../../components/OneTrustNotice/OneTrustNotice', () => ({
-  OneTrustNotice: ({ noticeId }: { noticeId: string }) => (
-    <div data-testid="notice" data-notice-id={noticeId} />
+  OneTrustNotice: ({ noticeId, noticeUrl }: { noticeId: string; noticeUrl: string }) => (
+    <div data-testid="notice" data-notice-id={noticeId} data-notice-url={noticeUrl} />
   ),
 }));
 
@@ -12,7 +19,11 @@ describe('TOS', () => {
     render(<TOS />);
     expect(screen.getByTestId('notice')).toHaveAttribute(
       'data-notice-id',
-      '570a78af-0f77-4459-8f72-b7e5f714336d'
+      'tos-id'
+    );
+    expect(screen.getByTestId('notice')).toHaveAttribute(
+      'data-notice-url',
+      'https://example.test/tos.json'
     );
   });
 });
