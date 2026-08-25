@@ -55,7 +55,7 @@ export const OneTrustNotice = ({ noticeId, noticeUrl }: Props) => {
         .getElementById(SCRIPT_ID)
         ?.removeEventListener('load', loadNotice);
     };
-  }, [noticeUrl]);
+  }, [noticeId, noticeUrl]);
 
   return (
     <PrivacyAndTosLayout>
