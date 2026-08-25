@@ -2,6 +2,12 @@
     display: none;
 }
 
+@media only screen and (min-width: 768px) {
+    body:has(.otnotice) main > div {
+        overflow: visible;
+    }
+}
+
 @media only screen and (max-width: 767px) {
     .otnotice-menu {
         display: none !important;
