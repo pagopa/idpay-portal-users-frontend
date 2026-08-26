@@ -45,7 +45,7 @@ jest.mock('../../../routes', () => ({
 }));
 
 jest.mock('../../../hooks/useEmailStore', () => ({
-  useEmailStore: () => ({ email: 'User@Test.it', confirmEmail: 'USER@test.IT' }),
+  useEmailStore: () => ({ email: ' User @Test.it ', confirmEmail: ' USER@ test.IT ' }),
 }));
 jest.mock('../../../hooks/useVerifyRequirementStore', () => ({
   useVerifyRequirementStore: () => ({

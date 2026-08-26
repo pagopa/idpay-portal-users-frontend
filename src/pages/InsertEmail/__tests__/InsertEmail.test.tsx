@@ -38,7 +38,7 @@ jest.mock('../../../hooks/useEmailStore', () => ({
 }));
 
 jest.mock('../../../utils/validateEmail', () => ({
-  normalizeEmail: (email: string) => email.toLowerCase(),
+  normalizeEmail: (email: string) => email.trim().replace(/\s/g, '').toLowerCase(),
   isValidEmail: (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -349,8 +349,8 @@ describe('InsertEmail Component', () => {
       const emailInput = screen.getByLabelText('commons.email');
       const confirmEmailInput = screen.getByLabelText('commons.confirmEmail');
 
-      fireEvent.change(emailInput, { target: { value: 'Test@Test.com' } });
-      fireEvent.change(confirmEmailInput, { target: { value: 'test@test.com' } });
+      fireEvent.change(emailInput, { target: { value: '  Test @Test.com  ' } });
+      fireEvent.change(confirmEmailInput, { target: { value: ' test@ test.com ' } });
       fireEvent.click(screen.getByRole('button', { name: 'commons.continue' }));
 
       expect(emailInput).toHaveValue('test@test.com');
