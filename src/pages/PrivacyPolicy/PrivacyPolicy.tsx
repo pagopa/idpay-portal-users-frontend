@@ -1,8 +1,13 @@
-import { PrivacyAndTosLayout } from '../../components/PrivacyAndTosLayout/PrivacyAndTosLayout';
-import privacyPolicy from './privacyPolicy.json'
+import { OneTrustNotice } from '../../components/OneTrustNotice/OneTrustNotice';
+import { oneTrustConfig } from '../../config/oneTrust';
 
 const PrivacyPolicy = () => {
-  return <PrivacyAndTosLayout text={privacyPolicy.html} />
+  return (
+    <OneTrustNotice
+      noticeId={oneTrustConfig.privacyPolicyId}
+      noticeUrl={oneTrustConfig.privacyPolicyJsonUrl}
+    />
+  );
 };
 
-export default PrivacyPolicy
+export default PrivacyPolicy;

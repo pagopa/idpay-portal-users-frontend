@@ -18,10 +18,7 @@ let cookieInitializationPromise: Promise<void> | null = null;
 
 const fixOneTrustLinks = () => {
   const basePath = (import.meta.env.BASE_URL || '/utente/').replace(/\/+$/, '');
-  const linkMap: Record<string, string> = {
-    '/utente/privacy-policy': `${basePath}/privacy-policy`,
-    '/utente/terms-of-service': `${basePath}/terms-of-service`
-  };
+  const appBaseUrl = `${window.location.origin}${basePath}`;
 
   const cookiePolicyLinks = document.querySelectorAll('.ot-cookie-policy-link, .privacy-notice-link');
 
@@ -30,14 +27,18 @@ const fixOneTrustLinks = () => {
     if (!href) return;
 
     try {
-      const url = new URL(href);
-      const path = url.pathname;
+      const path = new URL(href, window.location.origin).pathname.replace(/\/+$/, '');
+      const route = path.endsWith('/privacy-policy')
+        ? '/privacy-policy'
+        : path.endsWith('/terms-of-service')
+          ? '/terms-of-service'
+          : undefined;
 
-      const fixedHref = linkMap[path] || path;
-
-      link.setAttribute('href', fixedHref);
-      link.removeAttribute('target');
-      link.removeAttribute('rel');
+      if (route) {
+        link.setAttribute('href', `${appBaseUrl}${route}`);
+        link.removeAttribute('target');
+        link.removeAttribute('rel');
+      }
     } catch { }
   });
 };
