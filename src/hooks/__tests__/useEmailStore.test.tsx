@@ -34,4 +34,15 @@ describe('useEmailStore', () => {
         expect(secondCall.current.email).toBe('saved.email@example.com');
         expect(secondCall.current.confirmEmail).toBe('saved.email@example.com');
     });
+
+    it('stores email and confirmation in lowercase', () => {
+        const { result, rerender } = renderHook(() => useEmailStore());
+
+        result.current.setEmail('Test@Test.com');
+        result.current.setConfirmEmail('TEST@test.COM');
+        rerender();
+
+        expect(result.current.email).toBe('test@test.com');
+        expect(result.current.confirmEmail).toBe('test@test.com');
+    });
 });

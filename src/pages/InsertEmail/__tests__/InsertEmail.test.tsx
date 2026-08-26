@@ -38,6 +38,7 @@ jest.mock('../../../hooks/useEmailStore', () => ({
 }));
 
 jest.mock('../../../utils/validateEmail', () => ({
+  normalizeEmail: (email: string) => email.toLowerCase(),
   isValidEmail: (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -336,6 +337,27 @@ describe('InsertEmail Component', () => {
 
       expect(mockSetEmail).toHaveBeenCalledWith('test@example.com');
       expect(mockSetConfirmEmail).toHaveBeenCalledWith('test@example.com');
+    });
+
+    test('accepts different casing and stores both emails in lowercase', () => {
+      render(
+        <MemoryRouter>
+          <InsertEmail />
+        </MemoryRouter>
+      );
+
+      const emailInput = screen.getByLabelText('commons.email');
+      const confirmEmailInput = screen.getByLabelText('commons.confirmEmail');
+
+      fireEvent.change(emailInput, { target: { value: 'Test@Test.com' } });
+      fireEvent.change(confirmEmailInput, { target: { value: 'test@test.com' } });
+      fireEvent.click(screen.getByRole('button', { name: 'commons.continue' }));
+
+      expect(emailInput).toHaveValue('test@test.com');
+      expect(confirmEmailInput).toHaveValue('test@test.com');
+      expect(mockSetEmail).toHaveBeenCalledWith('test@test.com');
+      expect(mockSetConfirmEmail).toHaveBeenCalledWith('test@test.com');
+      expect(mockNavigate).toHaveBeenCalledWith(ROUTES.VERIFY_REQUIREMENTS);
     });
 
     test('does not navigate when form is invalid', () => {
