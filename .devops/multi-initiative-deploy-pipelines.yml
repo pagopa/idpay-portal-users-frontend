@@ -29,6 +29,14 @@ variables:
 
     vite_url_api_portal_users: '$(UAT_VITE_URL_API_PORTAL_USERS)'
     vite_base_url: '$(UAT_VITE_BASE_URL)'
+    vite_cookie_one_trust_base_url: '$(UAT_VITE_ONE_TRUST_BASE_URL)'
+    vite_cookie_one_trust_domain_id: '$(UAT_VITE_ONE_TRUST_DOMAIN_ID)'
+    vite_one_trust_otnotice_cdn_url: '$(UAT_VITE_ONE_TRUST_OTNOTICE_CDN_URL)'
+    vite_one_trust_otnotice_cdn_settings: '$(UAT_VITE_ONE_TRUST_OTNOTICE_CDN_SETTINGS)'
+    vite_one_trust_privacy_policy_id: '$(UAT_VITE_ONE_TRUST_PRIVACY_POLICY_ID)'
+    vite_one_trust_privacy_policy_json_url: '$(UAT_VITE_ONE_TRUST_PRIVACY_POLICY_JSON_URL)'
+    vite_one_trust_tos_id: '$(UAT_VITE_ONE_TRUST_TOS_ID)'
+    vite_one_trust_tos_json_url: '$(UAT_VITE_ONE_TRUST_TOS_JSON_URL)'
 
     cdn_domains: '$(UAT_CDN_DOMAINS)'
 
@@ -46,6 +54,14 @@ variables:
 
     vite_url_api_portal_users: '$(PROD_VITE_URL_API_PORTAL_USERS)'
     vite_base_url: '$(PROD_VITE_BASE_URL)'
+    vite_cookie_one_trust_base_url: '$(PROD_VITE_ONE_TRUST_BASE_URL)'
+    vite_cookie_one_trust_domain_id: '$(PROD_VITE_ONE_TRUST_DOMAIN_ID)'
+    vite_one_trust_otnotice_cdn_url: '$(PROD_VITE_ONE_TRUST_OTNOTICE_CDN_URL)'
+    vite_one_trust_otnotice_cdn_settings: '$(PROD_VITE_ONE_TRUST_OTNOTICE_CDN_SETTINGS)'
+    vite_one_trust_privacy_policy_id: '$(PROD_VITE_ONE_TRUST_PRIVACY_POLICY_ID)'
+    vite_one_trust_privacy_policy_json_url: '$(PROD_VITE_ONE_TRUST_PRIVACY_POLICY_JSON_URL)'
+    vite_one_trust_tos_id: '$(PROD_VITE_ONE_TRUST_TOS_ID)'
+    vite_one_trust_tos_json_url: '$(PROD_VITE_ONE_TRUST_TOS_JSON_URL)'
 
     cdn_domains: '$(PROD_CDN_DOMAINS)'
 
@@ -63,6 +79,14 @@ variables:
 
     vite_url_api_portal_users: '$(DEV_VITE_URL_API_PORTAL_USERS)'
     vite_base_url: '$(DEV_VITE_BASE_URL)'
+    vite_cookie_one_trust_base_url: '$(DEV_VITE_ONE_TRUST_BASE_URL)'
+    vite_cookie_one_trust_domain_id: '$(DEV_VITE_ONE_TRUST_DOMAIN_ID)'
+    vite_one_trust_otnotice_cdn_url: '$(DEV_VITE_ONE_TRUST_OTNOTICE_CDN_URL)'
+    vite_one_trust_otnotice_cdn_settings: '$(DEV_VITE_ONE_TRUST_OTNOTICE_CDN_SETTINGS)'
+    vite_one_trust_privacy_policy_id: '$(DEV_VITE_ONE_TRUST_PRIVACY_POLICY_ID)'
+    vite_one_trust_privacy_policy_json_url: '$(DEV_VITE_ONE_TRUST_PRIVACY_POLICY_JSON_URL)'
+    vite_one_trust_tos_id: '$(DEV_VITE_ONE_TRUST_TOS_ID)'
+    vite_one_trust_tos_json_url: '$(DEV_VITE_ONE_TRUST_TOS_JSON_URL)'
 
     cdn_domains: '$(DEV_CDN_DOMAINS)'
 
@@ -130,6 +154,16 @@ stages:
               VITE_KEYCLOAK_URL: '$(vite_keycloak_url)'
               VITE_KEYCLOAK_REALM: '$(vite_keycloak_realm)'
               VITE_KEYCLOAK_CLIENT_ID: '$(vite_keycloak_client_id)'
+
+              VITE_ONE_TRUST_TOS_ID: '$(vite_one_trust_tos_id)'
+              VITE_ONE_TRUST_TOS_JSON_URL: '$(vite_one_trust_tos_json_url)'
+              VITE_ONE_TRUST_PRIVACY_POLICY_ID: '$(vite_one_trust_privacy_policy_id)'
+              VITE_ONE_TRUST_PRIVACY_POLICY_JSON_URL: '$(vite_one_trust_privacy_policy_json_url)'
+              VITE_ONE_TRUST_OTNOTICE_CDN_URL: '$(vite_one_trust_otnotice_cdn_url)'
+              VITE_ONE_TRUST_OTNOTICE_CDN_SETTINGS: '$(vite_one_trust_otnotice_cdn_settings)'
+
+              VITE_COOKIE_ONE_TRUST_BASE_URL: '$(vite_cookie_one_trust_base_url)'
+              VITE_COOKIE_ONE_TRUST_DOMAIN_ID: '$(vite_cookie_one_trust_domain_id)'
 
           - bash: |
               printf "$EXECUTION_ID\n$(git name-rev --name-only FETCH_HEAD) $(git rev-parse HEAD)" > $(System.DefaultWorkingDirectory)/dist/build.info

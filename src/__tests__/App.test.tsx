@@ -3,6 +3,17 @@ import { MemoryRouter } from 'react-router-dom';
 import App from '../App';
 import ROUTES from '../routes';
 
+jest.mock('../config/oneTrust', () => ({
+  oneTrustConfig: {
+    noticeScriptUrl: 'https://example.test/otnotice.js',
+    noticeScriptSettings: 'test-settings',
+    privacyPolicyId: 'privacy-policy-id',
+    privacyPolicyJsonUrl: 'https://example.test/privacy-policy.json',
+    tosId: 'tos-id',
+    tosJsonUrl: 'https://example.test/tos.json',
+  },
+}));
+
 jest.mock('react-router-dom', () => {
   const actual = jest.requireActual('react-router-dom');
   return {
