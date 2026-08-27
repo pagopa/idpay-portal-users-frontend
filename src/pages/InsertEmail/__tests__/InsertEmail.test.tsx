@@ -515,7 +515,7 @@ describe('InsertEmail Component', () => {
       expect(screen.getByText('commons.requiredField')).toBeInTheDocument();
     });
 
-    test('handles email with spaces', () => {
+    test('removes spaces from email input', () => {
       render(
         <MemoryRouter>
           <InsertEmail />
@@ -523,12 +523,11 @@ describe('InsertEmail Component', () => {
       );
 
       const emailInput = screen.getByLabelText('commons.email');
-      const continueButton = screen.getByRole('button', { name: 'commons.continue' });
 
       fireEvent.change(emailInput, { target: { value: 'test @example.com' } });
-      fireEvent.click(continueButton);
 
-      expect(screen.getByText('commons.invalidEmail')).toBeInTheDocument();
+      expect(emailInput).toHaveValue('test@example.com');
+      expect(screen.queryByText('commons.invalidEmail')).not.toBeInTheDocument();
     });
 
     test('handles very long email addresses', () => {
