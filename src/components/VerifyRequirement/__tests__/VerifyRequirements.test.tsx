@@ -5,9 +5,13 @@ import VerifyRequirementForm from '../VerifyRequirementForm';
 const mockNavigate = jest.fn();
 const mockSave = jest.fn();
 const mockTosAccepted = jest.fn(() => true);
+const mockTranslationExists = jest.fn((_key: string) => true);
 
 jest.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: (k: string) => k }),
+  useTranslation: () => ({
+    t: (k: string) => k,
+    i18n: { exists: (key: string) => mockTranslationExists(key) },
+  }),
 }));
 
 jest.mock('../../../utils/env', () => ({
@@ -83,6 +87,7 @@ import { isSuccessStatus, extractErrorResponse } from '../../../utils/api';
 describe('VerifyRequirementForm', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockTranslationExists.mockReturnValue(true);
   });
 
   test('renders and back navigates to insert email', () => {
@@ -101,6 +106,23 @@ describe('VerifyRequirementForm', () => {
     fireEvent.click(screen.getByRole('button', { name: 'verifyRequirements.submit' }));
     expect(mockSave).not.toHaveBeenCalled();
     expect(mockNavigate).not.toHaveBeenCalled();
+  });
+
+  test('omits optional requirements when their copy is missing', async () => {
+    mockTranslationExists.mockReturnValue(false);
+    (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
+    mockSave.mockResolvedValueOnce({ status: 202 });
+
+    render(<VerifyRequirementForm />);
+
+    expect(screen.queryByTestId('isee-form')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'verifyRequirements.submit' }));
+
+    await waitFor(() => expect(mockSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        body: expect.objectContaining({ selfDeclarationList: [] }),
+      })
+    ));
   });
 
   test('success (202) -> FEEDBACK', async () => {
