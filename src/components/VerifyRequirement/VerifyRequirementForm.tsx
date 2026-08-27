@@ -15,6 +15,7 @@ import { extractErrorResponse, isSuccessStatus } from '../../utils/api';
 import { useVerifyRequirementStore } from '../../hooks/useVerifyRequirementStore';
 import { useTOSCheckboxStore } from '../../hooks/useTOSCheckboxStore';
 import { getInitiativeId } from '../../utils/env';
+import { normalizeEmail } from '../../utils/validateEmail';
 
 export default function VerifyRequirementForm() {
     const { t, i18n } = useTranslation();
@@ -72,8 +73,8 @@ export default function VerifyRequirementForm() {
             confirmedTos: tosAccepted,
             pdndAccept: true,
             selfDeclarationList,
-            userMail: email,
-            userMailConfirmation: confirmEmail,
+            userMail: normalizeEmail(email),
+            userMailConfirmation: normalizeEmail(confirmEmail),
         };
 
         try {

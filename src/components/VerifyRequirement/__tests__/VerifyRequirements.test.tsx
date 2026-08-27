@@ -49,7 +49,7 @@ jest.mock('../../../routes', () => ({
 }));
 
 jest.mock('../../../hooks/useEmailStore', () => ({
-  useEmailStore: () => ({ email: 'user@test.it', confirmEmail: 'user@test.it' }),
+  useEmailStore: () => ({ email: ' User @Test.it ', confirmEmail: ' USER@ test.IT ' }),
 }));
 jest.mock('../../../hooks/useVerifyRequirementStore', () => ({
   useVerifyRequirementStore: () => ({
@@ -137,6 +137,25 @@ describe('VerifyRequirementForm', () => {
     await waitFor(() =>
       expect(mockNavigate).toHaveBeenCalledWith('/feedback', {
         state: { status: 'REQUEST_SUBMITTED' },
+      })
+    );
+  });
+
+  test('passes email and confirmation in lowercase in the onboarding payload', async () => {
+    (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
+    mockSave.mockResolvedValueOnce({ status: 202 });
+
+    render(<VerifyRequirementForm />);
+    fireEvent.change(screen.getByTestId('isee-form'), { target: { value: 'ISEE123' } });
+    fireEvent.click(screen.getByTestId('self-declaration'));
+    fireEvent.click(screen.getByRole('button', { name: 'verifyRequirements.submit' }));
+
+    await waitFor(() => expect(mockSave).toHaveBeenCalled());
+
+    expect(mockSave.mock.calls[0][0].body).toEqual(
+      expect.objectContaining({
+        userMail: 'user@test.it',
+        userMailConfirmation: 'user@test.it',
       })
     );
   });
