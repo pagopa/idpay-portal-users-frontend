@@ -6,6 +6,7 @@ const mockNavigate = jest.fn();
 const mockSave = jest.fn();
 const mockTosAccepted = jest.fn(() => true);
 const mockTranslationExists = jest.fn((_key: string) => true);
+let mockInitiative = 'bonuselettrodomestici';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -16,6 +17,7 @@ jest.mock('react-i18next', () => ({
 
 jest.mock('../../../utils/env', () => ({
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
+  getInitiative: () => mockInitiative,
 }));
 
 jest.mock('../HeaderForm', () => () => <div data-testid="header-form" />);
@@ -88,6 +90,7 @@ describe('VerifyRequirementForm', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockTranslationExists.mockReturnValue(true);
+    mockInitiative = 'bonuselettrodomestici';
   });
 
   test('renders and back navigates to insert email', () => {
@@ -108,7 +111,8 @@ describe('VerifyRequirementForm', () => {
     expect(mockNavigate).not.toHaveBeenCalled();
   });
 
-  test('omits optional requirements when their copy is missing', async () => {
+  test('sends an empty selfDeclarationList for bonus decoder', async () => {
+    mockInitiative = 'bonusdecoder';
     mockTranslationExists.mockReturnValue(false);
     (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
     mockSave.mockResolvedValueOnce({ status: 202 });
@@ -123,6 +127,30 @@ describe('VerifyRequirementForm', () => {
         body: expect.objectContaining({ selfDeclarationList: [] }),
       })
     ));
+  });
+
+  test('sends the configured declarations for bonus elettrodomestici', async () => {
+    (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
+    mockSave.mockResolvedValueOnce({ status: 202 });
+
+    render(<VerifyRequirementForm />);
+    fireEvent.change(screen.getByTestId('isee-form'), { target: { value: '3' } });
+    fireEvent.click(screen.getByTestId('self-declaration'));
+    fireEvent.click(screen.getByRole('button', { name: 'verifyRequirements.submit' }));
+
+    await waitFor(() => expect(mockSave).toHaveBeenCalled());
+
+    expect(mockSave.mock.calls[0][0].body).toEqual({
+      initiativeId: '68dd003ccce8c534d1da22bc',
+      confirmedTos: true,
+      pdndAccept: true,
+      selfDeclarationList: [
+        { _type: 'multi_consent', code: 'isee', value: '2' },
+        { _type: 'boolean', code: '1', accepted: true },
+      ],
+      userMail: 'user@test.it',
+      userMailConfirmation: 'user@test.it',
+    });
   });
 
   test('success (202) -> FEEDBACK', async () => {

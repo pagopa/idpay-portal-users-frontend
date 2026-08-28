@@ -48,6 +48,7 @@ jest.mock('@pagopa/selfcare-common-frontend/lib/components/Footer/Footer', () =>
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
+    i18n: { exists: () => true },
   }),
 }));
 
@@ -69,6 +70,7 @@ jest.mock('../hooks/useIsMobile', () => ({
 jest.mock('../utils/env', () => ({
   isMockAuthEnabled: () => false,
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
+  getInitiative: () => 'bonuselettrodomestici',
 }));
 
 const mockScrollTo = jest.fn();
