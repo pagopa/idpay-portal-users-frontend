@@ -14,8 +14,9 @@ import { commonHeaders, OnboardingWebApi } from '../../api/onboardingWebApiClien
 import { extractErrorResponse, isSuccessStatus } from '../../utils/api';
 import { useVerifyRequirementStore } from '../../hooks/useVerifyRequirementStore';
 import { useTOSCheckboxStore } from '../../hooks/useTOSCheckboxStore';
-import { getInitiativeId } from '../../utils/env';
+import { getInitiative, getInitiativeId } from '../../utils/env';
 import { normalizeEmail } from '../../utils/validateEmail';
+import { buildInitiativePayload } from '../../utils/initiativePayload';
 
 export default function VerifyRequirementForm() {
     const { t, i18n } = useTranslation();
@@ -55,27 +56,15 @@ export default function VerifyRequirementForm() {
         const isValid = (!hasIseeCopy || iseeValue !== '') && (!hasSwitchLabel || switchValue);
         if (!isValid) { return; }
 
-        const selfDeclarationList = [
-            ...(hasIseeCopy ? [{
-                _type: 'multi_consent' as const,
-                code: 'isee',
-                value: iseeValue === '3' ? '2' : iseeValue
-            }] : []),
-            ...(hasSwitchLabel ? [{
-                _type: 'boolean' as const,
-                code: '1',
-                accepted: switchValue
-            }] : [])
-        ];
-
-        const payload = {
+        const payload = buildInitiativePayload(getInitiative(), {
             initiativeId: getInitiativeId(),
             confirmedTos: tosAccepted,
             pdndAccept: true,
-            selfDeclarationList,
+            iseeValue,
+            selfDeclarationAccepted: switchValue,
             userMail: normalizeEmail(email),
             userMailConfirmation: normalizeEmail(confirmEmail),
-        };
+        });
 
         try {
             const apiResponse = await OnboardingWebApi.save({
