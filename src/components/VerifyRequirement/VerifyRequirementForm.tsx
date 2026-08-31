@@ -14,11 +14,12 @@ import { commonHeaders, OnboardingWebApi } from '../../api/onboardingWebApiClien
 import { extractErrorResponse, isSuccessStatus } from '../../utils/api';
 import { useVerifyRequirementStore } from '../../hooks/useVerifyRequirementStore';
 import { useTOSCheckboxStore } from '../../hooks/useTOSCheckboxStore';
-import { getInitiativeId } from '../../utils/env';
+import { getInitiative, getInitiativeId } from '../../utils/env';
 import { normalizeEmail } from '../../utils/validateEmail';
+import { buildInitiativePayload } from '../../utils/initiativePayload';
 
 export default function VerifyRequirementForm() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const { email, confirmEmail } = useEmailStore();
     const { isee, selfDeclaration, setIsee, setSelfDeclaration } = useVerifyRequirementStore();
@@ -26,6 +27,8 @@ export default function VerifyRequirementForm() {
     const [switchValue, setSwitchValue] = useState(selfDeclaration);
     const [submitted, setSubmitted] = useState(false);
     const { tosAccepted } = useTOSCheckboxStore();
+    const hasIseeCopy = i18n.exists('verifyRequirements.isee');
+    const hasSwitchLabel = i18n.exists('verifyRequirements.selfDeclaration.switchLabel');
 
     useEffect(() => {
         if (!tosAccepted) {
@@ -39,35 +42,29 @@ export default function VerifyRequirementForm() {
     }
 
     const handleBack = () => {
-        setIsee(iseeValue);
-        setSelfDeclaration(switchValue);
+        if (hasIseeCopy) {
+            setIsee(iseeValue);
+        }
+        if (hasSwitchLabel) {
+            setSelfDeclaration(switchValue);
+        }
         navigate(ROUTES.INSERT_EMAIL);
     }
 
     const handleContinue = async () => {
         setSubmitted(true);
-        const isValid = iseeValue !== '' && switchValue === true;
+        const isValid = (!hasIseeCopy || iseeValue !== '') && (!hasSwitchLabel || switchValue);
         if (!isValid) { return; }
 
-        const payload = {
+        const payload = buildInitiativePayload(getInitiative(), {
             initiativeId: getInitiativeId(),
             confirmedTos: tosAccepted,
             pdndAccept: true,
-            selfDeclarationList: [
-                {
-                    _type: 'multi_consent',
-                    code: 'isee',
-                    value: iseeValue === '3' ? '2' : iseeValue
-                },
-                {
-                    _type: 'boolean',
-                    'code': '1',
-                    'accepted': switchValue
-                }
-            ],
+            iseeValue,
+            selfDeclarationAccepted: switchValue,
             userMail: normalizeEmail(email),
             userMailConfirmation: normalizeEmail(confirmEmail),
-        };
+        });
 
         try {
             const apiResponse = await OnboardingWebApi.save({
@@ -107,7 +104,7 @@ export default function VerifyRequirementForm() {
 
                 <FamilyForm />
                 <SelfDeclaration switchValue={switchValue} setSwitchValue={setSwitchValue} showError={submitted} />
-                <IseeForm iseeValue={iseeValue} setIseeValue={setIseeValue} showError={submitted} />
+                {hasIseeCopy && <IseeForm iseeValue={iseeValue} setIseeValue={setIseeValue} showError={submitted} />}
 
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Button variant="outlined" size='medium' startIcon={<ArrowBack sx={{ color: theme.palette.primary.main }} />} onClick={handleBack}>{t('commons.back')}</Button>

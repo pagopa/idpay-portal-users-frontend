@@ -148,23 +148,8 @@ const it = {
       "title": "Pagamento del canone TV",
       "description":
         "Per accedere all’iniziativa, comunichiamo direttamente con l’Agenzia delle Entrate per verificare questa informazione. In questo modo non devi produrre nessuna autocertificazione.",
-
     },
 
-    // "isee": {
-    //   "title": "Hai un ISEE 2025 in corso di validità?",
-    //   "description":
-    //     "Quando un ISEE è valido?",
-    //   "option.<25000": "Ho un ISEE inferiore a 25.000€",
-    //   "option.>=25000": "Ho un ISEE uguale o superiore a 25.000€",
-    //   "option.none": "Non ho un ISEE o preferisco non rispondere",
-    //   "hint.<25000": "Hai diritto fino a 200€. Verificheremo questa informazione con INPS",
-    //   "hint.>=25000": "Hai diritto fino a 100€",
-    //   "hint.none": "Hai diritto fino a 100€",
-    // },
-
-    // "error": "Seleziona un’opzione per continuare",
-    // "selfDeclarationError": "Seleziona per continuare",
     "submit": "Continua"
   },
 
