@@ -28,7 +28,7 @@ const fixOneTrustLinks = () => {
 
     try {
       const path = new URL(href, window.location.origin).pathname.replace(/\/+$/, '');
-      const route = path.endsWith('/privacy-policy')
+      const route = path.endsWith('/privacy-policy') || path.endsWith('/informativa-privacy')
         ? '/privacy-policy'
         : path.endsWith('/terms-of-service')
           ? '/terms-of-service'
