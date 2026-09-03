@@ -8,7 +8,7 @@ import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
 import { useState } from 'react';
 import { downloadFileFromBase64 } from '../../commons/decode';
 import { BARCODE_BREAKPOINTS, getBarcodeWidth } from '../../utils/barcodeResponsiveUtils';
-import { getBaseUrl, getInitiativeId } from '../../utils/env';
+import { getBaseUrl, getInitiative, getInitiativeId } from '../../utils/env';
 
 interface BarcodeCardProps {
   trxCode: string;
@@ -83,7 +83,7 @@ const BarcodeCard: React.FC<BarcodeCardProps> = ({ trxCode }) => {
               endIcon={<OpenInNewIcon />}
               color='primary'
               size='medium'
-              onClick={() => window.open(`${getBaseUrl()}/lista-punti-vendita`, '_blank')}
+              onClick={() => window.open(`${getBaseUrl()}/${getInitiative()}/lista-punti-vendita`, '_blank')}
             >
               {t('common.dashboard.barcodeSection.showMerchants')}
             </ButtonNaked>
