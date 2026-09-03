@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTOSCheckboxStore } from '../../hooks/useTOSCheckboxStore';
-import { getBaseUrl, getPortalUrl } from '../../utils/env';
+import { getBaseUrl, getInitiative, getPortalUrl } from '../../utils/env';
 
 interface Props {
   sectionRefs: React.RefObject<HTMLDivElement>[];
@@ -150,7 +150,7 @@ export const TOSContent = ({ sectionRefs }: Props) => {
         <Typography sx={{ color: theme.palette.primary.main, fontWeight: theme.typography.fontWeightMedium, mb: 4, mt: 2, cursor: "pointer" }}>
           <Link
             onClick={() => {
-              const fullUrl = `${getBaseUrl()}/lista-punti-vendita`;
+              const fullUrl = `${getBaseUrl()}/${getInitiative()}/lista-punti-vendita`;
               window.open(fullUrl, '_blank')?.focus();
             }}
             underline="always"
