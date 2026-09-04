@@ -27,6 +27,7 @@ jest.mock('../../../hooks/useIsMobile', () => ({
 
 jest.mock('../../../utils/env', () => ({
   getBaseUrl: () => 'https://www.google.com',
+  getInitiative: () => 'bonusdecoder',
   getPortalUrl: (path: string) => `https://www.google.com/bonusdecoder/utente${path}`,
 }));
 
@@ -119,16 +120,22 @@ describe('TOSContent', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/inserisci-email');
   });
 
-  test('external links open in new tab', () => {
+  test('initiative links open in a new tab with the configured base URL and initiative', () => {
     const windowOpenSpy = jest.spyOn(window, 'open').mockImplementation(() => null);
 
     render(<TOSContent sectionRefs={makeRefs()} />);
 
-    const link = screen.getByText('tos.sideMenu.element2.link');
-    link.click();
+    screen.getByText('tos.sideMenu.element2.link').click();
 
     expect(windowOpenSpy).toHaveBeenCalledWith(
       'https://www.google.com/elenco-informatico-elettrodomestici',
+      '_blank'
+    );
+
+    screen.getByText('tos.sideMenu.element4.link').click();
+
+    expect(windowOpenSpy).toHaveBeenCalledWith(
+      'https://www.google.com/bonusdecoder/lista-punti-vendita',
       '_blank'
     );
 

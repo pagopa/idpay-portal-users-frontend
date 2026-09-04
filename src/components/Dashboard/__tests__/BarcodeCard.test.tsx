@@ -4,6 +4,7 @@ import BarcodeCard from '../BarcodeCard';
 
 jest.mock('../../../utils/env', () => ({
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
+  getInitiative: () => 'bonusdecoder',
   getBaseUrl: () => 'https://www.google.com'
 }));
 
@@ -128,7 +129,10 @@ describe('BarcodeCard', () => {
     const showMerchantsButton = screen.getByRole('button', { name: /common.dashboard.barcodeSection.showMerchants/i });
     fireEvent.click(showMerchantsButton);
 
-    expect(mockWindowOpen).toHaveBeenCalledWith('https://www.google.com/lista-punti-vendita', '_blank');
+    expect(mockWindowOpen).toHaveBeenCalledWith(
+      'https://www.google.com/bonusdecoder/lista-punti-vendita',
+      '_blank'
+    );
   });
 
   test('renders with different trxCode values', () => {
