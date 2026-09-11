@@ -12,7 +12,8 @@ jest.mock('react-i18next', () => ({
 
 jest.mock('../../../utils/env', () => ({
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
-  getBaseUrl: () => 'https://www.google.com'
+  getBaseUrl: () => 'https://www.google.com',
+  getInitiative: () => 'bonusdecoder',
 }));
 
 const mockedUsedNavigate = jest.fn();
@@ -40,7 +41,10 @@ jest.mock('../../../components/Dashboard/DashboardDropdownMenu', () => ({
   __esModule: true,
   default: ({ onSectionChange }: any) => (
     <div data-testid="dropdown-menu">
-      <button data-testid="faq-btn-mobile" onClick={() => onSectionChange('faq')}>
+      <button
+        data-testid="faq-btn-mobile"
+        onClick={() => onSectionChange('faq')}
+      >
         FAQ Mobile
       </button>
     </div>
@@ -54,7 +58,11 @@ jest.mock('../../../components/Overlay/Overlay', () => () => (
 jest.mock('../../../components/Dashboard/YourBonus', () => ({
   __esModule: true,
   default: (props: any) => (
-    <div data-testid="your-bonus" data-trx-code={props.trxCode} data-show-barcode={props.showBarcode ? 'true' : 'false'}>
+    <div
+      data-testid="your-bonus"
+      data-trx-code={props.trxCode}
+      data-show-barcode={props.showBarcode ? 'true' : 'false'}
+    >
       YourBonus
     </div>
   ),
@@ -116,7 +124,10 @@ describe('Dashboard Integration (API & Navigation)', () => {
     };
 
     mockGetBonusDetail.mockResolvedValue({ status: 200, data: mockBonusData });
-    mockGetBarCode.mockResolvedValue({ status: 200, data: { trxCode: 'abc123' } });
+    mockGetBarCode.mockResolvedValue({
+      status: 200,
+      data: { trxCode: 'abc123' },
+    });
 
     render(<Dashboard />);
 
@@ -129,7 +140,10 @@ describe('Dashboard Integration (API & Navigation)', () => {
     });
 
     expect(screen.queryByTestId('overlay')).not.toBeInTheDocument();
-    expect(screen.getByTestId('your-bonus')).toHaveAttribute('data-trx-code', 'abc123');
+    expect(screen.getByTestId('your-bonus')).toHaveAttribute(
+      'data-trx-code',
+      'abc123',
+    );
   });
 
   test('does NOT call getBarCode when voucherStatus is USED', async () => {
@@ -145,7 +159,10 @@ describe('Dashboard Integration (API & Navigation)', () => {
     });
 
     expect(mockGetBarCode).not.toHaveBeenCalled();
-    expect(screen.getByTestId('your-bonus')).toHaveAttribute('data-show-barcode', 'false');
+    expect(screen.getByTestId('your-bonus')).toHaveAttribute(
+      'data-show-barcode',
+      'false',
+    );
   });
 
   test('navigates to ERROR_PAGE when bonusData is null', async () => {
