@@ -167,7 +167,7 @@ export const TOSContent = ({ sectionRefs }: Props) => {
         >
           <Link
             onClick={() => {
-              const fullUrl = `${getBaseUrl()}/${getInitiative()}/elencoprodotti`;
+              const fullUrl = `${getBaseUrl()}/${getInitiative()}/elenco-prodotti`;
               window.open(fullUrl, '_blank')?.focus();
             }}
             underline="always"

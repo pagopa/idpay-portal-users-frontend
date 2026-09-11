@@ -36,7 +36,7 @@ const FAQSection: React.FC = () => {
         },
         {
           text: 'in questa lista',
-          href: `${getBaseUrl()}/${getInitiative()}/elencoprodotti`,
+          href: `${getBaseUrl()}/${getInitiative()}/elenco-prodotti`,
         },
       ],
     },

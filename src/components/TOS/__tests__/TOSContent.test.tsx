@@ -145,7 +145,7 @@ describe('TOSContent', () => {
     screen.getByText('tos.sideMenu.element2.link').click();
 
     expect(windowOpenSpy).toHaveBeenCalledWith(
-      'https://www.google.com/bonusdecoder/elencoprodotti',
+      'https://www.google.com/bonusdecoder/elenco-prodotti',
       '_blank',
     );
 
