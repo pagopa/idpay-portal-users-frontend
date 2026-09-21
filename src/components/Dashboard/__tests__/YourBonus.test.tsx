@@ -28,12 +28,12 @@ jest.mock('react-barcode', () => {
 });
 
 import YourBonus from '../YourBonus';
-import { VoucherStatusEnum } from '../../../api/generated/onboarding-web/InitiativeDTO';
 import { BonusDetail } from '../../../pages/Dashboard/Dashboard';
+import { WalletStatusDtoVoucherStatusEnum } from '../../../api/generated/onboarding-web/api';
 
 const baseProps = {
   bonusData: {
-    voucherStatus: VoucherStatusEnum.ACTIVE,
+    voucherStatus: WalletStatusDtoVoucherStatusEnum.ACTIVE,
     voucherStartDate: '2025-09-24',
     voucherEndDate: '2025-10-24',
     amountCents: 10000,

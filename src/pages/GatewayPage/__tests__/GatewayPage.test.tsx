@@ -29,8 +29,8 @@ jest.mock('../../../routes', () => {
   };
 });
 
-jest.mock('../../../api/generated/onboarding-web/OnboardingStatusDTO', () => ({
-  StatusEnum: {
+jest.mock('../../../api/generated/onboarding-web/api', () => ({
+  OnboardingStatusDtoStatusEnum: {
     ONBOARDING_OK: 'ONBOARDING_OK',
     ONBOARDING_KO: 'ONBOARDING_KO',
     REQUEST_SUBMITTED: 'REQUEST_SUBMITTED',
@@ -38,8 +38,8 @@ jest.mock('../../../api/generated/onboarding-web/OnboardingStatusDTO', () => ({
   },
 }));
 
-jest.mock('../../../api/generated/onboarding-web/OnboardingErrorDTO', () => ({
-  CodeEnum: {
+jest.mock('../../../api/generated/onboarding-web/api', () => ({
+  OnboardingErrorDtoCodeEnum: {
     ONBOARDING_USER_NOT_ONBOARDED: 'ONBOARDING_USER_NOT_ONBOARDED',
     ONBOARDING_INITIATIVE_NOT_STARTED: 'ONBOARDING_INITIATIVE_NOT_STARTED',
     ONBOARDING_INITIATIVE_NOT_FOUND: 'ONBOARDING_INITIATIVE_NOT_FOUND',
@@ -456,7 +456,7 @@ describe('GatewayPage', () => {
   describe('API Status Responses - 400 Cases', () => {
     test('navigates to UPCOMING_INITIATIVE when status 400 with ONBOARDING_INITIATIVE_NOT_STARTED', async () => {
       mockUser = { attributes: {} };
-      mockGetStatus.mockResolvedValue({
+      mockGetStatus.mockRejectedValue({
         status: 400,
         data: { code: 'ONBOARDING_INITIATIVE_NOT_STARTED' },
       });
@@ -484,7 +484,7 @@ describe('GatewayPage', () => {
 
     test('navigates to UPCOMING_INITIATIVE when status 400 with ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED', async () => {
       mockUser = { attributes: {} };
-      mockGetStatus.mockResolvedValue({
+      mockGetStatus.mockRejectedValue({
         status: 400,
         data: { code: 'ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED' },
       });
@@ -498,7 +498,7 @@ describe('GatewayPage', () => {
 
     test('navigates to FEEDBACK when status 400 with known feedback status (ONBOARDING_BUDGET_EXHAUSTED)', async () => {
       mockUser = { attributes: {} };
-      mockGetStatus.mockResolvedValue({
+      mockGetStatus.mockRejectedValue({
         status: 400,
         data: { code: 'ONBOARDING_BUDGET_EXHAUSTED' },
       });

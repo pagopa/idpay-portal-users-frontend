@@ -66,7 +66,6 @@ jest.mock('../../../hooks/useTOSCheckboxStore', () => ({
 }));
 
 jest.mock('../../../api/onboardingWebApiClient', () => ({
-  commonHeaders: { headers: { 'X-Test': '1' } },
   OnboardingWebApi: {
     save: (...args: any[]) => mockSave(...args),
   },
@@ -83,8 +82,6 @@ jest.mock('../../../hooks/useTOSCheckboxStore', () => ({
     tosAccepted: mockTosAccepted(),
   }),
 }));
-
-import { isSuccessStatus, extractErrorResponse } from '../../../utils/api';
 
 describe('VerifyRequirementForm', () => {
   beforeEach(() => {
@@ -114,7 +111,6 @@ describe('VerifyRequirementForm', () => {
   test('sends an empty selfDeclarationList for bonus decoder', async () => {
     mockInitiative = 'bonusdecoder';
     mockTranslationExists.mockReturnValue(false);
-    (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
     mockSave.mockResolvedValueOnce({ status: 202 });
 
     render(<VerifyRequirementForm />);
@@ -123,14 +119,11 @@ describe('VerifyRequirementForm', () => {
     fireEvent.click(screen.getByRole('button', { name: 'verifyRequirements.submit' }));
 
     await waitFor(() => expect(mockSave).toHaveBeenCalledWith(
-      expect.objectContaining({
-        body: expect.objectContaining({ selfDeclarationList: [] }),
-      })
+      expect.objectContaining({selfDeclarationList: []})
     ));
   });
 
   test('sends the configured declarations for bonus elettrodomestici', async () => {
-    (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
     mockSave.mockResolvedValueOnce({ status: 202 });
 
     render(<VerifyRequirementForm />);
@@ -140,7 +133,7 @@ describe('VerifyRequirementForm', () => {
 
     await waitFor(() => expect(mockSave).toHaveBeenCalled());
 
-    expect(mockSave.mock.calls[0][0].body).toEqual({
+    expect(mockSave.mock.calls[0][0]).toEqual({
       initiativeId: '68dd003ccce8c534d1da22bc',
       confirmedTos: true,
       pdndAccept: true,
@@ -154,7 +147,6 @@ describe('VerifyRequirementForm', () => {
   });
 
   test('success (202) -> FEEDBACK', async () => {
-    (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
     mockSave.mockResolvedValueOnce({ status: 202 });
 
     render(<VerifyRequirementForm />);
@@ -170,7 +162,6 @@ describe('VerifyRequirementForm', () => {
   });
 
   test('passes email and confirmation in lowercase in the onboarding payload', async () => {
-    (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
     mockSave.mockResolvedValueOnce({ status: 202 });
 
     render(<VerifyRequirementForm />);
@@ -180,7 +171,7 @@ describe('VerifyRequirementForm', () => {
 
     await waitFor(() => expect(mockSave).toHaveBeenCalled());
 
-    expect(mockSave.mock.calls[0][0].body).toEqual(
+    expect(mockSave.mock.calls[0][0]).toEqual(
       expect.objectContaining({
         userMail: 'user@test.it',
         userMailConfirmation: 'user@test.it',
@@ -189,8 +180,7 @@ describe('VerifyRequirementForm', () => {
   });
 
   test('non-success (400) -> ERROR_PAGE', async () => {
-    (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
-    mockSave.mockResolvedValueOnce({ status: 400 });
+    mockSave.mockRejectedValueOnce({ status: 400 });
 
     render(<VerifyRequirementForm />);
     fireEvent.change(screen.getByTestId('isee-form'), { target: { value: 'ISEE_BAD' } });
@@ -205,9 +195,7 @@ describe('VerifyRequirementForm', () => {
   });
 
   test('thrown error + extract 202 -> FEEDBACK', async () => {
-    mockSave.mockRejectedValueOnce(new Error('boom'));
-    (extractErrorResponse as jest.Mock).mockReturnValueOnce({ status: 202 });
-    (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
+    mockSave.mockResolvedValueOnce({});
 
     render(<VerifyRequirementForm />);
     fireEvent.change(screen.getByTestId('isee-form'), { target: { value: 'ISEE_OK' } });
@@ -222,9 +210,7 @@ describe('VerifyRequirementForm', () => {
   });
 
   test('thrown error + extract 429 -> WAITING_PAGE with original payload', async () => {
-    mockSave.mockRejectedValueOnce(new Error('boom'));
-    (extractErrorResponse as jest.Mock).mockReturnValueOnce({ status: 429 });
-    (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
+    mockSave.mockRejectedValueOnce({status: 429});
 
     render(<VerifyRequirementForm />);
     fireEvent.change(screen.getByTestId('isee-form'), { target: { value: 'ISEE777' } });
@@ -234,7 +220,7 @@ describe('VerifyRequirementForm', () => {
     await waitFor(() => {
       expect(mockSave).toHaveBeenCalled();
       const callArg = mockSave.mock.calls[0][0];
-      expect(mockNavigate).toHaveBeenCalledWith('/waiting-page', { state: callArg.body });
+      expect(mockNavigate).toHaveBeenCalledWith('/waiting-page', { state: callArg });
     });
   });
 

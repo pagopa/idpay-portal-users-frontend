@@ -2,11 +2,11 @@ import { Box, Typography, Card, CardContent, Chip } from '@mui/material';
 import type { ChipProps } from '@mui/material/Chip';
 import { theme } from '@pagopa/mui-italia';
 import { useTranslation } from 'react-i18next';
-import { VoucherStatusEnum } from '../../api/generated/onboarding-web/InitiativeDTO';
 import { formatCurrency, formatDate } from '../../utils/formatUtils';
+import { WalletStatusDtoVoucherStatusEnum } from '../../api/generated/onboarding-web/api';
 
 interface BonusDetail {
-  voucherStatus: VoucherStatusEnum;
+  voucherStatus: WalletStatusDtoVoucherStatusEnum;
   voucherStartDate: string;
   voucherEndDate: string;
   amountCents: number;
@@ -17,25 +17,25 @@ interface DetailBonusCardProps {
   fiscalNumber: string;
 }
 
-const getVoucherStatusLabel = (status: VoucherStatusEnum, t: any): string => {
-  const labels: Record<VoucherStatusEnum, string> = {
-    [VoucherStatusEnum.ACTIVE]: t('common.dashboard.voucherStatus.ACTIVE'),
-    [VoucherStatusEnum.EXPIRING]: t('common.dashboard.voucherStatus.EXPIRING'),
-    [VoucherStatusEnum.EXPIRED]: t('common.dashboard.voucherStatus.EXPIRED'),
-    [VoucherStatusEnum.USED]: t('common.dashboard.voucherStatus.USED'),
+const getVoucherStatusLabel = (status: WalletStatusDtoVoucherStatusEnum, t: any): string => {
+  const labels: Record<WalletStatusDtoVoucherStatusEnum, string> = {
+    [WalletStatusDtoVoucherStatusEnum.ACTIVE]: t('common.dashboard.voucherStatus.ACTIVE'),
+    [WalletStatusDtoVoucherStatusEnum.EXPIRING]: t('common.dashboard.voucherStatus.EXPIRING'),
+    [WalletStatusDtoVoucherStatusEnum.EXPIRED]: t('common.dashboard.voucherStatus.EXPIRED'),
+    [WalletStatusDtoVoucherStatusEnum.USED]: t('common.dashboard.voucherStatus.USED'),
   };
   return labels[status] || String(status);
 };
 
-const getStatusColor = (status: VoucherStatusEnum): ChipProps['color'] => {
+const getStatusColor = (status: WalletStatusDtoVoucherStatusEnum): ChipProps['color'] => {
   switch (status) {
-    case VoucherStatusEnum.ACTIVE:
+    case WalletStatusDtoVoucherStatusEnum.ACTIVE:
       return 'success';
-    case VoucherStatusEnum.EXPIRING:
+    case WalletStatusDtoVoucherStatusEnum.EXPIRING:
       return 'warning';
-    case VoucherStatusEnum.USED:
+    case WalletStatusDtoVoucherStatusEnum.USED:
       return 'default';
-    case VoucherStatusEnum.EXPIRED:
+    case WalletStatusDtoVoucherStatusEnum.EXPIRED:
       return 'error';
     default:
       return 'default';
