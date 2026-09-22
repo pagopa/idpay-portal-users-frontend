@@ -34,15 +34,12 @@ jest.mock('../../../api/onboardingWebApiClient', () => ({
 }));
 
 jest.mock('../../../utils/api', () => ({
-  isSuccessStatus: jest.fn(),
   extractErrorResponse: jest.fn(),
 }));
 
 jest.mock('../../../utils/env', () => ({
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
 }));
-
-import { isSuccessStatus, extractErrorResponse } from '../../../utils/api';
 
 const basePayload = {
   initiativeId: '68dd003ccce8c534d1da22bc',
@@ -75,7 +72,6 @@ describe('WaitingContent', () => {
   });
 
   test('202 success -> navigates to FEEDBACK after 5s', async () => {
-    (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
     mockSave.mockResolvedValueOnce({ status: 202 });
 
     render(<WaitingContent payload={basePayload} />);
@@ -89,7 +85,6 @@ describe('WaitingContent', () => {
   });
 
   test('400 non-success -> navigates to ERROR_PAGE after 5s', async () => {
-    (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
     mockSave.mockRejectedValueOnce({ status: 400 });
 
     render(<WaitingContent payload={basePayload} />);
