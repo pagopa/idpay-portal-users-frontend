@@ -80,6 +80,11 @@ const GatewayPage = () => {
                 const { status: httpStatus, data: statusData } = statusResponse;
                 const statusCode = (statusData as any).status || (statusData as any).code;
 
+                if (!statusCode || typeof statusCode !== 'string') {
+                    navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
+                    return;
+                }
+
                 if (httpStatus === 200 && statusCode === OnboardingStatusDtoStatusEnum.ONBOARDING_OK) {
                     navigate(ROUTES.DASHBOARD);
                     return;
@@ -97,11 +102,23 @@ const GatewayPage = () => {
                         navigate(ROUTES.FEEDBACK, { state: { status: destination.status } });
                         return;
                     }
+                    navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
+                    return;
                 }
                 navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
 
             } catch (err: any) {
                 const { status, error } = err
+
+                if (status === 429) {
+                    navigate(ROUTES.ERROR_PAGE, { state: { status: 'TOO_MANY_REQUESTS' } });
+                    return;
+                }
+
+                if (!error?.code || typeof error?.code !== 'string') {
+                    navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
+                    return;
+                }
 
                 if (status === 400 && isInitiativeNotStarted(error)) {
                     navigate(ROUTES.UPCOMING_INITIATIVE);
@@ -114,7 +131,7 @@ const GatewayPage = () => {
                     return;
                 }
                 if (status === 400 || status === 404) {
-                    const destination = getStatusDestination(status);
+                    const destination = getStatusDestination(error.code);
 
                     if (destination.type === 'error') {
                         navigate(ROUTES.ERROR_PAGE, { state: { status: destination.status } });
@@ -125,9 +142,7 @@ const GatewayPage = () => {
                         navigate(ROUTES.FEEDBACK, { state: { status: destination.status } });
                         return;
                     }
-                }
-                if (status === 429) {
-                    navigate(ROUTES.ERROR_PAGE, { state: { status: 'TOO_MANY_REQUESTS' } });
+                    navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
                     return;
                 }
                 navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });

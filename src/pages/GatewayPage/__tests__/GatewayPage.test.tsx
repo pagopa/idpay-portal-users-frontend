@@ -29,23 +29,23 @@ jest.mock('../../../routes', () => {
   };
 });
 
-jest.mock('../../../api/generated/onboarding-web/api', () => ({
-  OnboardingStatusDtoStatusEnum: {
-    ONBOARDING_OK: 'ONBOARDING_OK',
-    ONBOARDING_KO: 'ONBOARDING_KO',
-    REQUEST_SUBMITTED: 'REQUEST_SUBMITTED',
-    ON_EVALUATION: 'ON_EVALUATION',
-  },
-}));
+// jest.mock('../../../api/generated/onboarding-web/api', () => ({
+//   OnboardingStatusDtoStatusEnum: {
+//     ONBOARDING_OK: 'ONBOARDING_OK',
+//     ONBOARDING_KO: 'ONBOARDING_KO',
+//     REQUEST_SUBMITTED: 'REQUEST_SUBMITTED',
+//     ON_EVALUATION: 'ON_EVALUATION',
+//   },
+// }));
 
-jest.mock('../../../api/generated/onboarding-web/api', () => ({
-  OnboardingErrorDtoCodeEnum: {
-    ONBOARDING_USER_NOT_ONBOARDED: 'ONBOARDING_USER_NOT_ONBOARDED',
-    ONBOARDING_INITIATIVE_NOT_STARTED: 'ONBOARDING_INITIATIVE_NOT_STARTED',
-    ONBOARDING_INITIATIVE_NOT_FOUND: 'ONBOARDING_INITIATIVE_NOT_FOUND',
-    ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED: 'ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED'
-  },
-}));
+// jest.mock('../../../api/generated/onboarding-web/api', () => ({
+//   OnboardingErrorDtoCodeEnum: {
+//     ONBOARDING_USER_NOT_ONBOARDED: 'ONBOARDING_USER_NOT_ONBOARDED',
+//     ONBOARDING_INITIATIVE_NOT_STARTED: 'ONBOARDING_INITIATIVE_NOT_STARTED',
+//     ONBOARDING_INITIATIVE_NOT_FOUND: 'ONBOARDING_INITIATIVE_NOT_FOUND',
+//     ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED: 'ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED'
+//   },
+// }));
 
 jest.mock('../../../pages/ErrorPage/errorStates', () => ({
   errorState: {
@@ -407,9 +407,9 @@ describe('GatewayPage', () => {
   describe('API Status Responses - 404 Cases', () => {
     test('navigates to TOS when 404 with ONBOARDING_USER_NOT_ONBOARDED', async () => {
       mockUser = { attributes: {} };
-      mockGetStatus.mockResolvedValue({
+      mockGetStatus.mockRejectedValue({
         status: 404,
-        data: { code: 'ONBOARDING_USER_NOT_ONBOARDED' },
+        error: { code: 'ONBOARDING_USER_NOT_ONBOARDED' },
       });
 
       render(<GatewayPage />);
@@ -422,9 +422,9 @@ describe('GatewayPage', () => {
 
     test('navigates to UNKNOWN_ERROR when status 404 with unknown error code', async () => {
       mockUser = { attributes: {} };
-      mockGetStatus.mockResolvedValue({
+      mockGetStatus.mockRejectedValue({
         status: 404,
-        data: { code: 'DIFFERENT_ERROR_CODE' },
+        error: { code: 'DIFFERENT_ERROR_CODE' },
       });
 
       render(<GatewayPage />);
@@ -438,9 +438,9 @@ describe('GatewayPage', () => {
 
     test('navigates to UNKNOWN_ERROR when status 404 but no error code', async () => {
       mockUser = { attributes: {} };
-      mockGetStatus.mockResolvedValue({
+      mockGetStatus.mockRejectedValue({
         status: 404,
-        data: { message: 'Not found' },
+        error: { message: 'Not found' },
       });
 
       render(<GatewayPage />);
@@ -458,7 +458,7 @@ describe('GatewayPage', () => {
       mockUser = { attributes: {} };
       mockGetStatus.mockRejectedValue({
         status: 400,
-        data: { code: 'ONBOARDING_INITIATIVE_NOT_STARTED' },
+        error: { code: 'ONBOARDING_INITIATIVE_NOT_STARTED' },
       });
 
       render(<GatewayPage />);
@@ -470,9 +470,9 @@ describe('GatewayPage', () => {
 
     test('navigates to UPCOMING_INITIATIVE when status 400 with ONBOARDING_INITIATIVE_NOT_FOUND', async () => {
       mockUser = { attributes: {} };
-      mockGetStatus.mockResolvedValue({
+      mockGetStatus.mockRejectedValue({
         status: 400,
-        data: { code: 'ONBOARDING_INITIATIVE_NOT_FOUND' },
+        error: { code: 'ONBOARDING_INITIATIVE_NOT_FOUND' },
       });
 
       render(<GatewayPage />);
@@ -486,7 +486,7 @@ describe('GatewayPage', () => {
       mockUser = { attributes: {} };
       mockGetStatus.mockRejectedValue({
         status: 400,
-        data: { code: 'ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED' },
+        error: { code: 'ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED' },
       });
 
       render(<GatewayPage />);
@@ -500,7 +500,7 @@ describe('GatewayPage', () => {
       mockUser = { attributes: {} };
       mockGetStatus.mockRejectedValue({
         status: 400,
-        data: { code: 'ONBOARDING_BUDGET_EXHAUSTED' },
+        error: { code: 'ONBOARDING_BUDGET_EXHAUSTED' },
       });
 
       render(<GatewayPage />);
@@ -514,9 +514,9 @@ describe('GatewayPage', () => {
 
     test('navigates to UNKNOWN_ERROR when status 400 with completely unknown error code', async () => {
       mockUser = { attributes: {} };
-      mockGetStatus.mockResolvedValue({
+      mockGetStatus.mockRejectedValue({
         status: 400,
-        data: { code: 'SOME_RANDOM_NEW_ERROR' },
+        error: { code: 'SOME_RANDOM_NEW_ERROR' },
       });
 
       render(<GatewayPage />);
@@ -580,9 +580,9 @@ describe('GatewayPage', () => {
 
     test('navigates to UNKNOWN_ERROR for unexpected HTTP status code', async () => {
       mockUser = { attributes: {} };
-      mockGetStatus.mockResolvedValue({
+      mockGetStatus.mockRejectedValue({
         status: 418,
-        data: { message: "I'm a teapot" },
+        error: { message: "I'm a teapot" },
       });
 
       render(<GatewayPage />);
@@ -627,7 +627,7 @@ describe('GatewayPage', () => {
 
     test('navigates to ERROR_PAGE with UNKNOWN_ERROR when extractErrorResponse returns true but status is not 429', async () => {
       mockUser = { attributes: {} };
-      const error500 = { status: 500, message: 'Internal server error' };
+      const error500 = { status: 500, error: {message: 'Internal server error'} };
       mockGetStatus.mockRejectedValue(error500);
       mockExtractErrorResponse.mockReturnValue(true);
 
@@ -642,7 +642,7 @@ describe('GatewayPage', () => {
 
     test('handles error without status property', async () => {
       mockUser = { attributes: {} };
-      const errorWithoutStatus = { message: 'Error without status' };
+      const errorWithoutStatus = { error: { message: 'Error without status' } };
       mockGetStatus.mockRejectedValue(errorWithoutStatus);
       mockExtractErrorResponse.mockReturnValue(true);
 
