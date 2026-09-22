@@ -120,7 +120,7 @@ const GatewayPage = () => {
                     return;
                 }
 
-                if (status === 400 && isInitiativeNotStarted(error)) {
+                if ((status === 400 || status === 404) && isInitiativeNotStarted(error)) {
                     navigate(ROUTES.UPCOMING_INITIATIVE);
                     return;
                 }
