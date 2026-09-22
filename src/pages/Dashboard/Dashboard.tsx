@@ -8,18 +8,16 @@ import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
 import { useAuth } from '../../contexts/AuthContext';
 import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
-import { VoucherStatusEnum } from '../../api/generated/onboarding-web/InitiativeDTO';
-import { TimelineDTO } from '../../api/generated/onboarding-web/TimelineDTO';
-import { OperationDTO } from '../../api/generated/onboarding-web/OperationDTO';
 import { formatDateTime } from '../../utils/formatUtils';
 import { getInitiativeId } from '../../utils/env';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import DashboardDropdownMenu from '../../components/Dashboard/DashboardDropdownMenu';
 import FAQSection from '../../components/FAQSection/FAQSection';
 import { useEmailAssistanceStore } from '../../hooks/useEmailAssistanceStore';
+import { TimelineDTO, TransactionOperationDTO, WalletStatusDtoVoucherStatusEnum } from '../../api/generated/onboarding-web/api';
 
 interface BonusDetail {
-  voucherStatus: VoucherStatusEnum;
+  voucherStatus: WalletStatusDtoVoucherStatusEnum;
   voucherStartDate: string;
   voucherEndDate: string;
   amountCents: number;
@@ -36,8 +34,8 @@ interface TimelineItem {
 const Dashboard = () => {
   const [bonusData, setBonusData] = useState<BonusDetail | null>(null);
   const [timelineData, setTimelineData] = useState<TimelineItem[] | null>(null);
-  const [transactionDetails, setTransactionDetails] = useState<OperationDTO[]>([]);
-  const [selectedTransaction, setSelectedTransaction] = useState<OperationDTO | null>(null);
+  const [transactionDetails, setTransactionDetails] = useState<TransactionOperationDTO[]>([]);
+  const [selectedTransaction, setSelectedTransaction] = useState<TransactionOperationDTO | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [trxCode, setTrxCode] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -77,8 +75,8 @@ const Dashboard = () => {
         setEmail(detailData?.userMail || "")
         
         if (
-          detailData?.voucherStatus === VoucherStatusEnum.ACTIVE ||
-          detailData?.voucherStatus === VoucherStatusEnum.EXPIRING
+          detailData?.voucherStatus === WalletStatusDtoVoucherStatusEnum.ACTIVE ||
+          detailData?.voucherStatus === WalletStatusDtoVoucherStatusEnum.EXPIRING
         ) {
           const barcodeResponse = await OnboardingWebApi.getBarCode(initiativeId);
           setTrxCode(barcodeResponse.data?.trxCode || '');
@@ -86,7 +84,7 @@ const Dashboard = () => {
 
         const timelineResponse = await OnboardingWebApi.timeline(initiativeId);
         if (timelineResponse?.status && timelineResponse.status === 200) {
-          const timelineList = (timelineResponse.data as TimelineDTO).operationList as OperationDTO[];
+          const timelineList = (timelineResponse.data as TimelineDTO).operationList;
           const sortedOperations = [...timelineList].sort(
             (a, b) => new Date(b.operationDate).getTime() - new Date(a.operationDate).getTime()
           );
@@ -99,7 +97,7 @@ const Dashboard = () => {
           };
 
           const operationItems: TimelineItem[] = [];
-          const transactionDetailsArray: OperationDTO[] = [];
+          const transactionDetailsArray: TransactionOperationDTO[] = [];
 
           for (const operation of sortedOperations) {
             if (operation?.operationType === 'TRANSACTION') {
@@ -134,8 +132,8 @@ const Dashboard = () => {
 
   const fiscalNumber = user?.attributes?.fiscalNumber?.[0] || '-';
   const showBarcode =
-    bonusData.voucherStatus === VoucherStatusEnum.ACTIVE ||
-    bonusData.voucherStatus === VoucherStatusEnum.EXPIRING;
+    bonusData.voucherStatus === WalletStatusDtoVoucherStatusEnum.ACTIVE ||
+    bonusData.voucherStatus === WalletStatusDtoVoucherStatusEnum.EXPIRING;
 
   return (
     <>

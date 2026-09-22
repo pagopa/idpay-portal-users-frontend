@@ -10,13 +10,13 @@ import HeaderForm from './HeaderForm';
 import ROUTES from '../../routes';
 import { useNavigate } from 'react-router-dom';
 import { useEmailStore } from '../../hooks/useEmailStore';
-import { commonHeaders, OnboardingWebApi } from '../../api/onboardingWebApiClient';
-import { extractErrorResponse, isSuccessStatus } from '../../utils/api';
+import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
 import { useVerifyRequirementStore } from '../../hooks/useVerifyRequirementStore';
 import { useTOSCheckboxStore } from '../../hooks/useTOSCheckboxStore';
 import { getInitiative, getInitiativeId } from '../../utils/env';
 import { normalizeEmail } from '../../utils/validateEmail';
 import { buildInitiativePayload } from '../../utils/initiativePayload';
+import { OnboardingDTO } from '../../api/generated/onboarding-web/api';
 
 export default function VerifyRequirementForm() {
     const { t, i18n } = useTranslation();
@@ -67,24 +67,12 @@ export default function VerifyRequirementForm() {
         });
 
         try {
-            const apiResponse = await OnboardingWebApi.save({
-                body: payload,
-                ...commonHeaders
-            });
-
-            if (isSuccessStatus(apiResponse.status)) {
-                navigate(ROUTES.FEEDBACK, { state: { status: 'REQUEST_SUBMITTED' } });
-                return;
-            }
-            navigate(ROUTES.ERROR_PAGE, { state: { status: 'TECHNICAL_ERROR' } });
-        } catch (apiError: any) {
-            const res = extractErrorResponse(apiError);
-            if (isSuccessStatus(res?.status)) {
-                navigate(ROUTES.FEEDBACK, { state: { status: 'REQUEST_SUBMITTED' } });
-                return;
-            }
-            if(res?.status === 429){
-                navigate(ROUTES.WAITING_PAGE, {state: payload});
+            await OnboardingWebApi.save(payload as OnboardingDTO)
+            navigate(ROUTES.FEEDBACK, { state: { status: 'REQUEST_SUBMITTED' } });
+        } catch (error: any) {
+            const status = error?.status || error?.response?.status;
+            if (status === 429) {
+                navigate(ROUTES.WAITING_PAGE, { state: payload });
                 return;
             }
             navigate(ROUTES.ERROR_PAGE, { state: { status: 'TECHNICAL_ERROR' } });

@@ -12,8 +12,8 @@
     "test:coverage": "jest --coverage",
     "clean": "npm-run-all clean:*",
     "generate": "npm-run-all generate:*",
-    "clean:onboarding-web": "rimraf src/api/generated/onboarding-web && rimraf openApi/generated/onboarding-web-swagger20.json",
-    "generate:onboarding-web": "yarn run clean:onboarding-web && mkdirp openApi/generated && api-spec-converter --from=openapi_3 --to=swagger_2 openApi/openapi.onboarding.web.yml > openApi/generated/onboarding-web-swagger20.json && node ./node_modules/@pagopa/selfcare-common-frontend/utils/fixSwagger20ArraySchemaDef.js openApi/generated/onboarding-web-swagger20.json && node ./openApi/scripts/onboarding-web_fixPreGen.cjs && gen-api-models --api-spec openApi/generated/onboarding-web-swagger20.json --out-dir src/api/generated/onboarding-web --no-strict --request-types --response-decoders --client"
+    "clean:onboarding-web": "rimraf src/api/generated/onboarding-web",
+    "generate:onboarding-web": "yarn run clean:onboarding-web && swagger-typescript-api generate -p openApi/openapi.onboarding.web.yml -o src/api/generated/onboarding-web -n api.ts --responses --extract-enums"
   },
   "dependencies": {
     "@babel/preset-env": "^7.28.0",
@@ -32,6 +32,7 @@
     "@types/react": "^17.0.2",
     "@types/react-router-dom": "^5.1.8",
     "axios": "^1.6.0",
+    "swagger-typescript-api": "^13.6.7",
     "babel-jest": "^30.0.4",
     "date-fns": "^2.28.0",
     "dompurify": "^3.3.0",

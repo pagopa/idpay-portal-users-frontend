@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import Dashboard from '../Dashboard';
-import { VoucherStatusEnum } from '../../../api/generated/onboarding-web/InitiativeDTO';
+import { WalletStatusDtoVoucherStatusEnum } from '../../../api/generated/onboarding-web/api';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -117,7 +117,7 @@ describe('Dashboard Integration (API & Navigation)', () => {
 
   test('calls APIs and shows YourBonus when data loaded', async () => {
     const mockBonusData = {
-      voucherStatus: VoucherStatusEnum.ACTIVE,
+      voucherStatus: WalletStatusDtoVoucherStatusEnum.ACTIVE,
       amountCents: 10000,
       voucherStartDate: '2025-09-24',
       voucherEndDate: '2025-10-24',
@@ -149,7 +149,7 @@ describe('Dashboard Integration (API & Navigation)', () => {
   test('does NOT call getBarCode when voucherStatus is USED', async () => {
     mockGetBonusDetail.mockResolvedValue({
       status: 200,
-      data: { voucherStatus: VoucherStatusEnum.USED, amountCents: 5000 },
+      data: { voucherStatus: WalletStatusDtoVoucherStatusEnum.USED, amountCents: 5000 },
     });
 
     render(<Dashboard />);
@@ -191,7 +191,7 @@ describe('Dashboard Integration (API & Navigation)', () => {
 
   test('renders FAQ section when section changed (desktop sidebar)', async () => {
     const mockBonusData = {
-      voucherStatus: VoucherStatusEnum.ACTIVE,
+      voucherStatus: WalletStatusDtoVoucherStatusEnum.ACTIVE,
       amountCents: 10000,
     };
 
@@ -211,7 +211,7 @@ describe('Dashboard Integration (API & Navigation)', () => {
 
   test('toggles sidebar collapsed state', async () => {
     const mockBonusData = {
-      voucherStatus: VoucherStatusEnum.ACTIVE,
+      voucherStatus: WalletStatusDtoVoucherStatusEnum.ACTIVE,
       amountCents: 10000,
     };
 
