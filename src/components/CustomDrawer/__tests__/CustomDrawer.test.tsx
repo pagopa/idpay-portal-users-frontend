@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { CustomDrawer } from '../CustomDrawer';
-import { OperationDTO } from '../../../api/generated/onboarding-web/OperationDTO';
+import { TransactionOperationDTO } from '../../../api/generated/onboarding-web/api';
 
 jest.mock('../../../hooks/useIsMobile', () => ({
     useIsMobile: jest.fn(),
@@ -18,7 +18,7 @@ jest.mock('../../../utils/formatUtils', () => ({
     formatDateTime: (date: string) => date,
 }));
 
-const mockOperation: OperationDTO = {
+const mockOperation: TransactionOperationDTO = {
     operationId: '68de96984833d744ad86c63c',
     operationType: 'TRANSACTION',
     eventId: 'b1bd1122-7cbf-4b41-9734-a43f3e44495f_BARCODE_1759417495001',
