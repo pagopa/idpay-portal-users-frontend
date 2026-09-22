@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import DetailBonusCard from '../DetailBonusCard';
-import { VoucherStatusEnum } from '../../../api/generated/onboarding-web/InitiativeDTO';
+import { WalletStatusDtoVoucherStatusEnum } from '../../../api/generated/onboarding-web/api';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -16,7 +16,7 @@ jest.mock('../../../utils/formatUtils', () => ({
 
 describe('DetailBonusCard', () => {
   const mockBonusData = {
-    voucherStatus: VoucherStatusEnum.ACTIVE,
+    voucherStatus: WalletStatusDtoVoucherStatusEnum.ACTIVE,
     voucherStartDate: '2025-09-24',
     voucherEndDate: '2025-10-24',
     amountCents: 10000,
@@ -62,7 +62,7 @@ describe('DetailBonusCard', () => {
   test('renders correct status chip for EXPIRED voucher', () => {
     const expiredBonusData = {
       ...mockBonusData,
-      voucherStatus: VoucherStatusEnum.EXPIRED,
+      voucherStatus: WalletStatusDtoVoucherStatusEnum.EXPIRED,
     };
 
     render(
@@ -78,7 +78,7 @@ describe('DetailBonusCard', () => {
   test('renders correct status chip for USED voucher', () => {
     const usedBonusData = {
       ...mockBonusData,
-      voucherStatus: VoucherStatusEnum.USED,
+      voucherStatus: WalletStatusDtoVoucherStatusEnum.USED,
     };
 
     render(
@@ -94,7 +94,7 @@ describe('DetailBonusCard', () => {
   test('renders correct status chip for EXPIRING voucher', () => {
     const expiringBonusData = {
       ...mockBonusData,
-      voucherStatus: VoucherStatusEnum.EXPIRING,
+      voucherStatus: WalletStatusDtoVoucherStatusEnum.EXPIRING,
     };
 
     render(

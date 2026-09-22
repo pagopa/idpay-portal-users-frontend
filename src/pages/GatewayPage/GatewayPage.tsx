@@ -2,19 +2,17 @@ import { Box } from '@mui/material';
 import { useEffect } from 'react';
 import { theme } from '@pagopa/mui-italia';
 import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
-import { CodeEnum, OnboardingErrorDTO } from '../../api/generated/onboarding-web/OnboardingErrorDTO';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
-import { StatusEnum } from '../../api/generated/onboarding-web/OnboardingStatusDTO';
 import { useAuth } from '../../contexts/AuthContext';
 import Overlay from '../../components/Overlay/Overlay';
 import { UserProfile } from '../../types/auth';
 import { isStorageTokenExpired } from '../../utils/tokenManager';
 import { useCanAccessTOSStore } from '../../hooks/useCanAccessTOSStore';
-import { extractErrorResponse } from '../../utils/api';
 import { getInitiativeId } from '../../utils/env';
 import { getStatusDestination } from '../../utils/statusChecker';
 import { useIsMobile } from '../../hooks/useIsMobile';
+import { OnboardingErrorDTO, OnboardingErrorDtoCodeEnum, OnboardingStatusDtoStatusEnum } from '../../api/generated/onboarding-web/api';
 
 const GatewayPage = () => {
     const { loading, token, user } = useAuth();
@@ -28,13 +26,13 @@ const GatewayPage = () => {
     const isInitiativeNotStarted = (data: OnboardingErrorDTO | unknown): boolean =>
         isErrorDTO(data)
         && [
-            CodeEnum.ONBOARDING_INITIATIVE_NOT_STARTED,
-            CodeEnum.ONBOARDING_INITIATIVE_NOT_FOUND,
-            CodeEnum.ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED
+            OnboardingErrorDtoCodeEnum.ONBOARDING_INITIATIVE_NOT_STARTED,
+            OnboardingErrorDtoCodeEnum.ONBOARDING_INITIATIVE_NOT_FOUND,
+            OnboardingErrorDtoCodeEnum.ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED
         ].includes(data.code);
 
     const isUserNotOnboardedError = (data: OnboardingErrorDTO | unknown): boolean =>
-        isErrorDTO(data) && data.code === CodeEnum.ONBOARDING_USER_NOT_ONBOARDED;
+        isErrorDTO(data) && data.code === OnboardingErrorDtoCodeEnum.ONBOARDING_USER_NOT_ONBOARDED;
 
     const getDateOfBirth = (user: UserProfile): string | null => {
         if (!user?.attributes?.dateOfBirth || !Array.isArray(user.attributes.dateOfBirth)) {
@@ -87,23 +85,12 @@ const GatewayPage = () => {
                     return;
                 }
 
-                if (httpStatus === 200 && statusCode === StatusEnum.ONBOARDING_OK) {
+                if (httpStatus === 200 && statusCode === OnboardingStatusDtoStatusEnum.ONBOARDING_OK) {
                     navigate(ROUTES.DASHBOARD);
                     return;
                 }
 
-                if (httpStatus === 400 && isInitiativeNotStarted(statusData)) {
-                    navigate(ROUTES.UPCOMING_INITIATIVE);
-                    return;
-                }
-
-                if (httpStatus === 404 && isUserNotOnboardedError(statusData)) {
-                    setCanAccessTOS(true);
-                    navigate(ROUTES.TOS);
-                    return;
-                }
-
-                if (httpStatus === 200 || httpStatus === 400 || httpStatus === 404) {
+                if (httpStatus === 200) {
                     const destination = getStatusDestination(statusCode);
 
                     if (destination.type === 'error') {
@@ -120,12 +107,43 @@ const GatewayPage = () => {
                 }
                 navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
 
-            } catch (error: any) {
-                if (extractErrorResponse(error)) {
-                    if (error?.status === 429) {
-                        navigate(ROUTES.ERROR_PAGE, { state: { status: 'TOO_MANY_REQUESTS' } });
+            } catch (err: any) {
+                const { status, error } = err
+
+                if (status === 429) {
+                    navigate(ROUTES.ERROR_PAGE, { state: { status: 'TOO_MANY_REQUESTS' } });
+                    return;
+                }
+
+                if (!error?.code || typeof error?.code !== 'string') {
+                    navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
+                    return;
+                }
+
+                if ((status === 400 || status === 404) && isInitiativeNotStarted(error)) {
+                    navigate(ROUTES.UPCOMING_INITIATIVE);
+                    return;
+                }
+
+                if (status === 404 && isUserNotOnboardedError(error)) {
+                    setCanAccessTOS(true);
+                    navigate(ROUTES.TOS);
+                    return;
+                }
+                if (status === 400 || status === 404) {
+                    const destination = getStatusDestination(error.code);
+
+                    if (destination.type === 'error') {
+                        navigate(ROUTES.ERROR_PAGE, { state: { status: destination.status } });
                         return;
                     }
+
+                    if (destination.type === 'feedback') {
+                        navigate(ROUTES.FEEDBACK, { state: { status: destination.status } });
+                        return;
+                    }
+                    navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
+                    return;
                 }
                 navigate(ROUTES.ERROR_PAGE, { state: { status: 'UNKNOWN_ERROR' } });
             }

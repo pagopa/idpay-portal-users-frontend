@@ -4,8 +4,8 @@ import DetailBonusCard from './DetailBonusCard';
 import BarcodeCard from './BarcodeCard';
 import OperationsCard from './OperationsCard';
 import { CustomDrawer } from '../CustomDrawer/CustomDrawer';
-import { OperationDTO } from '../../api/generated/onboarding-web/OperationDTO';
 import { BonusDetail, TimelineItem } from '../../pages/Dashboard/Dashboard';
+import { TransactionOperationDTO } from '../../api/generated/onboarding-web/api';
 
 type Props = {
   bonusData: BonusDetail;
@@ -14,7 +14,7 @@ type Props = {
   fiscalNumber: string;
   showBarcode: boolean;
   drawerOpen: boolean;
-  selectedTransaction: OperationDTO | null;
+  selectedTransaction: TransactionOperationDTO | null;
   onOpenDrawer: (operationId: string) => void;
   onCloseDrawer: () => void;
 };

@@ -12,13 +12,13 @@ import { useIsMobile } from '../../hooks/useIsMobile';
 import { formatCurrency, formatDateTime } from '../../utils/formatUtils';
 import { useTranslation } from 'react-i18next';
 import { CopyToClipboardButton, theme } from '@pagopa/mui-italia';
-import { OperationDTO } from '../../api/generated/onboarding-web/OperationDTO';
+import { TransactionOperationDTO } from '../../api/generated/onboarding-web/api';
 
 export type CustomDrawerProps = {
   open: boolean;
   onClose: () => void;
   onOpen?: () => void;
-  operation: OperationDTO | null;
+  operation: TransactionOperationDTO | null;
   width?: number | string;
   mobileHeight?: number | string;
   forceMode?: 'drawer' | 'swipeable';

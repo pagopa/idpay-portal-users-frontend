@@ -34,15 +34,12 @@ jest.mock('../../../api/onboardingWebApiClient', () => ({
 }));
 
 jest.mock('../../../utils/api', () => ({
-  isSuccessStatus: jest.fn(),
   extractErrorResponse: jest.fn(),
 }));
 
 jest.mock('../../../utils/env', () => ({
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
 }));
-
-import { isSuccessStatus, extractErrorResponse } from '../../../utils/api';
 
 const basePayload = {
   initiativeId: '68dd003ccce8c534d1da22bc',
@@ -75,7 +72,6 @@ describe('WaitingContent', () => {
   });
 
   test('202 success -> navigates to FEEDBACK after 5s', async () => {
-    (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
     mockSave.mockResolvedValueOnce({ status: 202 });
 
     render(<WaitingContent payload={basePayload} />);
@@ -89,8 +85,7 @@ describe('WaitingContent', () => {
   });
 
   test('400 non-success -> navigates to ERROR_PAGE after 5s', async () => {
-    (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
-    mockSave.mockResolvedValueOnce({ status: 400 });
+    mockSave.mockRejectedValueOnce({ status: 400 });
 
     render(<WaitingContent payload={basePayload} />);
 
@@ -102,25 +97,8 @@ describe('WaitingContent', () => {
     });
   });
 
-  test('thrown error with extract 202 -> navigates to FEEDBACK', async () => {
-    mockSave.mockRejectedValueOnce(new Error('boom'));
-    (extractErrorResponse as jest.Mock).mockReturnValueOnce({ status: 202 });
-    (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
-
-    render(<WaitingContent payload={basePayload} />);
-
-    await flush(5000);
-    await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/feedback', {
-        state: { status: 'REQUEST_SUBMITTED' },
-      });
-    });
-  });
-
   test('429 flow -> shows second description, retries after 10s, then navigates', async () => {
-    mockSave.mockRejectedValueOnce(new Error('429-first'));
-    (extractErrorResponse as jest.Mock).mockReturnValueOnce({ status: 429 });
-    (isSuccessStatus as jest.Mock).mockImplementation((s: number) => s >= 200 && s < 300);
+    mockSave.mockRejectedValueOnce({status: 429});
 
     render(<WaitingContent payload={basePayload} />);
 
@@ -129,8 +107,7 @@ describe('WaitingContent', () => {
     expect(await screen.findByText('SECOND')).toBeInTheDocument();
     expect(mockSave).toHaveBeenCalledTimes(1);
 
-    mockSave.mockRejectedValueOnce(new Error('429-second'));
-    (extractErrorResponse as jest.Mock).mockReturnValueOnce({ status: 429 });
+    mockSave.mockRejectedValueOnce({status: 429});
 
     await flush(10000);
 
