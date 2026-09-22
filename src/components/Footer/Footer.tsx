@@ -22,36 +22,40 @@ export const Footer = () => {
                     href: FOOTER_LINKS.COMPANY,
                     onClick: () => openExternalLink(FOOTER_LINKS.COMPANY)
                 }}
-                links={[]
-                    // [
-                    //     {
-                    //         label: t('commons.footer.privacy'),
-                    //         ariaLabel: t('commons.footer.privacy'),
-                    //         href: `${getBaseUrl()}/utente${ROUTES.PRIVACY_POLICY}`,
-                    //         linkType: 'external',
-                    //         onClick: () => openExternalLink(`${getBaseUrl()}/utente${ROUTES.PRIVACY_POLICY}`)
-                    //     },
-                    //     {
-                    //         label: t('commons.footer.personalData'),
-                    //         ariaLabel: t('commons.footer.personalData'),
-                    //         linkType: 'external',
-                    //         href: FOOTER_LINKS.PERSONAL_DATA,
-                    //         onClick: () => openExternalLink(FOOTER_LINKS.PERSONAL_DATA)
-                    //     },
-                    //     {
-                    //         label: t('commons.footer.termsAndConditions'),
-                    //         ariaLabel: t('commons.footer.termsAndConditions'),
-                    //         href: `${getBaseUrl()}/utente${ROUTES.TERMS_OF_SERVICE}`,
-                    //         linkType: 'external',
-                    //         onClick: () => openExternalLink(`${getBaseUrl()}/utente${ROUTES.TERMS_OF_SERVICE}`)
-                    //     },
-                    //     {
-                    //         label: t('commons.footer.a11y'),
-                    //         ariaLabel: t('commons.footer.a11y'),
-                    //         linkType: 'external',
-                    //         onClick: () => openExternalLink(FOOTER_LINKS.A11Y)
-                    //     }
-                    // ]
+                links={
+                    [
+                        {
+                            label: t('commons.footer.privacy'),
+                            ariaLabel: t('commons.footer.privacy'),
+                            // href: `${getBaseUrl()}/utente${ROUTES.PRIVACY_POLICY}`,
+                            linkType: 'external',
+                            onClick: () => undefined
+                            // onClick: () => openExternalLink(`${getBaseUrl()}/utente${ROUTES.PRIVACY_POLICY}`)
+                        },
+                        {
+                            label: t('commons.footer.personalData'),
+                            ariaLabel: t('commons.footer.personalData'),
+                            linkType: 'external',
+                            // href: FOOTER_LINKS.PERSONAL_DATA,
+                            onClick: () => undefined
+                            // onClick: () => openExternalLink(FOOTER_LINKS.PERSONAL_DATA)
+                        },
+                        {
+                            label: t('commons.footer.termsAndConditions'),
+                            ariaLabel: t('commons.footer.termsAndConditions'),
+                            // href: `${getBaseUrl()}/utente${ROUTES.TERMS_OF_SERVICE}`,
+                            linkType: 'external',
+                            onClick: () => undefined
+                            // onClick: () => openExternalLink(`${getBaseUrl()}/utente${ROUTES.TERMS_OF_SERVICE}`)
+                        },
+                        {
+                            label: t('commons.footer.a11y'),
+                            ariaLabel: t('commons.footer.a11y'),
+                            linkType: 'external',
+                            onClick: () => undefined
+                            // onClick: () => openExternalLink(FOOTER_LINKS.A11Y)
+                        }
+                    ]
                 }
                 currentLangCode={'it'}
                 languages={{
