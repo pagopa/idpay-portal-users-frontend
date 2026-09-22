@@ -70,7 +70,7 @@ const it = {
     "requestBonusMobile": "Accedi al sito Bonus",
     "loginMethods": "Effettua la richiesta del bonus accedendo tramite SPID, CIE o IT-Wallet.",
     "continueWithSpidCie": "Continua con SPID e CIE",
-    "continueWithItWallet": "Entra con IT-Wallet",
+    "continueWithItWallet": "Continua con IT-Wallet",
     "continueOnWeb": "Continua sul sito",
     "withIO": "Con IO è tutto più semplice",
     "descriptionWithIO": "Gestisci tutto in un unico posto: richiedi il bonus, ricevi l’esito della richiesta e usa il bonus. Più veloce, più comodo.",
