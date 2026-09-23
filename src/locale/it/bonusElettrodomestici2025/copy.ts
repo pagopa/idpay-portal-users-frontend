@@ -185,7 +185,7 @@ const it = {
     },
     "thirdAccordion": {
       "title": "Quali elettrodomestici posso acquistare con il contributo?",
-      "description": "Puoi acquistare un elettrodomestico di una di queste categorie: lavatrici e lavasciuga, forni, cappe da cucina, lavastoviglie, asciugabiancheria, frigoriferi, congelatori e piani cottura, come previsto nel dettaglio dall’articolo 3, comma 1, lettera a), del Decreto interministeriale. Puoi consultare l’elenco degli elettrodomestici che fanno parte dell’iniziativa in questa lista."
+      "description": "Puoi acquistare un elettrodomestico di una di queste categorie: lavatrici e lavasciuga, forni, cappe da cucina, lavastoviglie, asciugabiancheria, frigoriferi, congelatori e piani cottura, come previsto nel dettaglio dall’articolo 3, comma 1, lettera a), del <decree>Decreto interministeriale</decree>. Puoi consultare l’elenco degli elettrodomestici che fanno parte dell’iniziativa <products>in questa lista</products>."
     },
      "fourthAccordion": {
       "title": "Ho usato il bonus per acquistare un elettrodomestico, ma vorrei effettuare un reso, cosa devo fare?",
@@ -209,11 +209,11 @@ const it = {
     },
     "ninthAccordion": {
       "title": "Come faccio a sapere se l’elettrodomestico da sostituire è di classe inferiore?",
-      "description": "Se hai acquistato dal 2021 in poi, puoi cercare il tuo elettrodomestico sul sito EPREL e verificare la classe energetica.\nSe il tuo modello non è presente su EPREL, significa che è stato prodotto prima dell’obbligo di registrazione (2021). In questo caso puoi chiedere informazioni al venditore."
+      "description": "Se hai acquistato dal 2021 in poi, puoi cercare il tuo elettrodomestico sul sito <eprel>EPREL</eprel> e verificare la classe energetica.\nSe il tuo modello non è presente su <eprel>EPREL</eprel>, significa che è stato prodotto prima dell’obbligo di registrazione (2021). In questo caso puoi chiedere informazioni al venditore."
     },
     "tenthAccordion": {
       "title": "Come posso verificare lo stato della richiesta?",
-      "description": "Se hai l’app IO, puoi controllare lo stato dalla sezione “Servizi”. Se hai fatto richiesta dal sito bonuselettrodomestici.it, trovi lo stato del bonus nella sezione “Il tuo bonus”."
+      "description": "Se hai l’app IO, puoi controllare lo stato dalla sezione “Servizi”. Se hai fatto richiesta dal sito <portal>bonuselettrodomestici.it</portal>, trovi lo stato del bonus nella sezione “Il tuo bonus”."
     },
     "eleventhAccordion": {
       "title": "Mi è scaduto il Bonus, posso chiederlo di nuovo?",
