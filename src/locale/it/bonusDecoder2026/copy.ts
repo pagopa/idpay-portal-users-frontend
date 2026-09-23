@@ -158,55 +158,43 @@ const it = {
     "description": "Ci servirà per comunicarti tutti gli aggiornamenti sul Bonus Decoder."
   },
   "FAQSection": {
-    "title": "",
+    "title": "Domande frequenti",
     "firstAccordion": {
-      "title": "",
-      "description": ""
+      "title": "Se uso il Bonus Decoder posso usare anche altri sconti o benefici?",
+      "description": "No. Il bonus non è cumulabile con altre agevolazioni o altri benefici, anche di tipo fiscale."
     },
     "secondAccordion": {
-      "title": "",
-      "description": ""
+      "title": "Quali decoder posso acquistare con il contributo?",
+      "description": "Puoi acquistare decoder digitali televisivi terrestri e satellitari conformi agli standard tecnologici DVB-T2/S2 e HEVC Main 10. Puoi consultare l'elenco dei decoder che fanno parte dell'iniziativa <products>in questa lista</products>"
     },
     "thirdAccordion": {
-      "title": "",
-      "description": ""
+      "title": "Ho usato il bonus per acquistare un decoder, ma vorrei effettuare un reso, cosa devo fare?",
+      "description": "Contatta il punto vendita presso il quale hai effettuato l'acquisto con il bonus per richiedere informazioni."
     },
-     "fourthAccordion": {
-      "title": "",
-      "description": ""
+    "fourthAccordion": {
+      "title": "Quando riceverò l'esito della richiesta?",
+      "description": "I tempi possono variare da qualche ora a qualche giorno, in base al volume delle richieste"
     },
     "fifthAccordion": {
-      "title": "",
-      "description": ""
+      "title": "Devo presentare qualche documento al momento dell'acquisto?",
+      "description": "Solo se hai richiesto il bonus tramite sito web, il venditore è tenuto a verificare il tuo codice fiscale"
     },
     "sixthAccordion": {
-      "title": "",
-      "description": ""
+      "title": "Entro quanto tempo posso usare il Bonus Decoder?",
+      "description": "Entro 15 giorni solari dalla data di emissione. Il tuo bonus scade automaticamente alle 23:59 del quindicesimo giorno dall'emissione. Una volta scaduto, se saranno ancora disponibili i fondi, puoi comunque inviare una nuova richiesta, che seguirà l'ordine cronologico di arrivo"
     },
     "seventhAccordion": {
-      "title": "",
-      "description": ""
+      "title": "Come posso verificare lo stato della richiesta?",
+      "description": "Se hai l'app IO, puoi controllare lo stato dalla sezione \"Servizi\". Se hai fatto richiesta dal sito <portal>bonusdecoder.it</portal>, trovi lo stato del bonus nella sezione \"Il tuo bonus\""
     },
     "eighthAccordion": {
-      "title": "",
-      "description": ""
+      "title": "Mi è scaduto il Bonus, posso chiederlo di nuovo?",
+      "description": "Sì, puoi inviare una nuova richiesta, a condizione che nessun altro membro della tua famiglia anagrafica l'abbia già fatto.\nLa richiesta verrà presa in carico in base all'ordine di arrivo, compatibilmente con i fondi disponibili"
     },
     "ninthAccordion": {
-      "title": "",
-      "description": ""
+      "title": "Posso usufruire del Bonus per un acquisto effettuato prima dell'uscita del bonus?",
+      "description": "No, il Bonus Decoder vale solo per acquisti futuri. Non è retroattivo"
     },
-    "tenthAccordion": {
-      "title": "",
-      "description": ""
-    },
-    "eleventhAccordion": {
-      "title": "",
-      "description": ""
-    },
-    "twelfthAccordion": {
-      "title": "",
-      "description": ""
-    }
   }
 }
 
