@@ -8,102 +8,31 @@ import {
   Link,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useTranslation } from 'react-i18next';
-import { getBaseUrl, getInitiative } from '../../utils/env';
-
-interface FaqLink {
-  text: string;
-  href: string;
-}
+import { Trans, useTranslation } from 'react-i18next';
+import { getBaseUrl, getInitiative, getPortalUrl } from '../../utils/env';
 
 interface FaqItem {
-  key: string;
-  links?: FaqLink[];
+  title: string;
+  description: string;
 }
+
+const isFaqItem = (value: unknown): value is FaqItem => {
+  if (!value || typeof value !== 'object') return false;
+  const item = value as Partial<FaqItem>;
+  return typeof item.title === 'string' && !!item.title.trim() &&
+    typeof item.description === 'string' && !!item.description.trim();
+};
 
 const FAQSection: React.FC = () => {
   const { t } = useTranslation();
-
-  const faqs: FaqItem[] = [
-    { key: 'firstAccordion' },
-    { key: 'secondAccordion' },
-    {
-      key: 'thirdAccordion',
-      links: [
-        {
-          text: 'Decreto interministeriale',
-          href: 'https://www.mimit.gov.it/images/stories/normativa/250903___DM_CONTRIBUTO_ACQUISTO_GRANDI_ELETTRODOMESTICI_L_207_2024-nf.pdf',
-        },
-        {
-          text: 'in questa lista',
-          href: `${getBaseUrl()}/${getInitiative()}/elenco-prodotti`,
-        },
-      ],
-    },
-    { key: 'fourthAccordion' },
-    { key: 'fifthAccordion' },
-    { key: 'sixthAccordion' },
-    { key: 'seventhAccordion' },
-    { key: 'eighthAccordion' },
-    {
-      key: 'ninthAccordion',
-      links: [
-        {
-          text: 'EPREL',
-          href: 'https://eprel.ec.europa.eu/screen/home',
-        },
-      ],
-    },
-    {
-      key: 'tenthAccordion',
-      links: [
-        {
-          text: 'bonuselettrodomestici.it',
-          href: getBaseUrl(),
-        },
-      ],
-    },
-    { key: 'eleventhAccordion' },
-    { key: 'twelfthAccordion' },
-  ];
-
-  const renderDescription = (
-    text: string,
-    links?: FaqLink[],
-  ): React.ReactNode => {
-    if (!links || links.length === 0) return text;
-
-    const parts: React.ReactNode[] = [];
-    let lastIndex = 0;
-
-    links.forEach((link) => {
-      const index = text.indexOf(link.text, lastIndex);
-      if (index === -1) return;
-
-      parts.push(text.slice(lastIndex, index));
-
-      parts.push(
-        <Link
-          key={link.text}
-          href={link.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          sx={{
-            color: '#1976d2',
-            textDecoration: 'none',
-            fontWeight: 500,
-          }}
-        >
-          {link.text}
-        </Link>,
-      );
-
-      lastIndex = index + link.text.length;
-    });
-
-    parts.push(text.slice(lastIndex));
-
-    return parts;
+  const section = t('FAQSection', { returnObjects: true });
+  const faqs = typeof section === 'object' && section !== null
+    ? Object.entries(section).filter((entry): entry is [string, FaqItem] => isFaqItem(entry[1]))
+    : [];
+  const linkProps = {
+    target: '_blank',
+    rel: 'noopener noreferrer',
+    sx: { color: '#1976d2', textDecoration: 'none', fontWeight: 500 },
   };
 
   return (
@@ -115,10 +44,7 @@ const FAQSection: React.FC = () => {
       </Box>
 
       <Box mt={2}>
-        {faqs.map(({ key, links }) => {
-          const title = t(`FAQSection.${key}.title`);
-          const description = t(`FAQSection.${key}.description`);
-
+        {faqs.map(([key, { title }]) => {
           return (
             <Accordion
               key={key}
@@ -144,7 +70,15 @@ const FAQSection: React.FC = () => {
                   variant="body1"
                   sx={{ lineHeight: 1.6, whiteSpace: 'pre-line' }}
                 >
-                  {renderDescription(description, links)}
+                  <Trans
+                    i18nKey={`FAQSection.${key}.description`}
+                    components={{
+                      products: <Link {...linkProps} href={`${getBaseUrl().replace(/\/+$/, '')}/${getInitiative()}/elenco-prodotti`} />,
+                      portal: <Link {...linkProps} href={getPortalUrl('/')} />,
+                      decree: <Link {...linkProps} href="https://www.mimit.gov.it/images/stories/normativa/250903___DM_CONTRIBUTO_ACQUISTO_GRANDI_ELETTRODOMESTICI_L_207_2024-nf.pdf" />,
+                      eprel: <Link {...linkProps} href="https://eprel.ec.europa.eu/screen/home" />,
+                    }}
+                  />
                 </Typography>
               </AccordionDetails>
             </Accordion>
