@@ -156,7 +156,7 @@ const it = {
     },
 
     "isee": {
-      "title": "Hai un ISEE 2026 in corso di validità?",
+      "title": "Hai un ISEE in corso di validità?",
       "description":
         "Quando un ISEE è valido?",
       "option.<25000": "Ho un ISEE inferiore a 25.000€",
