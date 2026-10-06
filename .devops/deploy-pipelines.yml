@@ -131,14 +131,6 @@ variables:
     react_app_url_api_register: $(DEV_REACT_APP_URL_API_REGISTER)
     cdn_domains: '$(DEV_CDN_DOMAINS)'
 
-
-# Automatically triggered on PR
-# https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema%2Cparameter-schema#pr-trigger
-trigger:
-  branches:
-    include:
-      - main
-
 pr: none
 
 resources:
