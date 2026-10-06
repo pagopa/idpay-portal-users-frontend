@@ -5,6 +5,7 @@ trigger:
     include:
       - develop
       - uat
+      - main
 
 # Azure DevOps pipeline to release a new version and deploy to production.
 variables:
