@@ -38,6 +38,7 @@ jest.mock('../../../hooks/useEmailStore', () => ({
 }));
 
 jest.mock('../../../utils/validateEmail', () => ({
+  normalizeEmail: (email: string) => email.trim().replace(/\s/g, '').toLowerCase(),
   isValidEmail: (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -338,6 +339,27 @@ describe('InsertEmail Component', () => {
       expect(mockSetConfirmEmail).toHaveBeenCalledWith('test@example.com');
     });
 
+    test('accepts different casing and stores both emails in lowercase', () => {
+      render(
+        <MemoryRouter>
+          <InsertEmail />
+        </MemoryRouter>
+      );
+
+      const emailInput = screen.getByLabelText('commons.email');
+      const confirmEmailInput = screen.getByLabelText('commons.confirmEmail');
+
+      fireEvent.change(emailInput, { target: { value: '  Test @Test.com  ' } });
+      fireEvent.change(confirmEmailInput, { target: { value: ' test@ test.com ' } });
+      fireEvent.click(screen.getByRole('button', { name: 'commons.continue' }));
+
+      expect(emailInput).toHaveValue('test@test.com');
+      expect(confirmEmailInput).toHaveValue('test@test.com');
+      expect(mockSetEmail).toHaveBeenCalledWith('test@test.com');
+      expect(mockSetConfirmEmail).toHaveBeenCalledWith('test@test.com');
+      expect(mockNavigate).toHaveBeenCalledWith(ROUTES.VERIFY_REQUIREMENTS);
+    });
+
     test('does not navigate when form is invalid', () => {
       render(
         <MemoryRouter>
@@ -493,7 +515,7 @@ describe('InsertEmail Component', () => {
       expect(screen.getByText('commons.requiredField')).toBeInTheDocument();
     });
 
-    test('handles email with spaces', () => {
+    test('removes spaces from email input', () => {
       render(
         <MemoryRouter>
           <InsertEmail />
@@ -501,12 +523,11 @@ describe('InsertEmail Component', () => {
       );
 
       const emailInput = screen.getByLabelText('commons.email');
-      const continueButton = screen.getByRole('button', { name: 'commons.continue' });
 
       fireEvent.change(emailInput, { target: { value: 'test @example.com' } });
-      fireEvent.click(continueButton);
 
-      expect(screen.getByText('commons.invalidEmail')).toBeInTheDocument();
+      expect(emailInput).toHaveValue('test@example.com');
+      expect(screen.queryByText('commons.invalidEmail')).not.toBeInTheDocument();
     });
 
     test('handles very long email addresses', () => {

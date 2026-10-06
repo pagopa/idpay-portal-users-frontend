@@ -11,8 +11,9 @@ interface SelfDeclarationProps {
 }
 
 export default function SelfDeclaration(props: SelfDeclarationProps) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { switchValue, setSwitchValue } = props;
+    const hasSwitchLabel = i18n.exists('verifyRequirements.selfDeclaration.switchLabel');
     return (
         <Box>
             <Card sx={{ borderRadius: "4px" }}>
@@ -23,7 +24,7 @@ export default function SelfDeclaration(props: SelfDeclarationProps) {
                             {t('verifyRequirements.selfDeclaration.description')}
                         </Typography>
                     </Box>
-                    <Box
+                    {hasSwitchLabel && <Box
                         sx={{
                             display: 'flex',
                             justifyContent: 'space-between',
@@ -70,8 +71,8 @@ export default function SelfDeclaration(props: SelfDeclarationProps) {
                                 </Box>
                             </CardContent>
                         </Card>
-                    </Box>
-                    {props.showError && !switchValue &&
+                    </Box>}
+                    {hasSwitchLabel && props.showError && !switchValue &&
                         <Typography variant='caption-semibold' sx={{ color: theme.palette.error.dark }}>
                             {t('verifyRequirements.selfDeclarationError')}
                         </Typography>

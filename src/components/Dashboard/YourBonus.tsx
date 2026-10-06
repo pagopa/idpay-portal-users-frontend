@@ -4,8 +4,8 @@ import DetailBonusCard from './DetailBonusCard';
 import BarcodeCard from './BarcodeCard';
 import OperationsCard from './OperationsCard';
 import { CustomDrawer } from '../CustomDrawer/CustomDrawer';
-import { OperationDTO } from '../../api/generated/onboarding-web/OperationDTO';
 import { BonusDetail, TimelineItem } from '../../pages/Dashboard/Dashboard';
+import { TransactionOperationDTO } from '../../api/generated/onboarding-web/api';
 
 type Props = {
   bonusData: BonusDetail;
@@ -14,7 +14,7 @@ type Props = {
   fiscalNumber: string;
   showBarcode: boolean;
   drawerOpen: boolean;
-  selectedTransaction: OperationDTO | null;
+  selectedTransaction: TransactionOperationDTO | null;
   onOpenDrawer: (operationId: string) => void;
   onCloseDrawer: () => void;
 };
@@ -33,8 +33,8 @@ const YourBonus = ({
   const { t } = useTranslation();
 
   const normalizedTimeline = timelineData.map(item =>
-    item.label === 'dashboard.operationsSection.onboardingInitiative'
-      ? { ...item, label: t('dashboard.operationsSection.onboardingInitiative') }
+    item.label === 'common.dashboard.operationsSection.onboardingInitiative'
+      ? { ...item, label: t('common.dashboard.operationsSection.onboardingInitiative') }
       : item
   );
 
@@ -42,10 +42,10 @@ const YourBonus = ({
     <>
       <Box>
         <Typography variant="h4" gutterBottom>
-          {t('dashboard.title')}
+          {t('common.dashboard.title')}
         </Typography>
         <Typography variant="body1" gutterBottom mt={2}>
-          {t('dashboard.description')}
+          {t('common.dashboard.description')}
         </Typography>
       </Box>
 

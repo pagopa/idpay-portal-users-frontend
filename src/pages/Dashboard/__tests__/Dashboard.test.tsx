@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import Dashboard from '../Dashboard';
-import { VoucherStatusEnum } from '../../../api/generated/onboarding-web/InitiativeDTO';
+import { WalletStatusDtoVoucherStatusEnum } from '../../../api/generated/onboarding-web/api';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -12,7 +12,8 @@ jest.mock('react-i18next', () => ({
 
 jest.mock('../../../utils/env', () => ({
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
-  getBaseUrl: () => 'https://www.google.com'
+  getBaseUrl: () => 'https://www.google.com',
+  getInitiative: () => 'bonusdecoder',
 }));
 
 const mockedUsedNavigate = jest.fn();
@@ -40,7 +41,10 @@ jest.mock('../../../components/Dashboard/DashboardDropdownMenu', () => ({
   __esModule: true,
   default: ({ onSectionChange }: any) => (
     <div data-testid="dropdown-menu">
-      <button data-testid="faq-btn-mobile" onClick={() => onSectionChange('faq')}>
+      <button
+        data-testid="faq-btn-mobile"
+        onClick={() => onSectionChange('faq')}
+      >
         FAQ Mobile
       </button>
     </div>
@@ -54,7 +58,11 @@ jest.mock('../../../components/Overlay/Overlay', () => () => (
 jest.mock('../../../components/Dashboard/YourBonus', () => ({
   __esModule: true,
   default: (props: any) => (
-    <div data-testid="your-bonus" data-trx-code={props.trxCode} data-show-barcode={props.showBarcode ? 'true' : 'false'}>
+    <div
+      data-testid="your-bonus"
+      data-trx-code={props.trxCode}
+      data-show-barcode={props.showBarcode ? 'true' : 'false'}
+    >
       YourBonus
     </div>
   ),
@@ -109,14 +117,17 @@ describe('Dashboard Integration (API & Navigation)', () => {
 
   test('calls APIs and shows YourBonus when data loaded', async () => {
     const mockBonusData = {
-      voucherStatus: VoucherStatusEnum.ACTIVE,
+      voucherStatus: WalletStatusDtoVoucherStatusEnum.ACTIVE,
       amountCents: 10000,
       voucherStartDate: '2025-09-24',
       voucherEndDate: '2025-10-24',
     };
 
     mockGetBonusDetail.mockResolvedValue({ status: 200, data: mockBonusData });
-    mockGetBarCode.mockResolvedValue({ status: 200, data: { trxCode: 'abc123' } });
+    mockGetBarCode.mockResolvedValue({
+      status: 200,
+      data: { trxCode: 'abc123' },
+    });
 
     render(<Dashboard />);
 
@@ -129,13 +140,16 @@ describe('Dashboard Integration (API & Navigation)', () => {
     });
 
     expect(screen.queryByTestId('overlay')).not.toBeInTheDocument();
-    expect(screen.getByTestId('your-bonus')).toHaveAttribute('data-trx-code', 'abc123');
+    expect(screen.getByTestId('your-bonus')).toHaveAttribute(
+      'data-trx-code',
+      'abc123',
+    );
   });
 
   test('does NOT call getBarCode when voucherStatus is USED', async () => {
     mockGetBonusDetail.mockResolvedValue({
       status: 200,
-      data: { voucherStatus: VoucherStatusEnum.USED, amountCents: 5000 },
+      data: { voucherStatus: WalletStatusDtoVoucherStatusEnum.USED, amountCents: 5000 },
     });
 
     render(<Dashboard />);
@@ -145,7 +159,10 @@ describe('Dashboard Integration (API & Navigation)', () => {
     });
 
     expect(mockGetBarCode).not.toHaveBeenCalled();
-    expect(screen.getByTestId('your-bonus')).toHaveAttribute('data-show-barcode', 'false');
+    expect(screen.getByTestId('your-bonus')).toHaveAttribute(
+      'data-show-barcode',
+      'false',
+    );
   });
 
   test('navigates to ERROR_PAGE when bonusData is null', async () => {
@@ -174,7 +191,7 @@ describe('Dashboard Integration (API & Navigation)', () => {
 
   test('renders FAQ section when section changed (desktop sidebar)', async () => {
     const mockBonusData = {
-      voucherStatus: VoucherStatusEnum.ACTIVE,
+      voucherStatus: WalletStatusDtoVoucherStatusEnum.ACTIVE,
       amountCents: 10000,
     };
 
@@ -194,7 +211,7 @@ describe('Dashboard Integration (API & Navigation)', () => {
 
   test('toggles sidebar collapsed state', async () => {
     const mockBonusData = {
-      voucherStatus: VoucherStatusEnum.ACTIVE,
+      voucherStatus: WalletStatusDtoVoucherStatusEnum.ACTIVE,
       amountCents: 10000,
     };
 

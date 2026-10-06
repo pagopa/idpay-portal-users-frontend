@@ -17,43 +17,43 @@ export const errorState: Record<ErrorStateKey, ErrorState> = {
 
   INVALID_ACCESS_TOKEN: {
     icon: <IllusUmbrella />,
-    title: "feedbackStates.accessToken.title",
-    description: 'feedbackStates.accessToken.description',
+    title: "common.feedbackStates.accessToken.title",
+    description: 'common.feedbackStates.accessToken.description',
     buttonLabel: 'commons.retry',
     buttonRedirect: '__LOGOUT__',
   },
   AGE_RESTRICTION: {
     icon: <IllusUserUnauthorized />,
-    title: "feedbackStates.ageRestriction.title",
-    description: 'feedbackStates.ageRestriction.description',
+    title: "common.feedbackStates.ageRestriction.title",
+    description: 'common.feedbackStates.ageRestriction.description',
     buttonLabel: 'commons.exit',
     buttonRedirect: '__LOGOUT__'
   },
   SESSION_EXPIRED: {
     icon: <IllusAlarmClock />,
-    title: "feedbackStates.sessionExpired.title",
-    description: 'feedbackStates.sessionExpired.description',
+    title: "common.feedbackStates.sessionExpired.title",
+    description: 'common.feedbackStates.sessionExpired.description',
     buttonLabel: 'commons.login',
     buttonRedirect: '__LOGOUT__'
   },
   UNKNOWN_ERROR: {
     icon: <IllusUmbrella />,
-    title: "feedbackStates.unknownError.title",
-    description: 'feedbackStates.unknownError.description',
+    title: "common.feedbackStates.unknownError.title",
+    description: 'common.feedbackStates.unknownError.description',
     buttonLabel: 'commons.retry',
     buttonRedirect: '__LOGOUT__'
   },
   TECHNICAL_ERROR: {
     icon: <IllusUmbrella />,
-    title: "feedbackStates.technicalError.title",
-    description: 'feedbackStates.technicalError.description',
+    title: "common.feedbackStates.technicalError.title",
+    description: 'common.feedbackStates.technicalError.description',
     buttonLabel: 'commons.exit',
     buttonRedirect: '__LOGOUT__',
   },
   TOO_MANY_REQUESTS: {
     icon: <IllusAlarmClock />,
-    title: "feedbackStates.tooManyRequests.title",
-    description: 'feedbackStates.tooManyRequests.description',
+    title: "common.feedbackStates.tooManyRequests.title",
+    description: 'common.feedbackStates.tooManyRequests.description',
     buttonLabel: 'commons.exit',
     buttonRedirect: '__LOGOUT__'
   }

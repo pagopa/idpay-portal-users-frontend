@@ -35,7 +35,7 @@ const CustomLandingSection = () => {
       }}
     >
       <Typography variant="h3" fontWeight="bold" gutterBottom>
-        {isMobile ? t('landing.requestBonusMobile') : t('landing.requestBonus')}
+        {t('landing.requestBonus')}
       </Typography>
       <Typography variant="body1" mb={3}>
         {t('landing.loginMethods')}

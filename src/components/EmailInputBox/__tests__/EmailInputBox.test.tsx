@@ -26,6 +26,25 @@ describe('EmailInputBox', () => {
     expect(handleChange).toHaveBeenCalledWith('test@example.com');
   });
 
+  test('removes whitespace from pasted input', () => {
+    const handleChange = jest.fn();
+    render(<EmailInputBox value="" onChange={handleChange} placeholderLabel="Email" />);
+
+    fireEvent.change(screen.getByLabelText(/email/i), {
+      target: { value: ' test @example.com ' },
+    });
+
+    expect(handleChange).toHaveBeenCalledWith('test@example.com');
+  });
+
+  test('prevents spaces from being entered from the keyboard', () => {
+    render(<EmailInputBox value="test" onChange={() => {}} placeholderLabel="Email" />);
+
+    const input = screen.getByLabelText(/email/i);
+
+    expect(fireEvent.keyDown(input, { key: ' ', code: 'Space' })).toBe(false);
+  });
+
   test('shows error message if showSubmitError is true', () => {
     render(
       <EmailInputBox

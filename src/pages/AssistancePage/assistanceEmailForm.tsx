@@ -9,8 +9,8 @@ import {getInitiativeId} from "../../utils/env.ts";
 import {OnboardingWebApi} from "../../api/onboardingWebApiClient.ts";
 import {storageTokenOps} from "@pagopa/selfcare-common-frontend/lib/utils/storage";
 import {parseJwt} from "../../utils/functions.ts";
-import {SupportResponseDTO} from "../../api/generated/onboarding-web/SupportResponseDTO.ts";
 import { useEmailAssistanceStore } from '../../hooks/useEmailAssistanceStore.tsx';
+import { SupportResponseDTO } from '../../api/generated/onboarding-web/api.ts';
 
 const AssistanceEmailForm = () => {
     const {t} = useTranslation();

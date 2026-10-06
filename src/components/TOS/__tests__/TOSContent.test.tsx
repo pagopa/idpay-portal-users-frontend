@@ -27,6 +27,9 @@ jest.mock('../../../hooks/useIsMobile', () => ({
 
 jest.mock('../../../utils/env', () => ({
   getBaseUrl: () => 'https://www.google.com',
+  getInitiative: () => 'bonusdecoder',
+  getPortalUrl: (path: string) =>
+    `https://www.google.com/bonusdecoder/utente${path}`,
 }));
 
 const makeRefs = () =>
@@ -49,10 +52,18 @@ describe('TOSContent', () => {
   test('renders descriptions and Trans elements', async () => {
     const { TOSContent } = await import('../TOSContent');
     render(<TOSContent sectionRefs={makeRefs()} />);
-    expect(screen.getByText('tos.sideMenu.element1.description')).toBeInTheDocument();
-    expect(screen.getByText('tos.sideMenu.element2.description')).toBeInTheDocument();
-    expect(screen.getByText('tos.sideMenu.element3.description')).toBeInTheDocument();
-    expect(screen.getByText('tos.sideMenu.element4.description')).toBeInTheDocument();
+    expect(
+      screen.getByText('tos.sideMenu.element1.description'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('tos.sideMenu.element2.description'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('tos.sideMenu.element3.description'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('tos.sideMenu.element4.description'),
+    ).toBeInTheDocument();
     expect(screen.getByText('tos.postDescription')).toBeInTheDocument();
     expect(screen.getByText(/tos\.privacy_part1/)).toBeInTheDocument();
     expect(screen.getByText('tos.privacy_terms')).toBeInTheDocument();
@@ -64,8 +75,12 @@ describe('TOSContent', () => {
   test('renders list items and links', async () => {
     const { TOSContent } = await import('../TOSContent');
     render(<TOSContent sectionRefs={makeRefs()} />);
-    expect(screen.getByText('tos.sideMenu.element2.listItem1')).toBeInTheDocument();
-    expect(screen.getByText('tos.sideMenu.element2.listItem2')).toBeInTheDocument();
+    expect(
+      screen.getByText('tos.sideMenu.element2.listItem1'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('tos.sideMenu.element2.listItem2'),
+    ).toBeInTheDocument();
     expect(screen.getByText('tos.sideMenu.element2.link')).toBeInTheDocument();
     expect(screen.getByText('tos.sideMenu.element4.link')).toBeInTheDocument();
   });
@@ -73,7 +88,7 @@ describe('TOSContent', () => {
   test('renders exit and continue buttons', async () => {
     const { TOSContent } = await import('../TOSContent');
     render(<TOSContent sectionRefs={makeRefs()} />);
-    expect(screen.getByText('exit')).toBeInTheDocument();
+    expect(screen.getByText('common.exit')).toBeInTheDocument();
     expect(screen.getByText('tos.continue')).toBeInTheDocument();
   });
 
@@ -102,7 +117,9 @@ describe('TOSContent', () => {
     });
 
     render(<TOSContent sectionRefs={makeRefs()} />);
-    expect(screen.getByRole('button', { name: /tos.continue/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /tos.continue/i }),
+    ).toBeInTheDocument();
   });
 
   test('setTosAccepted is called when continue button is clicked', async () => {
@@ -118,17 +135,25 @@ describe('TOSContent', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/inserisci-email');
   });
 
-  test('external links open in new tab', () => {
-    const windowOpenSpy = jest.spyOn(window, 'open').mockImplementation(() => null);
+  test('initiative links open in a new tab with the configured base URL and initiative', () => {
+    const windowOpenSpy = jest
+      .spyOn(window, 'open')
+      .mockImplementation(() => null);
 
     render(<TOSContent sectionRefs={makeRefs()} />);
 
-    const link = screen.getByText('tos.sideMenu.element2.link');
-    link.click();
+    screen.getByText('tos.sideMenu.element2.link').click();
 
     expect(windowOpenSpy).toHaveBeenCalledWith(
-      'https://www.google.com/elenco-informatico-elettrodomestici',
-      '_blank'
+      'https://www.google.com/bonusdecoder/elenco-prodotti',
+      '_blank',
+    );
+
+    screen.getByText('tos.sideMenu.element4.link').click();
+
+    expect(windowOpenSpy).toHaveBeenCalledWith(
+      'https://www.google.com/bonusdecoder/lista-punti-vendita',
+      '_blank',
     );
 
     windowOpenSpy.mockRestore();

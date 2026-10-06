@@ -6,7 +6,7 @@ import { theme } from '@pagopa/mui-italia';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
 import { useEmailStore } from '../../hooks/useEmailStore';
-import { isValidEmail } from '../../utils/validateEmail';
+import { isValidEmail, normalizeEmail } from '../../utils/validateEmail';
 import { useTOSCheckboxStore } from '../../hooks/useTOSCheckboxStore';
 import { ArrowBack } from '@mui/icons-material';
 import { useIsMobile } from '../../hooks/useIsMobile';
@@ -17,8 +17,8 @@ const InsertEmail = () => {
   const isMobile = useIsMobile();
 
   const { email, confirmEmail, setEmail, setConfirmEmail } = useEmailStore();
-  const [emailInput, setEmailInput] = useState(email);
-  const [confirmEmailInput, setConfirmEmailInput] = useState(confirmEmail);
+  const [emailInput, setEmailInput] = useState(normalizeEmail(email));
+  const [confirmEmailInput, setConfirmEmailInput] = useState(normalizeEmail(confirmEmail));
   const [showErrors, setShowErrors] = useState(false);
   const { tosAccepted } = useTOSCheckboxStore();
 
@@ -27,19 +27,21 @@ const InsertEmail = () => {
       navigate(ROUTES.GATEWAY, { replace: true });
       return;
     }
-    setEmailInput(email);
-    setConfirmEmailInput(confirmEmail);
+    setEmailInput(normalizeEmail(email));
+    setConfirmEmailInput(normalizeEmail(confirmEmail));
   }, [tosAccepted, email, confirmEmail]);
 
   if (!tosAccepted) {
     return null;
   }
 
-  const isEmailValid = isValidEmail(emailInput);
+  const normalizedEmail = normalizeEmail(emailInput);
+  const normalizedConfirmEmail = normalizeEmail(confirmEmailInput);
+  const isEmailValid = isValidEmail(normalizedEmail);
   const emailsMatch =
-    emailInput !== '' &&
-    confirmEmailInput !== '' &&
-    emailInput === confirmEmailInput;
+    normalizedEmail !== '' &&
+    normalizedConfirmEmail !== '' &&
+    normalizedEmail === normalizedConfirmEmail;
   const isFormValid = isEmailValid && emailsMatch;
 
   const handleContinue = () => {
@@ -47,14 +49,14 @@ const InsertEmail = () => {
       setShowErrors(true);
       return;
     }
-    setEmail(emailInput);
-    setConfirmEmail(confirmEmailInput);
+    setEmail(normalizedEmail);
+    setConfirmEmail(normalizedConfirmEmail);
     navigate(ROUTES.VERIFY_REQUIREMENTS);
   };
 
   const handleBack = () => {
-    setEmail(emailInput);
-    setConfirmEmail(confirmEmailInput);
+    setEmail(normalizedEmail);
+    setConfirmEmail(normalizedConfirmEmail);
     navigate(ROUTES.TOS);
   };
 
@@ -79,7 +81,7 @@ const InsertEmail = () => {
           <EmailInputBox
             value={emailInput}
             onChange={(val) => {
-              setEmailInput(val);
+              setEmailInput(normalizeEmail(val));
               setShowErrors(false);
             }}
             placeholderLabel={t('commons.email')}
@@ -89,7 +91,7 @@ const InsertEmail = () => {
           <EmailInputBox
             value={confirmEmailInput}
             onChange={(val) => {
-              setConfirmEmailInput(val);
+              setConfirmEmailInput(normalizeEmail(val));
               setShowErrors(false);
             }}
             placeholderLabel={t('commons.confirmEmail')}

@@ -25,11 +25,16 @@ const EmailInputBox = ({
         label={placeholderLabel}
         variant="outlined"
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value.replace(/\s/g, ''))}
         error={showSubmitError}
         helperText={showSubmitError ? errorMessage : ''}
         fullWidth
         onPaste={onPaste}
+        onKeyDown={(event) => {
+          if (event.key === ' ') {
+            event.preventDefault();
+          }
+        }}
       />
       {descriptionLabel && (
         <Typography variant="caption" mt={1}>

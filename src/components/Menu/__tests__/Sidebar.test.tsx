@@ -24,8 +24,8 @@ describe('Sidebar', () => {
       />
     );
 
-    expect(screen.getByText('dashboard.title')).toBeInTheDocument();
-    expect(screen.getByText('dashboard.faq')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.title')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.faq')).toBeInTheDocument();
   });
 
   it('renders hidden text when collapsed (opacity 0)', () => {
@@ -37,7 +37,7 @@ describe('Sidebar', () => {
       />
     );
 
-    expect(screen.queryByText('dashboard.title')).not.toBeInTheDocument();
+    expect(screen.queryByText('common.dashboard.title')).not.toBeInTheDocument();
   });
 
   it('calls toggleSidebar when icon button is clicked', () => {

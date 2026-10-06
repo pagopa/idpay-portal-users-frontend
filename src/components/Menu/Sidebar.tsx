@@ -54,7 +54,7 @@ const Sidebar = ({ collapsed, toggleSidebar, onSectionChange }: SidebarProps) =>
           <ListItemIcon sx={{ minWidth: collapsed ? 'auto' : undefined }}>
             <ConfirmationNumberRounded />
           </ListItemIcon>
-          {!collapsed && <ListItemText primary={t('dashboard.title')} slotProps={{
+          {!collapsed && <ListItemText primary={t('common.dashboard.title')} slotProps={{
             primary: {
               noWrap: true,
               sx: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
@@ -74,7 +74,7 @@ const Sidebar = ({ collapsed, toggleSidebar, onSectionChange }: SidebarProps) =>
           <ListItemIcon sx={{ minWidth: collapsed ? 'auto' : undefined }}>
             <HelpRounded />
           </ListItemIcon>
-          {!collapsed && <ListItemText primary={t('dashboard.faq')} slotProps={{
+          {!collapsed && <ListItemText primary={t('common.dashboard.faq')} slotProps={{
             primary: {
               noWrap: true,
               sx: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },

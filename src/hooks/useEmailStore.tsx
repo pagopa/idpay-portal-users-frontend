@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { normalizeEmail } from '../utils/validateEmail';
 
 let emailCache = '';
 let confirmEmailCache = '';
@@ -8,13 +9,15 @@ export const useEmailStore = () => {
   const confirmEmailRef = useRef(confirmEmailCache);
 
   const setEmail = (val: string) => {
-    emailRef.current = val;
-    emailCache = val;
+    const normalizedEmail = normalizeEmail(val);
+    emailRef.current = normalizedEmail;
+    emailCache = normalizedEmail;
   };
 
   const setConfirmEmail = (val: string) => {
-    confirmEmailRef.current = val;
-    confirmEmailCache = val;
+    const normalizedEmail = normalizeEmail(val);
+    confirmEmailRef.current = normalizedEmail;
+    confirmEmailCache = normalizedEmail;
   };
 
   return {

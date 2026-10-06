@@ -18,44 +18,44 @@ export const feedbackStates: Record<FeedbackStateKey, FeedbackState> = {
 
   REQUEST_SUBMITTED: {
     icon: <IllusCompleted />,
-    title: "feedbackStates.requestSubmitted.title",
-    description: 'feedbackStates.requestSubmitted.description',
-    subDescription: 'feedbackStates.requestSubmitted.subDescription',
+    title: "common.feedbackStates.requestSubmitted.title",
+    description: 'common.feedbackStates.requestSubmitted.description',
+    subDescription: 'common.feedbackStates.requestSubmitted.subDescription',
     buttonLabel: 'commons.exit',
     buttonRedirect: '__LOGOUT__'
   },
   ON_EVALUATION: {
     icon: <IllusHistoryDoc />,
-    title: "feedbackStates.onEvaluation.title",
-    description: 'feedbackStates.onEvaluation.description',
+    title: "common.feedbackStates.onEvaluation.title",
+    description: 'common.feedbackStates.onEvaluation.description',
     buttonLabel: 'commons.exit',
     buttonRedirect: '__LOGOUT__'
   },
   ONBOARDING_FAMILY_UNIT_ALREADY_JOINED: {
     icon: <IllusError />,
-    title: "feedbackStates.familyMember.title",
-    description: 'feedbackStates.familyMember.description',
+    title: "common.feedbackStates.familyMember.title",
+    description: 'common.feedbackStates.familyMember.description',
     buttonLabel: 'commons.exit',
     buttonRedirect: '__LOGOUT__'
   },
   ONBOARDING_WAITING_LIST: {
     icon: <IllusHistoryDoc />,
-    title: "feedbackStates.waitingList.title",
-    description: 'feedbackStates.waitingList.description',
+    title: "common.feedbackStates.waitingList.title",
+    description: 'common.feedbackStates.waitingList.description',
     buttonLabel: 'commons.exit',
     buttonRedirect: '__LOGOUT__'
   },
   ONBOARDING_INITIATIVE_ENDED: {
     icon: <IllusError />,
-    title: "feedbackStates.initiativeEnded.title",
-    description: 'feedbackStates.initiativeEnded.description',
+    title: "common.feedbackStates.initiativeEnded.title",
+    description: 'common.feedbackStates.initiativeEnded.description',
     buttonLabel: 'commons.exit',
     buttonRedirect: '__LOGOUT__'
   },
   ONBOARDING_BUDGET_EXHAUSTED: {
     icon: <IllusError />,
-    title: "feedbackStates.budgetExhausted.title",
-    description: 'feedbackStates.budgetExhausted.description',
+    title: "common.feedbackStates.budgetExhausted.title",
+    description: 'common.feedbackStates.budgetExhausted.description',
     buttonLabel: 'commons.exit',
     buttonRedirect: '__LOGOUT__'
   },

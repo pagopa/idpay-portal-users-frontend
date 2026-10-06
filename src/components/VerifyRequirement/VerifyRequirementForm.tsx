@@ -10,14 +10,16 @@ import HeaderForm from './HeaderForm';
 import ROUTES from '../../routes';
 import { useNavigate } from 'react-router-dom';
 import { useEmailStore } from '../../hooks/useEmailStore';
-import { commonHeaders, OnboardingWebApi } from '../../api/onboardingWebApiClient';
-import { extractErrorResponse, isSuccessStatus } from '../../utils/api';
+import { OnboardingWebApi } from '../../api/onboardingWebApiClient';
 import { useVerifyRequirementStore } from '../../hooks/useVerifyRequirementStore';
 import { useTOSCheckboxStore } from '../../hooks/useTOSCheckboxStore';
-import { getInitiativeId } from '../../utils/env';
+import { getInitiative, getInitiativeId } from '../../utils/env';
+import { normalizeEmail } from '../../utils/validateEmail';
+import { buildInitiativePayload } from '../../utils/initiativePayload';
+import { OnboardingDTO } from '../../api/generated/onboarding-web/api';
 
 export default function VerifyRequirementForm() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const { email, confirmEmail } = useEmailStore();
     const { isee, selfDeclaration, setIsee, setSelfDeclaration } = useVerifyRequirementStore();
@@ -25,6 +27,8 @@ export default function VerifyRequirementForm() {
     const [switchValue, setSwitchValue] = useState(selfDeclaration);
     const [submitted, setSubmitted] = useState(false);
     const { tosAccepted } = useTOSCheckboxStore();
+    const hasIseeCopy = i18n.exists('verifyRequirements.isee');
+    const hasSwitchLabel = i18n.exists('verifyRequirements.selfDeclaration.switchLabel');
 
     useEffect(() => {
         if (!tosAccepted) {
@@ -38,55 +42,37 @@ export default function VerifyRequirementForm() {
     }
 
     const handleBack = () => {
-        setIsee(iseeValue);
-        setSelfDeclaration(switchValue);
+        if (hasIseeCopy) {
+            setIsee(iseeValue);
+        }
+        if (hasSwitchLabel) {
+            setSelfDeclaration(switchValue);
+        }
         navigate(ROUTES.INSERT_EMAIL);
     }
 
     const handleContinue = async () => {
         setSubmitted(true);
-        const isValid = iseeValue !== '' && switchValue === true;
+        const isValid = (!hasIseeCopy || iseeValue !== '') && (!hasSwitchLabel || switchValue);
         if (!isValid) { return; }
 
-        const payload = {
+        const payload = buildInitiativePayload(getInitiative(), {
             initiativeId: getInitiativeId(),
             confirmedTos: tosAccepted,
             pdndAccept: true,
-            selfDeclarationList: [
-                {
-                    _type: 'multi_consent',
-                    code: 'isee',
-                    value: iseeValue === '3' ? '2' : iseeValue
-                },
-                {
-                    _type: 'boolean',
-                    'code': '1',
-                    'accepted': switchValue
-                }
-            ],
-            userMail: email,
-            userMailConfirmation: confirmEmail,
-        };
+            iseeValue,
+            selfDeclarationAccepted: switchValue,
+            userMail: normalizeEmail(email),
+            userMailConfirmation: normalizeEmail(confirmEmail),
+        });
 
         try {
-            const apiResponse = await OnboardingWebApi.save({
-                body: payload,
-                ...commonHeaders
-            });
-
-            if (isSuccessStatus(apiResponse.status)) {
-                navigate(ROUTES.FEEDBACK, { state: { status: 'REQUEST_SUBMITTED' } });
-                return;
-            }
-            navigate(ROUTES.ERROR_PAGE, { state: { status: 'TECHNICAL_ERROR' } });
-        } catch (apiError: any) {
-            const res = extractErrorResponse(apiError);
-            if (isSuccessStatus(res?.status)) {
-                navigate(ROUTES.FEEDBACK, { state: { status: 'REQUEST_SUBMITTED' } });
-                return;
-            }
-            if(res?.status === 429){
-                navigate(ROUTES.WAITING_PAGE, {state: payload});
+            await OnboardingWebApi.save(payload as OnboardingDTO)
+            navigate(ROUTES.FEEDBACK, { state: { status: 'REQUEST_SUBMITTED' } });
+        } catch (error: any) {
+            const status = error?.status || error?.response?.status;
+            if (status === 429) {
+                navigate(ROUTES.WAITING_PAGE, { state: payload });
                 return;
             }
             navigate(ROUTES.ERROR_PAGE, { state: { status: 'TECHNICAL_ERROR' } });
@@ -106,7 +92,7 @@ export default function VerifyRequirementForm() {
 
                 <FamilyForm />
                 <SelfDeclaration switchValue={switchValue} setSwitchValue={setSwitchValue} showError={submitted} />
-                <IseeForm iseeValue={iseeValue} setIseeValue={setIseeValue} showError={submitted} />
+                {hasIseeCopy && <IseeForm iseeValue={iseeValue} setIseeValue={setIseeValue} showError={submitted} />}
 
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Button variant="outlined" size='medium' startIcon={<ArrowBack sx={{ color: theme.palette.primary.main }} />} onClick={handleBack}>{t('commons.back')}</Button>

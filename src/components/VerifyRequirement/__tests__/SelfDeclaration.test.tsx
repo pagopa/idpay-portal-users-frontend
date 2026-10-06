@@ -3,9 +3,12 @@ import userEvent from '@testing-library/user-event';
 import SelfDeclaration from '../SelfDeclaration';
 import '@testing-library/jest-dom';
 
+const mockTranslationExists = jest.fn((_key: string) => true);
+
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
+    i18n: { exists: (key: string) => mockTranslationExists(key) },
   }),
 }));
 
@@ -14,6 +17,10 @@ jest.mock('../../Titles/TitleCard', () => (props: { title: string }) => (
 ));
 
 describe('SelfDeclaration', () => {
+  beforeEach(() => {
+    mockTranslationExists.mockReturnValue(true);
+  });
+
   test('renders TitleCard and description', () => {
     render(<SelfDeclaration switchValue={false} setSwitchValue={jest.fn()} />);
 
@@ -31,6 +38,16 @@ describe('SelfDeclaration', () => {
     expect(
       screen.getByText('verifyRequirements.selfDeclaration.switchLabel')
     ).toBeInTheDocument();
+  });
+
+  test('renders an informational card when the switch label is missing', () => {
+    mockTranslationExists.mockReturnValue(false);
+
+    render(<SelfDeclaration switchValue={false} setSwitchValue={jest.fn()} showError={true} />);
+
+    expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
+    expect(screen.queryByText('verifyRequirements.selfDeclaration.switchLabel')).not.toBeInTheDocument();
+    expect(screen.queryByText('verifyRequirements.selfDeclarationError')).not.toBeInTheDocument();
   });
 
   test('shows error message when switchValue is false and showError is true', () => {

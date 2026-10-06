@@ -8,7 +8,6 @@ jest.mock('react-i18next', () => ({
     t: (key: string) => {
       const translations: Record<string, string> = {
         'landing.requestBonus': 'Request Bonus Desktop',
-        'landing.requestBonusMobile': 'Request Bonus Mobile',
         'landing.loginMethods': 'Use SPID or CIE',
         'landing.continueOnWeb': 'Continue on Web',
       };
@@ -57,14 +56,6 @@ describe('CustomLandingSection', () => {
     expect(screen.getByText('Request Bonus Desktop')).toBeInTheDocument();
     expect(screen.getByText('Use SPID or CIE')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Continue on Web' })).toBeInTheDocument();
-  });
-
-  it('renders mobile version of title when isMobile is true', () => {
-    useIsMobile.mockReturnValue(true);
-
-    render(<CustomLandingSection />);
-
-    expect(screen.getByText('Request Bonus Mobile')).toBeInTheDocument();
   });
 
   it('calls login on button click', async () => {

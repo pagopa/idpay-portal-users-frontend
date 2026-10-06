@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import DetailBonusCard from '../DetailBonusCard';
-import { VoucherStatusEnum } from '../../../api/generated/onboarding-web/InitiativeDTO';
+import { WalletStatusDtoVoucherStatusEnum } from '../../../api/generated/onboarding-web/api';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -16,7 +16,7 @@ jest.mock('../../../utils/formatUtils', () => ({
 
 describe('DetailBonusCard', () => {
   const mockBonusData = {
-    voucherStatus: VoucherStatusEnum.ACTIVE,
+    voucherStatus: WalletStatusDtoVoucherStatusEnum.ACTIVE,
     voucherStartDate: '2025-09-24',
     voucherEndDate: '2025-10-24',
     amountCents: 10000,
@@ -30,10 +30,10 @@ describe('DetailBonusCard', () => {
       />
     );
 
-    expect(screen.getByText('dashboard.detailBonusSection.bonusDetail')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.detailBonusSection.bonusDetail')).toBeInTheDocument();
     expect(screen.getByText('€100.00')).toBeInTheDocument();
     expect(screen.getByText('RSSLNZ85T10H501Z')).toBeInTheDocument();
-    expect(screen.getByText('dashboard.voucherStatus.ACTIVE')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.voucherStatus.ACTIVE')).toBeInTheDocument();
   });
 
   test('renders default fiscal number when provided as dash', () => {
@@ -55,14 +55,14 @@ describe('DetailBonusCard', () => {
       />
     );
 
-    const statusChip = screen.getByText('dashboard.voucherStatus.ACTIVE');
+    const statusChip = screen.getByText('common.dashboard.voucherStatus.ACTIVE');
     expect(statusChip).toBeInTheDocument();
   });
 
   test('renders correct status chip for EXPIRED voucher', () => {
     const expiredBonusData = {
       ...mockBonusData,
-      voucherStatus: VoucherStatusEnum.EXPIRED,
+      voucherStatus: WalletStatusDtoVoucherStatusEnum.EXPIRED,
     };
 
     render(
@@ -72,13 +72,13 @@ describe('DetailBonusCard', () => {
       />
     );
 
-    expect(screen.getByText('dashboard.voucherStatus.EXPIRED')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.voucherStatus.EXPIRED')).toBeInTheDocument();
   });
 
   test('renders correct status chip for USED voucher', () => {
     const usedBonusData = {
       ...mockBonusData,
-      voucherStatus: VoucherStatusEnum.USED,
+      voucherStatus: WalletStatusDtoVoucherStatusEnum.USED,
     };
 
     render(
@@ -88,13 +88,13 @@ describe('DetailBonusCard', () => {
       />
     );
 
-    expect(screen.getByText('dashboard.voucherStatus.USED')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.voucherStatus.USED')).toBeInTheDocument();
   });
 
   test('renders correct status chip for EXPIRING voucher', () => {
     const expiringBonusData = {
       ...mockBonusData,
-      voucherStatus: VoucherStatusEnum.EXPIRING,
+      voucherStatus: WalletStatusDtoVoucherStatusEnum.EXPIRING,
     };
 
     render(
@@ -104,7 +104,7 @@ describe('DetailBonusCard', () => {
       />
     );
 
-    expect(screen.getByText('dashboard.voucherStatus.EXPIRING')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.voucherStatus.EXPIRING')).toBeInTheDocument();
   });
 
   test('formats different amount values correctly', () => {
@@ -131,10 +131,10 @@ describe('DetailBonusCard', () => {
       />
     );
 
-    expect(screen.getByText('dashboard.detailBonusSection.amount')).toBeInTheDocument();
-    expect(screen.getByText('dashboard.detailBonusSection.status')).toBeInTheDocument();
-    expect(screen.getByText('dashboard.detailBonusSection.voucherStartDate')).toBeInTheDocument();
-    expect(screen.getByText('dashboard.detailBonusSection.voucherEndDate')).toBeInTheDocument();
-    expect(screen.getByText('dashboard.detailBonusSection.fiscalNumber')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.detailBonusSection.amount')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.detailBonusSection.status')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.detailBonusSection.voucherStartDate')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.detailBonusSection.voucherEndDate')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.detailBonusSection.fiscalNumber')).toBeInTheDocument();
   });
 });

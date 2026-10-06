@@ -4,6 +4,7 @@ import BarcodeCard from '../BarcodeCard';
 
 jest.mock('../../../utils/env', () => ({
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
+  getInitiative: () => 'bonusdecoder',
   getBaseUrl: () => 'https://www.google.com'
 }));
 
@@ -49,7 +50,7 @@ describe('BarcodeCard – download flow', () => {
 
     render(<BarcodeCard trxCode={trxCode} />);
 
-    const btn = screen.getByRole('button', { name: /dashboard.barcodeSection.downloadBarcode/i });
+    const btn = screen.getByRole('button', { name: /common.dashboard.barcodeSection.downloadBarcode/i });
     expect(btn).toBeEnabled();
 
     fireEvent.click(btn);
@@ -76,7 +77,7 @@ describe('BarcodeCard – download flow', () => {
 
     render(<BarcodeCard trxCode={trxCode} />);
 
-    const btn = screen.getByRole('button', { name: /dashboard.barcodeSection.downloadBarcode/i });
+    const btn = screen.getByRole('button', { name: /common.dashboard.barcodeSection.downloadBarcode/i });
     fireEvent.click(btn);
 
     await waitFor(() => expect(btn).toBeDisabled());
@@ -108,15 +109,15 @@ describe('BarcodeCard', () => {
 
     render(<BarcodeCard trxCode={trxCode} />);
 
-    expect(screen.getByText('dashboard.barcodeSection.barcodeDescription')).toBeInTheDocument();
-    expect(screen.getByText('dashboard.barcodeSection.downloadBarcode')).toBeInTheDocument();
-    expect(screen.getByText('dashboard.barcodeSection.showMerchants')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.barcodeSection.barcodeDescription')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.barcodeSection.downloadBarcode')).toBeInTheDocument();
+    expect(screen.getByText('common.dashboard.barcodeSection.showMerchants')).toBeInTheDocument();
   });
 
   test('download button is enabled initially', () => {
     const trxCode = '2lezemi4';
     render(<BarcodeCard trxCode={trxCode} />);
-    const downloadButton = screen.getByRole('button', { name: /dashboard.barcodeSection.downloadBarcode/i });
+    const downloadButton = screen.getByRole('button', { name: /common.dashboard.barcodeSection.downloadBarcode/i });
     expect(downloadButton).toBeEnabled();
   });
 
@@ -125,10 +126,13 @@ describe('BarcodeCard', () => {
 
     render(<BarcodeCard trxCode={trxCode} />);
 
-    const showMerchantsButton = screen.getByRole('button', { name: /dashboard.barcodeSection.showMerchants/i });
+    const showMerchantsButton = screen.getByRole('button', { name: /common.dashboard.barcodeSection.showMerchants/i });
     fireEvent.click(showMerchantsButton);
 
-    expect(mockWindowOpen).toHaveBeenCalledWith('https://www.google.com/lista-punti-vendita', '_blank');
+    expect(mockWindowOpen).toHaveBeenCalledWith(
+      'https://www.google.com/bonusdecoder/lista-punti-vendita',
+      '_blank'
+    );
   });
 
   test('renders with different trxCode values', () => {
