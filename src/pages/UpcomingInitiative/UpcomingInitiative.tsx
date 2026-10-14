@@ -33,7 +33,7 @@ const UpcomingInitiative = () => {
         <Box
           sx={{
             flex: 1,
-            maxWidth: 'fit-content',
+            maxWidth: theme.breakpoints.values.sm,
             py: {md: 12, sm: 8, xs: 8},
             display: 'flex',
             flexDirection: 'column',
