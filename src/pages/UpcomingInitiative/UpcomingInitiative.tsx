@@ -3,9 +3,11 @@ import { theme } from '@pagopa/mui-italia';
 import { useTranslation } from 'react-i18next';
 import UpcomingHeroSection from "./UpcomingHeroSection.tsx";
 import {handleDownloadClick} from "../../utils/functions.ts";
+import { useIsMobile } from '../../hooks/useIsMobile.tsx';
 
 const UpcomingInitiative = () => {
   const { t } = useTranslation();
+  const isMobile = useIsMobile(400);
 
   return (
     <Box
@@ -31,7 +33,7 @@ const UpcomingInitiative = () => {
         <Box
           sx={{
             flex: 1,
-            width: { xl:'30%', lg:'30%', md: '40%', sm: '60%', xs: '75%' },
+            maxWidth: 'fit-content',
             py: {md: 12, sm: 8, xs: 8},
             display: 'flex',
             flexDirection: 'column',
@@ -54,8 +56,8 @@ const UpcomingInitiative = () => {
             {t('upcomingInitiative.preSubtitle')}
             <strong>{t('upcomingInitiative.boldSubtitle')}</strong>
             {t('upcomingInitiative.postSubtitle')}
-            <strong>{t('upcomingInitiative.secondBold')}</strong>
-            {t('upcomingInitiative.thirdSubtitle')}
+            <strong>{t(isMobile ? 'upcomingInitiative.secondBold' : 'upcomingInitiative.secondBoldBreak')}</strong>
+            {t(isMobile? 'upcomingInitiative.thirdSubtitle' : 'upcomingInitiative.thirdSubtitleMidBreak')}
           </Typography>
         </Box>
 
