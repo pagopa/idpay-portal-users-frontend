@@ -54,9 +54,6 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = () => (
     {/* error page */}
     <Route path={ROUTES.ERROR_PAGE} element={<PublicLayout ><ErrorPage /></PublicLayout>} />
 
-    {/* upcoming initiative */}
-    <Route path={ROUTES.UPCOMING_INITIATIVE} element={<PublicLayout ><UpcomingInitiative /></PublicLayout>} />
-
     {/* terms of service */}
     <Route path={ROUTES.TERMS_OF_SERVICE} element={<PublicLayout ><TermsOfService /></PublicLayout>} />
 
@@ -87,6 +84,10 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = () => (
     <Route
       path={ROUTES.WAITING_PAGE}
       element={<PrivateLayout><WaitingPage /></PrivateLayout>}
+    />
+    <Route
+      path={ROUTES.UPCOMING_INITIATIVE}
+      element={<PrivateLayout ><UpcomingInitiative /></PrivateLayout>}
     />
   </Routes>
 );
