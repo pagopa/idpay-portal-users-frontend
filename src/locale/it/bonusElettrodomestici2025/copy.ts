@@ -88,7 +88,9 @@ const it = {
     "boldSubtitle": "Bonus Elettrodomestici ",
     "postSubtitle": "a partire dalle ",
     "secondBold": "ore 7:00 del 18 novembre 2025. ",
+    "secondBoldBreak": "\nore 7:00 del 18 novembre 2025. ",
     "thirdSubtitle": "\nAncora un po’ di pazienza!",
+    "thirdSubtitleMidBreak": "Ancora un po’ \ndi pazienza!",
     "withIO": "Con IO è tutto più semplice",
     "descriptionWithIO": "Gestisci tutto in un unico posto: richiedi il bonus, ricevi l’esito della richiesta e usa il bonus. Più veloce, più comodo.",
     "downloadIO": "Scarica l'app"
@@ -187,7 +189,7 @@ const it = {
       "title": "Quali elettrodomestici posso acquistare con il contributo?",
       "description": "Puoi acquistare un elettrodomestico di una di queste categorie: lavatrici e lavasciuga, forni, cappe da cucina, lavastoviglie, asciugabiancheria, frigoriferi, congelatori e piani cottura, come previsto nel dettaglio dall’articolo 3, comma 1, lettera a), del <decree>Decreto interministeriale</decree>. Puoi consultare l’elenco degli elettrodomestici che fanno parte dell’iniziativa <products>in questa lista</products>."
     },
-     "fourthAccordion": {
+    "fourthAccordion": {
       "title": "Ho usato il bonus per acquistare un elettrodomestico, ma vorrei effettuare un reso, cosa devo fare?",
       "description": "Contatta il punto vendita presso il quale hai effettuato l’acquisto con il bonus per richiedere informazioni."
     },
