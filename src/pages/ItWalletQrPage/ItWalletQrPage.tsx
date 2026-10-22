@@ -1,22 +1,19 @@
-import { Box, Card, CircularProgress } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import ItWalletQrContent from '../../components/Dashboard/ItWalletQrContent';
+import ItWalletSubheader from '../../components/Header/ItWalletSubheader';
 import { getItWalletDeepLink } from '../../utils/env';
 import { isMobileDevice, openItWalletDeepLink } from '../../utils/itWallet';
 
 const INITIAL_LOADER_DELAY_MS = 250;
 const MOBILE_APP_OPEN_LOADER_MS = 6000;
 
-type LoaderProps = {
-  isMobile: boolean;
-};
-
-const InitialLoader = ({ isMobile }: LoaderProps) => (
+const InitialLoader = () => (
   <Box
     sx={{
       position: 'fixed',
       inset: 0,
-      bgcolor: isMobile ? '#ffffff' : '#f2f4f7',
+      bgcolor: '#ffffff',
       display: 'flex',
       alignItems: 'flex-start',
       justifyContent: 'center',
@@ -85,27 +82,27 @@ const ItWalletQrPage = () => {
     <Box
       sx={{
         minHeight: '100%',
-        bgcolor: isMobile ? '#ffffff' : '#f2f4f7',
+        bgcolor: '#ffffff',
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: isMobile ? 'center' : 'flex-start',
-        px: 2,
-        py: { xs: 3, md: 4 },
+        flexDirection: 'column',
         boxSizing: 'border-box',
       }}
     >
-      {isInitialLoading && <InitialLoader isMobile={isMobile} />}
+      {isInitialLoading && <InitialLoader />}
 
       {!isInitialLoading && isMobile && <MobileFlow isOpeningApp={isOpeningApp} />}
 
+      {!isMobile && <ItWalletSubheader />}
+
       {!isInitialLoading && !isMobile && (
-        <Card
+        <Box
           sx={{
             width: '100%',
             maxWidth: 640,
-            borderRadius: 2,
-            boxShadow: '0 2px 10px rgba(0,0,0,0.18)',
-            p: { xs: 3, md: 5 },
+            mx: 'auto',
+            px: 2,
+            pt: '38px',
+            pb: '40px',
             textAlign: 'center',
             minHeight: 0,
             display: 'flex',
@@ -113,10 +110,8 @@ const ItWalletQrPage = () => {
             justifyContent: 'flex-start',
           }}
         >
-          <Box width='100%'>
-            <ItWalletQrContent deepLink={deepLink} />
-          </Box>
-        </Card>
+          <ItWalletQrContent deepLink={deepLink} variant='page' />
+        </Box>
       )}
     </Box>
   );

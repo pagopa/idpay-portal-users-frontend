@@ -28,11 +28,11 @@ const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   </Layout>
 );
 
-const ItWalletLayout: React.FC<{ children: React.ReactNode; showHeader: boolean }> = ({ children, showHeader }) => (
+const ItWalletLayout: React.FC<{ children: React.ReactNode; showHeader: boolean; showFooter?: boolean }> = ({ children, showHeader, showFooter = false }) => (
   <Layout
     hasPadding={false}
     showHeader={showHeader}
-    showFooter={false}
+    showFooter={showFooter}
     showHeaderProduct={false}
     showUserActions={false}
     bodyOverflow="hidden"
@@ -82,7 +82,7 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
     {/* IT Wallet access public page */}
     <Route
       path={ROUTES.IT_WALLET_ACCESS}
-      element={<ItWalletLayout showHeader={!isMobile}><ItWalletQrPage /></ItWalletLayout>}
+      element={<ItWalletLayout showHeader={!isMobile} showFooter><ItWalletQrPage /></ItWalletLayout>}
     />
     <Route
       path={ROUTES.IT_WALLET_TIMELINE}

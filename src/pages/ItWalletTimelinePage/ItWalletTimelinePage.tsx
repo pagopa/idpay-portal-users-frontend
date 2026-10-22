@@ -52,13 +52,18 @@ const OperationsCard: React.FC<OperationsCardProps> = ({
         </Typography>
 
         {showEmptyMessage && (
-          <Typography
-            variant="body2"
-            color={theme.palette.text.secondary}
-            sx={{ mt: 2 }}
-          >
-            {t('dashboard.operationsSection.empty')}
-          </Typography>
+          <>
+            <Typography
+              variant="body2"
+              color={theme.palette.text.secondary}
+              sx={{ mt: 2 }}
+            >
+              {t('dashboard.operationsSection.empty')}
+            </Typography>
+            <Typography variant="body2" color={theme.palette.text.secondary} sx={{ mt: 2 }}>
+              {t('dashboard.operationsSection.emptyDescription')}
+            </Typography>
+          </>
         )}
 
         {!showEmptyMessage && timelineData.map((item, index) => (

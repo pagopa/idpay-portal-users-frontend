@@ -103,7 +103,7 @@ describe('App Routing and Layout props', () => {
     );
     const layout = screen.getByTestId('layout');
     expect(layout).toHaveAttribute('data-padding', 'false');
-    expect(layout).toHaveAttribute('data-show-footer', 'false');
+    expect(layout).toHaveAttribute('data-show-footer', 'true');
     expect(layout).toHaveAttribute('data-show-header-product', 'false');
   });
 

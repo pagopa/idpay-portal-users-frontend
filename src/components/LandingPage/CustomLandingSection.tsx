@@ -110,7 +110,7 @@ const CustomLandingSection = () => {
                   }
                   variant="contained"
                   fullWidth
-                  sx={buttonSx}
+                  sx={{ ...buttonSx, backgroundColor: '#0052A3' }}
                   onClick={() => handleContinue('it-wallet')}
                 >
                   <Box component="span" fontWeight={500}>

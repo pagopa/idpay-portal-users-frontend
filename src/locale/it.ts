@@ -69,7 +69,7 @@ const it = {
     "requestBonus": "Richiedi il Bonus",
     "requestBonusMobile": "Accedi al sito Bonus",
     "loginMethods": "Effettua la richiesta del bonus accedendo tramite SPID, CIE o IT-Wallet.",
-    "continueWithSpidCie": "Continua con SPID e CIE",
+    "continueWithSpidCie": "Continua con SPID o CIE",
     "continueWithItWallet": "Continua con IT-Wallet",
     "continueOnWeb": "Continua sul sito",
     "withIO": "Con IO è tutto più semplice",
@@ -243,8 +243,10 @@ const it = {
       "showMerchants": "Mostra esercenti",
       "walletAccessOpenApp": "Apri l'app",
       "walletAccessOr": "oppure",
-      "walletModalTitle": "Entra con IT-Wallet",
-      "walletModalDescription": "Usa la sezione ‘Inquadra’ di app <bold>IO - l’app dei servizi pubblici</bold>, oppure la fotocamera del tuo dispositivo, per scansionare il QR Code e accedere ai servizi.",
+      "walletAccessTitle": "Inquadra il codice QR",
+      "walletAccessDescription": "Usa la funzionalità del <bold>Wallet</bold>\no la <bold>fotocamera</bold> del tuo smartphone",
+      "walletModalTitle": "Aggiungi al wallet",
+      "walletModalDescription": "Usa la funzionalità del <bold>Wallet</bold>\no la <bold>fotocamera</bold> del tuo smartphone",
     },
     "detailBonusSection": {
       "bonusDetail": "dettagli del Bonus",
@@ -263,6 +265,7 @@ const it = {
     "operationsSection": {
       "title": "Le tue operazioni",
       "empty": "Al momento non sono state effettuate operazioni.",
+      "emptyDescription": "Qui troverai lo storico delle transazioni una volta utilizzato il bonus.",
       "onboardingInitiative": "Adesione iniziativa"
     },
     "faq": "Domande frequenti",
