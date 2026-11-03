@@ -20,6 +20,7 @@ jest.mock('@pagopa/mui-italia', () => ({
         <div
             data-testid="HeaderAccount"
             data-enable-login={String(props.enableLogin)}
+            data-enable-assistance={String(props.enableAssistanceButton)}
             data-has-logged-user={String(!!props.loggedUser)}
             data-logged-email={props.loggedUser?.email ?? ''}
             data-rootlabel={props.rootLink?.label ?? ''}
@@ -41,6 +42,34 @@ const { useAuth } = jest.requireMock('../../../contexts/AuthContext');
 describe('Header', () => {
     beforeEach(() => jest.clearAllMocks());
 
+    it('shows assistance without a product header when requested', () => {
+        (useAuth as jest.Mock).mockReturnValue({
+            isAuthenticated: false,
+            logout: jest.fn(),
+            user: undefined,
+        });
+
+        render(<Header hasSubHeader={false} enableAssistanceButton />);
+
+        expect(screen.queryByTestId('HeaderProduct')).not.toBeInTheDocument();
+        expect(screen.getByTestId('HeaderAccount')).toHaveAttribute('data-enable-assistance', 'true');
+    });
+
+    it('hides account controls for an authenticated user when login is disabled', () => {
+        (useAuth as jest.Mock).mockReturnValue({
+            isAuthenticated: true,
+            logout: jest.fn(),
+            user: { id: '1', firstName: 'Name', email: 'email@test.com' },
+        });
+
+        render(<Header hasSubHeader={false} enableAssistanceButton enableLogin={false} />);
+
+        const header = screen.getByTestId('HeaderAccount');
+        expect(header).toHaveAttribute('data-enable-login', 'false');
+        expect(header).toHaveAttribute('data-has-logged-user', 'false');
+        expect(header).toHaveAttribute('data-enable-assistance', 'true');
+    });
+
     it('renders HeaderAccount and HeaderProduct only when hasSubHeader=true', () => {
         (useAuth as jest.Mock).mockReturnValue({
             isAuthenticated: false,
@@ -51,6 +80,7 @@ describe('Header', () => {
         render(<Header/>);
         expect(screen.getByTestId('HeaderAccount')).toBeInTheDocument();
         expect(screen.getByTestId('HeaderProduct')).toBeInTheDocument();
+        expect(screen.getByTestId('HeaderAccount')).toHaveAttribute('data-enable-assistance', 'false');
     });
 
     it('passes correct props to HeaderAccount when authenticated', () => {

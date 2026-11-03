@@ -2,15 +2,16 @@ import { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import { loadingRef } from '../../utils/loadingOverlay';
 import Overlay from '../Overlay/Overlay';
-import Header from '../Header/Header';
+import Header, { type HeaderProps } from '../Header/Header';
 import { Footer } from '../Footer/Footer';
 
 type LayoutProps = {
   children: React.ReactNode;
   hasPadding?: boolean;
+  headerProps?: HeaderProps;
 };
 
-const Layout = ({ children, hasPadding = true }: LayoutProps) => {
+const Layout = ({ children, hasPadding = true, headerProps }: LayoutProps) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const Layout = ({ children, hasPadding = true }: LayoutProps) => {
       {loading && <Overlay />}
 
       <Box component="header" gridArea="header">
-        <Header />
+        <Header {...headerProps} />
       </Box>
 
       <Box component="main" gridArea="body" display='flex' flexGrow={1} minHeight={0}>

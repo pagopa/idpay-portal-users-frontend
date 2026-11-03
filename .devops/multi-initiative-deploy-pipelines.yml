@@ -109,6 +109,7 @@ parameters:
     values:
       - bonusdecoder
       - bonusvalore
+      - bonusnotfound
       - bonuselettrodomestici
 
 pr: none
