@@ -1,4 +1,14 @@
 const common = {
+  "bonusNotFound": {
+    "title": "Non abbiamo trovato il bonus che cerchi",
+    "description": "Ecco i bonus attivi in questo momento:",
+    "goToBonus": "Vai al bonus",
+    "assistanceTitle": "Hai bisogno di aiuto?",
+    "bonusDecoder": {
+      "title": "Bonus Decoder",
+      "description": "È il contributo, erogato dal Ministero delle Imprese e del Made in Italy, per incentivare la sostituzione di un elettrodomestico con un modello ad alta efficienza energetica e promuovere la sostenibilità e la transizione energetica."
+    }
+  },
   "exit": "Esci",
   "click-day": {
     "firstDescription": "Stiamo per collegarti.\nAttendi qualche secondo...",
