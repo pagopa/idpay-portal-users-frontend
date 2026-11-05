@@ -18,6 +18,10 @@ jest.mock('react-i18next', () => ({
     }),
 }));
 
+jest.mock('../../../hooks/useIsMobile.tsx', () => ({
+    useIsMobile: jest.fn()
+}))
+
 jest.mock('../UpcomingHeroSection.tsx', () => {
     return function MockUpcomingHeroSection(props: any) {
         return (
@@ -105,5 +109,23 @@ describe('UpcomingInitiative', () => {
             'https://ioapp.it/scarica-io',
             '_blank'
         );
+    });
+
+    it('renderizza il testo corretto se isMobile è true', () => {
+        const { useIsMobile } = require('../../../hooks/useIsMobile');
+        useIsMobile.mockReturnValue(true);
+        render(<UpcomingInitiative />);
+
+        expect(screen.getByText('upcomingInitiative.secondBold')).toBeInTheDocument()
+        expect(screen.getByText(/upcomingInitiative\.thirdSubtitle/)).toBeInTheDocument()
+    });
+
+    it('renderizza il testo corretto se isMobile è false', () => {
+        const { useIsMobile } = require('../../../hooks/useIsMobile');
+        useIsMobile.mockReturnValue(false);
+        render(<UpcomingInitiative />);
+
+        expect(screen.getByText('upcomingInitiative.secondBoldBreak')).toBeInTheDocument()
+        expect(screen.getByText(/upcomingInitiative\.thirdSubtitleMidBreak/)).toBeInTheDocument()
     });
 });
