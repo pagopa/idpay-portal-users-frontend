@@ -15,7 +15,7 @@ import { SupportResponseDTO } from '../../api/generated/onboarding-web/api.ts';
 const AssistanceEmailForm = () => {
     const {t} = useTranslation();
     const navigate = useNavigate();
-    const initiativeId = getInitiativeId();
+    const initiativeId = getInitiativeId() ?? '';
     const token = storageTokenOps.read();
     const jwtUser = parseJwt(token);
     const { email } = useEmailAssistanceStore()

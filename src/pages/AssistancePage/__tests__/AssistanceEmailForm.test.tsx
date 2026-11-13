@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import AssistanceEmailForm from '../assistanceEmailForm';
 import '@testing-library/jest-dom';
+import { getInitiativeId } from '../../../utils/env.ts';
 
 const mockedUsedNavigate = jest.fn();
 
@@ -50,6 +51,7 @@ jest.mock('../../../api/onboardingWebApiClient.ts', () => ({
 
 beforeEach(() => {
     jest.clearAllMocks();
+    (getInitiativeId as jest.Mock).mockReturnValue('prod-123');
 });
 
 const getEmailField = () => screen.getByLabelText('assistance.emailPlaceholder');
@@ -58,6 +60,32 @@ const getBackButton = () => screen.getByRole('button', { name: 'commons.back' })
 const getNextButton = () => screen.getByRole('button', { name: 'assistance.next' });
 
 describe('AssistanceEmailForm', () => {
+    test.each([undefined, null])(
+        'invia productId vuoto quando l’iniziativa non è configurata: %s',
+        async (initiativeId) => {
+            (getInitiativeId as jest.Mock).mockReturnValue(initiativeId);
+            mockSupport.mockResolvedValue({
+                status: 200,
+                data: { jwt: 'jwt-123', returnTo: 'https://ret.example/ok' },
+            });
+            const submitSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplementation(() => {});
+
+            try {
+                renderWithRouter(<AssistanceEmailForm />);
+                fireEvent.change(getEmailField(), { target: { value: 'user@example.com' } });
+                fireEvent.change(getConfirmEmailField(), { target: { value: 'user@example.com' } });
+                await userEvent.click(getNextButton());
+
+                await waitFor(() => {
+                    expect(mockSupport).toHaveBeenCalledWith(expect.objectContaining({ productId: '' }));
+                    expect(submitSpy).toHaveBeenCalled();
+                });
+            } finally {
+                submitSpy.mockRestore();
+            }
+        }
+    );
+
     test('il bottone "next" è disabilitato all\'inizio', () => {
         renderWithRouter(<AssistanceEmailForm />);
         expect(getNextButton()).toBeDisabled();
