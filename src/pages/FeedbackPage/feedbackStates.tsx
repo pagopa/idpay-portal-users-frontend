@@ -12,7 +12,7 @@ export type FeedbackState = {
   supportLinkUrl?: string;
 };
 
-export type FeedbackStateKey = 'REQUEST_SUBMITTED' | 'ON_EVALUATION' | 'ONBOARDING_FAMILY_UNIT_ALREADY_JOINED' | 'ONBOARDING_WAITING_LIST' | 'ONBOARDING_INITIATIVE_ENDED' | 'ONBOARDING_BUDGET_EXHAUSTED';
+export type FeedbackStateKey = 'REQUEST_SUBMITTED' | 'ON_EVALUATION' | 'ONBOARDING_FAMILY_UNIT_ALREADY_JOINED' | 'ONBOARDING_WAITING_LIST' | 'ONBOARDING_INITIATIVE_ENDED' | 'ONBOARDING_BUDGET_EXHAUSTED' | 'ONBOARDING_USER_BONUS_ALREADY_USED';
 
 export const feedbackStates: Record<FeedbackStateKey, FeedbackState> = {
 
@@ -59,4 +59,11 @@ export const feedbackStates: Record<FeedbackStateKey, FeedbackState> = {
     buttonLabel: 'commons.exit',
     buttonRedirect: '__LOGOUT__'
   },
+  ONBOARDING_USER_BONUS_ALREADY_USED: {
+    icon: <IllusError />,
+    title: "common.feedbackStates.alreadyOnboarded.title",
+    description: 'common.feedbackStates.alreadyOnboarded.description',
+    buttonLabel: 'commons.exit',
+    buttonRedirect: '__LOGOUT__'
+  }
 };

@@ -5,7 +5,7 @@ import {useTranslation} from "react-i18next";
 import {isValidEmail} from "../../utils/validateEmail.ts";
 import {ArrowBack} from "@mui/icons-material";
 import {Link, useNavigate} from "react-router-dom";
-import {getInitiativeId} from "../../utils/env.ts";
+import {getInitiative, getInitiativeId} from "../../utils/env.ts";
 import {OnboardingWebApi} from "../../api/onboardingWebApiClient.ts";
 import {storageTokenOps} from "@pagopa/selfcare-common-frontend/lib/utils/storage";
 import {parseJwt} from "../../utils/functions.ts";
@@ -15,7 +15,7 @@ import { SupportResponseDTO } from '../../api/generated/onboarding-web/api.ts';
 const AssistanceEmailForm = () => {
     const {t} = useTranslation();
     const navigate = useNavigate();
-    const initiativeId = getInitiativeId();
+    const initiativeId = getInitiativeId() ?? '';
     const token = storageTokenOps.read();
     const jwtUser = parseJwt(token);
     const { email } = useEmailAssistanceStore()
@@ -52,6 +52,10 @@ const AssistanceEmailForm = () => {
     }, [zendeskAuthData]);
 
     function buildPayload(token: string | null, jwtUser: any, email: string, productId: string) {
+        if (getInitiative() === 'bonusnotfound') {
+            return { email, productId: '' };
+        }
+
         const payload: any = {
             email,
             productId

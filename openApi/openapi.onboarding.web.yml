@@ -19,10 +19,10 @@ info:
     IDPAY ITN Payment IO
 servers:
   - description: Development Test
-    url: 'https://api-io.dev.cstar.pagopa.it/idpay-itn/wallet'
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/wallet
     x-internal: true
   - description: User Acceptance Test
-    url: 'https://api-io.uat.cstar.pagopa.it/idpay-itn/wallet'
+    url: https://api-io.uat.cstar.pagopa.it/idpay-itn/wallet
     x-internal: true
 security:
   - bearerAuth: []
@@ -40,7 +40,7 @@ tags:
   - name: payment
     description: ''
 paths:
-  '/iban/{iban}':
+  /iban/{iban}:
     get:
       tags:
         - iban
@@ -58,7 +58,7 @@ paths:
           description: 'ENG: Language - IT: Lingua'
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -70,7 +70,7 @@ paths:
           required: true
           schema:
             type: string
-            pattern: '^IT[0-9]{2}[A-Z]{1}[0-9]{5}[0-9]{5}[A-Z0-9]{12}$'
+            pattern: ^IT[0-9]{2}[A-Z]{1}[0-9]{5}[0-9]{5}[A-Z0-9]{12}$
             minLength: 27
             maxLength: 27
       responses:
@@ -189,7 +189,7 @@ paths:
           description: 'ENG: Language - IT: Lingua'
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -277,7 +277,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/onboarding/service/{serviceId}':
+  /onboarding/service/{serviceId}:
     get:
       tags:
         - onboarding
@@ -296,13 +296,13 @@ paths:
           schema:
             type: string
             maxLength: 50
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
         - name: Accept-Language
           in: header
           description: 'ENG: Language - IT: Lingua'
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -404,7 +404,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/onboarding/{initiativeId}/detail':
+  /onboarding/{initiativeId}/detail:
     get:
       tags:
         - onboarding
@@ -420,7 +420,7 @@ paths:
           description: 'ENG: Language - IT: Lingua'
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -436,7 +436,7 @@ paths:
               ENG: Unique identifier of the subscribed initiative - IT:
               Identificativo univoco dell'iniziativa sottoscritta
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
       responses:
         '200':
           description: Ok
@@ -549,7 +549,7 @@ paths:
           description: 'ENG: Language - IT: Lingua'
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -678,7 +678,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/onboarding/{initiativeId}/status':
+  /onboarding/{initiativeId}/status:
     get:
       tags:
         - onboarding
@@ -700,7 +700,7 @@ paths:
           description: 'ENG: Language - IT: Lingua'
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -713,7 +713,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
       responses:
         '200':
           description: Check successful
@@ -830,7 +830,7 @@ paths:
           description: 'ENG: Language - IT: Lingua'
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -914,7 +914,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/timeline/{initiativeId}':
+  /timeline/{initiativeId}:
     get:
       tags:
         - timeline
@@ -934,7 +934,7 @@ paths:
           description: 'ENG: Language - IT: Lingua'
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -947,14 +947,14 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
         - name: operationType
           in: query
           description: 'ENG: Operation type filter - IT: Filtro tipologia dell''operazione'
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
         - name: page
           in: query
           description: 'ENG: The number of the page - IT: Numero della pagina'
@@ -1069,7 +1069,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/timeline/{initiativeId}/{operationId}':
+  /timeline/{initiativeId}/{operationId}:
     get:
       tags:
         - timeline
@@ -1085,7 +1085,7 @@ paths:
           in: header
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -1098,7 +1098,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
         - name: operationId
           description: 'ENG: The operation ID - IT: Identificativo dell''operazione'
           in: path
@@ -1106,7 +1106,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
       responses:
         '200':
           description: Ok
@@ -1219,7 +1219,7 @@ paths:
           in: header
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -1303,7 +1303,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}/detail':
+  /wallet/{initiativeId}/detail:
     get:
       tags:
         - wallet
@@ -1321,13 +1321,13 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
         - name: Accept-Language
           description: 'ENG: Language - IT: Lingua'
           in: header
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -1429,7 +1429,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}':
+  /wallet/{initiativeId}:
     get:
       tags:
         - wallet
@@ -1445,7 +1445,7 @@ paths:
           in: header
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -1458,7 +1458,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
       responses:
         '200':
           description: Ok
@@ -1555,7 +1555,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}/iban':
+  /wallet/{initiativeId}/iban:
     put:
       tags:
         - wallet
@@ -1571,7 +1571,7 @@ paths:
           in: header
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -1584,7 +1584,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
       requestBody:
         description: >-
           ENG: Unique identifier of the subscribed initiative, IBAN of the
@@ -1695,7 +1695,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}/instruments/by-wallet/{idWallet}':
+  /wallet/{initiativeId}/instruments/by-wallet/{idWallet}:
     put:
       tags:
         - wallet
@@ -1711,7 +1711,7 @@ paths:
           in: header
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -1724,7 +1724,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
         - name: idWallet
           in: path
           description: >-
@@ -1734,7 +1734,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
       responses:
         '200':
           description: Enrollment OK
@@ -1854,7 +1854,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}/instruments':
+  /wallet/{initiativeId}/instruments:
     get:
       tags:
         - wallet
@@ -1873,7 +1873,7 @@ paths:
           description: 'ENG: Language - IT: Lingua'
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -1886,7 +1886,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
       responses:
         '200':
           description: Ok
@@ -1970,7 +1970,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}/instruments/{instrumentId}':
+  /wallet/{initiativeId}/instruments/{instrumentId}:
     delete:
       tags:
         - wallet
@@ -1986,7 +1986,7 @@ paths:
           in: header
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -1999,7 +1999,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
         - name: instrumentId
           in: path
           description: >-
@@ -2010,7 +2010,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
       responses:
         '200':
           description: Delete OK
@@ -2132,7 +2132,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}/unsubscribe':
+  /wallet/{initiativeId}/unsubscribe:
     delete:
       tags:
         - wallet
@@ -2146,7 +2146,7 @@ paths:
           in: header
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -2159,7 +2159,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
       responses:
         '204':
           description: Unsubscribe OK
@@ -2259,7 +2259,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}/status':
+  /wallet/{initiativeId}/status:
     get:
       tags:
         - wallet
@@ -2275,7 +2275,7 @@ paths:
           in: header
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -2288,7 +2288,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
       responses:
         '200':
           description: Check successful
@@ -2392,7 +2392,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/instrument/{idWallet}/initiatives':
+  /wallet/instrument/{idWallet}/initiatives:
     get:
       tags:
         - wallet
@@ -2409,7 +2409,7 @@ paths:
           in: header
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -2422,7 +2422,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
       responses:
         '200':
           description: Ok
@@ -2762,7 +2762,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}/code/instruments':
+  /wallet/{initiativeId}/code/instruments:
     put:
       tags:
         - wallet
@@ -2778,7 +2778,7 @@ paths:
           in: header
           schema:
             type: string
-            pattern: '^[ -~]{2,5}$'
+            pattern: ^[ -~]{2,5}$
             minLength: 2
             maxLength: 5
             example: it-IT
@@ -2791,7 +2791,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
       responses:
         '200':
           description: Enrollment OK
@@ -2935,7 +2935,7 @@ paths:
                 ok:
                   value:
                     jwt: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-                    returnTo: 'https://assistenza.example.it/sso/jwt?return_to=%2Fhc%2Fit'
+                    returnTo: https://assistenza.example.it/sso/jwt?return_to=%2Fhc%2Fit
           headers:
             Access-Control-Allow-Origin:
               $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -3025,7 +3025,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/payment/qr-code/{trxCode}/relate-user':
+  /payment/qr-code/{trxCode}/relate-user:
     put:
       tags:
         - payment
@@ -3041,7 +3041,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
       responses:
         '200':
           description: Ok
@@ -3166,7 +3166,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/payment/qr-code/{trxCode}/authorize':
+  /payment/qr-code/{trxCode}/authorize:
     put:
       tags:
         - payment
@@ -3182,7 +3182,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
       responses:
         '200':
           description: Ok
@@ -3307,7 +3307,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/payment/qr-code/{trxCode}':
+  /payment/qr-code/{trxCode}:
     delete:
       tags:
         - payment
@@ -3323,7 +3323,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
+            pattern: ^[a-zA-Z0-9]+$
       responses:
         '200':
           description: Cancel Ok
@@ -3576,7 +3576,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/payment/initiatives/{initiativeId}/bar-code':
+  /payment/initiatives/{initiativeId}/bar-code:
     get:
       tags:
         - payment
@@ -3707,7 +3707,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/payment/initiatives/{initiativeId}/bar-code/{trxCode}/pdf':
+  /payment/initiatives/{initiativeId}/bar-code/{trxCode}/pdf:
     get:
       tags:
         - payment
@@ -3912,7 +3912,6 @@ components:
     SelfConsentDTO:
       oneOf:
         - $ref: '#/components/schemas/SelfConsentBoolDTO'
-        - $ref: '#/components/schemas/SelfConsentMultiDTO'
         - $ref: '#/components/schemas/SelfConsentTextDTO'
         - $ref: '#/components/schemas/SelfConsentMultiTypeDTO'
     ListUsersOnboardingStatusDTO:
@@ -4012,6 +4011,12 @@ components:
           description: >-
             ENG: Self-declaration sub-description - IT: Sotto descrizione del
             record di autodichiarazione
+        value:
+          type: string
+          example: 1, 2
+          description: >-
+            ENG: Indicates self-consent values - IT: Indica i valori per gli
+            auto consensi
     SelfConsentBoolDTO:
       type: object
       required:
@@ -4032,27 +4037,6 @@ components:
           description: >-
             ENG: Indicates whether the self-consent is accepted or not - IT:
             Indica se l'auto consenso è accettato o no
-    SelfConsentMultiDTO:
-      type: object
-      required:
-        - _type
-        - code
-        - value
-      properties:
-        _type:
-          type: string
-          enum:
-            - multi
-          description: 'ENG: Self-consent value type - IT: Auto consenso di tipo multipli'
-        code:
-          type: string
-          description: 'ENG: Self-consent code - IT: Codice dell''auto consenso'
-        value:
-          type: string
-          example: '0, 1'
-          description: >-
-            ENG: Indicates self-consent values - IT: Indica i valori per gli
-            auto consensi
     SelfConsentTextDTO:
       type: object
       required:
@@ -4096,7 +4080,7 @@ components:
           description: 'ENG: Self-consent code - IT: Tipologia di multiconsenso'
         value:
           type: string
-          example: '1, 2, 3'
+          example: 1, 2, 3
           description: >-
             ENG: Indicates self-consent values - IT: Indica i valori per gli
             auto consensi
@@ -4210,6 +4194,7 @@ components:
             - ONBOARDING_WAITING_LIST
             - ONBOARDING_ON_EVALUATION
             - ONBOARDING_ALREADY_ONBOARDED
+            - ONBOARDING_USER_BONUS_ALREADY_USED
           description: >-
             'ENG: Error code: ONBOARDING_USER_UNSUBSCRIBED: The user has
             unsubscribed from initiative, ONBOARDING_PAGE_SIZE_NOT_ALLOWED: Page
@@ -4235,7 +4220,9 @@ components:
             ONBOARDING_GENERIC_ERROR: Application error,
             ONBOARDING_USER_NOT_ONBOARDED: The current user is not onboarded on
             initiative, ONBOARDING_INITIATIVE_NOT_FOUND: Cannot find initiative,
-            ONBOARDING_TOO_MANY_REQUESTS: Too many requests - IT: Codice di
+            ONBOARDING_TOO_MANY_REQUESTS: Too many requests,
+            ONBOARDING_USER_BONUS_ALREADY_USED: The user has already
+            participated in the same promotion in the past - IT: Codice di
             errore: ONBOARDING_USER_UNSUBSCRIBED: L'utente si è disiscritto
             dall'iniziativa, ONBOARDING_PAGE_SIZE_NOT_ALLOWED: Dimensione pagina
             non permessa, ONBOARDING_PDND_CONSENT_DENIED: Il consenso PDND per
@@ -4261,7 +4248,9 @@ components:
             ONBOARDING_GENERIC_ERROR: Errore applicativo,
             ONBOARDING_USER_NOT_ONBOARDED: Utente non onboardato all'iniziativa,
             ONBOARDING_INITIATIVE_NOT_FOUND: Iniziativa non trovata,
-            ONBOARDING_TOO_MANY_REQUESTS: Troppe richieste'
+            ONBOARDING_TOO_MANY_REQUESTS: Troppe richieste,
+            ONBOARDING_USER_BONUS_ALREADY_USED: Utente ha già aderito in passato
+            alla stessa iniziativa'
         message:
           type: string
           description: 'ENG: Error message- IT: Messaggio di errore'
@@ -4280,7 +4269,7 @@ components:
             ENG: Unique identifier of the subscribed initiative - IT:
             Identificativo univoco dell'iniziativa sottoscritta
           maxLength: 24
-          pattern: '^[a-zA-Z0-9]+$'
+          pattern: ^[a-zA-Z0-9]+$
         confirmedTos:
           type: boolean
           description: >-
@@ -4308,7 +4297,7 @@ components:
             Mail di contatto fornita dall'utente in fase di onboarding web
           maxLength: 24
           example: utente@email.it
-          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+          pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
         userMailConfirmation:
           type: string
           description: >-
@@ -4316,7 +4305,7 @@ components:
             Mail di conferma fornita dall'utente in fase di onboarding web
           maxLength: 24
           example: utente@email.it
-          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+          pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
     OnboardingInitiativeDTO:
       type: object
       properties:
@@ -4338,19 +4327,8 @@ components:
             - PG
             - NF
           type: string
-        familyUnitComposition:
-          enum:
-            - INPS
-            - ANPR
-          type: string
         beneficiaryKnown:
           type: boolean
-        beneficiaryBudget:
-          type: number
-          example: 10
-        beneficiaryBudgetMax:
-          type: number
-          example: 10
         startDate:
           type: string
           description: Start date
@@ -4388,12 +4366,12 @@ components:
             ENG: Description of the Initiative  - IT: Descrizione dell'
               Iniziativa
           maxLength: 50
-          pattern: '^[a-zA-Z0-9]+$'
+          pattern: ^[a-zA-Z0-9]+$
         serviceName:
           type: string
           description: 'ENG: The service Name - IT: Nome del service'
           maxLength: 50
-          pattern: '^[a-zA-Z0-9]+$'
+          pattern: ^[a-zA-Z0-9]+$
         serviceScope:
           enum:
             - LOCAL
@@ -4406,22 +4384,20 @@ components:
             Iniziativa
           maxLength: 255
           example: descrizione
-          pattern: '^[ -~]{0,255}$'
+          pattern: ^[ -~]{0,255}$
         privacyLink:
           type: string
           description: >-
             ENG: URL that redirects to the privacy policy - IT: URL che
             reindirizza all informativa della privacy
-          pattern: >-
-            ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
+          pattern: ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         tcLink:
           type: string
           description: >-
             ENG: URL that redirects to the terms and conditions - IT: URL che
             porta ai termini e condizioni
-          pattern: >-
-            ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
+          pattern: ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         channels:
           $ref: '#/components/schemas/ChannelArrayDTO'
@@ -4430,14 +4406,13 @@ components:
           description: 'ENG: Logo file name - IT: Nome del file del logo'
           maxLength: 255
           example: logoFileName
-          pattern: '^[ -~]{0,255}$'
+          pattern: ^[ -~]{0,255}$
         logoURL:
           type: string
           description: >-
             ENG: URL for the initiative's logo image - IT: URL del logo
             dell'iniziativa
-          pattern: >-
-            ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
+          pattern: ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         logoUploadDate:
           type: string
@@ -4464,7 +4439,7 @@ components:
           description: 'ENG: Contact  - IT: Contact'
           maxLength: 255
           example: contact
-          pattern: '^[ -~]{0,255}$'
+          pattern: ^[ -~]{0,255}$
     InitiativeBeneficiaryRuleDTO:
       type: object
       properties:
@@ -4472,8 +4447,7 @@ components:
           type: array
           maxItems: 10
           items:
-            $ref: >-
-              #/components/schemas/AnyOfInitiativeBeneficiaryRuleDTOSelfDeclarationCriteriaItems
+            $ref: '#/components/schemas/AnyOfInitiativeBeneficiaryRuleDTOSelfDeclarationCriteriaItems'
         automatedCriteria:
           type: array
           maxItems: 10
@@ -4483,9 +4457,9 @@ components:
       type: object
       anyOf:
         - $ref: '#/components/schemas/SelfCriteriaBoolDTO'
-        - $ref: '#/components/schemas/SelfCriteriaMultiDTO'
         - $ref: '#/components/schemas/SelfCriteriaMultiTypeDTO'
         - $ref: '#/components/schemas/SelfCriteriaTextDTO'
+        - $ref: '#/components/schemas/SelfCriteriaInformativeDTO'
     SelfCriteriaBoolDTO:
       type: object
       properties:
@@ -4516,42 +4490,8 @@ components:
         code:
           type: string
           description: 'ENG: Self-declaration code - IT: Codice dell''autodichiarazione'
-    SelfCriteriaMultiDTO:
-      title: SelfCriteriaMultiDTO
-      type: object
-      properties:
-        _type:
-          type: string
-          description: >-
-            ENG: Self-declaration value type - IT: Autodichiarazione di tipo
-            multipli
-          enum:
-            - multi
-        description:
-          type: string
-          example: descrizione
-          description: >-
-            ENG: Self-declaration description - IT: Descrizione
-            dell'autodichiarazione
-        subDescription:
-          type: string
-          example: sotto descrizione
-          description: >-
-            ENG: Self-declaration sub-description - IT: Sotto descrizione
-            dell'autodichiarazione
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/RowDataDTO'
-          description: >-
-            ENG: Indicates self-declaration values - IT: Indica i valori per
-            l'autodichiarazione
-          maxItems: 10
-        code:
-          type: string
-          description: 'ENG: Self-declaration code - IT: Codice dell''autodichiarazione'
     SelfCriteriaMultiTypeDTO:
-      title: SelfCriteriaMultiDTO
+      title: SelfCriteriaMultiTypeDTO
       type: object
       properties:
         _type:
@@ -4611,13 +4551,55 @@ components:
             dell'autodichiarazione
         value:
           type: string
-          example: '0, 1'
+          example: 0, 1
           description: >-
             ENG: Indicates self-declaration values - IT: Indica i valori per
             l'autodichiarazione
         code:
           type: string
           description: 'ENG: Self-declaration code - IT: Codice dell''autodichiarazione'
+    SelfCriteriaInformativeDTO:
+      title: SelfCriteriaInformativeDTO
+      type: object
+      required:
+        - _type
+        - code
+        - description
+        - organization
+        - value
+      properties:
+        _type:
+          type: string
+          description: 'ENG: Informative self-declaration type - IT: Requisito informativo'
+          enum:
+            - informative
+        code:
+          type: string
+          description: >-
+            ENG: Informative requirement code - IT: Codice del requisito
+            informativo
+          example: ADE
+          enum:
+            - ANPR
+            - ADE
+        description:
+          type: string
+          description: 'ENG: Short description - IT: Descrizione breve del requisito'
+          example: Canone TV
+        organization:
+          type: string
+          description: 'ENG: Responsible organization - IT: Ente responsabile'
+          example: Agenzia delle Entrate
+        value:
+          type: string
+          description: 'ENG: Extended description - IT: Descrizione estesa del requisito'
+          example: Descrizione estesa del requisito
+      example:
+        _type: informative
+        code: ADE
+        description: Canone TV
+        organization: Agenzia delle Entrate
+        value: Descrizione estesa del requisito
     AutomatedCriteriaDTO:
       type: object
       properties:
@@ -5277,7 +5259,7 @@ components:
             ENG: Unique identifier of the subscribed initiative - IT:
             Identificativo univoco dell'iniziativa sottoscritta
           maxLength: 24
-          pattern: '^[a-zA-Z0-9]+$'
+          pattern: ^[a-zA-Z0-9]+$
     GenerateCodeRespDTO:
       type: object
       properties:
@@ -5294,7 +5276,7 @@ components:
         iban:
           type: string
           description: 'ENG: IBAN of the citizen - IT: IBAN del cittadino'
-          pattern: '^IT[0-9]{2}[A-Z]{1}[0-9]{5}[0-9]{5}[A-Z0-9]{12}$'
+          pattern: ^IT[0-9]{2}[A-Z]{1}[0-9]{5}[0-9]{5}[A-Z0-9]{12}$
           minLength: 27
           maxLength: 27
         description:
@@ -5302,7 +5284,7 @@ components:
           description: >-
             ENG: Further information about the iban - IT: Ulteriori informazioni
             sull'iban
-          pattern: '^[a-zA-Z0-9_]+$'
+          pattern: ^[a-zA-Z0-9_]+$
           maxLength: 255
     WalletStatusDTO:
       title: WalletStatusDTO
@@ -5383,13 +5365,13 @@ components:
           description: 'ENG: Channel - IT: Canale di richiesta'
         brandLogo:
           type: string
-          example: 'https://cstarpayment/logo.png'
+          example: https://cstarpayment/logo.png
           description: >-
             ENG: Card's brand logo URL - IT: URL del logo del marchio della
             carta
         brand:
           type: string
-          example: 'https://cstarpayment/cardBrand'
+          example: https://cstarpayment/cardBrand
           description: >-
             ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della
             carta come mastercard, visa, ecc...
@@ -5469,10 +5451,18 @@ components:
             ENG: End date for the time window in which it is possible to use the
             voucher's rewards - IT: Data che indica la fine del periodo di
             fruizione del voucher
+        initialAmountCents:
+          type: integer
+          format: int64
+          description: >-
+            ENG: Total amount awarded by the initiative - IT: Importo totale
+            assegnato dall'iniziativa
         amountCents:
           type: integer
           format: int64
-          description: 'ENG: Initiative total amount - IT: Importo totale dell''iniziativa'
+          description: >-
+            ENG: Current wallet amount of the initiative - IT: Importo attuale
+            del wallet dell'iniziativa
         accruedCents:
           type: integer
           format: int64
@@ -5540,7 +5530,7 @@ components:
           example: 1234 **** **** 5679
         brand:
           type: string
-          example: 'https://cstarpayment/cardBrand'
+          example: https://cstarpayment/cardBrand
           description: >-
             ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della
             carta come mastercard, visa, ecc...
@@ -5815,17 +5805,17 @@ components:
         firstName:
           type: string
           description: 'ENG: First name - IT: Nome'
-          pattern: '^[A-Za-zÀ-ÖØ-öø-ÿ'' -]{1,64}$'
+          pattern: ^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,64}$
           maxLength: 64
         lastName:
           type: string
           description: 'ENG: Last name - IT: Cognome'
-          pattern: '^[A-Za-zÀ-ÖØ-öø-ÿ'' -]{1,64}$'
+          pattern: ^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,64}$
           maxLength: 64
         fiscalCode:
           type: string
           description: 'ENG: Italian fiscal code - IT: Codice fiscale'
-          pattern: '^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$'
+          pattern: ^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$
           minLength: 16
           maxLength: 16
         productId:
@@ -5833,7 +5823,7 @@ components:
           description: >
             ENG: Product identifier (e.g. IO) - IT: Identificativo prodotto (es.
             IO)
-          pattern: '^[A-Za-z0-9_-]{1,64}$'
+          pattern: ^[A-Za-z0-9_-]{1,64}$
           maxLength: 64
     SupportResponseDTO:
       title: SupportResponseDTO
@@ -6095,7 +6085,7 @@ components:
         message:
           type: string
           maxLength: 2500
-          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
+          pattern: ^[a-zA-Z0-9 _@\-.!?]+
           description: 'ENG: Error message- IT: Messaggio di errore'
     TransactionErrorDTO1:
       type: object
@@ -6190,7 +6180,7 @@ components:
         message:
           type: string
           maxLength: 2500
-          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
+          pattern: ^[a-zA-Z0-9 _@\-.!?]+
           description: 'ENG: Error message- IT: Messaggio di errore'
     TransactionBarCodeRequest:
       type: object
@@ -6200,7 +6190,7 @@ components:
         initiativeId:
           type: string
           maxLength: 24
-          pattern: '^[a-zA-Z0-9]+$'
+          pattern: ^[a-zA-Z0-9]+$
           description: 'ENG: Initiative ID - IT: Identificativo dell''iniziativa'
     TransactionBarCodeResponse:
       type: object
@@ -6217,22 +6207,22 @@ components:
         id:
           type: string
           maxLength: 100
-          pattern: '^[A-Za-z0-9_-]+$'
+          pattern: ^[A-Za-z0-9_-]+$
           description: 'ENG: Id of the payment - IT: Identificativo del pagamento'
           example: 5baf1cab-6b5c-4bd7-a957-c9df9c2c9c3d_BARCODE_1759482361234
         trxCode:
           type: string
-          pattern: '^[ -~]{1,255}$'
+          pattern: ^[ -~]{1,255}$
           maxLength: 255
           description: 'ENG: Transaction code - IT: Codice della transazione'
         initiativeId:
           type: string
           maxLength: 24
-          pattern: '^[a-zA-Z0-9_-]+$'
+          pattern: ^[a-zA-Z0-9_-]+$
           description: 'ENG: Id of the initiative - IT: Identificativo dell''iniziativa'
         initiativeName:
           type: string
-          pattern: '^[ -~]{1,255}$'
+          pattern: ^[ -~]{1,255}$
           maxLength: 255
           example: Bonus Elettrodomestici
           description: 'ENG: Name of the initiative - IT: Nome dell''iniziativa'
@@ -6284,7 +6274,7 @@ components:
       schema:
         type: string
         maxLength: 24
-        pattern: '^[a-zA-Z0-9]+$'
+        pattern: ^[a-zA-Z0-9]+$
     TrxCodePath:
       name: trxCode
       in: path
@@ -6293,7 +6283,7 @@ components:
       schema:
         type: string
         maxLength: 24
-        pattern: '^[a-zA-Z0-9]+$'
+        pattern: ^[a-zA-Z0-9]+$
   headers:
     Access-Control-Allow-Origin:
       description: >-
@@ -6301,7 +6291,7 @@ components:
         the given origin
       schema:
         type: string
-        pattern: '^[ -~]{1,2048}$'
+        pattern: ^[ -~]{1,2048}$
         minLength: 1
         maxLength: 2048
     RateLimit-Limit:
@@ -6329,3 +6319,7 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
