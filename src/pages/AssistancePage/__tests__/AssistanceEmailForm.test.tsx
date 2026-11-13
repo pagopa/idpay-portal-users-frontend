@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import AssistanceEmailForm from '../assistanceEmailForm';
 import '@testing-library/jest-dom';
-import { getInitiativeId } from '../../../utils/env.ts';
+import { getInitiative, getInitiativeId } from '../../../utils/env.ts';
 
 const mockedUsedNavigate = jest.fn();
 
@@ -17,6 +17,7 @@ jest.mock('react-i18next', () => ({
 }));
 
 jest.mock('../../../utils/env.ts', () => ({
+    getInitiative: jest.fn(() => 'bonusdecoder'),
     getInitiativeId: jest.fn(() => 'prod-123'),
 }));
 
@@ -51,6 +52,7 @@ jest.mock('../../../api/onboardingWebApiClient.ts', () => ({
 
 beforeEach(() => {
     jest.clearAllMocks();
+    (getInitiative as jest.Mock).mockReturnValue('bonusdecoder');
     (getInitiativeId as jest.Mock).mockReturnValue('prod-123');
 });
 
@@ -138,7 +140,20 @@ describe('AssistanceEmailForm', () => {
         expect(mockedUsedNavigate).toHaveBeenCalledWith(-1);
     });
 
-    test('invoca l’API con il payload atteso e sottomette il form quando riceve jwt/returnTo', async () => {
+    test.each([
+        {
+            initiative: 'bonusdecoder',
+            payload: {
+                email: 'user@example.com',
+                productId: 'prod-123',
+                firstName: 'Mario',
+                lastName: 'Rossi',
+                fiscalCode: 'RSSMRA80A01H501U',
+            },
+        },
+        { initiative: 'bonusnotfound', payload: { email: 'user@example.com', productId: '' } },
+    ])('invia il payload atteso per $initiative e sottomette il form', async ({ initiative, payload }) => {
+        (getInitiative as jest.Mock).mockReturnValue(initiative);
         mockSupport.mockResolvedValue({
             status: 200,
             data: { jwt: 'jwt-123', returnTo: 'https://ret.example/ok' },
@@ -158,13 +173,7 @@ describe('AssistanceEmailForm', () => {
         });
 
         const sentPayload = mockSupport.mock.calls[0][0];
-        expect(sentPayload).toEqual({
-            email: 'user@example.com',
-            productId: 'prod-123',
-            firstName: 'Mario',
-            lastName: 'Rossi',
-            fiscalCode: 'RSSMRA80A01H501U',
-        });
+        expect(sentPayload).toEqual(payload);
 
         await waitFor(() => {
             expect(submitSpy).toHaveBeenCalled();
