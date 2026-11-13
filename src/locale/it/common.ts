@@ -29,6 +29,10 @@ const common = {
       "title": "Un'altra persona della tua\nfamiglia ha inviato la\nrichiesta",
       "description": "È possibile inviare una sola richiesta per ogni\nfamiglia anagrafica."
     },
+    "alreadyOnboarded": {
+      "title": "Hai già usato in passato\nquesto bonus",
+      "description": "Dai controlli effettuati risulta che lo hai già usato in\nun’altra occasione."
+    },
     "accessToken": {
       "title": "Non è stato possibile accedere",
       "description": "Si è verificato un problema durante l'accesso.\nRiprova tra qualche minuto.",
