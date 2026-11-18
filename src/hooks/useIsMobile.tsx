@@ -1,8 +1,8 @@
 import { useMediaQuery, useTheme } from '@mui/material';
-import type { Theme } from '@mui/material/styles';
+import type { Breakpoint, Theme } from '@mui/material/styles';
 
-export const useIsMobile = (): boolean => {
+export const useIsMobile = (size?: Breakpoint | number): boolean => {
   const theme = useTheme<Theme>();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down(size ?? 'sm'));
   return isMobile;
 };

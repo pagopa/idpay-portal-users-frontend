@@ -12,11 +12,11 @@ const it = {
     "footer": {
       "a11y": "Accessibilità",
       "PagoPA": "PagoPA S.p.A",
-      "legalInfo": "Società per azioni con socio unico - capitale sociale di euro 1,000,000 interamente versato - sede legale in Roma, Piazza Colonna 370,\n CAP 00187 - N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009",
+      "legalInfo": "Società per azioni - capitale sociale di euro 1,000,000 interamente versato - sede legale in Roma, Piazza Colonna 370,\n CAP 00187 - N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009",
       "privacy": "Informativa Privacy",
       "personalData": "Diritto alla protezione dei dati personali",
       "termsAndConditions": "Termini e condizioni d'uso",
-      "legalInfoText": "<0>PagoPA S.p.A.</0> - Società per azioni con socio unico - Capitale sociale di euro 1,000,000 interamente versato - Sede legale in Roma, Piazza Colonna 370, <2/> CAP 00187 - N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009",
+      "legalInfoText": "<0>PagoPA S.p.A.</0> - Società per azioni - Capitale sociale di euro 1,000,000 interamente versato - Sede legale in Roma, Piazza Colonna 370, <2/> CAP 00187 - N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009",
       "privacyPolicyLink": "Informativa Privacy",
       "termsAndConditionLink": "Termini e condizioni d’uso del sito ",
       "informationSecurityLink": "Sicurezza delle informazioni ",
@@ -88,7 +88,9 @@ const it = {
     "boldSubtitle": "Bonus Elettrodomestici ",
     "postSubtitle": "a partire dalle ",
     "secondBold": "ore 7:00 del 18 novembre 2025. ",
+    "secondBoldBreak": "\nore 7:00 del 18 novembre 2025. ",
     "thirdSubtitle": "\nAncora un po’ di pazienza!",
+    "thirdSubtitleMidBreak": "Ancora un po’ \ndi pazienza!",
     "withIO": "Con IO è tutto più semplice",
     "descriptionWithIO": "Gestisci tutto in un unico posto: richiedi il bonus, ricevi l’esito della richiesta e usa il bonus. Più veloce, più comodo.",
     "downloadIO": "Scarica l'app"
@@ -187,7 +189,7 @@ const it = {
       "title": "Quali elettrodomestici posso acquistare con il contributo?",
       "description": "Puoi acquistare un elettrodomestico di una di queste categorie: lavatrici e lavasciuga, forni, cappe da cucina, lavastoviglie, asciugabiancheria, frigoriferi, congelatori e piani cottura, come previsto nel dettaglio dall’articolo 3, comma 1, lettera a), del <decree>Decreto interministeriale</decree>. Puoi consultare l’elenco degli elettrodomestici che fanno parte dell’iniziativa <products>in questa lista</products>."
     },
-     "fourthAccordion": {
+    "fourthAccordion": {
       "title": "Ho usato il bonus per acquistare un elettrodomestico, ma vorrei effettuare un reso, cosa devo fare?",
       "description": "Contatta il punto vendita presso il quale hai effettuato l’acquisto con il bonus per richiedere informazioni."
     },

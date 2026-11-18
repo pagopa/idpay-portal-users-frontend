@@ -1,4 +1,14 @@
 const common = {
+  "bonusNotFound": {
+    "title": "Non abbiamo trovato il bonus che cerchi",
+    "description": "Ecco i bonus attivi in questo momento:",
+    "goToBonus": "Vai al bonus",
+    "assistanceTitle": "Hai bisogno di aiuto?",
+    "bonusDecoder": {
+      "title": "Bonus Decoder",
+      "description": "È il contributo, erogato dal Ministero delle Imprese e del Made in Italy, per incentivare la sostituzione di un elettrodomestico con un modello ad alta efficienza energetica e promuovere la sostenibilità e la transizione energetica."
+    }
+  },
   "exit": "Esci",
   "click-day": {
     "firstDescription": "Stiamo per collegarti.\nAttendi qualche secondo...",
@@ -18,6 +28,10 @@ const common = {
     "familyMember": {
       "title": "Un'altra persona della tua\nfamiglia ha inviato la\nrichiesta",
       "description": "È possibile inviare una sola richiesta per ogni\nfamiglia anagrafica."
+    },
+    "alreadyOnboarded": {
+      "title": "Hai già usato in passato\nquesto bonus",
+      "description": "Dai controlli effettuati risulta che lo hai già usato in\nun’altra occasione."
     },
     "accessToken": {
       "title": "Non è stato possibile accedere",

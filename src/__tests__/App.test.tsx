@@ -3,6 +3,8 @@ import { MemoryRouter } from 'react-router-dom';
 import App from '../App';
 import ROUTES from '../routes';
 
+let mockInitiative = 'bonuselettrodomestici';
+
 jest.mock('../config/oneTrust', () => ({
   oneTrustConfig: {
     noticeScriptUrl: 'https://example.test/otnotice.js',
@@ -26,6 +28,9 @@ jest.mock('../components/Layout/Layout', () => (props: any) => (
   <div
     data-testid="layout"
     data-padding={String(props.hasPadding)}
+    data-subheader={String(props.headerProps?.hasSubHeader)}
+    data-assistance={String(props.headerProps?.enableAssistanceButton)}
+    data-login={String(props.headerProps?.enableLogin)}
   >
     {props.children}
   </div>
@@ -70,7 +75,7 @@ jest.mock('../hooks/useIsMobile', () => ({
 jest.mock('../utils/env', () => ({
   isMockAuthEnabled: () => false,
   getInitiativeId: () => '68dd003ccce8c534d1da22bc',
-  getInitiative: () => 'bonuselettrodomestici',
+  getInitiative: () => mockInitiative,
 }));
 
 const mockScrollTo = jest.fn();
@@ -83,6 +88,27 @@ beforeAll(() => {
 });
 
 describe('App Routing and Layout props', () => {
+  beforeEach(() => {
+    mockInitiative = 'bonuselettrodomestici';
+  });
+
+  test.each(['/', '/percorso-inesistente'])('renders the public fallback at %s without entering the bonus flow', (path) => {
+    mockInitiative = 'bonusnotfound';
+
+    render(
+      <MemoryRouter initialEntries={[path]}>
+        <App />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('common.bonusNotFound.title');
+    expect(screen.getByRole('link', { name: 'common.bonusNotFound.goToBonus' })).toHaveAttribute('href', '/bonusdecoder/utente');
+    expect(screen.getByTestId('layout')).toHaveAttribute('data-padding', 'false');
+    expect(screen.getByTestId('layout')).toHaveAttribute('data-subheader', 'false');
+    expect(screen.getByTestId('layout')).toHaveAttribute('data-assistance', 'true');
+    expect(screen.getByTestId('layout')).toHaveAttribute('data-login', 'false');
+  });
+
   test('PublicLayout props are passed (no padding)', () => {
     render(
       <MemoryRouter initialEntries={[ROUTES.HOME]}>
@@ -91,6 +117,8 @@ describe('App Routing and Layout props', () => {
     );
     const layout = screen.getByTestId('layout');
     expect(layout).toHaveAttribute('data-padding', 'false');
+    expect(layout).toHaveAttribute('data-subheader', 'undefined');
+    expect(layout).toHaveAttribute('data-assistance', 'undefined');
   });
 
   test('PrivateLayout default props are applied (padding=undefined)', () => {

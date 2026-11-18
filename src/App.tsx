@@ -18,9 +18,13 @@ import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import UpcomingInitiative from "./pages/UpcomingInitiative/UpcomingInitiative.tsx";
 import TermsOfService from './pages/TermsOfService/TermsOfService.tsx';
 import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy.tsx';
+import BonusNotFound from './pages/BonusNotFound/BonusNotFound';
+import { getInitiative } from './utils/env';
+
+const isBonusNotFound = () => getInitiative() === 'bonusnotfound';
 
 const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <Layout hasPadding={false} >
+  <Layout hasPadding={false} headerProps={isBonusNotFound() ? { hasSubHeader: false, enableAssistanceButton: true, enableLogin: false } : undefined} >
     {children}
   </Layout>
 );
@@ -36,13 +40,15 @@ const PrivateLayout: React.FC<{
   </ProtectedRoute>
 );
 
+const renderHomePage = () => isBonusNotFound() ? <BonusNotFound /> : <LandingPage />;
+
 const LocalRoutes: React.FC<{ isMobile: boolean }> = () => (
   <Routes>
     {/* fallback */}
-    <Route path="*" element={<PublicLayout ><LandingPage /></PublicLayout>} />
+    <Route path="*" element={<PublicLayout >{renderHomePage()}</PublicLayout>} />
 
     {/* public route */}
-    <Route path={ROUTES.HOME} element={<PublicLayout ><LandingPage /></PublicLayout>} />
+    <Route path={ROUTES.HOME} element={<PublicLayout >{renderHomePage()}</PublicLayout>} />
 
     {/* assistance route */}
     <Route path={ROUTES.ASSISTANCE} element={<PublicLayout ><AssistancePage /></PublicLayout>} />
@@ -53,9 +59,6 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = () => (
 
     {/* error page */}
     <Route path={ROUTES.ERROR_PAGE} element={<PublicLayout ><ErrorPage /></PublicLayout>} />
-
-    {/* upcoming initiative */}
-    <Route path={ROUTES.UPCOMING_INITIATIVE} element={<PublicLayout ><UpcomingInitiative /></PublicLayout>} />
 
     {/* terms of service */}
     <Route path={ROUTES.TERMS_OF_SERVICE} element={<PublicLayout ><TermsOfService /></PublicLayout>} />
@@ -87,6 +90,10 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = () => (
     <Route
       path={ROUTES.WAITING_PAGE}
       element={<PrivateLayout><WaitingPage /></PrivateLayout>}
+    />
+    <Route
+      path={ROUTES.UPCOMING_INITIATIVE}
+      element={<PrivateLayout ><UpcomingInitiative /></PrivateLayout>}
     />
   </Routes>
 );

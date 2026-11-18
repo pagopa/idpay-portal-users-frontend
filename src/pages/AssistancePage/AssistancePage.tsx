@@ -2,6 +2,7 @@ import {Box, Typography} from '@mui/material';
 import {theme} from '@pagopa/mui-italia';
 import {useTranslation} from "react-i18next";
 import AssistanceEmailForm from "./assistanceEmailForm.tsx";
+import {getInitiative} from "../../utils/env";
 
 const AssistancePage = () => {
     const {t} = useTranslation();
@@ -30,7 +31,7 @@ const AssistancePage = () => {
                 }}
             >
                 <Typography variant="h3" fontWeight="bold" sx={{ width: "100%"}} gutterBottom>
-                    {t('assistance.title')}
+                    {t(getInitiative() === 'bonusnotfound' ? 'common.bonusNotFound.assistanceTitle' : 'assistance.title')}
                 </Typography>
                 <Typography variant="body1" mb={3} sx={{ width: "100%"}}>
                     {t('assistance.subtitle')}
