@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { IllusCompleted, IllusHistoryDoc, IllusError } from '@pagopa/mui-italia';
+import {IllusCompleted, IllusHistoryDoc, IllusError, IllusMIError} from '@pagopa/mui-italia';
 
 export type FeedbackState = {
   icon: ReactNode;
@@ -60,7 +60,7 @@ export const feedbackStates: Record<FeedbackStateKey, FeedbackState> = {
     buttonRedirect: '__LOGOUT__'
   },
   ONBOARDING_USER_BONUS_ALREADY_USED: {
-    icon: <IllusError />,
+    icon: <IllusMIError />,
     title: "common.feedbackStates.alreadyOnboarded.title",
     description: 'common.feedbackStates.alreadyOnboarded.description',
     buttonLabel: 'commons.exit',

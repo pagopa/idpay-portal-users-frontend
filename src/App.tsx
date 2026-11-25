@@ -88,6 +88,10 @@ const LocalRoutes: React.FC<{ isMobile: boolean }> = () => (
       element={<PrivateLayout><FeedbackPage /></PrivateLayout>}
     />
     <Route
+      path="/test"
+      element={<PrivateLayout><FeedbackPage /></PrivateLayout>}
+    />
+    <Route
       path={ROUTES.WAITING_PAGE}
       element={<PrivateLayout><WaitingPage /></PrivateLayout>}
     />

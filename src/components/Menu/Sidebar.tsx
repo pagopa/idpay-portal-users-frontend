@@ -54,12 +54,13 @@ const Sidebar = ({ collapsed, toggleSidebar, onSectionChange }: SidebarProps) =>
           <ListItemIcon sx={{ minWidth: collapsed ? 'auto' : undefined }}>
             <ConfirmationNumberRounded />
           </ListItemIcon>
-          {!collapsed && <ListItemText primary={t('common.dashboard.title')} slotProps={{
-            primary: {
+          {!collapsed && <ListItemText
+            primary={t('common.dashboard.title')}
+            primaryTypographyProps={{
               noWrap: true,
               sx: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
-            },
-          }} />}
+            }}
+          />}
         </ListItemButton>
 
         <ListItemButton
@@ -74,12 +75,13 @@ const Sidebar = ({ collapsed, toggleSidebar, onSectionChange }: SidebarProps) =>
           <ListItemIcon sx={{ minWidth: collapsed ? 'auto' : undefined }}>
             <HelpRounded />
           </ListItemIcon>
-          {!collapsed && <ListItemText primary={t('common.dashboard.faq')} slotProps={{
-            primary: {
+          {!collapsed && <ListItemText
+            primary={t('common.dashboard.faq')}
+            primaryTypographyProps={{
               noWrap: true,
               sx: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
-            },
-          }} />}
+            }}
+          />}
         </ListItemButton>
       </List>
 

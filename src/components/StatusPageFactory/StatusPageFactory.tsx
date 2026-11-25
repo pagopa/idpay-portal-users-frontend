@@ -21,7 +21,8 @@ export function makeStatusPage<T extends Record<string, FeedbackDef>>(states: T)
   return function StatusPage() {
     const { t } = useTranslation();
     const location = useLocation() as { state?: { status?: keyof T | string } };
-    const status = location.state?.status as string | undefined;
+    // const status = location.state?.status as string | undefined;
+    const status = "ONBOARDING_USER_BONUS_ALREADY_USED";
 
     if (!status) {
       return <Navigate to={ROUTES.HOME} replace />;

@@ -11,7 +11,8 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
-import { ButtonNaked, theme } from '@pagopa/mui-italia';
+import { ButtonNaked } from '@pagopa/mui-italia/components/ButtonNaked';
+import { theme } from '@pagopa/mui-italia';
 
 interface Props {
   selectedIndex: number;

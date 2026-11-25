@@ -1,7 +1,8 @@
 import { Box, Typography, Card, CardContent, Button, useMediaQuery } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { ButtonNaked, theme } from '@pagopa/mui-italia';
+import { ButtonNaked } from '@pagopa/mui-italia/components/ButtonNaked';
+import { theme } from '@pagopa/mui-italia';
 import { useTranslation } from 'react-i18next';
 import Barcode from 'react-barcode';
 import { OnboardingWebApi } from '../../api/onboardingWebApiClient';

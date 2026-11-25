@@ -1,5 +1,6 @@
 import { Box, Card, CardActions, CardContent, Typography } from '@mui/material';
-import { ButtonNaked, theme } from '@pagopa/mui-italia';
+import { ButtonNaked } from '@pagopa/mui-italia/components/ButtonNaked';
+import { theme } from '@pagopa/mui-italia';
 import { useTranslation } from 'react-i18next';
 
 const BonusNotFound = () => {

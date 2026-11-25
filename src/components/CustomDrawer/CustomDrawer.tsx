@@ -182,12 +182,10 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
         anchor="right"
         open={open}
         onClose={onClose}
-        slotProps={{
-          paper: {
-            sx: {
-              width,
-              maxWidth: '100vw',
-            },
+        PaperProps={{
+          sx: {
+            width,
+            maxWidth: '100vw',
           },
         }}
       >
@@ -205,15 +203,13 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
       onOpen={onOpen ?? (() => { })}
       disableBackdropTransition={!iOS}
       disableDiscovery={iOS}
-      slotProps={{
-        paper: {
-          sx: {
-            height: mobileHeight,
-            width: '100%',
-            maxHeight: '100%',
-            borderTopLeftRadius: 12,
-            borderTopRightRadius: 12,
-          },
+      PaperProps={{
+        sx: {
+          height: mobileHeight,
+          width: '100%',
+          maxHeight: '100%',
+          borderTopLeftRadius: 12,
+          borderTopRightRadius: 12,
         },
       }}
     >

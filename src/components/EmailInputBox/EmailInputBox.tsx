@@ -1,4 +1,5 @@
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import { MITextField } from '@pagopa/mui-italia/components/MITextField';
 
 type Props = {
   value: string;
@@ -21,16 +22,15 @@ const EmailInputBox = ({
 }: Props) => {
   return (
     <Box display="flex" flexDirection="column">
-      <TextField
+      <MITextField
         label={placeholderLabel}
-        variant="outlined"
         value={value}
-        onChange={(e) => onChange(e.target.value.replace(/\s/g, ''))}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value.replace(/\s/g, ''))}
         error={showSubmitError}
         helperText={showSubmitError ? errorMessage : ''}
         fullWidth
         onPaste={onPaste}
-        onKeyDown={(event) => {
+        onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
           if (event.key === ' ') {
             event.preventDefault();
           }

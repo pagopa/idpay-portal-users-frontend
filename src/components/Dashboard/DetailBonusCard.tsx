@@ -1,5 +1,5 @@
-import { Box, Typography, Card, CardContent, Chip } from '@mui/material';
-import type { ChipProps } from '@mui/material/Chip';
+import { Box, Typography, Card, CardContent } from '@mui/material';
+import { MIChip } from '@pagopa/mui-italia/components/MIChip';
 import { theme } from '@pagopa/mui-italia';
 import { useTranslation } from 'react-i18next';
 import { formatCurrency, formatDate } from '../../utils/formatUtils';
@@ -27,14 +27,14 @@ const getVoucherStatusLabel = (status: WalletStatusDtoVoucherStatusEnum, t: any)
   return labels[status] || String(status);
 };
 
-const getStatusColor = (status: WalletStatusDtoVoucherStatusEnum): ChipProps['color'] => {
+const getStatusColor = (status: WalletStatusDtoVoucherStatusEnum): 'default' | 'error' | 'success' | 'warning' | 'info' | 'highlight' | 'neutral' | undefined => {
   switch (status) {
     case WalletStatusDtoVoucherStatusEnum.ACTIVE:
       return 'success';
     case WalletStatusDtoVoucherStatusEnum.EXPIRING:
       return 'warning';
     case WalletStatusDtoVoucherStatusEnum.USED:
-      return 'default';
+      return 'neutral';
     case WalletStatusDtoVoucherStatusEnum.EXPIRED:
       return 'error';
     default:
@@ -68,7 +68,7 @@ const DetailBonusCard: React.FC<DetailBonusCardProps> = ({ bonusData, fiscalNumb
         </DetailRow>
 
         <DetailRow label={t('common.dashboard.detailBonusSection.status')}>
-          <Chip
+          <MIChip
             label={getVoucherStatusLabel(bonusData.voucherStatus, t)}
             color={getStatusColor(bonusData.voucherStatus)}
           />

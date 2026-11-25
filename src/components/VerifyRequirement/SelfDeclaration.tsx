@@ -1,5 +1,6 @@
-import { Box, Card, CardContent, Switch, Typography } from '@mui/material'
-import { theme } from '@pagopa/mui-italia'
+import { Box, Card, CardContent, Typography } from '@mui/material'
+import { MISwitch } from '@pagopa/mui-italia/components/MISwitch';
+import { theme } from '@pagopa/mui-italia';
 import type { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import TitleCard from '../Titles/TitleCard';
@@ -41,15 +42,10 @@ export default function SelfDeclaration(props: SelfDeclarationProps) {
                                         alignItems: 'center',
                                     }}
                                 >
-                                    <Switch
-                                        id="self-declaration-switch"
+                                    <MISwitch
                                         checked={switchValue}
-                                        onChange={(_, checked) => setSwitchValue(checked)}
-                                        slotProps={{
-                                            input: {
-                                                'aria-label': t('verifyRequirements.selfDeclaration.switchLabel')
-                                            }
-                                        }}
+                                       onChange={(_: React.ChangeEvent<HTMLInputElement>, checked: boolean) => setSwitchValue(checked)}
+                                        label={t('verifyRequirements.selfDeclaration.switchLabel')}
                                         sx={{
                                             mr: 2,
                                             '& .MuiSwitch-switchBase': {
@@ -64,10 +60,8 @@ export default function SelfDeclaration(props: SelfDeclarationProps) {
                                             '& .MuiSwitch-track': {
                                                 backgroundColor: props.showError ? theme.palette.error.dark : null,
                                             },
-                                        }} />
-                                    <Typography variant='body2' sx={{ fontWeight: theme.typography.fontWeightMedium, color: theme.palette.text.secondary }}>
-                                        {t('verifyRequirements.selfDeclaration.switchLabel')}
-                                    </Typography>
+                                        }}
+                                    />
                                 </Box>
                             </CardContent>
                         </Card>
